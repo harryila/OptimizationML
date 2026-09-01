@@ -201,6 +201,7 @@ def build_payload() -> dict[str, Any]:
         raise AssertionError("generic sharpness witness did not become Schur unstable")
 
     revision = _run_git("rev-parse", "HEAD")
+    branch = _run_git("branch", "--show-current")
     status = _run_git("status", "--porcelain")
     return {
         "schema_version": "passive-muon-momentum-iqc-certificate-v1",
@@ -403,7 +404,7 @@ def build_payload() -> dict[str, Any]:
         "git": {
             "sha": revision.stdout.strip() if revision.returncode == 0 else None,
             "dirty": bool(status.stdout.strip()),
-            "branch": "p3",
+            "branch": branch.stdout.strip() or None,
             "frozen_fallback_commit": "518cc9384a7a478f3c5956532fd26a6937f70d5f",
         },
         "experiment_provenance": {
