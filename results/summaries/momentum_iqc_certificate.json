@@ -1,0 +1,439 @@
+{
+  "actual_floored_jordan_local_instability": {
+    "certified_point_jury_margin": {
+      "decimal": "3.7999000000016044442797862635277218511184235131224",
+      "exact": "3180539302892523757574767532117/837006053551720000000000000000"
+    },
+    "exact_local_learning_rate_threshold": {
+      "decimal": "0.00047263370661236586995780758707382795039654508067798",
+      "exact": "39559726720000000000000/83700604012242425232467883"
+    },
+    "interpretation": "the actual zero-linearization threshold is much larger than the dimension-uniform sector guarantee; this does not weaken the sufficiency theorem but makes it practically conservative",
+    "invariant_mode": "curvature-L rank-one scalar mode",
+    "jury_condition": "eta*L*repaired_zero_input_gain < 2*(1+beta)",
+    "local_threshold_over_global_sector_supremum": "18182.735746687554639757620925148372340894961854930",
+    "outside_jury_margin": {
+      "decimal": "-0.22002644631162426649060981430359082116530859594371",
+      "exact": "-4581150572242425232467883/20820908800000000000000000"
+    },
+    "outside_learning_rate": {
+      "decimal": "0.0005",
+      "exact": "1/2000"
+    },
+    "outside_locally_unstable": true,
+    "repaired_zero_input_gain": {
+      "decimal": "804.00528926232485329812196286071816423306171918874",
+      "exact": "83700604012242425232467883/104104544000000000000000"
+    },
+    "zero_input_polynomial_gain": {
+      "decimal": "484.87628710018292028125",
+      "exact": "15516041187205853449/32000000000000000"
+    }
+  },
+  "analytic_sector_theorem": {
+    "alpha_strict_supremum": {
+      "decimal": "0.00020898945647720529434286448777042355390338607832261",
+      "exact": "16510802486552774004455355427/79003040463687817944269767082402"
+    },
+    "closed_form_strict_factorization": {
+      "epsilon_exact": "1",
+      "factor_vector_exact": [
+        "41528474059081/1987889377185335000",
+        "-1",
+        "-1/1000"
+      ],
+      "formula": "M=-epsilon*I-gamma*n*n^T",
+      "gamma_exact": "71130749465284573006807923169149421500/43052492200919961050141893593799",
+      "identity_replayed_exactly": true,
+      "lambda_lipschitz_exact": "24417331654691675100430139423015227/8610498440183992210028378718759800",
+      "lambda_strong_exact": "79063842495565063363419516888166303299/408998675908739629976347989141090500",
+      "storage_exact": [
+        [
+          "79063842495565063363419516888166303299/817997351817479259952695978282181",
+          "19224114795747472888452537801623256480/22108036535607547566289080494113"
+        ],
+        [
+          "19224114795747472888452537801623256480/22108036535607547566289080494113",
+          "711307537705337930988040281833387808799/43052492200919961050141893593799"
+        ]
+      ]
+    },
+    "dimensionless_step_formula": "alpha=eta*K*L",
+    "eta_strict_supremum": {
+      "decimal": "2.5993542071823161032843107465667660488248901701965E-8",
+      "exact": "1026784428047408433965200/39501520231843908972134883541201"
+    },
+    "invalid_iqc_explicitly_not_used": "the gradient/cocoercive sector product for a symmetric slope",
+    "iqcs": [
+      "<Delta_v,Delta_u>-nu*||Delta_v||^2 >= 0",
+      "||Delta_v||^2-||Delta_u||^2 >= 0"
+    ],
+    "normalized_strongness": {
+      "decimal": "0.019846200099920728387936443912201558672312440313155",
+      "exact": "41528474059081/2092515133879300"
+    },
+    "normalized_strongness_formula": "nu=mu*ell/(K*L)",
+    "sharpness_scope": "exact for the reduced (nu-strong, one-Lipschitz) sector class; potentially conservative for linked H and floored-Jordan R",
+    "state_transform": [
+      "y=H^(1/2)*Delta_W",
+      "z=H^(-1/2)*Delta_m"
+    ],
+    "strict_region": "0<=beta<1 and 0<alpha<2*(1-beta)^2*(1+beta)*nu/((1+beta)^2-4*beta*nu^2)",
+    "transformed_lipschitz_bound": "K*L",
+    "transformed_strong_monotonicity": "mu*ell"
+  },
+  "claim_scope": {
+    "evidence_kind": "exact_dimension_independent_iqc_theorem_exact_rational_lmi_replay_and_matched_float64_rank_one_trajectories",
+    "guarantee": "global incremental exponential stability of the specified real-arithmetic momentum loop",
+    "not_claimed": [
+      "stability for nonquadratic or stochastic objectives",
+      "a discrete BF16 theorem",
+      "neural-network training convergence",
+      "necessity of the sector boundary for the actual floored-Jordan loop",
+      "a practically large certified learning rate"
+    ],
+    "operator_domain": "R^(m x n) for every fixed finite positive m,n",
+    "quadratic_domain": "every fixed finite-dimensional real quadratic with ell*I <= H <= L*I"
+  },
+  "experiment_provenance": {
+    "command": "uv run --locked python scripts/certify_momentum_stability.py --output results/summaries/momentum_iqc_certificate.json",
+    "randomness": "none; exact rational arithmetic and deterministic float64 recurrences",
+    "seed": null,
+    "source_snapshot": {
+      ".github/workflows/ci.yml": "3f6b4cafd579a6cd7266a20c08e5fdebc1ec348cea50cd93e13d0b0246d4a954",
+      "README.md": "7ba7564687fc22b857c1f59029e49368431ce652a7410c3e679921bec5848776",
+      "experiments/README.md": "99ff96aad5f5fe57015ac1a53e05f85a57f386d52b75943f9e0e7d3feb189cd1",
+      "pyproject.toml": "7a9988bf528baef5145f779516d4315349d1c2a6bbb7394c9b93fbbee1d4f596",
+      "results/README.md": "e5d14ef6b2d66f7391c7dc26db3ba4ccdc9f2194b545c8c7dc4b15f57c3f0d13",
+      "results/summaries/RESULTS.md": "18204858784825bea680ee55c60cead4e03a48668173fac05bac3aa598ba365e",
+      "scripts/certify_momentum_stability.py": "1ec9b8e118a770878ecc624a7efe34e48c32a3539e2eddd71401ff6b9e4acdc5",
+      "src/passive_muon/floored_certificate.py": "385dee8576e574bebc72fe09478220cf2ec29928045ee6341472c2e9becb6a72",
+      "src/passive_muon/momentum_experiment.py": "e1d3cbe660a38f5df6345625c4a1de1d69837cf62de907afd89553330dd357c5",
+      "src/passive_muon/momentum_iqc.py": "18c6760e7badb66fe986b2f50a5ea7ab381554b5ed47e1b7fbfe46bf9cdf7f41",
+      "src/passive_muon/normalizers.py": "13a7e78b95dc1543bbbdeb046bbc46b493eb233c87dfb42c809aa186a5504338",
+      "src/passive_muon/operator.py": "1a4985b608102da2f1aa325bfb726a43ef3312212bd805a60ce969056974938a",
+      "src/passive_muon/orthogonalizers.py": "72687f59ad859ac5945279cc27a2e76b50a02ca408730326e24c9c1682f5c7c9",
+      "src/passive_muon/polynomials.py": "82ee698373d33bd90818fd5cb740e532d410ecc767e82d128de7a61483d69925",
+      "src/passive_muon/specs.py": "85fcee0f87485fc3cac2f426d62ec6e55da7896caade2f5df2a1c87f7d9c5d6c",
+      "tests/test_cli.py": "86a3c5a0698c0e5f54d40dfe935281fa0271332c9024e2859ce500295dcfccc3",
+      "tests/test_momentum_iqc.py": "a880df982bce845eb7193a8f45e245dcec86a1d77ad83282046396d9ccc59c53",
+      "tests/test_result_manifests.py": "cef7255dc715cb176d041d952a278faa89490a06c0ebcad91b065ac9c8e16893",
+      "theory/claims.md": "60e5d25a35801e9d78e5e0e5b5559eb0517397b0ec3e7cd8fba09ec4baec978b",
+      "theory/momentum_iqc_certificate.md": "ae720d8203565a9c88e1d4ab28a012f19731369ed86bdfb7e7cdaa26c5712b05",
+      "third_party/UPSTREAM_COMMITS.md": "15e4b03cc471431a807d16cf8cc746564542f8e637098c78404f4ae1a1631651",
+      "uv.lock": "f097fd7895b5c1c551a0bd233d025c3f8ae97b7dedce6a8690569f1b1f7c5cf1"
+    }
+  },
+  "git": {
+    "branch": "p3",
+    "dirty": false,
+    "frozen_fallback_commit": "518cc9384a7a478f3c5956532fd26a6937f70d5f",
+    "sha": "923a99b92ff921f7059b8fc5f0145d180d37309f"
+  },
+  "hardware": {
+    "byte_order": "little",
+    "logical_cpu_count": 10,
+    "machine_architecture": "arm64",
+    "operating_system": "Darwin",
+    "operating_system_release": "24.5.0",
+    "platform": "macOS-15.5-arm64-arm-64bit",
+    "processor": "arm"
+  },
+  "locked_rate_certificate": {
+    "alpha_over_strict_supremum": "0.47849303828830765903623681537659288980996268438329",
+    "conditioning_scale_gamma": "1/10",
+    "dimensionless_step_alpha": {
+      "decimal": "0.0001",
+      "exact": "1/10000"
+    },
+    "lambda_lipschitz_exact": "11/1000000",
+    "lambda_strong_exact": "957/1000000",
+    "learning_rate_eta": {
+      "decimal": "1.2437728921821615786155584873007173717373919775764E-8",
+      "exact": "6506534/523128783469825"
+    },
+    "lmi_exact": [
+      [
+        "-3575489181221465860709/72155694271700000000000",
+        "3576094092614558502999/72155694271700000000000",
+        "-6651787/10000000000"
+      ],
+      [
+        "3576094092614558502999/72155694271700000000000",
+        "-3576930600227113379151/72155694271700000000000",
+        "6654087/10000000000"
+      ],
+      [
+        "-6651787/10000000000",
+        "6654087/10000000000",
+        "-10260887/1000000000000"
+      ]
+    ],
+    "negative_lmi_leading_minors_exact": [
+      "3575489181221465860709/72155694271700000000000",
+      "573554081670133549512459537/3607784713585000000000000000000000",
+      "761336594901146778843890294690319/3607784713585000000000000000000000000000000000"
+    ],
+    "rate": "0.9999949999875",
+    "rate_squared": {
+      "decimal": "0.99999",
+      "exact": "99999/100000"
+    },
+    "solver_role": "a floating-point SDP proposed P and multipliers; this manifest replays the rounded certificate using exact rational arithmetic",
+    "storage_exact": [
+      [
+        "739113/1000000",
+        "-260843/1000000"
+      ],
+      [
+        "-260843/1000000",
+        "260887/1000000"
+      ]
+    ],
+    "storage_leading_minors_exact": [
+      "739113/1000000",
+      "62392951291/500000000000"
+    ],
+    "sylvester_negative_lmi": true,
+    "sylvester_positive_storage": true
+  },
+  "matched_rank_one_float64_examples": {
+    "certified_stable": {
+      "divergence_threshold": 1e+100,
+      "exceeded_divergence_threshold": false,
+      "executed_iterations": 100000,
+      "final_momentum": 2.392243275504055e-36,
+      "final_position": 2.3681013507509615e-38,
+      "first_hundredfold_amplification_iteration": null,
+      "initial_position": 1.0,
+      "learning_rate_exact": "6506534/523128783469825",
+      "maximum_absolute_momentum": 98.27060608092768,
+      "maximum_absolute_position": 1.0,
+      "requested_iterations": 100000,
+      "tail": [
+        {
+          "momentum": 2.4092110474897276e-36,
+          "position": 2.384897888197614e-38
+        },
+        {
+          "momentum": 2.4067797315605165e-36,
+          "position": 2.382491108504669e-38
+        },
+        {
+          "momentum": 2.4043508692549318e-36,
+          "position": 2.3800867576739904e-38
+        },
+        {
+          "momentum": 2.4019244580968376e-36,
+          "position": 2.3776848332544313e-38
+        },
+        {
+          "momentum": 2.3995004956125973e-36,
+          "position": 2.3752853327973173e-38
+        },
+        {
+          "momentum": 2.3970789793310695e-36,
+          "position": 2.372888253856446e-38
+        },
+        {
+          "momentum": 2.394659906783607e-36,
+          "position": 2.3704935939880835e-38
+        },
+        {
+          "momentum": 2.392243275504055e-36,
+          "position": 2.3681013507509615e-38
+        }
+      ]
+    },
+    "far_outside_divergent": {
+      "divergence_threshold": 1e+100,
+      "exceeded_divergence_threshold": true,
+      "executed_iterations": 159,
+      "final_momentum": 4.5739953443698135e+100,
+      "final_position": -2.365625111300778e+100,
+      "first_hundredfold_amplification_iteration": 4,
+      "initial_position": 1.0,
+      "learning_rate_exact": "1/500",
+      "maximum_absolute_momentum": 4.5739953443698135e+100,
+      "maximum_absolute_position": 2.365625111300778e+100,
+      "requested_iterations": 1000,
+      "tail": [
+        {
+          "momentum": 4.1240723832745215e+95,
+          "position": -2.1329294098878006e+95
+        },
+        {
+          "momentum": -1.7617628953930936e+96,
+          "position": 9.111663287173879e+95
+        },
+        {
+          "momentum": 7.526076681320095e+96,
+          "position": -3.8924123542935058e+96
+        },
+        {
+          "momentum": -3.215065452974697e+97,
+          "position": 1.6628000243582292e+97
+        },
+        {
+          "momentum": 1.3734441335905065e+98,
+          "position": -7.103317093205489e+97
+        },
+        {
+          "momentum": -5.867217372974032e+98,
+          "position": 3.0344667420906246e+98
+        },
+        {
+          "momentum": 2.506417178522962e+99,
+          "position": -1.296294152159106e+99
+        },
+        {
+          "momentum": -1.0707166060920395e+100,
+          "position": 5.537640289852649e+99
+        }
+      ]
+    },
+    "interpretation": "diagnostic trajectories of the actual floored five-step Jordan map; the exact LMI and Jury signs, not sampling, carry the theorem claims",
+    "outside_nonconvergent": {
+      "divergence_threshold": 1e+100,
+      "exceeded_divergence_threshold": false,
+      "executed_iterations": 20000,
+      "final_momentum": 0.007555420930139005,
+      "final_position": -0.002324796588436628,
+      "first_hundredfold_amplification_iteration": null,
+      "initial_position": 1.0,
+      "learning_rate_exact": "1/2000",
+      "maximum_absolute_momentum": 10.0,
+      "maximum_absolute_position": 1.0814283345943592,
+      "period_four_tail_residual": 0.0,
+      "requested_iterations": 20000,
+      "tail": [
+        {
+          "momentum": -0.016448087047241176,
+          "position": 0.0007247857412378054
+        },
+        {
+          "momentum": -0.007555420930139005,
+          "position": 0.002324796588436628
+        },
+        {
+          "momentum": 0.016448087047241176,
+          "position": -0.0007247857412378054
+        },
+        {
+          "momentum": 0.007555420930139005,
+          "position": -0.002324796588436628
+        },
+        {
+          "momentum": -0.016448087047241176,
+          "position": 0.0007247857412378054
+        },
+        {
+          "momentum": -0.007555420930139005,
+          "position": 0.002324796588436628
+        },
+        {
+          "momentum": 0.016448087047241176,
+          "position": -0.0007247857412378054
+        },
+        {
+          "momentum": 0.007555420930139005,
+          "position": -0.002324796588436628
+        },
+        {
+          "momentum": -0.016448087047241176,
+          "position": 0.0007247857412378054
+        },
+        {
+          "momentum": -0.007555420930139005,
+          "position": 0.002324796588436628
+        },
+        {
+          "momentum": 0.016448087047241176,
+          "position": -0.0007247857412378054
+        },
+        {
+          "momentum": 0.007555420930139005,
+          "position": -0.002324796588436628
+        }
+      ]
+    },
+    "shared_configuration": {
+      "additive_epsilon": "not_applicable; max-floor normalization",
+      "arithmetic": "Python IEEE-754 binary64 scalar recurrence; NumPy is used only for the separate spectral-radius diagnostic",
+      "beta": 0.9,
+      "device": "CPU",
+      "floor": 1.0,
+      "initial_momentum": 0.0,
+      "initial_position": 1.0,
+      "invariant_initial_mode": "curvature-10 eigenvector",
+      "orthogonalizer": "jordan_quintic",
+      "quadratic_hessian": "diag(1,10)",
+      "repair_rho": 319.12900216214194,
+      "steps": 5
+    }
+  },
+  "operator": {
+    "additive_epsilon": "not_applicable; the denominator uses a max floor",
+    "arithmetic_model": "real arithmetic",
+    "coefficients_exact": {
+      "a": "6889/2000",
+      "b": "-191/40",
+      "c": "4063/2000"
+    },
+    "deficit_upper_at_c_1": {
+      "decimal": "159.56450108107096650843598143035908211653085959437",
+      "exact": "41528474059081/260261360000"
+    },
+    "derivative_absolute_upper": {
+      "decimal": "484.8763",
+      "exact": "4848763/10000"
+    },
+    "floor_c_exact": "1",
+    "formula": "R_rho,c(M)=H_h(M/max(c,||M||_F))+rho*M",
+    "global_lipschitz_bound_K": {
+      "decimal": "804.00530216214193301687196286071816423306171918874",
+      "exact": "20925151338793/26026136000"
+    },
+    "normalization_rule": "fixed_frobenius_floor",
+    "orthogonalizer": "jordan_quintic",
+    "repair_margin_mu": {
+      "decimal": "159.56450108107096650843598143035908211653085959437",
+      "exact": "41528474059081/260261360000"
+    },
+    "repair_rho": {
+      "decimal": "319.12900216214193301687196286071816423306171918874",
+      "exact": "41528474059081/130130680000"
+    },
+    "scalar_composition": "h=q composed with itself 5 times",
+    "stage_recurrence": "x_next=a*x+(b*x^2+c*x^4)*x",
+    "steps": 5,
+    "upstream": "KellerJordan/Muon@f98f1cacc0263b04290753e32be8d498c1efc806"
+  },
+  "quadratic_and_loop": {
+    "equilibrium": "(W_star,0)",
+    "hessian_lower_ell": "1",
+    "hessian_upper_L": "10",
+    "momentum_beta": "9/10",
+    "objective": "f(W)=0.5*<W-W_star,H(W-W_star)>",
+    "update_order": [
+      "m_(t+1)=beta*m_t+H*(W_t-W_star)",
+      "W_(t+1)=W_t-eta*R_rho,c(m_(t+1))"
+    ]
+  },
+  "schema_version": "passive-muon-momentum-iqc-certificate-v1",
+  "sector_boundary_witness": {
+    "boundary_claim": "unit-circle root at alpha=alpha_strict_supremum",
+    "characteristic": "z^2-(1+beta-alpha*(nu+i*sqrt(1-nu^2)))*z+beta",
+    "map": "U(v)=nu*v+sqrt(1-nu^2)*J*v in R^2, J^T=-J, J^T*J=I",
+    "outside_alpha_exact": "16510802486552774004455355427/39501520231843908972134883541201",
+    "outside_alpha_factor": "2",
+    "outside_float64_spectral_radius": 1.0000823750323569,
+    "properties": "nu-strongly monotone and exactly one-Lipschitz",
+    "scope": "sharpness of the reduced sector description only"
+  },
+  "software": {
+    "numpy": "2.5.2",
+    "python": "3.12.11",
+    "python_implementation": "CPython"
+  }
+}
