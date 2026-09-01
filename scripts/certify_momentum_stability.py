@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Replay the exact momentum IQC certificate and matched CPU examples."""
+"""Replay the exact stylized non-Nesterov momentum certificate and CPU controls."""
 
 from __future__ import annotations
 
@@ -216,9 +216,12 @@ def build_payload() -> dict[str, Any]:
             "operator_domain": "R^(m x n) for every fixed finite positive m,n",
             "guarantee": (
                 "global incremental exponential stability of the specified "
-                "real-arithmetic momentum loop"
+                "stylized real-arithmetic non-Nesterov momentum loop"
             ),
+            "paper_position": "supporting proof-of-principle result",
             "not_claimed": [
+                "the pinned upstream Muon EMA/Nesterov state-and-signal ordering",
+                "stability of the complete practical Muon implementation",
                 "stability for nonquadratic or stochastic objectives",
                 "a discrete BF16 theorem",
                 "neural-network training convergence",
@@ -249,6 +252,8 @@ def build_payload() -> dict[str, Any]:
             "global_lipschitz_bound_K": _fraction_payload(certificate.lipschitz_bound),
         },
         "quadratic_and_loop": {
+            "loop_class": "stylized real-arithmetic non-Nesterov momentum",
+            "matches_pinned_upstream_ema_nesterov": False,
             "objective": "f(W)=0.5*<W-W_star,H(W-W_star)>",
             "hessian_lower_ell": str(certificate.hessian_lower),
             "hessian_upper_L": str(certificate.hessian_upper),
@@ -259,6 +264,21 @@ def build_payload() -> dict[str, Any]:
             ],
             "equilibrium": "(W_star,0)",
         },
+        "prior_art": [
+            {
+                "citation": "Lessard, Recht, and Packard (2016)",
+                "url": "https://arxiv.org/abs/1408.3595",
+                "role": "foundational optimization IQC framework",
+            },
+            {
+                "citation": "Zhang, Bao, Lessard, and Grosse, JMLR 22(103), 2021",
+                "url": "https://jmlr.org/papers/v22/20-1068.html",
+                "role": (
+                    "prior IQC analysis of finite-memory methods with strongly "
+                    "monotone Lipschitz, potentially nonconservative operators"
+                ),
+            },
+        ],
         "analytic_sector_theorem": {
             "state_transform": [
                 "y=H^(1/2)*Delta_W",

@@ -243,7 +243,7 @@ monotonicity inequality gives the energy estimate directly.  This is a
 simplified continuous-time integrator-feedback result, not momentum-Muon or
 discrete training stability.
 
-## C7. Discrete-time quadratic momentum stability — proved, conservative
+## C7. Stylized non-Nesterov quadratic momentum stability — proved, conservative
 
 Let `R=F_h,c+rho*I` with
 
@@ -264,7 +264,7 @@ f(W)=\tfrac12\langle W-W_\star,H(W-W_\star)\rangle,
 \qquad \ell I\preceq H\preceq LI,
 \]
 
-consider
+consider the stylized real-arithmetic, non-Nesterov recurrence
 
 \[
 m_{t+1}=\beta m_t+H(W_t-W_\star),\qquad
@@ -281,7 +281,10 @@ globally incrementally exponentially stable whenever
 \]
 
 The proof uses separate strong-monotonicity and Lipschitz IQCs and an explicit
-`3 x 3` strict LMI factorization. A machine-readable representative at
+`3 x 3` strict LMI factorization. This generic one-step-memory IQC machinery is
+prior art; see Lessard--Recht--Packard and Zhang--Bao--Lessard--Grosse. The
+repository's contribution is the certified full-matrix floored-Muon sector and
+its repaired interconnection. A machine-readable representative at
 `c=1`, `mu=bar_delta_1`, `ell=1`, `L=10`, and `beta=0.9` replays a rational
 storage, multipliers, and `tau^2=99999/100000` by exact Sylvester checks.
 
@@ -289,13 +292,93 @@ The boundary is sharp for the reduced class of arbitrary `nu`-strongly
 monotone, one-Lipschitz operators because an admissible constant skew slope is
 marginal there. It is only sufficient for the linked floored-Jordan/quadratic
 loop. At the representative point its certified learning-rate supremum is
-about `2.599e-8`, whereas the actual curvature-10 zero-linearization loses
+about `2.599e-8`, whereas the linked curvature-10 zero-linearization loses
 local stability at about `4.726e-4`. The roughly `18,183x` gap is explicit:
-this is a rigorous but extremely conservative training-loop result. It does
+this is a rigorous but extremely conservative stylized-loop result. It does
 not establish nonquadratic, stochastic, BF16, or neural-network convergence.
 See `momentum_iqc_certificate.md`.
 
-## C8. Circuit and broader optimization consequences — open
+Prior-art references for the generic IQC framework are Lessard, Recht, and
+Packard (<https://arxiv.org/abs/1408.3595>) and Zhang, Bao, Lessard, and
+Grosse, JMLR 22(103), 2021
+(<https://jmlr.org/papers/v22/20-1068.html>).
+
+## C8. Pinned EMA/Nesterov signal ordering — proved, appendix-level
+
+The pinned upstream implementation does not use C7's recurrence. With
+`a=1-beta`, it updates
+
+\[
+m_{t+1}=\beta m_t+a g_t,\qquad
+s_{t+1}=\beta m_{t+1}+a g_t,\qquad
+W_{t+1}=W_t-\eta R(s_{t+1}).
+\]
+
+For deterministic quadratic `g_t=H(W_t-W_star)`, conditioned differences obey
+
+\[
+z_{t+1}=\beta z_t+a y_t,\qquad
+p_{t+1}=\beta z_{t+1}+a y_t
+          =\beta^2z_t+(1-\beta^2)y_t,\qquad
+y_{t+1}=y_t-\alpha u(p_{t+1}),
+\]
+
+where `alpha=eta*K*L` and the normalized transformed operator satisfies the
+separate incremental inequalities
+
+\[
+\langle p,u\rangle\ge\nu\lVert p\rVert^2,
+\qquad \lVert u\rVert^2\le\lVert p\rVert^2,
+\qquad \nu=\frac{\mu\ell}{KL}.
+\]
+
+With `chi=(y,z,u)`,
+
+\[
+T=\begin{bmatrix}1&0&-\alpha\\1-\beta&\beta&0\end{bmatrix},
+\qquad
+p=(1-\beta^2)y+\beta^2z,
+\]
+
+the same two-IQC construction gives a dimension-independent `3 x 3` LMI. At
+the pinned default `beta=19/20`, a 60-digit stationarity solve corroborated by
+a broad logarithmic scan locates a complex-skew design near `mu=648.024`. The exact representative instead locks
+
+\[
+\mu=648,\quad
+\nu=\frac{208209088000}{4152745686529},\quad
+\alpha=\frac1{400},\quad
+\eta=\frac{65065340}{336372400608849},\quad
+\tau^2=\frac{99999}{100000}.
+\]
+
+Its rational storage, nonnegative multipliers, and strict LMI pass exact
+Sylvester checks. This matches the pinned EMA state and Nesterov signal
+ordering in real arithmetic after replacing the upstream orthogonalizer by the
+repaired floored map and omitting weight decay. It does not claim equivalence
+to the deployed BF16/current-normalized kernel, transpose/aspect scaling, or
+its complete optimizer path.
+
+For the nearby exact design `mu=648`, the complex-skew sector boundary is
+`eta approximately 2.09708214294e-7`; the numerical stationary design over `mu` is
+`approximately 2.09708214366e-7`. The matched curvature-10 scalar
+zero-linearization has the exact local threshold
+
+\[
+\eta_{\mathrm{local}}
+=\frac{8120154432000000000000000}
+{3901919808117690731741568607}
+=0.002081066457364538\ldots.
+\]
+
+That is `10,758.62x` the locked certified `eta`. At the numerical stationary
+design, the corresponding local threshold is `0.002081027708...`, about
+`9,923.44x` its complex-skew necessary boundary. The predeclared hard rule therefore classifies C8 as
+an appendix/proof-of-principle result, not a headline practical-stability
+claim. No nonquadratic, stochastic, BF16, or neural-network theorem follows.
+See `ema_nesterov_iqc_certificate.md`.
+
+## C9. Circuit and broader optimization consequences — open
 
 Boyd's framework models `y in partial f(x)` as a grounded multi-terminal
 device and its energy argument uses

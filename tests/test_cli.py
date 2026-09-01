@@ -80,3 +80,26 @@ def test_momentum_certificate_cli_replays_exact_lmis_and_matched_examples() -> N
     examples = payload["matched_rank_one_float64_examples"]
     assert not examples["certified_stable"]["exceeded_divergence_threshold"]
     assert examples["far_outside_divergent"]["exceeded_divergence_threshold"]
+
+
+def test_ema_nesterov_cli_replays_exact_lmi_and_hard_decision_rule() -> None:
+    root = Path(__file__).resolve().parents[1]
+    completed = subprocess.run(
+        [sys.executable, str(root / "scripts" / "certify_ema_nesterov_stability.py")],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    payload = json.loads(completed.stdout)
+    assert payload["schema_version"] == "passive-muon-ema-nesterov-iqc-certificate-v1"
+    locked = payload["locked_exact_rate_certificate"]
+    assert locked["sylvester_positive_storage"]
+    assert locked["sylvester_negative_lmi"]
+    local = payload["actual_floored_jordan_local_control"]
+    assert local["outside_locally_unstable"]
+    assert local["hard_decision_rule_triggered"]
+    assert local["result_classification"] == "appendix_or_proof_of_principle"
+    examples = payload["matched_rank_one_float64_examples"]
+    assert not examples["certified_stable"]["exceeded_divergence_threshold"]
+    assert examples["far_outside_divergent"]["exceeded_divergence_threshold"]

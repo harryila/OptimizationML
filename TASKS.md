@@ -30,8 +30,14 @@
 - [x] Derive a dimension-uniform full-matrix upper certificate for a floored normalizer.
 - [x] Implement the floored architecture and corresponding certified constant repair.
 - [x] Prove the simplified continuous-time contraction corollary.
-- [x] Prove a dimension-independent deterministic quadratic momentum IQC.
-- [x] Replay an exact rational rate LMI and matched rank-one boundary checks.
+- [x] Prove a dimension-independent stylized non-Nesterov quadratic momentum IQC.
+- [x] Replay its exact rational rate LMI and matched rank-one boundary checks.
+- [x] Match the pinned EMA/Nesterov state-and-signal ordering in a second IQC.
+- [x] Replay the EMA/Nesterov exact rational LMI at the default `beta=0.95`.
+- [ ] Obtain independent human review of C7 and C8.
+- [ ] Obtain an independent parity audit against the pinned upstream EMA/Nesterov
+      update (the automated local two-`lerp` regression exists; external sign-off
+      is still pending).
 - [ ] Derive a less conservative architecture-aware momentum region.
 - [ ] Run a small matched NanoGPT sweep only after the preceding gates pass.
 - [ ] Run an accelerator throughput benchmark only for a certified design.

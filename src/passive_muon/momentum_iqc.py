@@ -1,4 +1,4 @@
-"""Exact IQC certificates for the repaired floored-Muon momentum loop.
+"""Exact IQC certificates for a stylized repaired-floored momentum loop.
 
 The main result in this module is deliberately sector based.  It applies to
 any finite-dimensional map that is strongly monotone and Lipschitz; the
@@ -118,7 +118,7 @@ def sector_alpha_limit(beta: Fraction, normalized_strongness: Fraction) -> Fract
 
 @dataclass(frozen=True)
 class MomentumLmiCertificate:
-    """A rational certificate for one repaired-Jordan momentum configuration."""
+    """A rational certificate for one stylized repaired-Jordan configuration."""
 
     floor: Fraction
     repair_margin: Fraction

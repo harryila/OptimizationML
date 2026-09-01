@@ -9,17 +9,34 @@ Public availability is not treated as licensing permission.
 - Revision: `f98f1cacc0263b04290753e32be8d498c1efc806`
 - Revision date: 2026-05-24
 - Audited file: `muon.py`
+- Audited file SHA-256:
+  `2479665a90124f62e4df557816665851ca317e42fcfda2af1da02c1f44ab5f3d`
 - License: MIT
 - Used facts: Jordan coefficients `(3.4445, -4.7750, 2.0315)`, BF16 cast,
   one-time orientation before normalization, normalization through
   `X.norm(dim=(-2,-1), keepdim=True) + 1e-7`, the literal BF16 expression
   `B = b*A + (c*A)@A`, and the five-step default call path. The parentheses
   make explicit Python's left-associative parsing of upstream `c*A @ A`.
+- Momentum facts: `muon_update` defaults to `beta=0.95`, `ns_steps=5`, and
+  `nesterov=True`. Its literal calls
+  `momentum.lerp_(grad, 1 - beta)` followed by
+  `grad.lerp_(momentum, beta)` implement
+  `m_next=beta*m+(1-beta)*g` and
+  `s_next=beta*m_next+(1-beta)*g`. The second call mutates the gradient buffer.
+  With a zero initial momentum buffer and `beta=0.95`, this gives
+  `m_1=0.05*g` and `s_1=0.0975*g`.
 - Local implementation: the smooth mathematical equation is independently
   reimplemented in `src/passive_muon/polynomials.py`. The backend-specific
   executable shadow in `src/passive_muon/deployed.py` separately preserves the
   pinned operation order because algebraically equivalent grouping can change
-  BF16 results. No upstream training or distributed-optimizer code is copied.
+  BF16 results. A clean local regression separately checks the two-`lerp`
+  EMA/Nesterov algebra and mutation semantics. No upstream training or
+  distributed-optimizer code is copied.
+- Exact-update scope: the branch-`p3` EMA/Nesterov theorem matches this
+  state-and-signal ordering in real arithmetic after replacing the upstream
+  orthogonalizer by the certified repaired floored map and omitting weight
+  decay. It is not a parity claim for the complete BF16/current-normalized
+  optimizer path.
 
 ## Polar Express
 

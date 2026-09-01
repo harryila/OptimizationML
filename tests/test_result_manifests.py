@@ -16,6 +16,7 @@ WITNESS_PATH = ROOT / "results/summaries/canonical_witness.json"
 BF16_WITNESS_PATH = ROOT / "results/summaries/bf16_witness.json"
 FLOORED_CERTIFICATE_PATH = ROOT / "results/summaries/floored_repair_certificate.json"
 MOMENTUM_CERTIFICATE_PATH = ROOT / "results/summaries/momentum_iqc_certificate.json"
+EMA_NESTEROV_CERTIFICATE_PATH = ROOT / "results/summaries/ema_nesterov_iqc_certificate.json"
 
 
 def _load(path: Path) -> dict:
@@ -41,10 +42,12 @@ def test_result_source_snapshots_match_workspace_files() -> None:
     witness = _load(WITNESS_PATH)
     floored = _load(FLOORED_CERTIFICATE_PATH)
     momentum = _load(MOMENTUM_CERTIFICATE_PATH)
+    ema_nesterov = _load(EMA_NESTEROV_CERTIFICATE_PATH)
     snapshots = [manifest["source_snapshot"] for manifest in manifests]
     snapshots.append(witness["experiment_provenance"]["source_snapshot"])
     snapshots.append(floored["experiment_provenance"]["source_snapshot"])
     snapshots.append(momentum["experiment_provenance"]["source_snapshot"])
+    snapshots.append(ema_nesterov["experiment_provenance"]["source_snapshot"])
     for snapshot in snapshots:
         assert snapshot
         for relative_path, expected_hash in snapshot.items():
@@ -61,6 +64,7 @@ def test_result_manifests_record_clean_git_revisions() -> None:
         HORIZON_PATH,
         FLOORED_CERTIFICATE_PATH,
         MOMENTUM_CERTIFICATE_PATH,
+        EMA_NESTEROV_CERTIFICATE_PATH,
     ):
         git = _load(path)["git"]
         assert len(git["sha"]) == 40
@@ -129,6 +133,47 @@ def test_momentum_manifest_records_the_exact_region_rate_and_controls() -> None:
     examples = payload["matched_rank_one_float64_examples"]
     assert examples["outside_nonconvergent"]["period_four_tail_residual"] < 1e-14
     assert examples["far_outside_divergent"]["exceeded_divergence_threshold"]
+    assert payload["experiment_provenance"]["seed"] is None
+
+
+def test_ema_nesterov_manifest_records_exact_ordering_lmi_and_decision_rule() -> None:
+    payload = _load(EMA_NESTEROV_CERTIFICATE_PATH)
+    assert payload["schema_version"] == "passive-muon-ema-nesterov-iqc-certificate-v1"
+    assert payload["git"]["branch"] == "p3"
+    ordering = payload["pinned_ema_nesterov_ordering"]
+    assert ordering["default_beta"] == "19/20"
+    assert ordering["default_nesterov"] is True
+    assert ordering["local_automated_lerp_parity_regression"] is True
+    assert ordering["independent_upstream_parity_audit_complete"] is False
+
+    locked = payload["locked_exact_rate_certificate"]
+    assert Fraction(locked["repair_margin_mu"]["exact"]) == 648
+    assert Fraction(locked["normalized_strongness_nu"]["exact"]) == Fraction(
+        208_209_088_000,
+        4_152_745_686_529,
+    )
+    assert Fraction(locked["dimensionless_step_alpha"]["exact"]) == Fraction(1, 400)
+    assert Fraction(locked["learning_rate_eta"]["exact"]) == Fraction(
+        65_065_340,
+        336_372_400_608_849,
+    )
+    assert Fraction(locked["rate_squared"]["exact"]) == Fraction(99_999, 100_000)
+    assert locked["sylvester_positive_storage"]
+    assert locked["sylvester_negative_lmi"]
+
+    local = payload["actual_floored_jordan_local_control"]
+    assert Fraction(local["local_learning_rate_threshold"]["exact"]) == Fraction(
+        8_120_154_432_000_000_000_000_000,
+        3_901_919_808_117_690_731_741_568_607,
+    )
+    assert local["hard_decision_rule_triggered"]
+    assert local["optimized_skew_boundary_gap_factor"] > 9_000
+    assert local["result_classification"] == "appendix_or_proof_of_principle"
+
+    examples = payload["matched_rank_one_float64_examples"]
+    assert examples["outside_period_two"]["period_two_tail_residual"] < 1e-13
+    assert examples["far_outside_divergent"]["exceeded_divergence_threshold"]
+    assert payload["review_status"]["independent_human_review_C7_C8_complete"] is False
     assert payload["experiment_provenance"]["seed"] is None
 
 

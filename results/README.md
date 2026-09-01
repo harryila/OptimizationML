@@ -16,7 +16,10 @@ Current outputs:
   full-matrix floored-repair certificate;
 - `summaries/momentum_iqc_certificate.json`: exact closed-form sector region,
   rational rate-LMI replay, exact local instability control, and matched
-  deterministic rank-one momentum trajectories;
+  deterministic rank-one trajectories for the stylized non-Nesterov loop;
+- `summaries/ema_nesterov_iqc_certificate.json`: exact rational LMI replay for
+  the pinned EMA/Nesterov state-and-signal ordering, numerical repair-margin
+  design scan, exact local threshold, and matched rank-one diagnostics;
 - `summaries/deficit_audit.{json,csv}`: 24-prefix spectral audit;
 - `summaries/quadratic_lr_sweep.json` plus CSV tables: gain-matched quadratic
   sweep and sensitivity classifications;

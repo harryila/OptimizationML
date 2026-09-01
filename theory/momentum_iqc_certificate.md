@@ -1,4 +1,4 @@
-# Discrete-time momentum IQC certificate
+# Stylized non-Nesterov momentum IQC certificate
 
 ## Status and scope
 
@@ -12,7 +12,7 @@ f(W)=\tfrac12\langle W-W_\star,H(W-W_\star)\rangle,
 \qquad \ell I\preceq H\preceq LI,
 \]
 
-and consider the deterministic real-arithmetic loop
+and consider the stylized deterministic real-arithmetic, non-Nesterov loop
 
 \[
 m_{t+1}=\beta m_t+H(W_t-W_\star),\qquad
@@ -36,8 +36,10 @@ K=\rho+\frac{4848763}{10000c}.
 \]
 
 The result covers every fixed finite matrix shape and the full tangent space.
-It does not cover nonquadratic or stochastic objectives, BF16 execution, or
-neural-network convergence.
+It does not reproduce the pinned upstream EMA/Nesterov state-and-signal
+ordering; that separate certificate is in `ema_nesterov_iqc_certificate.md`.
+It also does not cover nonquadratic or stochastic objectives, BF16 execution,
+or neural-network convergence.
 
 ## The theorem
 
@@ -247,7 +249,7 @@ The analytic strict supremum at this configuration is
 
 The locked point is `0.478493...` of this sufficient boundary.
 
-## Matched actual-operator checks and conservatism
+## Matched linked-operator checks and conservatism
 
 The deterministic CPU check uses `H=diag(1,10)` and initializes only the
 curvature-10 rank-one mode. That subspace is invariant, and the repository's
@@ -261,7 +263,7 @@ and operation order are held fixed; only `eta` changes.
   the trajectory approaches a nonzero period-four orbit.
 - At `eta=1/500`, the same trajectory crosses magnitude `1e100` in 159 updates.
 
-The actual zero-linearization has gain
+The linked floored-Jordan zero-linearization has gain
 
 \[
 \rho+\frac{h'(0)}c
@@ -277,7 +279,7 @@ and loses local Schur stability in the curvature-`L` mode at
 
 This is about `18,183` times the global sector-certified supremum. Therefore
 the theorem is clean, global, and dimension-uniform, but its step-size region
-is extremely conservative for the actual floored Jordan loop. The trajectory
+is extremely conservative for the linked floored Jordan loop. The trajectory
 outside the region is a matched falsification check, not evidence that the
 global IQC boundary is tight for Jordan.
 
@@ -288,5 +290,12 @@ uv run --locked python scripts/certify_momentum_stability.py
 uv run --locked pytest -q tests/test_momentum_iqc.py
 ```
 
-The IQC formulation follows the standard optimization-algorithm framework of
-Lessard, Recht, and Packard: <https://arxiv.org/abs/1408.3595>.
+The generic IQC formulation is prior art. It follows the optimization-
+algorithm framework of Lessard, Recht, and Packard
+(<https://arxiv.org/abs/1408.3595>) and the strongly-monotone/Lipschitz,
+one-step-memory treatment of Zhang, Bao, Lessard, and Grosse, *A Unified
+Analysis of First-Order Methods for Smooth Games via Integral Quadratic
+Constraints*, JMLR 22(103), 2021
+(<https://jmlr.org/papers/v22/20-1068.html>). The new ingredient here is the
+certified full-matrix repaired floored-Muon operator sector, not the general
+IQC method.

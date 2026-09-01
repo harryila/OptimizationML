@@ -46,9 +46,10 @@ an exact finite-pair lower witness. It is a certified near-minimal sufficient
 conductance, not the exact minimum for every fixed matrix shape. See
 [`theory/floored_normalizer_certificate.md`](theory/floored_normalizer_certificate.md).
 
-On branch `p3`, the repaired floored map is also connected to the actual
-discrete-time momentum loop for deterministic strongly convex quadratics. A
-dimension-independent `3 x 3` IQC gives the explicit sufficient region
+On branch `p3`, the repaired floored map is first connected to a **stylized
+real-arithmetic, non-Nesterov momentum loop** for deterministic strongly convex
+quadratics. A dimension-independent `3 x 3` IQC gives the explicit sufficient
+region
 
 \[
 0<\eta KL<
@@ -58,10 +59,33 @@ dimension-independent `3 x 3` IQC gives the explicit sufficient region
 \]
 
 The result has a closed-form strict LMI and a separate exact rational rate
-certificate. It is rigorous but extremely conservative for the actual Jordan
-map: at the locked representative, the actual local linear threshold is about
+certificate. It is rigorous but extremely conservative for the linked Jordan
+map: at the locked representative, its local linear threshold is about
 `18,183x` larger than the global sector-certified endpoint. See
 [`theory/momentum_iqc_certificate.md`](theory/momentum_iqc_certificate.md).
+
+A second `p3` certificate matches the pinned upstream **EMA state and Nesterov
+signal ordering** in real arithmetic after replacing the orthogonalizer by the
+repaired floored map and omitting weight decay:
+
+\[
+m_{t+1}=\beta m_t+(1-\beta)g_t,\qquad
+s_{t+1}=\beta m_{t+1}+(1-\beta)g_t,\qquad
+W_{t+1}=W_t-\eta R(s_{t+1}).
+\]
+
+At the upstream default `beta=0.95`, a 60-digit stationarity solve corroborated
+by a broad logarithmic scan locates a repair-margin design near `mu=648.024`;
+the exact replay locks `mu=648`,
+`alpha=eta*K*L=1/400`,
+`eta=65065340/336372400608849 = 1.93432457e-7`, and
+`tau^2=99999/100000`. Exact rational Sylvester checks certify its `3 x 3` LMI.
+The locked-design zero-linearization threshold is `0.002081066457...`, about
+`10,758.62x` the locked exact certificate. Re-evaluating both quantities at
+the numerical stationary design gives a `9,923.44x` gap.
+By the predeclared decision rule this is an appendix-level proof of principle,
+not a practical-stability headline. See
+[`theory/ema_nesterov_iqc_certificate.md`](theory/ema_nesterov_iqc_certificate.md).
 
 The repair claim is intentionally scoped. A constant `rho` is the exact minimal
 linear shift for a **specified point, pair, sample set, or domain with a finite
@@ -81,6 +105,7 @@ uv run --locked python scripts/find_counterexample.py
 uv run --locked python scripts/record_bf16_witness.py
 uv run --locked python scripts/certify_floored_repair.py
 uv run --locked python scripts/certify_momentum_stability.py
+uv run --locked python scripts/certify_ema_nesterov_stability.py
 uv run --locked pytest
 ```
 
@@ -105,19 +130,23 @@ not support a universal claim across BF16 backends.
 
 ## Scope
 
-This repository stays focused on five technical goals:
+This repository stays focused on six technical goals:
 
 1. a theorem for current-input Frobenius normalization;
 2. exact local and finite-pair controls for the five-step Jordan map;
 3. passivity-deficit measurements for Jordan, classical Newton--Schulz, Polar
    Express, and CANS;
 4. a rigorous full-matrix repair certificate for a fixed Frobenius floor;
-5. a sector-IQC certificate for the repaired deterministic quadratic momentum
-   loop;
+5. sector-IQC certificates for a stylized non-Nesterov loop and the pinned
+   EMA/Nesterov state-and-signal ordering in deterministic quadratics;
 6. qualified matrix and quadratic falsification studies.
 
-The floored architecture now has both a simplified continuous-time contraction
-corollary and a correctly scoped deterministic quadratic momentum theorem.
+The floored architecture now has a simplified continuous-time contraction
+corollary, a stylized non-Nesterov theorem, and an appendix-level certificate
+for the pinned EMA/Nesterov ordering. The generic one-step-memory IQC framework
+is prior art; the new ingredient here is the certified full-matrix Muon
+operator sector and its repaired interconnection. Neither discrete result is a
+BF16, nonquadratic, stochastic, or neural-network convergence theorem.
 Formal circuit ports, a less conservative architecture-aware discrete-time
 certificate, nonquadratic or stochastic training theory, and a NanoGPT
 benchmark remain open.

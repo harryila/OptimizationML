@@ -47,3 +47,6 @@ jobs:
 
       - name: Execute the exact momentum IQC certificate
         run: uv run --locked python scripts/certify_momentum_stability.py --output "$RUNNER_TEMP/momentum_iqc_certificate.json"
+
+      - name: Execute the exact EMA/Nesterov IQC certificate
+        run: uv run --locked python scripts/certify_ema_nesterov_stability.py --output "$RUNNER_TEMP/ema_nesterov_iqc_certificate.json"

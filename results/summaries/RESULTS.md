@@ -193,9 +193,9 @@ Frobenius-Lipschitz bounds for an additive denominator regularizer. It does not
 provide a monotonicity-deficit certificate for this max-floor architecture:
 <https://arxiv.org/abs/2606.01720>.
 
-## 7. Discrete-time repaired momentum certificate
+## 7. Stylized non-Nesterov repaired momentum certificate
 
-For the deterministic real-arithmetic quadratic loop
+For the stylized deterministic real-arithmetic, non-Nesterov quadratic loop
 
 \[
 m_{t+1}=\beta m_t+H(W_t-W_\star),\qquad
@@ -228,7 +228,7 @@ negative definiteness of the LMI. A floating-point SDP was used to discover
 the locked storage and multipliers, but solver status is not part of the
 proof. The closed-form region itself requires no solver.
 
-The matched rank-one mode of `H=diag(1,10)` uses the actual repository floored
+The matched rank-one mode of `H=diag(1,10)` uses the repository's floored
 five-step Jordan operator and holds every configuration fixed except `eta`:
 
 - the certified trajectory reaches position about `2.37e-38` after 100,000
@@ -237,15 +237,90 @@ five-step Jordan operator and holds every configuration fixed except `eta`:
   the trajectory approaches a nonzero period-four orbit;
 - at `eta=0.002`, magnitude exceeds `1e100` in 159 updates.
 
-The actual zero-linearization loses local stability at
+The linked zero-linearization loses local stability at
 `eta = 0.000472633706612...`, about `18,183x` the global sector endpoint. This
 is therefore a clean, dimension-uniform, but extremely conservative
 sufficient theorem. The complex-skew witness makes the endpoint sharp only
-for the reduced strongly-monotone/Lipschitz sector class, not for the actual
+for the reduced strongly-monotone/Lipschitz sector class, not for the linked
 floored Jordan architecture. No claim is made for nonquadratic, stochastic,
 BF16, or neural-network training.
 
-## 8. Unrun gate
+This generic strongly-monotone/Lipschitz, one-step-memory IQC construction is
+prior art; see Lessard--Recht--Packard and Zhang--Bao--Lessard--Grosse (JMLR
+2021): <https://arxiv.org/abs/1408.3595> and
+<https://jmlr.org/papers/v22/20-1068.html>. The new ingredient is the certified
+full-matrix floored-Muon sector and its repaired interconnection.
+
+## 8. Pinned EMA/Nesterov ordering certificate
+
+The pinned upstream update instead uses the EMA state and Nesterov signal
+
+\[
+m_{t+1}=\beta m_t+(1-\beta)g_t,\qquad
+s_{t+1}=\beta m_{t+1}+(1-\beta)g_t,\qquad
+W_{t+1}=W_t-\eta R(s_{t+1}).
+\]
+
+For deterministic quadratic gradients, the conditioned recurrence is
+
+\[
+z_{t+1}=\beta z_t+(1-\beta)y_t,\qquad
+p_{t+1}=\beta^2z_t+(1-\beta^2)y_t,\qquad
+y_{t+1}=y_t-\alpha u(p_{t+1}).
+\]
+
+A second dimension-independent `3 x 3` IQC/LMI therefore matches this exact
+state-and-signal ordering in real arithmetic after replacing the upstream
+orthogonalizer by the repaired floored map and omitting weight decay. At the
+pinned default `beta=0.95`, a 60-digit stationarity solve corroborated by a
+broad logarithmic scan locates a design near `mu=648.024`. The exact replay uses the nearby rational design
+
+- `mu=648`, `rho=bar_delta_1+648`;
+- `nu=208209088000/4152745686529`;
+- `alpha=1/400`;
+- `eta=65065340/336372400608849 = 1.934324572474699e-7`;
+- `tau^2=99999/100000`.
+
+The rational storage and IQC multipliers pass exact Sylvester checks; no
+floating-point solver status carries the claim. The complex-skew necessary
+boundary for the reduced sector class at locked `mu` is
+`eta approximately 2.09708214294e-7`, and the numerical stationary design over `mu` is
+`approximately 2.09708214366e-7`.
+
+Matched float64 rank-one controls hold the quadratic, operator, floor, repair,
+initial state, and operation order fixed; only `eta` changes:
+
+- at the exact locked `eta`, position falls from `1` to about `7.64e-113`
+  after 100,000 updates;
+- at `eta=0.0025`, an exact Jury sign proves local instability and the run
+  settles into a recorded period-two orbit with zero float64 tail residual;
+- at `eta=0.005`, position exceeds magnitude `1e100` in 264 updates.
+
+The matched curvature-10 zero-linearization has the exact local threshold
+
+\[
+\eta_{\mathrm{local}}
+=\frac{8120154432000000000000000}
+{3901919808117690731741568607}
+=0.002081066457364538\ldots.
+\]
+
+This is `10,758.62x` the exact locked point. At the numerical stationary
+design, the matching local threshold is `0.002081027708...`, about `9,923.44x`
+its complex-skew necessary boundary. Because the gap remains thousands-fold,
+the predeclared hard rule classifies this
+as an appendix/proof-of-principle result, not a practical-stability headline.
+It proves an embedding of the certified repair in the pinned EMA/Nesterov
+ordering; it does not establish BF16, nonquadratic, stochastic, or
+neural-network convergence.
+
+The pinned `muon.py` bytes have SHA-256
+`2479665a90124f62e4df557816665851ca317e42fcfda2af1da02c1f44ab5f3d`.
+An automated regression checks the literal two-`lerp` sequence and in-place
+gradient behavior against the algebraic recurrence. Independent parity and
+human proof audits remain unchecked.
+
+## 9. Unrun gate
 
 No NanoGPT result is reported. This machine exposes neither CUDA nor an
 available MPS device. The `rho` used in the existing quadratic study is only a
@@ -265,6 +340,8 @@ uv run --locked python scripts/certify_floored_repair.py \
   --output results/summaries/floored_repair_certificate.json
 uv run --locked python scripts/certify_momentum_stability.py \
   --output results/summaries/momentum_iqc_certificate.json
+uv run --locked python scripts/certify_ema_nesterov_stability.py \
+  --output results/summaries/ema_nesterov_iqc_certificate.json
 uv run --locked python experiments/matrices/run_deficit_audit.py
 uv run --locked python experiments/quadratics/run_lr_sweep.py
 uv run --locked python experiments/quadratics/run_horizon_check.py
