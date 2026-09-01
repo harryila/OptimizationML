@@ -5,7 +5,7 @@
     "source_snapshot": {
       "scripts/find_counterexample.py": "4a5053b192c9303984403c8923ed660ddc20f9b61b03fe7d0414687633b9fa42",
       "src/passive_muon/specs.py": "85fcee0f87485fc3cac2f426d62ec6e55da7896caade2f5df2a1c87f7d9c5d6c",
-      "src/passive_muon/witness.py": "8d55b3c7151058dda1d901d994ab54406e99f3d5437cdf45758d913575aa3759"
+      "src/passive_muon/witness.py": "b75a4ac266096f9aa9368b5b9f7c4b4fb08781eef27843d5991129673890e131"
     }
   },
   "finite_pair_exact_certificate": {
@@ -53,9 +53,78 @@
     ],
     "verification_kind": "high_precision_decimal_not_interval"
   },
+  "fixed_scale_local_exact_certificate": {
+    "certified_all_four_jacobian_modes_positive": true,
+    "certified_full_2x2_jacobian_positive_definite_at_witness": true,
+    "certified_full_2x2_local_monotonicity_at_witness": true,
+    "claim_scope": "full_2x2_local_jacobian_at_M0_only_not_global",
+    "coefficients": {
+      "a": "3.4445",
+      "b": "-4.7750",
+      "c": "2.0315"
+    },
+    "diagonal_modes": {
+      "eigendirections": [
+        "E11",
+        "E22"
+      ],
+      "formula": "h'(ui)/5",
+      "mode_1_sha256": "12f5c5e276ee93752a7354daf244817588c440a00dc5ce1939cb2fe7415f898e",
+      "mode_1_sign": "positive",
+      "mode_2_sha256": "e0d5d99fea685afac485e1be62350a4e0de5fbe11b961852db92f72d5807e507",
+      "mode_2_sign": "positive"
+    },
+    "epsilon": "0",
+    "fixed_scale": "5",
+    "global_fixed_scale_monotonicity_claim": "none",
+    "input_matrix": "diag(3,4)",
+    "local_monotonicity_inference": "Polynomial-Jacobian continuity extends positive definiteness to some sufficiently small convex neighborhood of M0.",
+    "matrix_domain": "R^(2x2)",
+    "normalizer": "fixed_pre_run_scale",
+    "off_diagonal_difference_mode": {
+      "denominator_sign": "negative",
+      "eigendirection": "E12+E21",
+      "fixed_scale_jacobian_formula": "((h(u1)-h(u2))/(u1-u2))/5",
+      "fixed_scale_jacobian_mode_sha256": "589fdc814b93dac6b40f77b8cad28d58a80c44b21e5a4acec05ff4d7aac3f57b",
+      "fixed_scale_jacobian_mode_sign": "positive",
+      "formula_before_fixed_scale_chain_rule": "(h(u1)-h(u2))/(u1-u2)",
+      "numerator_sign": "negative",
+      "raw_mode_sha256": "410777682b0be6444735df18f27a5b30e1e0e872686bb78f13c9b7949f8627bb",
+      "raw_mode_sign": "positive"
+    },
+    "off_diagonal_sum_mode": {
+      "denominator_sign": "positive",
+      "eigendirection": "E12-E21",
+      "fixed_scale_jacobian_formula": "((h(u1)+h(u2))/(u1+u2))/5",
+      "fixed_scale_jacobian_mode_sha256": "d85116006d60910eb399ab34860209828bac3ab52907e6b660adddf0450b8e6e",
+      "fixed_scale_jacobian_mode_sign": "positive",
+      "formula_before_fixed_scale_chain_rule": "(h(u1)+h(u2))/(u1+u2)",
+      "numerator_sign": "positive",
+      "raw_mode_sha256": "5a4e684a9f26d89545a041409b2d92d3686a5bd04f8c4254caee69f76cfa08e3",
+      "raw_mode_sign": "positive"
+    },
+    "operator_formula": "F_fixed(M)=H_h(M/5)",
+    "orthogonalizer": "jordan_quintic",
+    "polynomial_input_diagonal": [
+      "3/5",
+      "4/5"
+    ],
+    "steps": 5,
+    "upstream": "KellerJordan/Muon@f98f1cacc0263b04290753e32be8d498c1efc806"
+  },
+  "fixed_scale_local_high_precision": {
+    "decimal_digits": 100,
+    "diagonal_mode_1": "0.6498364224650960145271819398734643839407040463141769195923375712974473689648213196619851145454191586",
+    "diagonal_mode_2": "0.3217268458104574251643775964826143318200745554865670311635800795731060027697906304799803795678566192",
+    "difference_mode_before_fixed_scale_chain_rule": "1.981638806494635392914417114139463695267549193799806270787446882805430165100935163506872338923018884",
+    "fixed_scale_difference_jacobian_mode": "0.3963277612989270785828834228278927390535098387599612541574893765610860330201870327013744677846037768",
+    "fixed_scale_sum_jacobian_mode": "0.2631542997904513827789570803792511067067955851861366994245054232225100899923220114941819831736547434",
+    "sum_mode_before_fixed_scale_chain_rule": "1.315771498952256913894785401896255533533977925930683497122527116112550449961610057470909915868273717",
+    "verification_kind": "high_precision_decimal_not_interval"
+  },
   "git": {
     "dirty": false,
-    "sha": "412c9f09c2a462c0e0d238ba3c18fd46455ad245"
+    "sha": "59e64f66a81ff0843d076eaaf580a6d9afab7384"
   },
   "hardware": {
     "machine": "arm64",
@@ -102,7 +171,7 @@
     "steps": 5,
     "upstream": "KellerJordan/Muon@f98f1cacc0263b04290753e32be8d498c1efc806"
   },
-  "schema_version": "passive-muon-witness-v1",
+  "schema_version": "passive-muon-witness-v2",
   "scope_warning": "This is a lower-bound witness. Exact scale invariance makes the unrestricted global deficit infinite; local and pairwise rho values are not global repair certificates.",
   "software": {
     "platform": "macOS-15.5-arm64-arm-64bit",
