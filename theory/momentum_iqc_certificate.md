@@ -69,15 +69,24 @@ For two trajectories, set
 y=H^{1/2}\Delta W,\qquad z=H^{-1/2}\Delta m.
 \]
 
-The transformed nonlinear map
+The transformed nonlinear output difference
 
 \[
-S_H(v)=H^{1/2}\bigl(R(m^1)-R(m^2)\bigr),
+\Delta S_H=H^{1/2}\bigl(R(m^1)-R(m^2)\bigr),
 \qquad \Delta m=H^{1/2}v,
 \]
 
-is `mu*ell`-strongly monotone and `K*L`-Lipschitz. After dividing its output
-by `K*L`, write the normalized response as `u=U(v)`. Then
+satisfies
+
+\[
+\langle v,\Delta S_H\rangle\ge\mu\ell\lVert v\rVert^2,
+\qquad
+\lVert\Delta S_H\rVert\le KL\lVert v\rVert.
+\]
+
+After dividing this output difference by `K*L`, denote it by `u`. For a
+nonlinear `R`, `u` can depend on the base pair as well as on its difference
+`v`; the proof uses only the two incremental inequalities
 
 \[
 \langle v,u\rangle\ge\nu\lVert v\rVert^2,
@@ -92,7 +101,7 @@ map may contain a skew-symmetric part and need not be a gradient.
 Eliminating the intermediate variables gives the heavy-ball recurrence
 
 \[
-v_{t+1}=(1+\beta)v_t-\beta v_{t-1}-\alpha U(v_t).
+v_{t+1}=(1+\beta)v_t-\beta v_{t-1}-\alpha u_t.
 \]
 
 With `e_t=v_t-v_(t-1)` and lifted vector `chi=(v,e,u)`, the state transition
@@ -208,7 +217,7 @@ The committed replay uses
 - `tau^2=99999/100000`.
 
 For conditioning only, set `d=1/10`, `r=d*z`, `v_hat=d*v`, and
-`u_hat=d*U(v)`. This simultaneous input/output scaling preserves both IQCs.
+`u_hat=d*u`. This simultaneous input/output scaling preserves both IQCs.
 In lifted coordinates `(y,r,u_hat)`, the exact storage and nonnegative IQC
 multipliers are
 

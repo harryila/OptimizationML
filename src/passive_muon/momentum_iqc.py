@@ -361,9 +361,9 @@ def momentum_lmi_matrix(certificate: MomentumLmiCertificate) -> RationalMatrix:
     """Build the exact 3-by-3 conditioned IQC/Lyapunov LMI.
 
     With ``gamma=conditioning_scale``, the lifted difference is
-    ``chi=(y, r, u_hat)`` where ``r=gamma*z``, the nonlinear input is
-    ``v_hat=gamma*y+beta*r``, and ``u_hat=gamma*U(v_hat/gamma)``. The
-    transition is
+    ``chi=(y, r, u_hat)`` where ``r=gamma*z``, the incremental nonlinear
+    input is ``v_hat=gamma*y+beta*r``, and ``u_hat=gamma*u`` is the
+    corresponding scaled output difference. The transition is
 
     ``(y_next, r_next)=(y-alpha*u_hat/gamma, v_hat)``.
 
