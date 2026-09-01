@@ -1,0 +1,153 @@
+{
+  "certified_bracket_at_c_1": {
+    "absolute_width_decimal": "0.014975296070966508435981430359082116530859594370828",
+    "relative_width": "0.000093859859484298174756755704380999495872989845068676",
+    "relative_width_percent": "0.0093859859484298174756755704380999495872989845068676",
+    "strict_lower_decimal": "159.549525785",
+    "strict_lower_exact": "31909905157/200000000",
+    "upper_decimal": "159.56450108107096650843598143035908211653085959437",
+    "upper_exact": "41528474059081/260261360000",
+    "upper_over_zero_input_gain": "0.32908291315987263211619780653587299223294742272089",
+    "zero_input_gain_decimal": "484.87628710018292028125",
+    "zero_input_gain_exact": "15516041187205853449/32000000000000000"
+  },
+  "claim_scope": {
+    "arithmetic_model": "real arithmetic",
+    "dimension_uniform": true,
+    "evidence_kind": "rigorous_dimension_uniform_full_matrix_upper_certificate_and_exact_finite_pair_lower_witness",
+    "matrix_domain": "R^(m x n) for every fixed finite positive m,n",
+    "not_claimed": [
+      "exact minimal conductance for each fixed matrix shape",
+      "stability of momentum Muon training",
+      "a BF16 backend theorem"
+    ]
+  },
+  "deficit_definition": {
+    "authority_at_floor_boundary": "global pairwise inequality",
+    "formula": "sup_(A!=B) [-<F(A)-F(B),A-B>_F/||A-B||_F^2]_+"
+  },
+  "dimension_uniform_upper_certificate": {
+    "decimal": "159.56450108107096650843598143035908211653085959437",
+    "exact": "41528474059081/260261360000",
+    "monotonicity_guarantee": "F_h,c(M)+(bar_delta_1/c)M is globally monotone",
+    "repair_for_general_floor": "rho=bar_delta_1/c"
+  },
+  "exact_finite_pair_lower_witness": {
+    "certified_deficit_strict_lower_decimal": "159.549525785",
+    "certified_deficit_strict_lower_exact": "31909905157/200000000",
+    "deficit_exact_sha256": "892028269006f41e58cd5e1f06633bc1ae6c591e355018daf40209797c368beb",
+    "deficit_formula": "-(h(right)-h(left))/(right-left)",
+    "embedding": "rank-one scalar mode inside the unit Frobenius floor",
+    "high_precision_decimal": "159.54952578566153062468512698193238314794831812548",
+    "left_input_decimal": "0.006349576126",
+    "left_input_exact": "3174788063/500000000000",
+    "right_input_decimal": "0.006349578126",
+    "right_input_exact": "3174789063/500000000000"
+  },
+  "experiment_provenance": {
+    "command": "uv run --locked python scripts/certify_floored_repair.py --output results/summaries/floored_repair_certificate.json",
+    "randomness": "none; deterministic exact and interval arithmetic",
+    "seed": null,
+    "source_snapshot": {
+      ".github/workflows/ci.yml": "6c542a80cf7772c3044a99454335aa0344509c9d9adc986ed6ed23516f17dbe8",
+      "pyproject.toml": "7a9988bf528baef5145f779516d4315349d1c2a6bbb7394c9b93fbbee1d4f596",
+      "scripts/certify_floored_repair.py": "f2662fca0329c517f10d51e138502a8aa2d738c3eb9425c278e2b9e5ec8cf5d5",
+      "src/passive_muon/floored_certificate.py": "385dee8576e574bebc72fe09478220cf2ec29928045ee6341472c2e9becb6a72",
+      "src/passive_muon/normalizers.py": "13a7e78b95dc1543bbbdeb046bbc46b493eb233c87dfb42c809aa186a5504338",
+      "src/passive_muon/operator.py": "1a4985b608102da2f1aa325bfb726a43ef3312212bd805a60ce969056974938a",
+      "src/passive_muon/orthogonalizers.py": "72687f59ad859ac5945279cc27a2e76b50a02ca408730326e24c9c1682f5c7c9",
+      "src/passive_muon/polynomials.py": "82ee698373d33bd90818fd5cb740e532d410ecc767e82d128de7a61483d69925",
+      "src/passive_muon/specs.py": "85fcee0f87485fc3cac2f426d62ec6e55da7896caade2f5df2a1c87f7d9c5d6c",
+      "tests/test_cli.py": "570c7768b469e303ecec881da9f26b7cf6b9838139fec8e8102d0ee3d70a682c",
+      "tests/test_floored_certificate.py": "5ba1aac3b4d6e5cf1765a569b495b1851a834408d9ad54df472b3ac94165a084",
+      "tests/test_normalizers.py": "4b4898b1ddb18862f86d5afb20a6be0a01474748adba0c0fc21602946e09361a",
+      "theory/claims.md": "2e2fafbd2ce2595606c406c39df30832586418e4f1bc54436da954007f5746a7",
+      "theory/floored_normalizer_certificate.md": "1dabd135c2213fa58a15c56dce413d446f050ef64d7af6edac3d450629db5c0a",
+      "third_party/UPSTREAM_COMMITS.md": "15e4b03cc471431a807d16cf8cc746564542f8e637098c78404f4ae1a1631651",
+      "uv.lock": "f097fd7895b5c1c551a0bd233d025c3f8ae97b7dedce6a8690569f1b1f7c5cf1"
+    }
+  },
+  "full_matrix_reduction": {
+    "boundary_method": "line integration for the pairwise inequality; Clarke hull {I-theta*u tensor u: 0<=theta<=1} as a supplementary check",
+    "exterior_symmetric_jacobian": "(A*Q+Q*A)/(2*||M||_F)",
+    "mode_bound": "every mode is a secant average of h' on [-1,1]",
+    "projection_envelope_formula": "-(b-a)^2/(8*(a+b))",
+    "tangent_modes": [
+      "h'(sigma_i)",
+      "(h(sigma_i)-h(sigma_j))/(sigma_i-sigma_j)",
+      "(h(sigma_i)+h(sigma_j))/(sigma_i+sigma_j)",
+      "h(sigma_i)/sigma_i for rectangular null-side modes"
+    ]
+  },
+  "git": {
+    "dirty": false,
+    "sha": "49ec0735bc1ac446b78cdceeff753160d38a3c3a"
+  },
+  "hardware": {
+    "byte_order": "little",
+    "logical_cpu_count": 10,
+    "machine_architecture": "arm64",
+    "operating_system": "Darwin",
+    "operating_system_release": "24.5.0",
+    "platform": "macOS-15.5-arm64-arm-64bit",
+    "processor": "arm"
+  },
+  "operator": {
+    "certified_floor_c": "1",
+    "coefficients_exact": {
+      "a": "6889/2000",
+      "b": "-191/40",
+      "c": "4063/2000"
+    },
+    "epsilon": "0",
+    "formula": "F_h,c(M)=H_h(M/max(c,||M||_F))",
+    "normalization_rule": "fixed_frobenius_floor",
+    "orthogonalizer": "jordan_quintic",
+    "scalar_composition": "h=q composed with itself 5 times",
+    "stage_recurrence": "x_next=a*x+b*x^3+c*x^5; d_next=(a+3*b*x^2+5*c*x^4)*d",
+    "steps": 5,
+    "upstream": "KellerJordan/Muon@f98f1cacc0263b04290753e32be8d498c1efc806"
+  },
+  "scalar_interval_certificate": {
+    "derivative_lower_decimal": "-159.5496",
+    "derivative_lower_exact": "-199437/1250",
+    "derivative_upper_decimal": "484.8763",
+    "derivative_upper_exact": "4848763/10000",
+    "method": "adaptive dyadic cover of [0,1] with outward-rounded Arb balls; five-stage recurrence evaluated without polynomial expansion",
+    "passes": [
+      {
+        "configured_maximum_dyadic_power": 48,
+        "elapsed_seconds": 0.2508837919740472,
+        "initial_dyadic_power": 12,
+        "leaf_count": 25370,
+        "maximum_dyadic_power": 32,
+        "ordered_leaf_trace_sha256": "701b9047e67c96d1f727642c693fb545f13c4981765310162a9a51b730f34d5e",
+        "precision_bits": 160
+      },
+      {
+        "configured_maximum_dyadic_power": 48,
+        "elapsed_seconds": 0.2504119160003029,
+        "initial_dyadic_power": 12,
+        "leaf_count": 25370,
+        "maximum_dyadic_power": 32,
+        "ordered_leaf_trace_sha256": "701b9047e67c96d1f727642c693fb545f13c4981765310162a9a51b730f34d5e",
+        "precision_bits": 224
+      }
+    ],
+    "strict_enclosure": "lower < h'(s) < upper for every s in [0,1]"
+  },
+  "scaling_and_stability": {
+    "exact_global_scaling": "delta(F_h,c)=delta(F_h,1)/c",
+    "guarantee": "unique equilibrium and ||M(t)-M_star||_F <= exp(-mu*t)||M(0)-M_star||_F",
+    "scope": "simplified continuous-time integrator feedback only",
+    "strong_repair": "rho=bar_delta_1/c+mu, mu>0",
+    "system": "dot(M)=-(F_h,c(M)+rho*M-b)"
+  },
+  "schema_version": "passive-muon-floored-certificate-v1",
+  "software": {
+    "flint": "3.6.0",
+    "python": "3.12.11",
+    "python_flint": "0.9.0",
+    "python_implementation": "CPython"
+  }
+}
