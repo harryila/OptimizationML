@@ -46,6 +46,23 @@ an exact finite-pair lower witness. It is a certified near-minimal sufficient
 conductance, not the exact minimum for every fixed matrix shape. See
 [`theory/floored_normalizer_certificate.md`](theory/floored_normalizer_certificate.md).
 
+On branch `p3`, the repaired floored map is also connected to the actual
+discrete-time momentum loop for deterministic strongly convex quadratics. A
+dimension-independent `3 x 3` IQC gives the explicit sufficient region
+
+\[
+0<\eta KL<
+\frac{2(1-\beta)^2(1+\beta)\nu}
+{(1+\beta)^2-4\beta\nu^2},
+\qquad \nu=\frac{\mu\ell}{KL}.
+\]
+
+The result has a closed-form strict LMI and a separate exact rational rate
+certificate. It is rigorous but extremely conservative for the actual Jordan
+map: at the locked representative, the actual local linear threshold is about
+`18,183x` larger than the global sector-certified endpoint. See
+[`theory/momentum_iqc_certificate.md`](theory/momentum_iqc_certificate.md).
+
 The repair claim is intentionally scoped. A constant `rho` is the exact minimal
 linear shift for a **specified point, pair, sample set, or domain with a finite
 certified deficit**. For exact scale-invariant normalization on every nonzero
@@ -63,6 +80,7 @@ uv sync --locked
 uv run --locked python scripts/find_counterexample.py
 uv run --locked python scripts/record_bf16_witness.py
 uv run --locked python scripts/certify_floored_repair.py
+uv run --locked python scripts/certify_momentum_stability.py
 uv run --locked pytest
 ```
 
@@ -94,12 +112,15 @@ This repository stays focused on five technical goals:
 3. passivity-deficit measurements for Jordan, classical Newton--Schulz, Polar
    Express, and CANS;
 4. a rigorous full-matrix repair certificate for a fixed Frobenius floor;
-5. qualified matrix and quadratic falsification studies.
+5. a sector-IQC certificate for the repaired deterministic quadratic momentum
+   loop;
+6. qualified matrix and quadratic falsification studies.
 
-The floored architecture now has a simplified continuous-time contraction
-corollary. Momentum-Muon training stability, formal circuit ports, matched
-momentum quadratics, and a NanoGPT benchmark remain open and are not implied by
-that corollary.
+The floored architecture now has both a simplified continuous-time contraction
+corollary and a correctly scoped deterministic quadratic momentum theorem.
+Formal circuit ports, a less conservative architecture-aware discrete-time
+certificate, nonquadratic or stochastic training theory, and a NanoGPT
+benchmark remain open.
 
 ## Layout
 

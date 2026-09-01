@@ -14,6 +14,9 @@ Current outputs:
 - `summaries/floored_repair_certificate.json`: two-precision Arb scalar
   enclosure, exact finite-pair lower witness, and dimension-uniform
   full-matrix floored-repair certificate;
+- `summaries/momentum_iqc_certificate.json`: exact closed-form sector region,
+  rational rate-LMI replay, exact local instability control, and matched
+  deterministic rank-one momentum trajectories;
 - `summaries/deficit_audit.{json,csv}`: 24-prefix spectral audit;
 - `summaries/quadratic_lr_sweep.json` plus CSV tables: gain-matched quadratic
   sweep and sensitivity classifications;

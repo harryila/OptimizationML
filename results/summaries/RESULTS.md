@@ -193,7 +193,59 @@ Frobenius-Lipschitz bounds for an additive denominator regularizer. It does not
 provide a monotonicity-deficit certificate for this max-floor architecture:
 <https://arxiv.org/abs/2606.01720>.
 
-## 7. Unrun gate
+## 7. Discrete-time repaired momentum certificate
+
+For the deterministic real-arithmetic quadratic loop
+
+\[
+m_{t+1}=\beta m_t+H(W_t-W_\star),\qquad
+W_{t+1}=W_t-\eta R_{\rho,c}(m_{t+1}),
+\]
+
+the repaired floored map is globally `mu`-strongly monotone and has the
+rigorous Lipschitz bound `K=rho+484.8763/c`. After the quadratic conditioning
+transform, a dimension-independent `3 x 3` IQC proves global incremental
+exponential stability when
+
+\[
+0<\eta KL<
+\frac{2(1-\beta)^2(1+\beta)\nu}
+{(1+\beta)^2-4\beta\nu^2},
+\qquad \nu=\frac{\mu\ell}{KL}.
+\]
+
+An exact closed-form factorization proves the whole strict region. A separate
+rational representative uses `c=1`, `mu=bar_delta_1`, `rho=2*bar_delta_1`,
+`ell=1`, `L=10`, and `beta=0.9`. Its values are
+
+- `nu = 41528474059081 / 2092515133879300`;
+- strict sector endpoint `eta_star = 2.599354207182316e-8`;
+- locked `eta = 1.2437728921821615e-8`, about `47.85%` of that endpoint;
+- exact rate certificate `tau^2 = 99999/100000`.
+
+Exact rational Sylvester checks establish positivity of the storage and
+negative definiteness of the LMI. A floating-point SDP was used to discover
+the locked storage and multipliers, but solver status is not part of the
+proof. The closed-form region itself requires no solver.
+
+The matched rank-one mode of `H=diag(1,10)` uses the actual repository floored
+five-step Jordan operator and holds every configuration fixed except `eta`:
+
+- the certified trajectory reaches position about `2.37e-38` after 100,000
+  updates from position `1`;
+- at `eta=0.0005`, an exact local Jury sign proves the optimizer unstable and
+  the trajectory approaches a nonzero period-four orbit;
+- at `eta=0.002`, magnitude exceeds `1e100` in 159 updates.
+
+The actual zero-linearization loses local stability at
+`eta = 0.000472633706612...`, about `18,183x` the global sector endpoint. This
+is therefore a clean, dimension-uniform, but extremely conservative
+sufficient theorem. The complex-skew witness makes the endpoint sharp only
+for the reduced strongly-monotone/Lipschitz sector class, not for the actual
+floored Jordan architecture. No claim is made for nonquadratic, stochastic,
+BF16, or neural-network training.
+
+## 8. Unrun gate
 
 No NanoGPT result is reported. This machine exposes neither CUDA nor an
 available MPS device. The `rho` used in the existing quadratic study is only a
@@ -211,6 +263,8 @@ uv run --locked python scripts/record_bf16_witness.py \
   --output results/summaries/bf16_witness.json
 uv run --locked python scripts/certify_floored_repair.py \
   --output results/summaries/floored_repair_certificate.json
+uv run --locked python scripts/certify_momentum_stability.py \
+  --output results/summaries/momentum_iqc_certificate.json
 uv run --locked python experiments/matrices/run_deficit_audit.py
 uv run --locked python experiments/quadratics/run_lr_sweep.py
 uv run --locked python experiments/quadratics/run_horizon_check.py

@@ -30,7 +30,9 @@
 - [x] Derive a dimension-uniform full-matrix upper certificate for a floored normalizer.
 - [x] Implement the floored architecture and corresponding certified constant repair.
 - [x] Prove the simplified continuous-time contraction corollary.
-- [ ] Run matched momentum quadratics.
+- [x] Prove a dimension-independent deterministic quadratic momentum IQC.
+- [x] Replay an exact rational rate LMI and matched rank-one boundary checks.
+- [ ] Derive a less conservative architecture-aware momentum region.
 - [ ] Run a small matched NanoGPT sweep only after the preceding gates pass.
 - [ ] Run an accelerator throughput benchmark only for a certified design.
 

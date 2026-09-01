@@ -15,6 +15,7 @@ HORIZON_PATH = ROOT / "results/summaries/quadratic_horizon_check.json"
 WITNESS_PATH = ROOT / "results/summaries/canonical_witness.json"
 BF16_WITNESS_PATH = ROOT / "results/summaries/bf16_witness.json"
 FLOORED_CERTIFICATE_PATH = ROOT / "results/summaries/floored_repair_certificate.json"
+MOMENTUM_CERTIFICATE_PATH = ROOT / "results/summaries/momentum_iqc_certificate.json"
 
 
 def _load(path: Path) -> dict:
@@ -39,9 +40,11 @@ def test_result_source_snapshots_match_workspace_files() -> None:
     manifests = (_load(AUDIT_PATH), _load(SWEEP_PATH), _load(HORIZON_PATH))
     witness = _load(WITNESS_PATH)
     floored = _load(FLOORED_CERTIFICATE_PATH)
+    momentum = _load(MOMENTUM_CERTIFICATE_PATH)
     snapshots = [manifest["source_snapshot"] for manifest in manifests]
     snapshots.append(witness["experiment_provenance"]["source_snapshot"])
     snapshots.append(floored["experiment_provenance"]["source_snapshot"])
+    snapshots.append(momentum["experiment_provenance"]["source_snapshot"])
     for snapshot in snapshots:
         assert snapshot
         for relative_path, expected_hash in snapshot.items():
@@ -57,6 +60,7 @@ def test_result_manifests_record_clean_git_revisions() -> None:
         SWEEP_PATH,
         HORIZON_PATH,
         FLOORED_CERTIFICATE_PATH,
+        MOMENTUM_CERTIFICATE_PATH,
     ):
         git = _load(path)["git"]
         assert len(git["sha"]) == 40
@@ -91,6 +95,40 @@ def test_floored_certificate_manifest_records_the_locked_rigorous_bracket() -> N
     assert Fraction(bracket["strict_lower_exact"]) == Fraction(31_909_905_157, 200_000_000)
     assert Fraction(bracket["upper_exact"]) == Fraction(41_528_474_059_081, 260_261_360_000)
     assert float(bracket["relative_width_percent"]) < 0.01
+    assert payload["experiment_provenance"]["seed"] is None
+
+
+def test_momentum_manifest_records_the_exact_region_rate_and_controls() -> None:
+    payload = _load(MOMENTUM_CERTIFICATE_PATH)
+    assert payload["schema_version"] == "passive-muon-momentum-iqc-certificate-v1"
+    assert payload["git"]["branch"] == "p3"
+    assert payload["git"]["frozen_fallback_commit"] == ("518cc9384a7a478f3c5956532fd26a6937f70d5f")
+    theorem = payload["analytic_sector_theorem"]
+    assert Fraction(theorem["normalized_strongness"]["exact"]) == Fraction(
+        41_528_474_059_081,
+        2_092_515_133_879_300,
+    )
+    assert Fraction(theorem["alpha_strict_supremum"]["exact"]) == Fraction(
+        16_510_802_486_552_774_004_455_355_427,
+        79_003_040_463_687_817_944_269_767_082_402,
+    )
+    assert Fraction(theorem["eta_strict_supremum"]["exact"]) == Fraction(
+        1_026_784_428_047_408_433_965_200,
+        39_501_520_231_843_908_972_134_883_541_201,
+    )
+    assert theorem["closed_form_strict_factorization"]["identity_replayed_exactly"]
+
+    locked = payload["locked_rate_certificate"]
+    assert Fraction(locked["rate_squared"]["exact"]) == Fraction(99_999, 100_000)
+    assert locked["sylvester_positive_storage"]
+    assert locked["sylvester_negative_lmi"]
+
+    actual = payload["actual_floored_jordan_local_instability"]
+    assert actual["outside_locally_unstable"]
+    assert float(actual["local_threshold_over_global_sector_supremum"]) > 18_000
+    examples = payload["matched_rank_one_float64_examples"]
+    assert examples["outside_nonconvergent"]["period_four_tail_residual"] < 1e-14
+    assert examples["far_outside_divergent"]["exceeded_divergence_threshold"]
     assert payload["experiment_provenance"]["seed"] is None
 
 

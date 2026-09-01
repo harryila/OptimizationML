@@ -58,3 +58,25 @@ def test_floored_certificate_cli_replays_two_precisions() -> None:
     passes = payload["scalar_interval_certificate"]["passes"]
     assert [item["precision_bits"] for item in passes] == [160, 224]
     assert len({item["ordered_leaf_trace_sha256"] for item in passes}) == 1
+
+
+def test_momentum_certificate_cli_replays_exact_lmis_and_matched_examples() -> None:
+    root = Path(__file__).resolve().parents[1]
+    completed = subprocess.run(
+        [sys.executable, str(root / "scripts" / "certify_momentum_stability.py")],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    payload = json.loads(completed.stdout)
+    assert payload["schema_version"] == "passive-muon-momentum-iqc-certificate-v1"
+    assert payload["analytic_sector_theorem"]["closed_form_strict_factorization"][
+        "identity_replayed_exactly"
+    ]
+    assert payload["locked_rate_certificate"]["sylvester_positive_storage"]
+    assert payload["locked_rate_certificate"]["sylvester_negative_lmi"]
+    assert payload["actual_floored_jordan_local_instability"]["outside_locally_unstable"]
+    examples = payload["matched_rank_one_float64_examples"]
+    assert not examples["certified_stable"]["exceeded_divergence_threshold"]
+    assert examples["far_outside_divergent"]["exceeded_divergence_threshold"]

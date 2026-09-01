@@ -243,7 +243,59 @@ monotonicity inequality gives the energy estimate directly.  This is a
 simplified continuous-time integrator-feedback result, not momentum-Muon or
 discrete training stability.
 
-## C7. Circuit and optimization consequences — open
+## C7. Discrete-time quadratic momentum stability — proved, conservative
+
+Let `R=F_h,c+rho*I` with
+
+\[
+\rho=\frac{\bar\delta_1}{c}+\mu,\qquad \mu>0.
+\]
+
+The floored-repair certificate makes `R` globally `mu`-strongly monotone and
+
+\[
+K=\rho+\frac{484.8763}{c}
+\]
+
+is a rigorous global Lipschitz bound. For the deterministic quadratic
+
+\[
+f(W)=\tfrac12\langle W-W_\star,H(W-W_\star)\rangle,
+\qquad \ell I\preceq H\preceq LI,
+\]
+
+consider
+
+\[
+m_{t+1}=\beta m_t+H(W_t-W_\star),\qquad
+W_{t+1}=W_t-\eta R(m_{t+1}).
+\]
+
+Set `nu=mu*ell/(K*L)` and `alpha=eta*K*L`. For `0 <= beta < 1`, the loop is
+globally incrementally exponentially stable whenever
+
+\[
+0<\alpha<
+\frac{2(1-\beta)^2(1+\beta)\nu}
+{(1+\beta)^2-4\beta\nu^2}.
+\]
+
+The proof uses separate strong-monotonicity and Lipschitz IQCs and an explicit
+`3 x 3` strict LMI factorization. A machine-readable representative at
+`c=1`, `mu=bar_delta_1`, `ell=1`, `L=10`, and `beta=0.9` replays a rational
+storage, multipliers, and `tau^2=99999/100000` by exact Sylvester checks.
+
+The boundary is sharp for the reduced class of arbitrary `nu`-strongly
+monotone, one-Lipschitz operators because an admissible constant skew slope is
+marginal there. It is only sufficient for the linked floored-Jordan/quadratic
+loop. At the representative point its certified learning-rate supremum is
+about `2.599e-8`, whereas the actual curvature-10 zero-linearization loses
+local stability at about `4.726e-4`. The roughly `18,183x` gap is explicit:
+this is a rigorous but extremely conservative training-loop result. It does
+not establish nonquadratic, stochastic, BF16, or neural-network convergence.
+See `momentum_iqc_certificate.md`.
+
+## C8. Circuit and broader optimization consequences — open
 
 Boyd's framework models `y in partial f(x)` as a grounded multi-terminal
 device and its energy argument uses
@@ -257,5 +309,5 @@ The formal port mapping and the claim that lower deficit predicts a wider
 training learning-rate interval remain open. They require:
 
 1. a circuit sign convention and explicit interconnection model;
-2. matched-momentum matrix quadratics using the certified floored repair;
+2. a less conservative architecture-aware discrete-time certificate;
 3. only then, a controlled small NanoGPT sweep.
