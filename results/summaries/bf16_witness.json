@@ -1,0 +1,2873 @@
+{
+  "canonical_pair": {
+    "left_execution_trace": {
+      "epsilon_absorbed_at_this_denominator": true,
+      "epsilon_bf16_cast_reference": {
+        "device": "cpu",
+        "dtype": "torch.bfloat16",
+        "flat_values": [
+          1.0011717677116394e-07
+        ],
+        "raw_uint16_hex": [
+          "0x33d7"
+        ],
+        "shape": []
+      },
+      "frobenius_norm": {
+        "device": "cpu",
+        "dtype": "torch.bfloat16",
+        "flat_values": [
+          5.0
+        ],
+        "raw_uint16_hex": [
+          "0x40a0"
+        ],
+        "shape": [
+          1,
+          1
+        ]
+      },
+      "input_after_bf16_cast": {
+        "device": "cpu",
+        "dtype": "torch.bfloat16",
+        "flat_values": [
+          3.0,
+          0.0,
+          0.0,
+          4.0
+        ],
+        "raw_uint16_hex": [
+          "0x4040",
+          "0x0000",
+          "0x0000",
+          "0x4080"
+        ],
+        "shape": [
+          2,
+          2
+        ]
+      },
+      "input_after_one_time_orientation": {
+        "device": "cpu",
+        "dtype": "torch.bfloat16",
+        "flat_values": [
+          3.0,
+          0.0,
+          0.0,
+          4.0
+        ],
+        "raw_uint16_hex": [
+          "0x4040",
+          "0x0000",
+          "0x0000",
+          "0x4080"
+        ],
+        "shape": [
+          2,
+          2
+        ]
+      },
+      "input_before_cast": {
+        "device": "cpu",
+        "dtype": "torch.float64",
+        "flat_values": [
+          3.0,
+          0.0,
+          0.0,
+          4.0
+        ],
+        "shape": [
+          2,
+          2
+        ]
+      },
+      "matches_public_and_independent_literal_pinned_order": true,
+      "normalization_denominator": {
+        "device": "cpu",
+        "dtype": "torch.bfloat16",
+        "flat_values": [
+          5.0
+        ],
+        "raw_uint16_hex": [
+          "0x40a0"
+        ],
+        "shape": [
+          1,
+          1
+        ]
+      },
+      "normalized_input": {
+        "device": "cpu",
+        "dtype": "torch.bfloat16",
+        "flat_values": [
+          0.6015625,
+          0.0,
+          0.0,
+          0.80078125
+        ],
+        "raw_uint16_hex": [
+          "0x3f1a",
+          "0x0000",
+          "0x0000",
+          "0x3f4d"
+        ],
+        "shape": [
+          2,
+          2
+        ]
+      },
+      "one_time_transpose_applied": false,
+      "output": {
+        "device": "cpu",
+        "dtype": "torch.bfloat16",
+        "flat_values": [
+          0.6875,
+          0.0,
+          0.0,
+          1.140625
+        ],
+        "raw_uint16_hex": [
+          "0x3f30",
+          "0x0000",
+          "0x0000",
+          "0x3f92"
+        ],
+        "shape": [
+          2,
+          2
+        ]
+      },
+      "python_float_epsilon": {
+        "binary64_hex": "0x1.ad7f29abcaf48p-24",
+        "decimal": "1e-07"
+      },
+      "quintic_stages": [
+        {
+          "b_times_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -1.7265625,
+              -0.0,
+              -0.0,
+              -3.0625
+            ],
+            "raw_uint16_hex": [
+              "0xbfdd",
+              "0x8000",
+              "0x8000",
+              "0xc044"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "c_times_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              0.734375,
+              0.0,
+              0.0,
+              1.3046875
+            ],
+            "raw_uint16_hex": [
+              "0x3f3c",
+              "0x0000",
+              "0x0000",
+              "0x3fa7"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "c_times_gram_then_matmul_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              0.265625,
+              0.0,
+              0.0,
+              0.8359375
+            ],
+            "raw_uint16_hex": [
+              "0x3e88",
+              "0x0000",
+              "0x0000",
+              "0x3f56"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "correction": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -1.4609375,
+              0.0,
+              0.0,
+              -2.21875
+            ],
+            "raw_uint16_hex": [
+              "0xbfbb",
+              "0x0000",
+              "0x0000",
+              "0xc00e"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "correction_matmul_result": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -0.87890625,
+              0.0,
+              0.0,
+              -1.7734375
+            ],
+            "raw_uint16_hex": [
+              "0xbf61",
+              "0x0000",
+              "0x0000",
+              "0xbfe3"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "gram_matmul_result": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              0.361328125,
+              0.0,
+              0.0,
+              0.640625
+            ],
+            "raw_uint16_hex": [
+              "0x3eb9",
+              "0x0000",
+              "0x0000",
+              "0x3f24"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "input": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              0.6015625,
+              0.0,
+              0.0,
+              0.80078125
+            ],
+            "raw_uint16_hex": [
+              "0x3f1a",
+              "0x0000",
+              "0x0000",
+              "0x3f4d"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "linear_product": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              2.078125,
+              0.0,
+              0.0,
+              2.765625
+            ],
+            "raw_uint16_hex": [
+              "0x4005",
+              "0x0000",
+              "0x0000",
+              "0x4031"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "orientation_already_fixed_before_loop": true,
+          "output": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              1.203125,
+              0.0,
+              0.0,
+              0.9921875
+            ],
+            "raw_uint16_hex": [
+              "0x3f9a",
+              "0x0000",
+              "0x0000",
+              "0x3f7e"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "step": 1
+        },
+        {
+          "b_times_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -6.90625,
+              -0.0,
+              -0.0,
+              -4.6875
+            ],
+            "raw_uint16_hex": [
+              "0xc0dd",
+              "0x8000",
+              "0x8000",
+              "0xc096"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "c_times_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              2.9375,
+              0.0,
+              0.0,
+              2.0
+            ],
+            "raw_uint16_hex": [
+              "0x403c",
+              "0x0000",
+              "0x0000",
+              "0x4000"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "c_times_gram_then_matmul_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              4.25,
+              0.0,
+              0.0,
+              1.96875
+            ],
+            "raw_uint16_hex": [
+              "0x4088",
+              "0x0000",
+              "0x0000",
+              "0x3ffc"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "correction": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -2.65625,
+              0.0,
+              0.0,
+              -2.71875
+            ],
+            "raw_uint16_hex": [
+              "0xc02a",
+              "0x0000",
+              "0x0000",
+              "0xc02e"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "correction_matmul_result": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -3.203125,
+              0.0,
+              0.0,
+              -2.703125
+            ],
+            "raw_uint16_hex": [
+              "0xc04d",
+              "0x0000",
+              "0x0000",
+              "0xc02d"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "gram_matmul_result": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              1.4453125,
+              0.0,
+              0.0,
+              0.984375
+            ],
+            "raw_uint16_hex": [
+              "0x3fb9",
+              "0x0000",
+              "0x0000",
+              "0x3f7c"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "input": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              1.203125,
+              0.0,
+              0.0,
+              0.9921875
+            ],
+            "raw_uint16_hex": [
+              "0x3f9a",
+              "0x0000",
+              "0x0000",
+              "0x3f7e"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "linear_product": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              4.15625,
+              0.0,
+              0.0,
+              3.421875
+            ],
+            "raw_uint16_hex": [
+              "0x4085",
+              "0x0000",
+              "0x0000",
+              "0x405b"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "orientation_already_fixed_before_loop": true,
+          "output": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              0.953125,
+              0.0,
+              0.0,
+              0.71875
+            ],
+            "raw_uint16_hex": [
+              "0x3f74",
+              "0x0000",
+              "0x0000",
+              "0x3f38"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "step": 2
+        },
+        {
+          "b_times_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -4.34375,
+              -0.0,
+              -0.0,
+              -2.46875
+            ],
+            "raw_uint16_hex": [
+              "0xc08b",
+              "0x8000",
+              "0x8000",
+              "0xc01e"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "c_times_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              1.8515625,
+              0.0,
+              0.0,
+              1.046875
+            ],
+            "raw_uint16_hex": [
+              "0x3fed",
+              "0x0000",
+              "0x0000",
+              "0x3f86"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "c_times_gram_then_matmul_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              1.6875,
+              0.0,
+              0.0,
+              0.5390625
+            ],
+            "raw_uint16_hex": [
+              "0x3fd8",
+              "0x0000",
+              "0x0000",
+              "0x3f0a"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "correction": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -2.65625,
+              0.0,
+              0.0,
+              -1.9296875
+            ],
+            "raw_uint16_hex": [
+              "0xc02a",
+              "0x0000",
+              "0x0000",
+              "0xbff7"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "correction_matmul_result": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -2.53125,
+              0.0,
+              0.0,
+              -1.390625
+            ],
+            "raw_uint16_hex": [
+              "0xc022",
+              "0x0000",
+              "0x0000",
+              "0xbfb2"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "gram_matmul_result": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              0.91015625,
+              0.0,
+              0.0,
+              0.515625
+            ],
+            "raw_uint16_hex": [
+              "0x3f69",
+              "0x0000",
+              "0x0000",
+              "0x3f04"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "input": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              0.953125,
+              0.0,
+              0.0,
+              0.71875
+            ],
+            "raw_uint16_hex": [
+              "0x3f74",
+              "0x0000",
+              "0x0000",
+              "0x3f38"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "linear_product": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              3.28125,
+              0.0,
+              0.0,
+              2.46875
+            ],
+            "raw_uint16_hex": [
+              "0x4052",
+              "0x0000",
+              "0x0000",
+              "0x401e"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "orientation_already_fixed_before_loop": true,
+          "output": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              0.75,
+              0.0,
+              0.0,
+              1.078125
+            ],
+            "raw_uint16_hex": [
+              "0x3f40",
+              "0x0000",
+              "0x0000",
+              "0x3f8a"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "step": 3
+        },
+        {
+          "b_times_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -2.6875,
+              -0.0,
+              -0.0,
+              -5.5625
+            ],
+            "raw_uint16_hex": [
+              "0xc02c",
+              "0x8000",
+              "0x8000",
+              "0xc0b2"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "c_times_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              1.140625,
+              0.0,
+              0.0,
+              2.359375
+            ],
+            "raw_uint16_hex": [
+              "0x3f92",
+              "0x0000",
+              "0x0000",
+              "0x4017"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "c_times_gram_then_matmul_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              0.640625,
+              0.0,
+              0.0,
+              2.75
+            ],
+            "raw_uint16_hex": [
+              "0x3f24",
+              "0x0000",
+              "0x0000",
+              "0x4030"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "correction": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -2.046875,
+              0.0,
+              0.0,
+              -2.8125
+            ],
+            "raw_uint16_hex": [
+              "0xc003",
+              "0x0000",
+              "0x0000",
+              "0xc034"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "correction_matmul_result": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -1.53125,
+              0.0,
+              0.0,
+              -3.03125
+            ],
+            "raw_uint16_hex": [
+              "0xbfc4",
+              "0x0000",
+              "0x0000",
+              "0xc042"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "gram_matmul_result": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              0.5625,
+              0.0,
+              0.0,
+              1.1640625
+            ],
+            "raw_uint16_hex": [
+              "0x3f10",
+              "0x0000",
+              "0x0000",
+              "0x3f95"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "input": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              0.75,
+              0.0,
+              0.0,
+              1.078125
+            ],
+            "raw_uint16_hex": [
+              "0x3f40",
+              "0x0000",
+              "0x0000",
+              "0x3f8a"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "linear_product": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              2.578125,
+              0.0,
+              0.0,
+              3.71875
+            ],
+            "raw_uint16_hex": [
+              "0x4025",
+              "0x0000",
+              "0x0000",
+              "0x406e"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "orientation_already_fixed_before_loop": true,
+          "output": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              1.046875,
+              0.0,
+              0.0,
+              0.6875
+            ],
+            "raw_uint16_hex": [
+              "0x3f86",
+              "0x0000",
+              "0x0000",
+              "0x3f30"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "step": 4
+        },
+        {
+          "b_times_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -5.21875,
+              -0.0,
+              -0.0,
+              -2.25
+            ],
+            "raw_uint16_hex": [
+              "0xc0a7",
+              "0x8000",
+              "0x8000",
+              "0xc010"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "c_times_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              2.21875,
+              0.0,
+              0.0,
+              0.9609375
+            ],
+            "raw_uint16_hex": [
+              "0x400e",
+              "0x0000",
+              "0x0000",
+              "0x3f76"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "c_times_gram_then_matmul_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              2.421875,
+              0.0,
+              0.0,
+              0.455078125
+            ],
+            "raw_uint16_hex": [
+              "0x401b",
+              "0x0000",
+              "0x0000",
+              "0x3ee9"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "correction": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -2.796875,
+              0.0,
+              0.0,
+              -1.796875
+            ],
+            "raw_uint16_hex": [
+              "0xc033",
+              "0x0000",
+              "0x0000",
+              "0xbfe6"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "correction_matmul_result": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -2.921875,
+              0.0,
+              0.0,
+              -1.234375
+            ],
+            "raw_uint16_hex": [
+              "0xc03b",
+              "0x0000",
+              "0x0000",
+              "0xbf9e"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "gram_matmul_result": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              1.09375,
+              0.0,
+              0.0,
+              0.47265625
+            ],
+            "raw_uint16_hex": [
+              "0x3f8c",
+              "0x0000",
+              "0x0000",
+              "0x3ef2"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "input": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              1.046875,
+              0.0,
+              0.0,
+              0.6875
+            ],
+            "raw_uint16_hex": [
+              "0x3f86",
+              "0x0000",
+              "0x0000",
+              "0x3f30"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "linear_product": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              3.609375,
+              0.0,
+              0.0,
+              2.375
+            ],
+            "raw_uint16_hex": [
+              "0x4067",
+              "0x0000",
+              "0x0000",
+              "0x4018"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "orientation_already_fixed_before_loop": true,
+          "output": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              0.6875,
+              0.0,
+              0.0,
+              1.140625
+            ],
+            "raw_uint16_hex": [
+              "0x3f30",
+              "0x0000",
+              "0x0000",
+              "0x3f92"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "step": 5
+        }
+      ],
+      "returned_denominator_increment": {
+        "device": "cpu",
+        "dtype": "torch.bfloat16",
+        "flat_values": [
+          0.0
+        ],
+        "raw_uint16_hex": [
+          "0x0000"
+        ],
+        "shape": [
+          1,
+          1
+        ]
+      }
+    },
+    "left_input": {
+      "device": "cpu",
+      "dtype": "torch.float64",
+      "flat_values": [
+        3.0,
+        0.0,
+        0.0,
+        4.0
+      ],
+      "shape": [
+        2,
+        2
+      ]
+    },
+    "left_output": {
+      "device": "cpu",
+      "dtype": "torch.bfloat16",
+      "flat_values": [
+        0.6875,
+        0.0,
+        0.0,
+        1.140625
+      ],
+      "raw_uint16_hex": [
+        "0x3f30",
+        "0x0000",
+        "0x0000",
+        "0x3f92"
+      ],
+      "shape": [
+        2,
+        2
+      ]
+    },
+    "measurement": {
+      "definition": "<T(left)-T(right), left-right>_F",
+      "distance_squared": {
+        "device": "cpu",
+        "dtype": "torch.float64",
+        "flat_values": [
+          1.25
+        ],
+        "shape": []
+      },
+      "distance_squared_exact_fraction": "5/4",
+      "elementwise_products": {
+        "device": "cpu",
+        "dtype": "torch.float64",
+        "flat_values": [
+          -0.1953125,
+          0.0,
+          0.0,
+          0.140625
+        ],
+        "shape": [
+          2,
+          2
+        ]
+      },
+      "gap": {
+        "device": "cpu",
+        "dtype": "torch.float64",
+        "flat_values": [
+          -0.0546875
+        ],
+        "shape": []
+      },
+      "gap_decimal": -0.0546875,
+      "gap_exact_fraction_from_individually_recorded_values": "-7/128",
+      "input_difference": {
+        "device": "cpu",
+        "dtype": "torch.float64",
+        "flat_values": [
+          0.5,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "shape": [
+          2,
+          2
+        ]
+      },
+      "output_difference": {
+        "device": "cpu",
+        "dtype": "torch.bfloat16",
+        "flat_values": [
+          -0.390625,
+          0.0,
+          0.0,
+          0.140625
+        ],
+        "raw_uint16_hex": [
+          "0xbec8",
+          "0x0000",
+          "0x0000",
+          "0x3e10"
+        ],
+        "shape": [
+          2,
+          2
+        ]
+      },
+      "ratio": {
+        "device": "cpu",
+        "dtype": "torch.float64",
+        "flat_values": [
+          -0.04375
+        ],
+        "shape": []
+      },
+      "ratio_exact_fraction_from_individually_recorded_values": "-7/160",
+      "rho_required_for_this_pair": {
+        "device": "cpu",
+        "dtype": "torch.float64",
+        "flat_values": [
+          0.04375
+        ],
+        "shape": []
+      },
+      "rho_required_scope": "this one returned backend-specific pair only",
+      "runtime_gap_matches_exact_recorded_value_arithmetic": true,
+      "violates_incremental_monotonicity": true
+    },
+    "right_execution_trace": {
+      "epsilon_absorbed_at_this_denominator": true,
+      "epsilon_bf16_cast_reference": {
+        "device": "cpu",
+        "dtype": "torch.bfloat16",
+        "flat_values": [
+          1.0011717677116394e-07
+        ],
+        "raw_uint16_hex": [
+          "0x33d7"
+        ],
+        "shape": []
+      },
+      "frobenius_norm": {
+        "device": "cpu",
+        "dtype": "torch.bfloat16",
+        "flat_values": [
+          3.90625
+        ],
+        "raw_uint16_hex": [
+          "0x407a"
+        ],
+        "shape": [
+          1,
+          1
+        ]
+      },
+      "input_after_bf16_cast": {
+        "device": "cpu",
+        "dtype": "torch.bfloat16",
+        "flat_values": [
+          2.5,
+          0.0,
+          0.0,
+          3.0
+        ],
+        "raw_uint16_hex": [
+          "0x4020",
+          "0x0000",
+          "0x0000",
+          "0x4040"
+        ],
+        "shape": [
+          2,
+          2
+        ]
+      },
+      "input_after_one_time_orientation": {
+        "device": "cpu",
+        "dtype": "torch.bfloat16",
+        "flat_values": [
+          2.5,
+          0.0,
+          0.0,
+          3.0
+        ],
+        "raw_uint16_hex": [
+          "0x4020",
+          "0x0000",
+          "0x0000",
+          "0x4040"
+        ],
+        "shape": [
+          2,
+          2
+        ]
+      },
+      "input_before_cast": {
+        "device": "cpu",
+        "dtype": "torch.float64",
+        "flat_values": [
+          2.5,
+          0.0,
+          0.0,
+          3.0
+        ],
+        "shape": [
+          2,
+          2
+        ]
+      },
+      "matches_public_and_independent_literal_pinned_order": true,
+      "normalization_denominator": {
+        "device": "cpu",
+        "dtype": "torch.bfloat16",
+        "flat_values": [
+          3.90625
+        ],
+        "raw_uint16_hex": [
+          "0x407a"
+        ],
+        "shape": [
+          1,
+          1
+        ]
+      },
+      "normalized_input": {
+        "device": "cpu",
+        "dtype": "torch.bfloat16",
+        "flat_values": [
+          0.640625,
+          0.0,
+          0.0,
+          0.76953125
+        ],
+        "raw_uint16_hex": [
+          "0x3f24",
+          "0x0000",
+          "0x0000",
+          "0x3f45"
+        ],
+        "shape": [
+          2,
+          2
+        ]
+      },
+      "one_time_transpose_applied": false,
+      "output": {
+        "device": "cpu",
+        "dtype": "torch.bfloat16",
+        "flat_values": [
+          1.078125,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "raw_uint16_hex": [
+          "0x3f8a",
+          "0x0000",
+          "0x0000",
+          "0x3f80"
+        ],
+        "shape": [
+          2,
+          2
+        ]
+      },
+      "python_float_epsilon": {
+        "binary64_hex": "0x1.ad7f29abcaf48p-24",
+        "decimal": "1e-07"
+      },
+      "quintic_stages": [
+        {
+          "b_times_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -1.9609375,
+              -0.0,
+              -0.0,
+              -2.828125
+            ],
+            "raw_uint16_hex": [
+              "0xbffb",
+              "0x8000",
+              "0x8000",
+              "0xc035"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "c_times_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              0.83203125,
+              0.0,
+              0.0,
+              1.203125
+            ],
+            "raw_uint16_hex": [
+              "0x3f55",
+              "0x0000",
+              "0x0000",
+              "0x3f9a"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "c_times_gram_then_matmul_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              0.341796875,
+              0.0,
+              0.0,
+              0.71484375
+            ],
+            "raw_uint16_hex": [
+              "0x3eaf",
+              "0x0000",
+              "0x0000",
+              "0x3f37"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "correction": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -1.6171875,
+              0.0,
+              0.0,
+              -2.109375
+            ],
+            "raw_uint16_hex": [
+              "0xbfcf",
+              "0x0000",
+              "0x0000",
+              "0xc007"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "correction_matmul_result": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -1.0390625,
+              0.0,
+              0.0,
+              -1.625
+            ],
+            "raw_uint16_hex": [
+              "0xbf85",
+              "0x0000",
+              "0x0000",
+              "0xbfd0"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "gram_matmul_result": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              0.41015625,
+              0.0,
+              0.0,
+              0.59375
+            ],
+            "raw_uint16_hex": [
+              "0x3ed2",
+              "0x0000",
+              "0x0000",
+              "0x3f18"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "input": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              0.640625,
+              0.0,
+              0.0,
+              0.76953125
+            ],
+            "raw_uint16_hex": [
+              "0x3f24",
+              "0x0000",
+              "0x0000",
+              "0x3f45"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "linear_product": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              2.203125,
+              0.0,
+              0.0,
+              2.65625
+            ],
+            "raw_uint16_hex": [
+              "0x400d",
+              "0x0000",
+              "0x0000",
+              "0x402a"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "orientation_already_fixed_before_loop": true,
+          "output": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              1.1640625,
+              0.0,
+              0.0,
+              1.03125
+            ],
+            "raw_uint16_hex": [
+              "0x3f95",
+              "0x0000",
+              "0x0000",
+              "0x3f84"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "step": 1
+        },
+        {
+          "b_times_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -6.46875,
+              -0.0,
+              -0.0,
+              -5.0625
+            ],
+            "raw_uint16_hex": [
+              "0xc0cf",
+              "0x8000",
+              "0x8000",
+              "0xc0a2"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "c_times_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              2.75,
+              0.0,
+              0.0,
+              2.15625
+            ],
+            "raw_uint16_hex": [
+              "0x4030",
+              "0x0000",
+              "0x0000",
+              "0x400a"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "c_times_gram_then_matmul_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              3.71875,
+              0.0,
+              0.0,
+              2.296875
+            ],
+            "raw_uint16_hex": [
+              "0x406e",
+              "0x0000",
+              "0x0000",
+              "0x4013"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "correction": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -2.75,
+              0.0,
+              0.0,
+              -2.765625
+            ],
+            "raw_uint16_hex": [
+              "0xc030",
+              "0x0000",
+              "0x0000",
+              "0xc031"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "correction_matmul_result": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -3.203125,
+              0.0,
+              0.0,
+              -2.859375
+            ],
+            "raw_uint16_hex": [
+              "0xc04d",
+              "0x0000",
+              "0x0000",
+              "0xc037"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "gram_matmul_result": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              1.3515625,
+              0.0,
+              0.0,
+              1.0625
+            ],
+            "raw_uint16_hex": [
+              "0x3fad",
+              "0x0000",
+              "0x0000",
+              "0x3f88"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "input": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              1.1640625,
+              0.0,
+              0.0,
+              1.03125
+            ],
+            "raw_uint16_hex": [
+              "0x3f95",
+              "0x0000",
+              "0x0000",
+              "0x3f84"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "linear_product": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              4.0,
+              0.0,
+              0.0,
+              3.546875
+            ],
+            "raw_uint16_hex": [
+              "0x4080",
+              "0x0000",
+              "0x0000",
+              "0x4063"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "orientation_already_fixed_before_loop": true,
+          "output": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              0.796875,
+              0.0,
+              0.0,
+              0.6875
+            ],
+            "raw_uint16_hex": [
+              "0x3f4c",
+              "0x0000",
+              "0x0000",
+              "0x3f30"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "step": 2
+        },
+        {
+          "b_times_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -3.046875,
+              -0.0,
+              -0.0,
+              -2.25
+            ],
+            "raw_uint16_hex": [
+              "0xc043",
+              "0x8000",
+              "0x8000",
+              "0xc010"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "c_times_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              1.296875,
+              0.0,
+              0.0,
+              0.9609375
+            ],
+            "raw_uint16_hex": [
+              "0x3fa6",
+              "0x0000",
+              "0x0000",
+              "0x3f76"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "c_times_gram_then_matmul_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              0.82421875,
+              0.0,
+              0.0,
+              0.455078125
+            ],
+            "raw_uint16_hex": [
+              "0x3f53",
+              "0x0000",
+              "0x0000",
+              "0x3ee9"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "correction": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -2.21875,
+              0.0,
+              0.0,
+              -1.796875
+            ],
+            "raw_uint16_hex": [
+              "0xc00e",
+              "0x0000",
+              "0x0000",
+              "0xbfe6"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "correction_matmul_result": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -1.765625,
+              0.0,
+              0.0,
+              -1.234375
+            ],
+            "raw_uint16_hex": [
+              "0xbfe2",
+              "0x0000",
+              "0x0000",
+              "0xbf9e"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "gram_matmul_result": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              0.63671875,
+              0.0,
+              0.0,
+              0.47265625
+            ],
+            "raw_uint16_hex": [
+              "0x3f23",
+              "0x0000",
+              "0x0000",
+              "0x3ef2"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "input": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              0.796875,
+              0.0,
+              0.0,
+              0.6875
+            ],
+            "raw_uint16_hex": [
+              "0x3f4c",
+              "0x0000",
+              "0x0000",
+              "0x3f30"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "linear_product": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              2.75,
+              0.0,
+              0.0,
+              2.375
+            ],
+            "raw_uint16_hex": [
+              "0x4030",
+              "0x0000",
+              "0x0000",
+              "0x4018"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "orientation_already_fixed_before_loop": true,
+          "output": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              0.984375,
+              0.0,
+              0.0,
+              1.140625
+            ],
+            "raw_uint16_hex": [
+              "0x3f7c",
+              "0x0000",
+              "0x0000",
+              "0x3f92"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "step": 3
+        },
+        {
+          "b_times_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -4.625,
+              -0.0,
+              -0.0,
+              -6.21875
+            ],
+            "raw_uint16_hex": [
+              "0xc094",
+              "0x8000",
+              "0x8000",
+              "0xc0c7"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "c_times_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              1.96875,
+              0.0,
+              0.0,
+              2.65625
+            ],
+            "raw_uint16_hex": [
+              "0x3ffc",
+              "0x0000",
+              "0x0000",
+              "0x402a"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "c_times_gram_then_matmul_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              1.90625,
+              0.0,
+              0.0,
+              3.46875
+            ],
+            "raw_uint16_hex": [
+              "0x3ff4",
+              "0x0000",
+              "0x0000",
+              "0x405e"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "correction": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -2.71875,
+              0.0,
+              0.0,
+              -2.75
+            ],
+            "raw_uint16_hex": [
+              "0xc02e",
+              "0x0000",
+              "0x0000",
+              "0xc030"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "correction_matmul_result": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -2.671875,
+              0.0,
+              0.0,
+              -3.140625
+            ],
+            "raw_uint16_hex": [
+              "0xc02b",
+              "0x0000",
+              "0x0000",
+              "0xc049"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "gram_matmul_result": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              0.96875,
+              0.0,
+              0.0,
+              1.3046875
+            ],
+            "raw_uint16_hex": [
+              "0x3f78",
+              "0x0000",
+              "0x0000",
+              "0x3fa7"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "input": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              0.984375,
+              0.0,
+              0.0,
+              1.140625
+            ],
+            "raw_uint16_hex": [
+              "0x3f7c",
+              "0x0000",
+              "0x0000",
+              "0x3f92"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "linear_product": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              3.390625,
+              0.0,
+              0.0,
+              3.921875
+            ],
+            "raw_uint16_hex": [
+              "0x4059",
+              "0x0000",
+              "0x0000",
+              "0x407b"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "orientation_already_fixed_before_loop": true,
+          "output": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              0.71875,
+              0.0,
+              0.0,
+              0.78125
+            ],
+            "raw_uint16_hex": [
+              "0x3f38",
+              "0x0000",
+              "0x0000",
+              "0x3f48"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "step": 4
+        },
+        {
+          "b_times_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -2.46875,
+              -0.0,
+              -0.0,
+              -2.90625
+            ],
+            "raw_uint16_hex": [
+              "0xc01e",
+              "0x8000",
+              "0x8000",
+              "0xc03a"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "c_times_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              1.046875,
+              0.0,
+              0.0,
+              1.234375
+            ],
+            "raw_uint16_hex": [
+              "0x3f86",
+              "0x0000",
+              "0x0000",
+              "0x3f9e"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "c_times_gram_then_matmul_gram": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              0.5390625,
+              0.0,
+              0.0,
+              0.75390625
+            ],
+            "raw_uint16_hex": [
+              "0x3f0a",
+              "0x0000",
+              "0x0000",
+              "0x3f41"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "correction": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -1.9296875,
+              0.0,
+              0.0,
+              -2.15625
+            ],
+            "raw_uint16_hex": [
+              "0xbff7",
+              "0x0000",
+              "0x0000",
+              "0xc00a"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "correction_matmul_result": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -1.390625,
+              0.0,
+              0.0,
+              -1.6875
+            ],
+            "raw_uint16_hex": [
+              "0xbfb2",
+              "0x0000",
+              "0x0000",
+              "0xbfd8"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "gram_matmul_result": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              0.515625,
+              0.0,
+              0.0,
+              0.609375
+            ],
+            "raw_uint16_hex": [
+              "0x3f04",
+              "0x0000",
+              "0x0000",
+              "0x3f1c"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "input": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              0.71875,
+              0.0,
+              0.0,
+              0.78125
+            ],
+            "raw_uint16_hex": [
+              "0x3f38",
+              "0x0000",
+              "0x0000",
+              "0x3f48"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "linear_product": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              2.46875,
+              0.0,
+              0.0,
+              2.6875
+            ],
+            "raw_uint16_hex": [
+              "0x401e",
+              "0x0000",
+              "0x0000",
+              "0x402c"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "orientation_already_fixed_before_loop": true,
+          "output": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              1.078125,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "raw_uint16_hex": [
+              "0x3f8a",
+              "0x0000",
+              "0x0000",
+              "0x3f80"
+            ],
+            "shape": [
+              2,
+              2
+            ]
+          },
+          "step": 5
+        }
+      ],
+      "returned_denominator_increment": {
+        "device": "cpu",
+        "dtype": "torch.bfloat16",
+        "flat_values": [
+          0.0
+        ],
+        "raw_uint16_hex": [
+          "0x0000"
+        ],
+        "shape": [
+          1,
+          1
+        ]
+      }
+    },
+    "right_input": {
+      "device": "cpu",
+      "dtype": "torch.float64",
+      "flat_values": [
+        2.5,
+        0.0,
+        0.0,
+        3.0
+      ],
+      "shape": [
+        2,
+        2
+      ]
+    },
+    "right_output": {
+      "device": "cpu",
+      "dtype": "torch.bfloat16",
+      "flat_values": [
+        1.078125,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "raw_uint16_hex": [
+        "0x3f8a",
+        "0x0000",
+        "0x0000",
+        "0x3f80"
+      ],
+      "shape": [
+        2,
+        2
+      ]
+    }
+  },
+  "claim_scope": {
+    "evidence_kind": "backend_specific_executable_pairwise_witness",
+    "not_claimed": [
+      "a real-arithmetic Jacobian theorem for the quantized operator",
+      "the same returned values on every BF16 backend",
+      "a universal claim about undocumented BF16 accumulator precision",
+      "a global upper bound or a repair certificate"
+    ],
+    "observed_result_kind": "negative_pair_witness",
+    "supported_interpretation": "A negative recorded gap is a concrete incremental-monotonicity violation for only the recorded backend, PyTorch build, dtype, and operation order."
+  },
+  "configuration": {
+    "device": "cpu",
+    "normalization": {
+      "epsilon": 1e-07,
+      "epsilon_configured": "1e-07",
+      "formula": "X_bf16 / (X_bf16.norm(dim=(-2,-1), keepdim=True) + python_float_eps)",
+      "matches_pinned_upstream_epsilon": true,
+      "name": "current_frobenius_plus_epsilon_after_bf16_cast",
+      "norm_scope": "all matrix entries (Frobenius norm), dimensions retained"
+    },
+    "operation_order": [
+      "construct this artifact's canonical pair as torch.float64 matrices",
+      "cast each complete input matrix to torch.bfloat16",
+      "transpose once iff rows > columns",
+      "compute X.norm(dim=(-2,-1), keepdim=True) on the oriented BF16 matrix",
+      "add the Python binary64 epsilon scalar to that returned norm",
+      "divide the oriented BF16 matrix by the returned denominator",
+      "for each of five stages compute A = X @ X.T",
+      "compute B = b*A + c*A @ A, parsed left-associatively as b*A + (c*A)@A",
+      "compute X = a*X + B@X",
+      "transpose back once after all stages iff the input was tall",
+      "subtract the two BF16 outputs",
+      "subtract the original torch.float64 inputs",
+      "multiply the deltas using PyTorch dtype promotion and sum in returned dtype"
+    ],
+    "operator_domain_for_this_run": "two distinct 2x2 torch.float64 matrices",
+    "orthogonalizer": {
+      "coefficient_representation": "Pinned decimal literals are Python binary64 scalars. PyTorch applies wrapped scalar promotion when each scalar operates on a BF16 tensor; BF16 cast references and returned operation dtypes are recorded, without claiming undocumented kernel internals.",
+      "coefficients": {
+        "a": {
+          "bf16_cast_reference": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              3.4375
+            ],
+            "raw_uint16_hex": [
+              "0x405c"
+            ],
+            "shape": []
+          },
+          "observed_scalar_times_bf16_dtype": "torch.bfloat16",
+          "python_binary64": {
+            "decimal": "3.4445",
+            "hex": "0x1.b8e5604189375p+1"
+          },
+          "source_decimal": "3.4445",
+          "source_fraction": "6889/2000"
+        },
+        "b": {
+          "bf16_cast_reference": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              -4.78125
+            ],
+            "raw_uint16_hex": [
+              "0xc099"
+            ],
+            "shape": []
+          },
+          "observed_scalar_times_bf16_dtype": "torch.bfloat16",
+          "python_binary64": {
+            "decimal": "-4.775",
+            "hex": "-0x1.319999999999ap+2"
+          },
+          "source_decimal": "-4.7750",
+          "source_fraction": "-191/40"
+        },
+        "c": {
+          "bf16_cast_reference": {
+            "device": "cpu",
+            "dtype": "torch.bfloat16",
+            "flat_values": [
+              2.03125
+            ],
+            "raw_uint16_hex": [
+              "0x4002"
+            ],
+            "shape": []
+          },
+          "observed_scalar_times_bf16_dtype": "torch.bfloat16",
+          "python_binary64": {
+            "decimal": "2.0315",
+            "hex": "0x1.04083126e978dp+1"
+          },
+          "source_decimal": "2.0315",
+          "source_fraction": "4063/2000"
+        }
+      },
+      "name": "jordan_quintic",
+      "recurrence": "A=X@X.T; B=b*A+(c*A)@A; X=a*X+B@X",
+      "shape_rule": "transpose once before normalization iff rows > columns; transpose back once after all stages",
+      "steps": 5
+    },
+    "pair_restriction": "positive_diagonal",
+    "upstream": {
+      "audited_file": "muon.py",
+      "license": "MIT",
+      "local_status": "Dedicated clean-room reproduction of the audited expressions and operation order; no upstream training or distributed optimizer code is copied. It is kept separate from generic polynomial helpers because BF16 grouping changes returned values.",
+      "repository": "https://github.com/KellerJordan/Muon",
+      "revision": "f98f1cacc0263b04290753e32be8d498c1efc806"
+    }
+  },
+  "experiment_provenance": {
+    "randomness": "none; fixed literals and deterministic control flow",
+    "scope_reminder": "Re-run this executable on each target backend. Do not transplant its returned values or accumulation observations into a universal BF16 claim.",
+    "seed": null,
+    "source_snapshot": {
+      "scripts/record_bf16_witness.py": "8c0b1a1c5075e5a03615a52268eba5cf7c87aa3d42873daaf530b099a589f729",
+      "src/passive_muon/bf16_witness.py": "e6dbc87ef8d91131be7f488363c03c524c46dd54dc87f4d290515f3ae420e109",
+      "src/passive_muon/deployed.py": "a77e5f08ff17e5500826029962c10ecbc87cc598009a83c50262991946838cf4",
+      "src/passive_muon/specs.py": "85fcee0f87485fc3cac2f426d62ec6e55da7896caade2f5df2a1c87f7d9c5d6c",
+      "third_party/LICENSES.md": "f603fff644e315746d49052fa6126610fd81179ccd3be03ea306bb6d581a1e1e",
+      "third_party/UPSTREAM_COMMITS.md": "15e4b03cc471431a807d16cf8cc746564542f8e637098c78404f4ae1a1631651"
+    }
+  },
+  "git": {
+    "dirty": false,
+    "sha": "cb0e549979b0500215e204bc2f01bbc4be07b24c"
+  },
+  "hardware": {
+    "byte_order": "little",
+    "cuda_available": false,
+    "cuda_built_version": null,
+    "execution_device": {
+      "device_type": "cpu",
+      "requested_device": "cpu",
+      "resolved_device": "cpu",
+      "torch_cpu_capability": "DEFAULT"
+    },
+    "logical_cpu_count": 10,
+    "machine_architecture": "arm64",
+    "mps_available": true,
+    "mps_built": true,
+    "operating_system": "Darwin",
+    "operating_system_release": "24.5.0",
+    "platform": "macOS-15.5-arm64-arm-64bit",
+    "processor": "arm"
+  },
+  "observable_bf16_behavior": {
+    "input_casts_and_normalization": {
+      "left": {
+        "after": {
+          "device": "cpu",
+          "dtype": "torch.bfloat16",
+          "flat_values": [
+            3.0,
+            0.0,
+            0.0,
+            4.0
+          ],
+          "raw_uint16_hex": [
+            "0x4040",
+            "0x0000",
+            "0x0000",
+            "0x4080"
+          ],
+          "shape": [
+            2,
+            2
+          ]
+        },
+        "before": {
+          "device": "cpu",
+          "dtype": "torch.float64",
+          "flat_values": [
+            3.0,
+            0.0,
+            0.0,
+            4.0
+          ],
+          "shape": [
+            2,
+            2
+          ]
+        },
+        "denominator": {
+          "device": "cpu",
+          "dtype": "torch.bfloat16",
+          "flat_values": [
+            5.0
+          ],
+          "raw_uint16_hex": [
+            "0x40a0"
+          ],
+          "shape": [
+            1,
+            1
+          ]
+        },
+        "epsilon_absorbed": true,
+        "epsilon_bf16_cast_reference": {
+          "device": "cpu",
+          "dtype": "torch.bfloat16",
+          "flat_values": [
+            1.0011717677116394e-07
+          ],
+          "raw_uint16_hex": [
+            "0x33d7"
+          ],
+          "shape": []
+        },
+        "norm": {
+          "device": "cpu",
+          "dtype": "torch.bfloat16",
+          "flat_values": [
+            5.0
+          ],
+          "raw_uint16_hex": [
+            "0x40a0"
+          ],
+          "shape": [
+            1,
+            1
+          ]
+        },
+        "python_float_epsilon": {
+          "binary64_hex": "0x1.ad7f29abcaf48p-24",
+          "decimal": "1e-07"
+        },
+        "returned_denominator_increment": {
+          "device": "cpu",
+          "dtype": "torch.bfloat16",
+          "flat_values": [
+            0.0
+          ],
+          "raw_uint16_hex": [
+            "0x0000"
+          ],
+          "shape": [
+            1,
+            1
+          ]
+        }
+      },
+      "right": {
+        "after": {
+          "device": "cpu",
+          "dtype": "torch.bfloat16",
+          "flat_values": [
+            2.5,
+            0.0,
+            0.0,
+            3.0
+          ],
+          "raw_uint16_hex": [
+            "0x4020",
+            "0x0000",
+            "0x0000",
+            "0x4040"
+          ],
+          "shape": [
+            2,
+            2
+          ]
+        },
+        "before": {
+          "device": "cpu",
+          "dtype": "torch.float64",
+          "flat_values": [
+            2.5,
+            0.0,
+            0.0,
+            3.0
+          ],
+          "shape": [
+            2,
+            2
+          ]
+        },
+        "denominator": {
+          "device": "cpu",
+          "dtype": "torch.bfloat16",
+          "flat_values": [
+            3.90625
+          ],
+          "raw_uint16_hex": [
+            "0x407a"
+          ],
+          "shape": [
+            1,
+            1
+          ]
+        },
+        "epsilon_absorbed": true,
+        "epsilon_bf16_cast_reference": {
+          "device": "cpu",
+          "dtype": "torch.bfloat16",
+          "flat_values": [
+            1.0011717677116394e-07
+          ],
+          "raw_uint16_hex": [
+            "0x33d7"
+          ],
+          "shape": []
+        },
+        "norm": {
+          "device": "cpu",
+          "dtype": "torch.bfloat16",
+          "flat_values": [
+            3.90625
+          ],
+          "raw_uint16_hex": [
+            "0x407a"
+          ],
+          "shape": [
+            1,
+            1
+          ]
+        },
+        "python_float_epsilon": {
+          "binary64_hex": "0x1.ad7f29abcaf48p-24",
+          "decimal": "1e-07"
+        },
+        "returned_denominator_increment": {
+          "device": "cpu",
+          "dtype": "torch.bfloat16",
+          "flat_values": [
+            0.0
+          ],
+          "raw_uint16_hex": [
+            "0x0000"
+          ],
+          "shape": [
+            1,
+            1
+          ]
+        }
+      }
+    },
+    "matmul_accumulation_probe": {
+      "exact_real_dot_of_cast_values": {
+        "decimal": 1.35546875,
+        "fraction": "347/256"
+      },
+      "exact_sum_then_bf16_reference": {
+        "device": "cpu",
+        "dtype": "torch.bfloat16",
+        "flat_values": [
+          1.359375
+        ],
+        "raw_uint16_hex": [
+          "0x3fae"
+        ],
+        "shape": []
+      },
+      "fixed_source_literals": {
+        "left": [
+          "-0.25",
+          "-8.0",
+          "0.3",
+          "-16.0"
+        ],
+        "right": [
+          "3.0",
+          "4.0",
+          "7.0",
+          "-2.0"
+        ]
+      },
+      "interpretation_limit": "These comparisons characterize returned values only. They do not reveal or certify the kernel's undocumented internal accumulator precision, instruction selection, or behavior on another backend.",
+      "left_after_bf16_cast": {
+        "device": "cpu",
+        "dtype": "torch.bfloat16",
+        "flat_values": [
+          -0.25,
+          -8.0,
+          0.30078125,
+          -16.0
+        ],
+        "raw_uint16_hex": [
+          "0xbe80",
+          "0xc100",
+          "0x3e9a",
+          "0xc180"
+        ],
+        "shape": [
+          1,
+          4
+        ]
+      },
+      "public_matmul_matches_exact_sum_then_bf16": true,
+      "public_matmul_matches_sequential_public_bf16_ops": false,
+      "public_matmul_result": {
+        "device": "cpu",
+        "dtype": "torch.bfloat16",
+        "flat_values": [
+          1.359375
+        ],
+        "raw_uint16_hex": [
+          "0x3fae"
+        ],
+        "shape": [
+          1,
+          1
+        ]
+      },
+      "purpose": "Empirically compare the public BF16 matmul result with two observable rounding models on this backend.",
+      "right_after_bf16_cast": {
+        "device": "cpu",
+        "dtype": "torch.bfloat16",
+        "flat_values": [
+          3.0,
+          4.0,
+          7.0,
+          -2.0
+        ],
+        "raw_uint16_hex": [
+          "0x4040",
+          "0x4080",
+          "0x40e0",
+          "0xc000"
+        ],
+        "shape": [
+          4,
+          1
+        ]
+      },
+      "sequential_public_bf16_multiply_add_reference": {
+        "result": {
+          "device": "cpu",
+          "dtype": "torch.bfloat16",
+          "flat_values": [
+            1.375
+          ],
+          "raw_uint16_hex": [
+            "0x3fb0"
+          ],
+          "shape": []
+        },
+        "terms": [
+          {
+            "rounded_product": {
+              "device": "cpu",
+              "dtype": "torch.bfloat16",
+              "flat_values": [
+                -0.75
+              ],
+              "raw_uint16_hex": [
+                "0xbf40"
+              ],
+              "shape": []
+            },
+            "rounded_running_sum": {
+              "device": "cpu",
+              "dtype": "torch.bfloat16",
+              "flat_values": [
+                -0.75
+              ],
+              "raw_uint16_hex": [
+                "0xbf40"
+              ],
+              "shape": []
+            }
+          },
+          {
+            "rounded_product": {
+              "device": "cpu",
+              "dtype": "torch.bfloat16",
+              "flat_values": [
+                -32.0
+              ],
+              "raw_uint16_hex": [
+                "0xc200"
+              ],
+              "shape": []
+            },
+            "rounded_running_sum": {
+              "device": "cpu",
+              "dtype": "torch.bfloat16",
+              "flat_values": [
+                -32.75
+              ],
+              "raw_uint16_hex": [
+                "0xc203"
+              ],
+              "shape": []
+            }
+          },
+          {
+            "rounded_product": {
+              "device": "cpu",
+              "dtype": "torch.bfloat16",
+              "flat_values": [
+                2.109375
+              ],
+              "raw_uint16_hex": [
+                "0x4007"
+              ],
+              "shape": []
+            },
+            "rounded_running_sum": {
+              "device": "cpu",
+              "dtype": "torch.bfloat16",
+              "flat_values": [
+                -30.625
+              ],
+              "raw_uint16_hex": [
+                "0xc1f5"
+              ],
+              "shape": []
+            }
+          },
+          {
+            "rounded_product": {
+              "device": "cpu",
+              "dtype": "torch.bfloat16",
+              "flat_values": [
+                32.0
+              ],
+              "raw_uint16_hex": [
+                "0x4200"
+              ],
+              "shape": []
+            },
+            "rounded_running_sum": {
+              "device": "cpu",
+              "dtype": "torch.bfloat16",
+              "flat_values": [
+                1.375
+              ],
+              "raw_uint16_hex": [
+                "0x3fb0"
+              ],
+              "shape": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "schema_version": "passive-muon-bf16-witness-v1",
+  "software": {
+    "default_dtype": "torch.float32",
+    "deterministic_algorithms_enabled": false,
+    "python": "3.12.11",
+    "python_implementation": "CPython",
+    "pytorch": "2.13.0",
+    "pytorch_build_configuration": "PyTorch built with:\n  - GCC 4.2\n  - C++ Version: 202002\n  - clang 21.0.0\n  - OpenMP 202011\n  - LAPACK is enabled (usually provided by MKL)\n  - NNPACK is enabled\n  - CPU capability usage: DEFAULT\n  - Build settings: BLAS_INFO=accelerate, BUILD_TYPE=Release, COMMIT_SHA=cf30153c4c131c8164ee7798e5022d810682e2cb, CUDA_FLAGS= -DLIBCUDACXX_ENABLE_SIMPLIFIED_COMPLEX_OPERATIONS -Xfatbin -compress-all  -Wno-deprecated-gpu-targets --expt-extended-lambda -DCUB_WRAPPED_NAMESPACE=at_cuda_detail -DDISABLE_CUSPARSE_DEPRECATED -DCUDA_HAS_FP16=1 -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -DC10_NODEPRECATED, CXX_COMPILER=/usr/bin/c++, CXX_FLAGS= -fvisibility-inlines-hidden -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO -DUSE_PYTORCH_QNNPACK -DAT_BUILD_ARM_VEC256_WITH_SLEEF -DUSE_PYTORCH_METAL_EXPORT -DSYMBOLICATE_MOBILE_DEBUG_HANDLE -DUSE_COREML_DELEGATE -O2 -fPIC -DC10_NODEPRECATED -Wall -Wextra -Werror=return-type -Werror=non-virtual-dtor -Werror=braced-scalar-init -Werror=range-loop-construct -Werror=bool-operation -Wnarrowing -Wno-missing-field-initializers -Wno-unknown-pragmas -Wno-unused-parameter -Wno-strict-overflow -Wno-strict-aliasing -Wvla-extension -Wsuggest-override -Wnewline-eof -Winconsistent-missing-override -Winconsistent-missing-destructor-override -Wno-pass-failed -Wno-error=old-style-cast -Wconstant-conversion -Qunused-arguments -faligned-new -fno-math-errno -fno-trapping-math -Werror=format -fclang-abi-compat=17 -DUSE_MPS -Wno-missing-braces, LAPACK_INFO=accelerate, TORCH_VERSION=2.13.0, USE_CUDA=OFF, USE_CUDNN=OFF, USE_CUSPARSELT=OFF, USE_EIGEN_FOR_BLAS=ON, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_GLOO=ON, USE_MKL=OFF, USE_MKLDNN=OFF, USE_MPI=OFF, USE_NCCL=OFF, USE_NNPACK=ON, USE_OPENMP=ON, USE_ROCM=OFF, USE_ROCM_KERNEL_ASSERT=OFF, USE_XCCL=OFF, USE_XPU=OFF, \n",
+    "pytorch_git_version": "cf30153c4c131c8164ee7798e5022d810682e2cb",
+    "torch_num_interop_threads": 10,
+    "torch_num_threads": 4
+  }
+}
