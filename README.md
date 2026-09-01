@@ -1,7 +1,7 @@
 # Passivizing Practical Muon
 
-Research code for **Passivizing Practical Muon: Normalization Gaps and a Minimal
-Circuit Repair**.
+Personal research workspace for **Passivizing Practical Muon: Normalization
+Gaps and a Minimal Circuit Repair**.
 
 The project asks a deliberately narrow question: when a finite polynomial
 orthogonalizer is applied after normalization by the *current* Frobenius norm,
@@ -66,7 +66,7 @@ pairwise.
 
 ## Scope
 
-The planned paper contains only four contributions:
+This repository stays focused on four technical goals:
 
 1. a theorem for current-input Frobenius normalization;
 2. passivity-deficit measurements for Jordan, classical Newton--Schulz, Polar

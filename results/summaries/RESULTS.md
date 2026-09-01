@@ -1,4 +1,4 @@
-# Experiment results (no manuscript prose)
+# Experiment results
 
 These results were generated in float64 on an arm64 CPU. JSON files are the
 source-of-truth manifests; CSV files are flattened views. All grid extrema are
@@ -42,9 +42,9 @@ witnesses, but their total deficits are dominated by fixed-scale polynomial
 nonmonotonicity on parts of the unit-spectrum grid.
 
 Polar Express is pinned to the current repository configuration at commit
-`71cc37943d99cae780024c1d198977f2f8795407`. CANS is the paper's published
-degree-five, four-stage, `delta=0.3` table; no code was copied from its
-unlicensed repository.
+`71cc37943d99cae780024c1d198977f2f8795407`. CANS uses the published
+degree-five, four-stage, `delta=0.3` coefficient table; no code was copied from
+its unlicensed repository.
 
 ## 3. Controlled diagonal matrix quadratics
 

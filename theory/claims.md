@@ -1,6 +1,6 @@
 # Claim ledger
 
-This file separates established statements from the intended paper claims. The
+This file separates established statements from open research claims. The
 ambient inner product is Frobenius, `<A, B> = tr(A^T B)`, and monotonicity means
 
 \[
@@ -10,8 +10,8 @@ ambient inner product is Frobenius, `<A, B> = tr(A^T B)`, and monotonicity means
 for every pair in the stated domain. This is the incremental/equilibrium-
 relative inequality that appears in Boyd's circuit energy-dissipation
 argument. It is stronger than ordinary origin-based static passivity
-`<T(A), A> >= 0`; the paper should say **incremental passivity (monotonicity)**
-until its port convention is fully fixed.
+`<T(A), A> >= 0`. Use **incremental passivity (monotonicity)** in notes and
+results until the port convention is fully fixed.
 
 ## C1. Normalization-induced local nonmonotonicity — proved
 
