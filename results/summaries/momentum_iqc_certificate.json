@@ -84,8 +84,10 @@
   },
   "claim_scope": {
     "evidence_kind": "exact_dimension_independent_iqc_theorem_exact_rational_lmi_replay_and_matched_float64_rank_one_trajectories",
-    "guarantee": "global incremental exponential stability of the specified real-arithmetic momentum loop",
+    "guarantee": "global incremental exponential stability of the specified stylized real-arithmetic non-Nesterov momentum loop",
     "not_claimed": [
+      "the pinned upstream Muon EMA/Nesterov state-and-signal ordering",
+      "stability of the complete practical Muon implementation",
       "stability for nonquadratic or stochastic objectives",
       "a discrete BF16 theorem",
       "neural-network training convergence",
@@ -93,6 +95,7 @@
       "a practically large certified learning rate"
     ],
     "operator_domain": "R^(m x n) for every fixed finite positive m,n",
+    "paper_position": "supporting proof-of-principle result",
     "quadratic_domain": "every fixed finite-dimensional real quadratic with ell*I <= H <= L*I"
   },
   "experiment_provenance": {
@@ -100,27 +103,27 @@
     "randomness": "none; exact rational arithmetic and deterministic float64 recurrences",
     "seed": null,
     "source_snapshot": {
-      ".github/workflows/ci.yml": "3f6b4cafd579a6cd7266a20c08e5fdebc1ec348cea50cd93e13d0b0246d4a954",
-      "README.md": "7ba7564687fc22b857c1f59029e49368431ce652a7410c3e679921bec5848776",
-      "experiments/README.md": "99ff96aad5f5fe57015ac1a53e05f85a57f386d52b75943f9e0e7d3feb189cd1",
+      ".github/workflows/ci.yml": "3e0869e7e086a853a09736102b72410397e2123816214d2c511894734d19a057",
+      "README.md": "ec03b319f2a2622c51c582f7eda53b70fc1a1472fc6732b23a5e6101744dc758",
+      "experiments/README.md": "2fbf78a49fa878efd6d0c10cbd694c57cc85d2d09b7c5a03903c3b02407eb1c5",
       "pyproject.toml": "7a9988bf528baef5145f779516d4315349d1c2a6bbb7394c9b93fbbee1d4f596",
-      "results/README.md": "e5d14ef6b2d66f7391c7dc26db3ba4ccdc9f2194b545c8c7dc4b15f57c3f0d13",
-      "results/summaries/RESULTS.md": "18204858784825bea680ee55c60cead4e03a48668173fac05bac3aa598ba365e",
-      "scripts/certify_momentum_stability.py": "1ec9b8e118a770878ecc624a7efe34e48c32a3539e2eddd71401ff6b9e4acdc5",
+      "results/README.md": "4ecf724b5b1fa430b31ada8026dfbe6272f6140e0a8e2046daa0bc4b97e7989d",
+      "results/summaries/RESULTS.md": "65b676d97edc4a78e83c81c873d4dfbb48855190cf2fd6ea335a011fa0c9e9a7",
+      "scripts/certify_momentum_stability.py": "ce86935f0859edf4459451518f78dc12f0919d3e28e458467b88283af9cbdeea",
       "src/passive_muon/floored_certificate.py": "385dee8576e574bebc72fe09478220cf2ec29928045ee6341472c2e9becb6a72",
-      "src/passive_muon/momentum_experiment.py": "e1d3cbe660a38f5df6345625c4a1de1d69837cf62de907afd89553330dd357c5",
-      "src/passive_muon/momentum_iqc.py": "de4154a05e6fa4be605ea681b93fc2ae9197a807bdb09963a6ef0e4760a413ff",
+      "src/passive_muon/momentum_experiment.py": "fc754e0ee93a043dc6cbb30957674893c37b3f9da5db31436a4903d0505c72af",
+      "src/passive_muon/momentum_iqc.py": "c1e7346473d2d8e96ad2e378ac7d47b98f35786752c31c50109375cec3ab415d",
       "src/passive_muon/normalizers.py": "13a7e78b95dc1543bbbdeb046bbc46b493eb233c87dfb42c809aa186a5504338",
       "src/passive_muon/operator.py": "1a4985b608102da2f1aa325bfb726a43ef3312212bd805a60ce969056974938a",
       "src/passive_muon/orthogonalizers.py": "72687f59ad859ac5945279cc27a2e76b50a02ca408730326e24c9c1682f5c7c9",
       "src/passive_muon/polynomials.py": "82ee698373d33bd90818fd5cb740e532d410ecc767e82d128de7a61483d69925",
       "src/passive_muon/specs.py": "85fcee0f87485fc3cac2f426d62ec6e55da7896caade2f5df2a1c87f7d9c5d6c",
-      "tests/test_cli.py": "86a3c5a0698c0e5f54d40dfe935281fa0271332c9024e2859ce500295dcfccc3",
+      "tests/test_cli.py": "61e2a97675f5957bf5be7d9ae3c8f2c1c098e905f045eac2dbe344162e222553",
       "tests/test_momentum_iqc.py": "a880df982bce845eb7193a8f45e245dcec86a1d77ad83282046396d9ccc59c53",
-      "tests/test_result_manifests.py": "cef7255dc715cb176d041d952a278faa89490a06c0ebcad91b065ac9c8e16893",
-      "theory/claims.md": "60e5d25a35801e9d78e5e0e5b5559eb0517397b0ec3e7cd8fba09ec4baec978b",
-      "theory/momentum_iqc_certificate.md": "2f84fc5f925eae201faafd655b9191c4ba84d911f5829cba3cec9b7b2787b8cd",
-      "third_party/UPSTREAM_COMMITS.md": "15e4b03cc471431a807d16cf8cc746564542f8e637098c78404f4ae1a1631651",
+      "tests/test_result_manifests.py": "e34ff99a449c81c370fd25c362725dc24b890910be4385ad442c346317b11bf6",
+      "theory/claims.md": "493f7ea68f15ba9432aba1b826b05e21e2ba5888a29dc21e85df346296e3b3aa",
+      "theory/momentum_iqc_certificate.md": "3a1bf86329e17708ec8ef7285598ab1faf93f045769b85f8160d1d68c9c88dc3",
+      "third_party/UPSTREAM_COMMITS.md": "50394b43983d056631edada4e478c3ddfcc56528676f6a96eb8f4b42ac565008",
       "uv.lock": "f097fd7895b5c1c551a0bd233d025c3f8ae97b7dedce6a8690569f1b1f7c5cf1"
     }
   },
@@ -128,7 +131,7 @@
     "branch": "p3",
     "dirty": false,
     "frozen_fallback_commit": "518cc9384a7a478f3c5956532fd26a6937f70d5f",
-    "sha": "f0b2db7c61b5c2b5d4e6c84df455b05d160f852e"
+    "sha": "0d6e9bee8ba8c1b03acef96a052c75b5b84eb6e0"
   },
   "hardware": {
     "byte_order": "little",
@@ -409,10 +412,24 @@
     "steps": 5,
     "upstream": "KellerJordan/Muon@f98f1cacc0263b04290753e32be8d498c1efc806"
   },
+  "prior_art": [
+    {
+      "citation": "Lessard, Recht, and Packard (2016)",
+      "role": "foundational optimization IQC framework",
+      "url": "https://arxiv.org/abs/1408.3595"
+    },
+    {
+      "citation": "Zhang, Bao, Lessard, and Grosse, JMLR 22(103), 2021",
+      "role": "prior IQC analysis of finite-memory methods with strongly monotone Lipschitz, potentially nonconservative operators",
+      "url": "https://jmlr.org/papers/v22/20-1068.html"
+    }
+  ],
   "quadratic_and_loop": {
     "equilibrium": "(W_star,0)",
     "hessian_lower_ell": "1",
     "hessian_upper_L": "10",
+    "loop_class": "stylized real-arithmetic non-Nesterov momentum",
+    "matches_pinned_upstream_ema_nesterov": false,
     "momentum_beta": "9/10",
     "objective": "f(W)=0.5*<W-W_star,H(W-W_star)>",
     "update_order": [

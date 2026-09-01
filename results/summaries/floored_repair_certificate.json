@@ -49,7 +49,7 @@
     "randomness": "none; deterministic exact and interval arithmetic",
     "seed": null,
     "source_snapshot": {
-      ".github/workflows/ci.yml": "3f6b4cafd579a6cd7266a20c08e5fdebc1ec348cea50cd93e13d0b0246d4a954",
+      ".github/workflows/ci.yml": "3e0869e7e086a853a09736102b72410397e2123816214d2c511894734d19a057",
       "pyproject.toml": "7a9988bf528baef5145f779516d4315349d1c2a6bbb7394c9b93fbbee1d4f596",
       "scripts/certify_floored_repair.py": "f2662fca0329c517f10d51e138502a8aa2d738c3eb9425c278e2b9e5ec8cf5d5",
       "src/passive_muon/floored_certificate.py": "385dee8576e574bebc72fe09478220cf2ec29928045ee6341472c2e9becb6a72",
@@ -58,12 +58,12 @@
       "src/passive_muon/orthogonalizers.py": "72687f59ad859ac5945279cc27a2e76b50a02ca408730326e24c9c1682f5c7c9",
       "src/passive_muon/polynomials.py": "82ee698373d33bd90818fd5cb740e532d410ecc767e82d128de7a61483d69925",
       "src/passive_muon/specs.py": "85fcee0f87485fc3cac2f426d62ec6e55da7896caade2f5df2a1c87f7d9c5d6c",
-      "tests/test_cli.py": "86a3c5a0698c0e5f54d40dfe935281fa0271332c9024e2859ce500295dcfccc3",
+      "tests/test_cli.py": "61e2a97675f5957bf5be7d9ae3c8f2c1c098e905f045eac2dbe344162e222553",
       "tests/test_floored_certificate.py": "5ba1aac3b4d6e5cf1765a569b495b1851a834408d9ad54df472b3ac94165a084",
       "tests/test_normalizers.py": "4b4898b1ddb18862f86d5afb20a6be0a01474748adba0c0fc21602946e09361a",
-      "theory/claims.md": "60e5d25a35801e9d78e5e0e5b5559eb0517397b0ec3e7cd8fba09ec4baec978b",
+      "theory/claims.md": "493f7ea68f15ba9432aba1b826b05e21e2ba5888a29dc21e85df346296e3b3aa",
       "theory/floored_normalizer_certificate.md": "1dabd135c2213fa58a15c56dce413d446f050ef64d7af6edac3d450629db5c0a",
-      "third_party/UPSTREAM_COMMITS.md": "15e4b03cc471431a807d16cf8cc746564542f8e637098c78404f4ae1a1631651",
+      "third_party/UPSTREAM_COMMITS.md": "50394b43983d056631edada4e478c3ddfcc56528676f6a96eb8f4b42ac565008",
       "uv.lock": "f097fd7895b5c1c551a0bd233d025c3f8ae97b7dedce6a8690569f1b1f7c5cf1"
     }
   },
@@ -81,7 +81,7 @@
   },
   "git": {
     "dirty": false,
-    "sha": "2928e52e553093c31453ba00cc51e12e40f02620"
+    "sha": "0d6e9bee8ba8c1b03acef96a052c75b5b84eb6e0"
   },
   "hardware": {
     "byte_order": "little",
@@ -117,7 +117,7 @@
     "passes": [
       {
         "configured_maximum_dyadic_power": 48,
-        "elapsed_seconds": 0.24926654197042808,
+        "elapsed_seconds": 0.4535405419883318,
         "initial_dyadic_power": 12,
         "leaf_count": 25370,
         "maximum_dyadic_power": 32,
@@ -126,7 +126,7 @@
       },
       {
         "configured_maximum_dyadic_power": 48,
-        "elapsed_seconds": 0.24824500002432615,
+        "elapsed_seconds": 0.3452192079857923,
         "initial_dyadic_power": 12,
         "leaf_count": 25370,
         "maximum_dyadic_power": 32,

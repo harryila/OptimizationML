@@ -2440,12 +2440,12 @@
       "src/passive_muon/deployed.py": "a77e5f08ff17e5500826029962c10ecbc87cc598009a83c50262991946838cf4",
       "src/passive_muon/specs.py": "85fcee0f87485fc3cac2f426d62ec6e55da7896caade2f5df2a1c87f7d9c5d6c",
       "third_party/LICENSES.md": "f603fff644e315746d49052fa6126610fd81179ccd3be03ea306bb6d581a1e1e",
-      "third_party/UPSTREAM_COMMITS.md": "15e4b03cc471431a807d16cf8cc746564542f8e637098c78404f4ae1a1631651"
+      "third_party/UPSTREAM_COMMITS.md": "50394b43983d056631edada4e478c3ddfcc56528676f6a96eb8f4b42ac565008"
     }
   },
   "git": {
     "dirty": false,
-    "sha": "cb0e549979b0500215e204bc2f01bbc4be07b24c"
+    "sha": "0d6e9bee8ba8c1b03acef96a052c75b5b84eb6e0"
   },
   "hardware": {
     "byte_order": "little",
@@ -2459,7 +2459,7 @@
     },
     "logical_cpu_count": 10,
     "machine_architecture": "arm64",
-    "mps_available": true,
+    "mps_available": false,
     "mps_built": true,
     "operating_system": "Darwin",
     "operating_system_release": "24.5.0",

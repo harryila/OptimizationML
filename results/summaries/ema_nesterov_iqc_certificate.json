@@ -1,0 +1,550 @@
+{
+  "actual_floored_jordan_local_control": {
+    "certified_point_jury_margin": {
+      "decimal": "3.8996375000036181028078706745992298941320199819831",
+      "exact": "41975373676176237509268258431393/10763916819483168000000000000000"
+    },
+    "hard_decision_rule_triggered": true,
+    "local_learning_rate_threshold": {
+      "decimal": "0.0020810664573645378633650109222134860722917663827006",
+      "exact": "8120154432000000000000000/3901919808117690731741568607"
+    },
+    "local_threshold_formula": "2*(1+beta)/((1-beta)*(1+2*beta)*L*(rho+h_prime_0/c))",
+    "locked_exact_certificate_gap_factor": 10758.62079703668,
+    "optimized_design_local_threshold": 0.0020810277081275597,
+    "optimized_skew_boundary_gap_factor": 9923.443935744046,
+    "outside_locally_unstable": true,
+    "outside_point_eta": {
+      "decimal": "0.0025",
+      "exact": "1/400"
+    },
+    "outside_point_jury_margin": {
+      "decimal": "-0.78509785715704533961261168268505167267242436602959",
+      "exact": "-653858035317690731741568607/832836352000000000000000000"
+    },
+    "repaired_zero_input_gain": {
+      "decimal": "1292.4407881812538867896859814303590821165308595944",
+      "exact": "134548958900610025232467883/104104544000000000000000"
+    },
+    "result_classification": "appendix_or_proof_of_principle",
+    "zero_slope_gain_h_prime_0": {
+      "decimal": "484.87628710018292028125",
+      "exact": "15516041187205853449/32000000000000000"
+    }
+  },
+  "claim_scope": {
+    "evidence_kind": "exact_dimension_independent_iqc_theorem_exact_rational_lmi_replay_and_matched_float64_rank_one_trajectories",
+    "guarantee": "global incremental exponential stability for the specified real-arithmetic EMA/Nesterov loop using the repaired floored operator",
+    "not_claimed": [
+      "stability of the complete pinned practical Muon implementation",
+      "stability for nonquadratic or stochastic objectives",
+      "a discrete BF16 theorem",
+      "neural-network training convergence",
+      "sufficiency of the numerical skew-response boundary for the nonlinear sector",
+      "a practically large certified learning rate"
+    ],
+    "operator_domain": "R^(m x n) for every fixed finite positive m,n",
+    "paper_position": "appendix_or_proof_of_principle_supporting_result",
+    "quadratic_domain": "every fixed finite-dimensional real quadratic with ell*I <= H <= L*I",
+    "upstream_match": "matches pinned EMA/Nesterov state-and-signal ordering after replacing the orthogonalizer by repaired floored R and omitting decoupled weight decay"
+  },
+  "conditioned_iqc_theorem": {
+    "dimension_independent": true,
+    "dimensionless_step_formula": "alpha=eta*K*L",
+    "full_matrix_tangent_space": true,
+    "lmi": "T^T*P*T-tau^2*E^T*P*E+lambda_mu*Q_mu+lambda_L*Q_L < 0",
+    "nesterov_input": "p=(1-beta^2)*y+beta^2*z",
+    "normalized_output": "u=H^(1/2)*Delta_R/(K*L)",
+    "normalized_strongness": {
+      "decimal": "0.050137692918544196266510821480392424742590511551776",
+      "exact": "208209088000/4152745686529"
+    },
+    "normalized_strongness_formula": "nu=mu*ell/(K*L)",
+    "separate_incremental_iqcs": [
+      "<p,u>-nu*||p||^2 >= 0",
+      "||p||^2-||u||^2 >= 0"
+    ],
+    "state_transform": [
+      "y=H^(1/2)*Delta_W",
+      "z=H^(-1/2)*Delta_m"
+    ],
+    "transition": [
+      "y_next=y-alpha*u",
+      "z_next=(1-beta)*y+beta*z"
+    ]
+  },
+  "experiment_provenance": {
+    "determinism": "exact rational replay plus deterministic CPU float64 diagnostics",
+    "seed": null,
+    "source_snapshot": {
+      ".github/workflows/ci.yml": "3e0869e7e086a853a09736102b72410397e2123816214d2c511894734d19a057",
+      "README.md": "ec03b319f2a2622c51c582f7eda53b70fc1a1472fc6732b23a5e6101744dc758",
+      "TASKS.md": "d9bf3998cc7277e1af40373c4fe4c4b4e2a75990ee5f22fd294e63710a081bce",
+      "experiments/README.md": "2fbf78a49fa878efd6d0c10cbd694c57cc85d2d09b7c5a03903c3b02407eb1c5",
+      "pyproject.toml": "7a9988bf528baef5145f779516d4315349d1c2a6bbb7394c9b93fbbee1d4f596",
+      "results/README.md": "4ecf724b5b1fa430b31ada8026dfbe6272f6140e0a8e2046daa0bc4b97e7989d",
+      "results/summaries/RESULTS.md": "65b676d97edc4a78e83c81c873d4dfbb48855190cf2fd6ea335a011fa0c9e9a7",
+      "scripts/certify_ema_nesterov_stability.py": "e44b96ad51aa37fe8a4e9e99573057486e7721bbc5e813261935fdce9e504328",
+      "src/passive_muon/ema_nesterov_experiment.py": "56bd18407107581fba5c0be8a5b8ccb4a902f33880474aa191bb5dcdef12a470",
+      "src/passive_muon/ema_nesterov_iqc.py": "190afa8de51fe055edbbc93d5312d2765b670f1dcc3233daf7ac65c4ed96397d",
+      "src/passive_muon/floored_certificate.py": "385dee8576e574bebc72fe09478220cf2ec29928045ee6341472c2e9becb6a72",
+      "src/passive_muon/momentum_experiment.py": "fc754e0ee93a043dc6cbb30957674893c37b3f9da5db31436a4903d0505c72af",
+      "src/passive_muon/momentum_iqc.py": "c1e7346473d2d8e96ad2e378ac7d47b98f35786752c31c50109375cec3ab415d",
+      "src/passive_muon/normalizers.py": "13a7e78b95dc1543bbbdeb046bbc46b493eb233c87dfb42c809aa186a5504338",
+      "src/passive_muon/operator.py": "1a4985b608102da2f1aa325bfb726a43ef3312212bd805a60ce969056974938a",
+      "src/passive_muon/orthogonalizers.py": "72687f59ad859ac5945279cc27a2e76b50a02ca408730326e24c9c1682f5c7c9",
+      "src/passive_muon/polynomials.py": "82ee698373d33bd90818fd5cb740e532d410ecc767e82d128de7a61483d69925",
+      "src/passive_muon/specs.py": "85fcee0f87485fc3cac2f426d62ec6e55da7896caade2f5df2a1c87f7d9c5d6c",
+      "src/passive_muon/upstream_momentum.py": "7479613bb307debbb2a02e04e6bbe53a428855c51e1e21210f9c2be2e68d3d7e",
+      "tests/test_cli.py": "61e2a97675f5957bf5be7d9ae3c8f2c1c098e905f045eac2dbe344162e222553",
+      "tests/test_ema_nesterov_iqc.py": "c2836be0d1c161d8648071a06600ab6c764422eea23c036fcb5a0f5f26783b77",
+      "tests/test_result_manifests.py": "e34ff99a449c81c370fd25c362725dc24b890910be4385ad442c346317b11bf6",
+      "tests/test_upstream_momentum.py": "5cfe184b5ebb61fd16447d4da702fdf4e64f59c361a66e60a4ee1fd49c5f5317",
+      "theory/claims.md": "493f7ea68f15ba9432aba1b826b05e21e2ba5888a29dc21e85df346296e3b3aa",
+      "theory/ema_nesterov_iqc_certificate.md": "77ce0ca2946a885b4e7dce0ede90d654fa2f9cb560dee282a8c2b301dec3bee5",
+      "third_party/UPSTREAM_COMMITS.md": "50394b43983d056631edada4e478c3ddfcc56528676f6a96eb8f4b42ac565008",
+      "uv.lock": "f097fd7895b5c1c551a0bd233d025c3f8ae97b7dedce6a8690569f1b1f7c5cf1"
+    }
+  },
+  "git": {
+    "branch": "p3",
+    "dirty": false,
+    "frozen_fallback_commit": "518cc9384a7a478f3c5956532fd26a6937f70d5f",
+    "sha": "0d6e9bee8ba8c1b03acef96a052c75b5b84eb6e0"
+  },
+  "hardware": {
+    "cpu_count": 10,
+    "machine_architecture": "arm64",
+    "platform": "macOS-15.5-arm64-arm-64bit",
+    "processor": "arm"
+  },
+  "locked_exact_rate_certificate": {
+    "L": "10",
+    "beta": "19/20",
+    "c": "1",
+    "dimensionless_step_alpha": {
+      "decimal": "0.0025",
+      "exact": "1/400"
+    },
+    "ell": "1",
+    "lambda_lipschitz": {
+      "decimal": "0.000086",
+      "exact": "43/500000"
+    },
+    "lambda_strong": {
+      "decimal": "0.001847",
+      "exact": "1847/1000000"
+    },
+    "learning_rate_eta": {
+      "decimal": "1.9343245724746989300351397176077324360567326987568E-7",
+      "exact": "65065340/336372400608849"
+    },
+    "lipschitz_bound_K": {
+      "decimal": "1292.4408010810709665084359814303590821165308595944",
+      "exact": "336372400608849/260261360000"
+    },
+    "lmi": [
+      [
+        "-81693230100482426097/2657757239378560000000",
+        "51191461168892865530493/1661098274611600000000000",
+        "-12626103/8000000000"
+      ],
+      [
+        "51191461168892865530493/1661098274611600000000000",
+        "-10265898015285457975901/332219654922320000000000",
+        "12659643/8000000000"
+      ],
+      [
+        "-12626103/8000000000",
+        "12659643/8000000000",
+        "-1307691/16000000000"
+      ]
+    ],
+    "negative_lmi_leading_minors": [
+      {
+        "decimal": "0.030737656882305787864184355983663401169960798986690",
+        "exact": "81693230100482426097/2657757239378560000000"
+      },
+      {
+        "decimal": "8.3068206755882090036712310492441551295491110255454E-8",
+        "exact": "6899222745863769717969645093/83054913730580000000000000000000000"
+      },
+      {
+        "decimal": "5.7377868129236792693103966678434682413901146607090E-14",
+        "exact": "76248222200293719542121626530563/1328878619689280000000000000000000000000000000"
+      }
+    ],
+    "normalized_strongness_nu": {
+      "decimal": "0.050137692918544196266510821480392424742590511551776",
+      "exact": "208209088000/4152745686529"
+    },
+    "one_minus_beta": "1/20",
+    "rate_squared": {
+      "decimal": "0.99999",
+      "exact": "99999/100000"
+    },
+    "repair_margin_mu": {
+      "decimal": "648",
+      "exact": "648"
+    },
+    "repair_rho": {
+      "decimal": "807.56450108107096650843598143035908211653085959437",
+      "exact": "210177835339081/260261360000"
+    },
+    "solver_role": "floating-point SDP used for discovery only; replay is rational",
+    "storage_P": [
+      [
+        "68309/100000",
+        "-315367/1000000"
+      ],
+      [
+        "-315367/1000000",
+        "31691/100000"
+      ]
+    ],
+    "storage_leading_minors": [
+      {
+        "decimal": "0.68309",
+        "exact": "68309/100000"
+      },
+      {
+        "decimal": "0.117021707211",
+        "exact": "117021707211/1000000000000"
+      }
+    ],
+    "sylvester_negative_lmi": true,
+    "sylvester_positive_storage": true
+  },
+  "matched_rank_one_float64_examples": {
+    "certified_stable": {
+      "divergence_threshold": 1e+100,
+      "exceeded_divergence_threshold": false,
+      "executed_iterations": 100000,
+      "final_momentum": 8.066558256022623e-112,
+      "final_position": 7.643061150753626e-113,
+      "final_signal": 8.046389199399059e-112,
+      "first_hundredfold_amplification_iteration": null,
+      "initial_position": 1.0,
+      "learning_rate": 1.9343245724746989e-07,
+      "learning_rate_exact": "65065340/336372400608849",
+      "maximum_absolute_momentum": 9.19094560684025,
+      "maximum_absolute_position": 1.0,
+      "maximum_absolute_signal": 9.191663585339498,
+      "requested_iterations": 100000,
+      "tail": [
+        {
+          "momentum": 8.216350942340172e-112,
+          "position": 7.784989669103556e-113,
+          "signal": 8.195807354587439e-112
+        },
+        {
+          "momentum": 8.194782878678341e-112,
+          "position": 7.764553936262025e-113,
+          "signal": 8.174293218199602e-112
+        },
+        {
+          "momentum": 8.173271431557526e-112,
+          "position": 7.744171847573476e-113,
+          "signal": 8.152835556792751e-112
+        },
+        {
+          "momentum": 8.151816452358323e-112,
+          "position": 7.723843262221078e-113,
+          "signal": 8.13143422211908e-112
+        },
+        {
+          "momentum": 8.13041779285146e-112,
+          "position": 7.703568039757644e-113,
+          "signal": 8.110089066319941e-112
+        },
+        {
+          "momentum": 8.109075305196769e-112,
+          "position": 7.683346040104667e-113,
+          "signal": 8.088799941924813e-112
+        },
+        {
+          "momentum": 8.087788841942164e-112,
+          "position": 7.663177123551347e-113,
+          "signal": 8.067566701850289e-112
+        },
+        {
+          "momentum": 8.066558256022623e-112,
+          "position": 7.643061150753626e-113,
+          "signal": 8.046389199399059e-112
+        }
+      ]
+    },
+    "far_outside_divergent": {
+      "divergence_threshold": 1e+100,
+      "exceeded_divergence_threshold": true,
+      "executed_iterations": 264,
+      "final_momentum": -1.689608752914585e+99,
+      "final_position": 1.129202950274838e+100,
+      "final_signal": -3.9658865533056206e+99,
+      "first_hundredfold_amplification_iteration": 6,
+      "initial_position": 1.0,
+      "learning_rate": 0.005,
+      "learning_rate_exact": "1/200",
+      "local_linear_spectral_radius": 4.792877325979783,
+      "maximum_absolute_momentum": 1.689608752914585e+99,
+      "maximum_absolute_position": 1.129202950274838e+100,
+      "maximum_absolute_signal": 3.9658865533056206e+99,
+      "requested_iterations": 1000,
+      "tail": [
+        {
+          "momentum": -1.5785639976999433e+96,
+          "position": 1.05498928099512e+97,
+          "signal": -3.7052398794758455e+96
+        },
+        {
+          "momentum": 3.7753106071606583e+96,
+          "position": -2.523123692663078e+97,
+          "signal": 8.86149148177823e+96
+        },
+        {
+          "momentum": -9.029073386512776e+96,
+          "position": 6.034329716101841e+97,
+          "signal": -2.119323818050254e+97
+        },
+        {
+          "momentum": 2.1594028863322093e+97,
+          "position": -1.443176774429033e+98,
+          "signal": 5.0685976000665214e+97
+        },
+        {
+          "momentum": -5.164451130129572e+97,
+          "position": 3.451517070228712e+98,
+          "signal": -1.2122112445768265e+98
+        },
+        {
+          "momentum": 1.2351356777520483e+98,
+          "position": -8.25468528676492e+98,
+          "signal": 2.8991374289788035e+98
+        },
+        {
+          "momentum": -2.953963749518018e+98,
+          "position": 1.9741993968761685e+99,
+          "signal": -6.93360820542458e+98
+        },
+        {
+          "momentum": 7.064731422338734e+98,
+          "position": -4.721516476073525e+99,
+          "signal": 1.6582491835602648e+99
+        }
+      ]
+    },
+    "outside_period_two": {
+      "divergence_threshold": 1e+100,
+      "exceeded_divergence_threshold": false,
+      "executed_iterations": 20000,
+      "final_momentum": -0.0015355082008336632,
+      "final_position": 0.005988481983251283,
+      "final_signal": -0.0044529737824176244,
+      "first_hundredfold_amplification_iteration": null,
+      "initial_position": 1.0,
+      "learning_rate": 0.0025,
+      "learning_rate_exact": "1/400",
+      "local_linear_spectral_radius": 1.5722569153405621,
+      "maximum_absolute_momentum": 0.5000000000000004,
+      "maximum_absolute_position": 1.0,
+      "maximum_absolute_signal": 0.9750000000000009,
+      "period_two_tail_residual": 0.0,
+      "requested_iterations": 20000,
+      "tail": [
+        {
+          "momentum": 0.001535508200833664,
+          "position": -0.005988481983251283,
+          "signal": 0.0044529737824176244
+        },
+        {
+          "momentum": -0.0015355082008336632,
+          "position": 0.005988481983251283,
+          "signal": -0.0044529737824176244
+        },
+        {
+          "momentum": 0.001535508200833664,
+          "position": -0.005988481983251283,
+          "signal": 0.0044529737824176244
+        },
+        {
+          "momentum": -0.0015355082008336632,
+          "position": 0.005988481983251283,
+          "signal": -0.0044529737824176244
+        },
+        {
+          "momentum": 0.001535508200833664,
+          "position": -0.005988481983251283,
+          "signal": 0.0044529737824176244
+        },
+        {
+          "momentum": -0.0015355082008336632,
+          "position": 0.005988481983251283,
+          "signal": -0.0044529737824176244
+        },
+        {
+          "momentum": 0.001535508200833664,
+          "position": -0.005988481983251283,
+          "signal": 0.0044529737824176244
+        },
+        {
+          "momentum": -0.0015355082008336632,
+          "position": 0.005988481983251283,
+          "signal": -0.0044529737824176244
+        },
+        {
+          "momentum": 0.001535508200833664,
+          "position": -0.005988481983251283,
+          "signal": 0.0044529737824176244
+        },
+        {
+          "momentum": -0.0015355082008336632,
+          "position": 0.005988481983251283,
+          "signal": -0.0044529737824176244
+        },
+        {
+          "momentum": 0.001535508200833664,
+          "position": -0.005988481983251283,
+          "signal": 0.0044529737824176244
+        },
+        {
+          "momentum": -0.0015355082008336632,
+          "position": 0.005988481983251283,
+          "signal": -0.0044529737824176244
+        }
+      ]
+    },
+    "shared_configuration": {
+      "beta": 0.95,
+      "controlled_variable": "learning_rate_only",
+      "dtype": "float64",
+      "floor": 1.0,
+      "initial_momentum": 0.0,
+      "initial_position": 1.0,
+      "objective_mode": "curvature-10 rank-one invariant subspace",
+      "operator": "actual repository five-stage floored Jordan scalar response",
+      "repair_rho": 807.564501081071
+    }
+  },
+  "operator": {
+    "additive_epsilon": "not_applicable; the denominator uses a max floor",
+    "arithmetic_model": "real arithmetic",
+    "coefficients_exact": {
+      "a": "6889/2000",
+      "b": "-191/40",
+      "c": "4063/2000"
+    },
+    "deficit_upper_at_c_1": {
+      "decimal": "159.56450108107096650843598143035908211653085959437",
+      "exact": "41528474059081/260261360000"
+    },
+    "derivative_absolute_upper": {
+      "decimal": "484.8763",
+      "exact": "4848763/10000"
+    },
+    "floor_c_exact": "1",
+    "formula": "R_rho,c(M)=H_h(M/max(c,||M||_F))+rho*M",
+    "global_lipschitz_bound_K": {
+      "decimal": "1292.4408010810709665084359814303590821165308595944",
+      "exact": "336372400608849/260261360000"
+    },
+    "normalization_rule": "fixed_frobenius_floor",
+    "orthogonalizer": "jordan_quintic",
+    "repair_margin_mu": {
+      "decimal": "648",
+      "exact": "648"
+    },
+    "repair_rho": {
+      "decimal": "807.56450108107096650843598143035908211653085959437",
+      "exact": "210177835339081/260261360000"
+    },
+    "scalar_composition": "h=q composed with itself 5 times",
+    "stage_recurrence": "x_next=a*x+(b*x^2+c*x^4)*x",
+    "steps": 5,
+    "upstream": "KellerJordan/Muon@f98f1cacc0263b04290753e32be8d498c1efc806"
+  },
+  "pinned_ema_nesterov_ordering": {
+    "audited_file": "muon.py",
+    "audited_source_sha256": "2479665a90124f62e4df557816665851ca317e42fcfda2af1da02c1f44ab5f3d",
+    "default_beta": "19/20",
+    "default_nesterov": true,
+    "independent_upstream_parity_audit_complete": false,
+    "local_automated_lerp_parity_regression": true,
+    "omitted_upstream_features": [
+      "BF16 cast and backend accumulation behavior",
+      "additive 1e-7 exact-current normalizer",
+      "upstream transpose and aspect-ratio scaling",
+      "decoupled weight decay",
+      "distributed optimizer and training system"
+    ],
+    "update_order": [
+      "g_t=H*(W_t-W_star)",
+      "m_(t+1)=beta*m_t+(1-beta)*g_t",
+      "s_(t+1)=beta*m_(t+1)+(1-beta)*g_t",
+      "W_(t+1)=W_t-eta*R_rho,c(s_(t+1))"
+    ],
+    "upstream_repository": "https://github.com/KellerJordan/Muon",
+    "upstream_revision": "f98f1cacc0263b04290753e32be8d498c1efc806"
+  },
+  "prior_art": [
+    {
+      "citation": "Lessard, Recht, and Packard (2016)",
+      "role": "foundational optimization IQC framework",
+      "url": "https://arxiv.org/abs/1408.3595"
+    },
+    {
+      "citation": "Zhang, Bao, Lessard, and Grosse, JMLR 22(103), 2021",
+      "role": "prior IQC analysis of finite-memory algorithms with strongly monotone Lipschitz, potentially nonconservative operators",
+      "url": "https://jmlr.org/papers/v22/20-1068.html"
+    }
+  ],
+  "repair_margin_design_search": {
+    "beta": 0.95,
+    "condition_ratio_ell_over_L": 0.1,
+    "exact_locked_mu_skew_boundary_sign_bracket": {
+      "lower_alpha": {
+        "decimal": "0.002710354",
+        "exact": "1355177/500000000"
+      },
+      "lower_polynomial_sign": "negative",
+      "upper_alpha": {
+        "decimal": "0.002710355",
+        "exact": "542071/200000000"
+      },
+      "upper_polynomial_sign": "positive"
+    },
+    "locked_mu_alpha_skew_boundary": 0.0027103545247548428,
+    "locked_mu_eta_skew_boundary": 2.0970821429405108e-07,
+    "method": "60-digit stationarity solve for the first complex-skew Schur boundary, corroborated on a 1,101-point log scan over [1e-4,1e7]; exact rational LMI below is authoritative",
+    "numerical_stationary_design": {
+      "alpha_skew_boundary": 0.002710404993140117,
+      "corroborating_log_scan": {
+        "best_grid_eta_skew_boundary": 2.0970751259762747e-07,
+        "best_grid_repair_margin": 645.6542290346563,
+        "lower_repair_margin": 0.0001,
+        "point_count": 1101,
+        "upper_repair_margin": 10000000.0
+      },
+      "eta_skew_boundary": 2.0970821436615765e-07,
+      "normalized_strongness": 0.05013862134941058,
+      "repair_margin": 648.0240655586582,
+      "working_precision_decimal_digits": 60
+    },
+    "qualification": "the skew response is an admissible necessary control for sector-only theorems; no symbolic sufficiency claim is made up to this boundary",
+    "rational_lock_mu": 648,
+    "rational_lock_relative_eta_loss": 3.4384234808798856e-10,
+    "status": "numerical_design_search_not_part_of_exact_proof"
+  },
+  "review_status": {
+    "automated_local_two_lerp_regression_present": true,
+    "independent_human_review_C7_C8_complete": false,
+    "independent_pinned_upstream_parity_audit_complete": false
+  },
+  "schema_version": "passive-muon-ema-nesterov-iqc-certificate-v1",
+  "software": {
+    "mpmath": "1.3.0",
+    "numpy": "2.5.2",
+    "python": "3.12.11",
+    "pytorch": "2.13.0",
+    "scipy": "1.18.1"
+  }
+}
