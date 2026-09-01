@@ -107,7 +107,7 @@
   "experiment_kind": "deterministic_spectral_grid",
   "git": {
     "dirty": false,
-    "sha": "b1dcd86b0f0c2b66f495054b656c9bda2496a2ae"
+    "sha": "c5327b6b3fa74a3563810783cdc28760f66a0b94"
   },
   "grid": {
     "angle_interval": [
