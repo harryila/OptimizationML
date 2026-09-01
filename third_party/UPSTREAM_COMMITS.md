@@ -11,10 +11,15 @@ Public availability is not treated as licensing permission.
 - Audited file: `muon.py`
 - License: MIT
 - Used facts: Jordan coefficients `(3.4445, -4.7750, 2.0315)`, BF16 cast,
-  normalization by `||G||_F + 1e-7`, and the five-step default call path.
-- Local implementation: the mathematical equation is independently
-  reimplemented in `src/passive_muon/polynomials.py`; no upstream training or
-  distributed-optimizer code is copied.
+  one-time orientation before normalization, normalization through
+  `X.norm(dim=(-2,-1), keepdim=True) + 1e-7`, the literal BF16 expression
+  `B = b*A + (c*A)@A`, and the five-step default call path. The parentheses
+  make explicit Python's left-associative parsing of upstream `c*A @ A`.
+- Local implementation: the smooth mathematical equation is independently
+  reimplemented in `src/passive_muon/polynomials.py`. The backend-specific
+  executable shadow in `src/passive_muon/deployed.py` separately preserves the
+  pinned operation order because algebraically equivalent grouping can change
+  BF16 results. No upstream training or distributed-optimizer code is copied.
 
 ## Polar Express
 

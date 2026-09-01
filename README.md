@@ -1,7 +1,7 @@
-# Passivizing Practical Muon
+# Exact Current Frobenius Normalization Can Break Monotonicity in Finite-Step Muon
 
-Personal research workspace for **Passivizing Practical Muon: Normalization
-Gaps and a Minimal Circuit Repair**.
+Personal research workspace for exact certificates and controlled CPU
+experiments on normalization-induced nonmonotonicity in finite-step Muon.
 
 The project asks a deliberately narrow question: when a finite polynomial
 orthogonalizer is applied after normalization by the *current* Frobenius norm,
@@ -21,6 +21,8 @@ The first proof gate is implemented:
 - the diagonal reduction gives an exact criterion for normalization-induced
   indefiniteness;
 - a rational Jordan-quintic witness is checked exactly at the Jacobian level;
+- all four fixed-scale `2 x 2` Jacobian modes at the witness are certified
+  positive, without making a global fixed-scale monotonicity claim;
 - a robust finite pair is certified exactly and reevaluated at high precision.
 
 The CPU experiment gate is also complete for Jordan, classical NS, Taylor NS5,
@@ -45,6 +47,7 @@ Install Python 3.12 (the version in `.python-version`) and
 ```bash
 uv sync --locked
 uv run --locked python scripts/find_counterexample.py
+uv run --locked python scripts/record_bf16_witness.py
 uv run --locked pytest
 ```
 
@@ -62,27 +65,30 @@ exact rational arithmetic for the derivative mismatch, an exact rational-surd
 comparison for the finite pair, and 100-digit decimal arithmetic for readable
 values. Jacobian theorems concern the real-arithmetic operator; the upstream
 BF16 implementation is a discontinuous deployment check and is tested
-pairwise.
+pairwise. Its committed manifest records the concrete backend, PyTorch build,
+CPU architecture, cast/normalization behavior, operation order, coefficients,
+epsilon, returned storage words, and observable accumulation behavior; it does
+not support a universal claim across BF16 backends.
 
 ## Scope
 
 This repository stays focused on four technical goals:
 
 1. a theorem for current-input Frobenius normalization;
-2. passivity-deficit measurements for Jordan, classical Newton--Schulz, Polar
+2. exact local and finite-pair controls for the five-step Jordan map;
+3. passivity-deficit measurements for Jordan, classical Newton--Schulz, Polar
    Express, and CANS;
-3. the smallest certified `+ rho M` correction on an explicitly stated
-   certification domain;
-4. matrix/quadratic evidence and one small matched NanoGPT learning-rate sweep.
+4. qualified matrix and quadratic falsification studies.
 
-General circuit-designed optimizers, a broad "Muon is a circuit" narrative,
-and a large Adam-beating benchmark are out of scope.
+Practical passivization, a stability theorem, formal circuit claims, and a
+NanoGPT benchmark are deferred until there is a useful full-matrix upper
+certificate for a stated domain.
 
 ## Layout
 
 - `src/passive_muon/`: normalization, orthogonalizers, deficit metrics, repairs;
 - `theory/`: claim ledger, analytic proof, and exact/numerical certificates;
-- `experiments/`: matrix, quadratic, and eventual NanoGPT studies;
+- `experiments/`: matrix and qualified quadratic studies;
 - `scripts/`: reproducible entry points;
 - `results/`: committed manifests, summaries, and figures only;
 - `third_party/`: upstream revisions and license notices.

@@ -76,10 +76,23 @@ q(s)=3.4445s-4.7750s^3+2.0315s^5,
 \]
 
 At `u = (3/5, 4/5)`, exact rational evaluation gives unequal **positive**
-values `h'(3/5)` and `h'(4/5)`. Thus the fixed-scale diagonal Jacobian is
-positive at this point, while current Frobenius normalization makes the
-symmetric Jacobian indefinite. This isolates normalization rather than merely
-reusing the known scalar nonmonotonicity of the Jordan polynomial.
+values `h'(3/5)` and `h'(4/5)`. At `M_0=diag(3,4)` with the fixed-scale map
+`M -> H_h(M/5)`, exact divided differences additionally give
+
+\[
+\frac{h(3/5)-h(4/5)}{3/5-4/5}>0,
+\qquad
+\frac{h(3/5)+h(4/5)}{3/5+4/5}>0.
+\]
+
+After the positive chain-rule factor `1/5`, these two off-diagonal modes and
+the two diagonal derivative modes are all positive. Thus the full `2 x 2`
+fixed-scale Jacobian is positive definite at `M_0`; continuity gives
+monotonicity on some sufficiently small neighborhood. This is not global
+fixed-scale monotonicity. Current Frobenius normalization makes the symmetric
+Jacobian indefinite at the same point, isolating the radial/tangential
+normalization coupling rather than merely reusing the known scalar
+nonmonotonicity of the Jordan polynomial.
 
 The canonical finite pair is
 `A=diag(3,4)`, `B=diag(5/2,3)`. The command proves its normalized gap negative

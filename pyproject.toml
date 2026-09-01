@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "passive-muon"
 version = "0.1.0"
-description = "Certificates and minimal linear repairs for normalization-induced nonpassivity in practical Muon"
+description = "Exact certificates and experiments for normalization-induced nonmonotonicity in finite-step Muon"
 readme = "README.md"
 requires-python = ">=3.11,<3.13"
 dependencies = [
@@ -37,4 +37,3 @@ target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
-

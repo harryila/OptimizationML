@@ -32,12 +32,18 @@ def test_practical_jordan_pair_is_negative_only_with_current_normalization() -> 
     assert pairwise_rho_required(current, left, right).item() == pytest.approx(0.05620346972461626)
 
 
-def test_robust_pair_remains_negative_in_upstream_bf16_order() -> None:
-    left = _diagonal((3.0, 4.0))
-    right = _diagonal((2.5, 3.0))
-    gap = pairwise_gap(keller_jordan_map, left, right)
-    assert keller_jordan_map(left).dtype == torch.bfloat16
-    assert gap.item() < -0.01
+def test_deployed_map_matches_literal_pinned_upstream_bf16_order() -> None:
+    matrix = _diagonal((3.0, 4.0))
+    expected = matrix.bfloat16()
+    expected = expected / (expected.norm(dim=(-2, -1), keepdim=True) + 1e-7)
+    for _ in range(5):
+        gram = expected @ expected.mT
+        correction = -4.7750 * gram + 2.0315 * gram @ gram
+        expected = 3.4445 * expected + correction @ expected
+
+    actual = keller_jordan_map(matrix)
+    assert actual.dtype == torch.bfloat16
+    torch.testing.assert_close(actual, expected, rtol=0, atol=0)
 
 
 def test_classical_rational_fixture_attributes_failure_to_normalization() -> None:

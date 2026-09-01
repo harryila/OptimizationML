@@ -5,6 +5,7 @@ import hashlib
 import json
 import math
 import xml.etree.ElementTree as ET
+from fractions import Fraction
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -12,6 +13,7 @@ AUDIT_PATH = ROOT / "results/summaries/deficit_audit.json"
 SWEEP_PATH = ROOT / "results/summaries/quadratic_lr_sweep.json"
 HORIZON_PATH = ROOT / "results/summaries/quadratic_horizon_check.json"
 WITNESS_PATH = ROOT / "results/summaries/canonical_witness.json"
+BF16_WITNESS_PATH = ROOT / "results/summaries/bf16_witness.json"
 
 
 def _load(path: Path) -> dict:
@@ -22,7 +24,9 @@ def test_result_manifests_are_schema_versioned_and_hash_aligned() -> None:
     audit = _load(AUDIT_PATH)
     sweep = _load(SWEEP_PATH)
     horizon = _load(HORIZON_PATH)
+    witness = _load(WITNESS_PATH)
     audit_hash = hashlib.sha256(AUDIT_PATH.read_bytes()).hexdigest()
+    assert witness["schema_version"] == "passive-muon-witness-v2"
     assert audit["schema_version"] == "passive-muon-deficit-audit-v5"
     assert sweep["schema_version"] == "passive-muon-quadratic-lr-sweep-v4"
     assert horizon["schema_version"] == "passive-muon-quadratic-horizon-check-v2"
@@ -48,6 +52,38 @@ def test_result_manifests_record_clean_git_revisions() -> None:
         git = _load(path)["git"]
         assert len(git["sha"]) == 40
         assert git["dirty"] is False
+
+
+def test_bf16_result_manifest_schema_provenance_and_source_snapshot() -> None:
+    """Validate the committed run without replaying its values on this backend."""
+
+    payload = _load(BF16_WITNESS_PATH)
+    assert payload["schema_version"] == "passive-muon-bf16-witness-v1"
+    assert payload["claim_scope"]["evidence_kind"] == "backend_specific_executable_pairwise_witness"
+    assert payload["configuration"]["normalization"]["epsilon"] == 1e-7
+    assert payload["configuration"]["orthogonalizer"]["steps"] == 5
+    measurement = payload["canonical_pair"]["measurement"]
+    assert measurement["violates_incremental_monotonicity"] is True
+    assert Fraction(
+        measurement["gap_exact_fraction_from_individually_recorded_values"]
+    ) == Fraction(-7, 128)
+    assert Fraction(
+        measurement["ratio_exact_fraction_from_individually_recorded_values"]
+    ) == Fraction(-7, 160)
+    assert payload["experiment_provenance"]["seed"] is None
+    assert payload["software"]["pytorch"]
+    assert payload["hardware"]["machine_architecture"]
+
+    git = payload["git"]
+    assert len(git["sha"]) == 40
+    assert git["dirty"] is False
+
+    snapshot = payload["experiment_provenance"]["source_snapshot"]
+    assert snapshot
+    for relative_path, expected_hash in snapshot.items():
+        path = ROOT / relative_path
+        assert path.is_file()
+        assert hashlib.sha256(path.read_bytes()).hexdigest() == expected_hash
 
 
 def test_json_summary_rows_match_csv_exports() -> None:

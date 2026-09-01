@@ -95,9 +95,11 @@ def _dot(left: tuple[Decimal, Decimal], right: tuple[Decimal, Decimal]) -> Decim
 def canonical_jordan_witness(*, precision: int = 100, steps: int = 5) -> dict[str, Any]:
     """Build the deterministic practical-Jordan witness payload.
 
-    At ``u=(3/5,4/5)`` both fixed-scale scalar derivatives are positive, so the
-    exact negative determinant after current normalization is causally clean:
-    it is produced by the radial/tangential normalization coupling.
+    At the witness ``M0=diag(3,4)`` with fixed scale five, all four exact
+    ``2 x 2`` Jacobian modes are positive.  This is a local control only, not a
+    global fixed-scale monotonicity claim.  The exact negative determinant
+    after current normalization is therefore causally clean: it is produced by
+    the radial/tangential normalization coupling.
     """
 
     if precision < 50:
@@ -112,6 +114,17 @@ def canonical_jordan_witness(*, precision: int = 100, steps: int = 5) -> dict[st
 
     h1, _ = scalar_response_and_derivative_exact(u1, JORDAN_QUINTIC, steps=steps)
     h2, _ = scalar_response_and_derivative_exact(u2, JORDAN_QUINTIC, steps=steps)
+    fixed_scale_exact = Fraction(5)
+    fixed_diagonal_mode_1 = d1 / fixed_scale_exact
+    fixed_diagonal_mode_2 = d2 / fixed_scale_exact
+    difference_numerator = h1 - h2
+    difference_denominator = u1 - u2
+    difference_mode = difference_numerator / difference_denominator
+    sum_numerator = h1 + h2
+    sum_denominator = u1 + u2
+    sum_mode = sum_numerator / sum_denominator
+    fixed_difference_mode = difference_mode / fixed_scale_exact
+    fixed_sum_mode = sum_mode / fixed_scale_exact
     surd_h1 = _surd_response_numerator(5, 61, JORDAN_QUINTIC, steps=steps)
     surd_h2 = _surd_response_numerator(6, 61, JORDAN_QUINTIC, steps=steps)
     rational_part = h1 / 2 + h2
@@ -126,6 +139,17 @@ def canonical_jordan_witness(*, precision: int = 100, steps: int = 5) -> dict[st
         raise AssertionError("canonical witness no longer isolates normalization")
     if not (d1 != d2 and determinant < 0):
         raise AssertionError("exact normalized-Jacobian certificate failed")
+    if not (
+        fixed_diagonal_mode_1 > 0
+        and fixed_diagonal_mode_2 > 0
+        and difference_numerator < 0
+        and difference_denominator < 0
+        and difference_mode > 0
+        and sum_numerator > 0
+        and sum_denominator > 0
+        and sum_mode > 0
+    ):
+        raise AssertionError("exact full-2x2 fixed-scale local control failed")
     if not (rational_part > 0 and surd_numerator > 0 and squared_margin > 0):
         raise AssertionError("exact finite-pair surd certificate failed")
     if not fixed_pair_gap_exact > 0:
@@ -136,6 +160,12 @@ def canonical_jordan_witness(*, precision: int = 100, steps: int = 5) -> dict[st
         du1, du2 = _fraction_to_decimal(u1), _fraction_to_decimal(u2)
         dd1, dd2 = _fraction_to_decimal(d1), _fraction_to_decimal(d2)
         ddet = _fraction_to_decimal(determinant)
+        ddifference_mode = _fraction_to_decimal(difference_mode)
+        dsum_mode = _fraction_to_decimal(sum_mode)
+        dfixed_diagonal_mode_1 = _fraction_to_decimal(fixed_diagonal_mode_1)
+        dfixed_diagonal_mode_2 = _fraction_to_decimal(fixed_diagonal_mode_2)
+        dfixed_difference_mode = _fraction_to_decimal(fixed_difference_mode)
+        dfixed_sum_mode = _fraction_to_decimal(fixed_sum_mode)
 
         s11 = dd1 * du2**2
         s22 = dd2 * du1**2
@@ -183,7 +213,7 @@ def canonical_jordan_witness(*, precision: int = 100, steps: int = 5) -> dict[st
             raise AssertionError("finite-pair attribution check failed")
 
         return {
-            "schema_version": "passive-muon-witness-v1",
+            "schema_version": "passive-muon-witness-v2",
             "operator": {
                 "matrix_shape": [2, 2],
                 "restriction": "positive_diagonal",
@@ -218,6 +248,72 @@ def canonical_jordan_witness(*, precision: int = 100, steps: int = 5) -> dict[st
                 "minimum_eigenvalue": str(lambda_min),
                 "maximum_eigenvalue": str(lambda_max),
                 "local_rho_required": str(-lambda_min),
+            },
+            "fixed_scale_local_exact_certificate": {
+                "claim_scope": "full_2x2_local_jacobian_at_M0_only_not_global",
+                "matrix_domain": "R^(2x2)",
+                "input_matrix": "diag(3,4)",
+                "operator_formula": "F_fixed(M)=H_h(M/5)",
+                "normalizer": "fixed_pre_run_scale",
+                "epsilon": "0",
+                "fixed_scale": "5",
+                "polynomial_input_diagonal": ["3/5", "4/5"],
+                "orthogonalizer": JORDAN_QUINTIC.name,
+                "coefficients": {
+                    "a": JORDAN_QUINTIC.a,
+                    "b": JORDAN_QUINTIC.b,
+                    "c": JORDAN_QUINTIC.c,
+                },
+                "steps": steps,
+                "upstream": JORDAN_QUINTIC.source,
+                "diagonal_modes": {
+                    "eigendirections": ["E11", "E22"],
+                    "formula": "h'(ui)/5",
+                    "mode_1_sign": "positive",
+                    "mode_2_sign": "positive",
+                    "mode_1_sha256": _fraction_digest(fixed_diagonal_mode_1),
+                    "mode_2_sha256": _fraction_digest(fixed_diagonal_mode_2),
+                },
+                "off_diagonal_difference_mode": {
+                    "eigendirection": "E12+E21",
+                    "formula_before_fixed_scale_chain_rule": "(h(u1)-h(u2))/(u1-u2)",
+                    "numerator_sign": "negative",
+                    "denominator_sign": "negative",
+                    "raw_mode_sign": "positive",
+                    "raw_mode_sha256": _fraction_digest(difference_mode),
+                    "fixed_scale_jacobian_formula": "((h(u1)-h(u2))/(u1-u2))/5",
+                    "fixed_scale_jacobian_mode_sign": "positive",
+                    "fixed_scale_jacobian_mode_sha256": _fraction_digest(fixed_difference_mode),
+                },
+                "off_diagonal_sum_mode": {
+                    "eigendirection": "E12-E21",
+                    "formula_before_fixed_scale_chain_rule": "(h(u1)+h(u2))/(u1+u2)",
+                    "numerator_sign": "positive",
+                    "denominator_sign": "positive",
+                    "raw_mode_sign": "positive",
+                    "raw_mode_sha256": _fraction_digest(sum_mode),
+                    "fixed_scale_jacobian_formula": "((h(u1)+h(u2))/(u1+u2))/5",
+                    "fixed_scale_jacobian_mode_sign": "positive",
+                    "fixed_scale_jacobian_mode_sha256": _fraction_digest(fixed_sum_mode),
+                },
+                "certified_all_four_jacobian_modes_positive": True,
+                "certified_full_2x2_jacobian_positive_definite_at_witness": True,
+                "certified_full_2x2_local_monotonicity_at_witness": True,
+                "local_monotonicity_inference": (
+                    "Polynomial-Jacobian continuity extends positive definiteness to some "
+                    "sufficiently small convex neighborhood of M0."
+                ),
+                "global_fixed_scale_monotonicity_claim": "none",
+            },
+            "fixed_scale_local_high_precision": {
+                "decimal_digits": precision,
+                "diagonal_mode_1": str(dfixed_diagonal_mode_1),
+                "diagonal_mode_2": str(dfixed_diagonal_mode_2),
+                "difference_mode_before_fixed_scale_chain_rule": str(ddifference_mode),
+                "sum_mode_before_fixed_scale_chain_rule": str(dsum_mode),
+                "fixed_scale_difference_jacobian_mode": str(dfixed_difference_mode),
+                "fixed_scale_sum_jacobian_mode": str(dfixed_sum_mode),
+                "verification_kind": "high_precision_decimal_not_interval",
             },
             "finite_pair_exact_certificate": {
                 "base_diagonal": ["3", "4"],

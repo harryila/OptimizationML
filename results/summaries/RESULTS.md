@@ -1,6 +1,7 @@
 # Experiment results
 
-These results were generated in float64 on an arm64 CPU. JSON files are the
+The spectral and quadratic results were generated in float64 on an arm64 CPU;
+Section 2 is the separately scoped BF16 deployment check. JSON files are the
 source-of-truth manifests; CSV files are flattened views. All grid extrema are
 lower-bound witnesses, not continuous-domain upper certificates.
 
@@ -12,12 +13,39 @@ For the five-step Jordan map on diagonal matrices,
 - exact-current-normalized pair gap: `-0.0702543371557703288`;
 - exact pair repair threshold: `rho = 0.0562034697246162631`;
 - current-plus-`1e-7` pair gap: `-0.07025429353210752`;
-- fixed-scale-five pair gap: `+0.3750465803803160`.
+- fixed-scale-five pair gap: `+0.3750465803803160`;
+- fixed-scale local off-diagonal divided differences before the common
+  chain-rule factor `1/5`: `+1.981638806494635...` and
+  `+1.315771498952257...`.
 
-The local Jacobian determinant and finite-pair sign are certified exactly; the
-readable decimals are high-precision evaluations. See `canonical_witness.json`.
+The current-normalized local determinant, both finite-pair signs, and all four
+fixed-scale `2 x 2` local Jacobian modes at `A` are certified exactly. The
+fixed-scale Jacobian is positive definite at that point (and therefore on some
+sufficiently small neighborhood by continuity), but no global fixed-scale
+monotonicity is claimed. The readable decimals are high-precision evaluations.
+See `canonical_witness.json`.
 
-## 2. Deterministic 2x2 spectral audit
+## 2. Backend-specific BF16 deployment witness
+
+The same canonical pair was executed on a macOS 15.5 arm64 CPU with PyTorch
+2.13.0 using the literal operation order in pinned KellerJordan/Muon revision
+`f98f1cacc0263b04290753e32be8d498c1efc806`: cast once to BF16, orient once,
+normalize with retained dimensions and Python-float `eps=1e-7`, then apply five
+Jordan stages with `B = b*A + (c*A)@A`.
+
+- returned pair gap: `-7/128 = -0.0546875`;
+- returned pair ratio: `-7/160 = -0.04375`;
+- interpretation: a violation for this recorded backend, PyTorch build, dtype,
+  epsilon, coefficients, iteration count, and operation order only.
+
+The earlier local-shadow value `-3/128` used the real-arithmetic-equivalent but
+BF16-inequivalent grouping `c*(A@A)` and is not reported as a deployed-order
+result. The committed `bf16_witness.json` records output storage words, every
+stage, cast/normalization behavior, an observable accumulation probe, complete
+software/hardware data, source hashes, and the upstream revision. It does not
+support a universal statement about other BF16 backends.
+
+## 3. Deterministic 2x2 spectral audit
 
 The exact-current unit-spectrum deficit is positive in all 24 audited
 polynomial-prefix configurations. The final configured stages are:
@@ -46,7 +74,7 @@ Polar Express is pinned to the current repository configuration at commit
 degree-five, four-stage, `delta=0.3` coefficient table; no code was copied from
 its unlicensed repository.
 
-## 3. Controlled diagonal matrix quadratics
+## 4. Controlled diagonal matrix quadratics
 
 Design: 32 matched 2x2 diagonal SPD quadratics, condition numbers
 `{1, 3, 10, 30}`, current-Frobenius-plus-`eps=1` normalization, 750 updates,
@@ -103,7 +131,7 @@ from 1 to 10 repaired-only bands, 14 to 18 unchanged endpoints, 0 to 2 right
 shifts, and 0 to 5 left shifts. This confirms that finite target bands depend
 on the operational success definition.
 
-## 4. Horizon check
+## 5. Horizon check
 
 Jordan step 5 and classical step 5 were repeated at 750 and 3000 iterations
 with target ratios `1e-4` and `1e-8`.
@@ -121,7 +149,7 @@ stability regions. Normalized endpoints above the local linear ceiling of two
 are likewise finite-horizon target outcomes; they are not evidence of
 asymptotic convergence to zero or of any particular attractor.
 
-## 5. Unrun gate
+## 6. Unrun gate
 
 No NanoGPT result is reported. This machine exposes neither CUDA nor an
 available MPS device, and the current `rho` is only a finite-grid sampled
@@ -134,6 +162,8 @@ predeclared repair domain/certificate.
 ```bash
 uv run --locked python scripts/find_counterexample.py \
   --output results/summaries/canonical_witness.json
+uv run --locked python scripts/record_bf16_witness.py \
+  --output results/summaries/bf16_witness.json
 uv run --locked python experiments/matrices/run_deficit_audit.py
 uv run --locked python experiments/quadratics/run_lr_sweep.py
 uv run --locked python experiments/quadratics/run_horizon_check.py

@@ -16,8 +16,14 @@ def test_counterexample_cli_emits_schema_versioned_json() -> None:
         text=True,
     )
     payload = json.loads(completed.stdout)
-    assert payload["schema_version"] == "passive-muon-witness-v1"
+    assert payload["schema_version"] == "passive-muon-witness-v2"
     assert payload["local_exact_certificate"]["certified_indefinite"] is True
+    assert (
+        payload["fixed_scale_local_exact_certificate"][
+            "certified_full_2x2_local_monotonicity_at_witness"
+        ]
+        is True
+    )
 
 
 def test_counterexample_cli_rejects_noncanonical_step_count() -> None:
