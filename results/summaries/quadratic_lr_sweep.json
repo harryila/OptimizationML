@@ -125,7 +125,7 @@
   },
   "git": {
     "dirty": false,
-    "sha": "61f83779b72ee104e9d900be6152a020ad01af60"
+    "sha": "b9dff895d5df261a42b3a713eb6def86383c76bf"
   },
   "hardware": {
     "machine": "arm64",
@@ -197,7 +197,7 @@
     "deficit_audit": {
       "path": "results/summaries/deficit_audit.json",
       "schema_version": "passive-muon-deficit-audit-v5",
-      "sha256": "8d0a77d365576a3eb7a0352ff77b036a86b3cbaee6eb036926c3e016aaf87cc5"
+      "sha256": "cc5ab80928a66fb12f9a68448ef0438a393959f88fd455a66db81381d077018a"
     }
   },
   "interpretation": {
