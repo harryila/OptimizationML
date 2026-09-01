@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use these experiment artifacts, please cite this software record."
+title: "Passivizing Practical Muon: Normalization Gaps and a Minimal Circuit Repair"
+type: software
+version: 0.1.0
+date-released: 2026-08-31
+authors:
+  - family-names: "Anonymous"
+    given-names: "Authors"

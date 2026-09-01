@@ -1,0 +1,111 @@
+{
+  "experiment_provenance": {
+    "randomness": "none; exact deterministic construction",
+    "seed": null,
+    "source_snapshot": {
+      "scripts/find_counterexample.py": "4a5053b192c9303984403c8923ed660ddc20f9b61b03fe7d0414687633b9fa42",
+      "src/passive_muon/specs.py": "85fcee0f87485fc3cac2f426d62ec6e55da7896caade2f5df2a1c87f7d9c5d6c",
+      "src/passive_muon/witness.py": "8d55b3c7151058dda1d901d994ab54406e99f3d5437cdf45758d913575aa3759"
+    }
+  },
+  "finite_pair_exact_certificate": {
+    "base_diagonal": [
+      "3",
+      "4"
+    ],
+    "certified_fixed_scale_gap_positive": true,
+    "certified_normalized_gap_negative": true,
+    "fixed_scale": "5",
+    "fixed_scale_gap_sha256": "1804bb968a36587e47c1726703f0bc9ff67bd22e11fe380f705eed87bb2f7cd4",
+    "fixed_scale_gap_sign": "positive",
+    "normalized_gap_form": "A-C/sqrt(61)",
+    "perturbed_diagonal": [
+      "5/2",
+      "3"
+    ],
+    "rational_part_positive": true,
+    "squared_comparison": "C^2-61*A^2>0",
+    "squared_margin_sha256": "b8a47f0b421bb5d273f2907d387cade40bca40e7b734975e0234e163f3a70724",
+    "squared_margin_sign": "positive",
+    "surd_numerator_positive": true
+  },
+  "finite_pair_high_precision": {
+    "base_diagonal": [
+      "3",
+      "4"
+    ],
+    "deployed_epsilon": "1E-7",
+    "distance_squared": "1.25",
+    "epsilon_regularized_gap": "-0.0702542935321075211623127772612466993607405080482705159361433633213098179303584488618823185752625778",
+    "epsilon_regularized_ratio": "-0.05620343482568601692985022180899735948859240643861641274891469065704785434428675908950585486021006224",
+    "epsilon_regularized_violates": true,
+    "fixed_scale": "5",
+    "fixed_scale_gap": "0.3750465803803160250697409290502302263768561015118818555190608749925104156073738497821815563779678935",
+    "fixed_scale_passes_this_pair": true,
+    "fixed_scale_ratio": "0.3000372643042528200557927432401841811014848812095054844152486999940083324858990798257452451023743148",
+    "normalized_gap": "-0.0702543371557703288362855770012323224481895685571250224330364225907201614016309882291982272090398147",
+    "normalized_ratio": "-0.05620346972461626306902846160098585795855165484570001794642913807257612912130479058335858176723185176",
+    "normalized_violates": true,
+    "pair_rho_required": "0.05620346972461626306902846160098585795855165484570001794642913807257612912130479058335858176723185176",
+    "perturbed_diagonal": [
+      "2.5",
+      "3"
+    ],
+    "verification_kind": "high_precision_decimal_not_interval"
+  },
+  "git": {
+    "dirty": false,
+    "sha": "542f613211f923c256ea281cb5377823ad19d769"
+  },
+  "hardware": {
+    "machine": "arm64",
+    "processor": "arm"
+  },
+  "local_exact_certificate": {
+    "certified_indefinite": true,
+    "derivative_1_sha256": "6fb13696b2a9b8eabd5cc55d0df0ea4e73059d320f17ca0e8c9016106ce3a835",
+    "derivative_2_sha256": "4f818835443b37f454bfe038bac7579e889c890e9d0f473dc46606f8547c646f",
+    "derivatives_positive": true,
+    "derivatives_unequal": true,
+    "determinant_formula": "-u1^2*u2^2*(h'(u1)-h'(u2))^2/4",
+    "determinant_sha256": "070ab1daaf3e2ce2357029cda84b7883ebcd24118b9155ba3c3d65f4d930d15b",
+    "determinant_sign": "negative",
+    "input_diagonal": [
+      "3/5",
+      "4/5"
+    ],
+    "input_frobenius_norm": "1"
+  },
+  "local_high_precision": {
+    "decimal_digits": 100,
+    "derivative_1": "3.249182112325480072635909699367321919703520231570884597961687856487236844824106598309925572727095793",
+    "derivative_2": "1.608634229052287125821887982413071659100372777432835155817900397865530013848953152399901897839283096",
+    "determinant": "-0.1550244877811800652256298117124872230349882344316835660173378383574021801405253108242898758363145794",
+    "local_rho_required": "0.0570851705899246231430976877449161953831871179334177096132086636234269171405667092165598727350924185",
+    "maximum_eigenvalue": "2.715670044937055234925959569008708021269574266014604508403133035006849302813618066998876922502575642",
+    "minimum_eigenvalue": "-0.0570851705899246231430976877449161953831871179334177096132086636234269171405667092165598727350924185"
+  },
+  "operator": {
+    "coefficients": {
+      "a": "3.4445",
+      "b": "-4.7750",
+      "c": "2.0315"
+    },
+    "epsilon": "0",
+    "matrix_shape": [
+      2,
+      2
+    ],
+    "normalizer": "exact_current_frobenius",
+    "orthogonalizer": "jordan_quintic",
+    "restriction": "positive_diagonal",
+    "steps": 5,
+    "upstream": "KellerJordan/Muon@f98f1cacc0263b04290753e32be8d498c1efc806"
+  },
+  "schema_version": "passive-muon-witness-v1",
+  "scope_warning": "This is a lower-bound witness. Exact scale invariance makes the unrestricted global deficit infinite; local and pairwise rho values are not global repair certificates.",
+  "software": {
+    "platform": "macOS-15.5-arm64-arm-64bit",
+    "python": "3.12.11"
+  }
+}

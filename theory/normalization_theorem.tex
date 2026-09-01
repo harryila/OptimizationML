@@ -1,0 +1,121 @@
+% This file is intended to be included after amsmath, amssymb, and amsthm.
+\section{Current-normalization gap}
+
+Let $h:\mathbb{R}\to\mathbb{R}$ be an odd polynomial and let
+$\mathcal H_h$ be its rectangular spectral map.  Equivalently, if
+$h(s)=\sum_{k=0}^q a_ks^{2k+1}$, then
+\begin{equation}
+  \mathcal H_h(X)=\sum_{k=0}^q a_kX(X^\top X)^k.
+\end{equation}
+This is a smooth polynomial map even at repeated or zero singular values.  On
+the Frobenius Hilbert space, define
+\begin{equation}
+  F_h(M)=\mathcal H_h\!\left(\frac{M}{\lVert M\rVert_F}\right),
+  \qquad M\ne0.
+\end{equation}
+
+\begin{theorem}[Current-normalization gap]
+  Fix $M\ne0$, write $r=\lVert M\rVert_F$ and $X=M/r$, and let
+  $s_1,\ldots,s_d$ be the active singular values of $X$.  If
+  $h'(s_i)\ne h'(s_j)$ for two active singular values, then
+  $\operatorname{Sym}DF_h(M)$ is indefinite.  Consequently $F_h$ is not
+  monotone on any open neighborhood of $M$.
+\end{theorem}
+
+\begin{proof}
+  Let $A_X=D\mathcal H_h(X)$.  The polynomial spectral map is the gradient of
+  \begin{equation}
+    \Phi_h(X)=\sum_{k=0}^q
+      \frac{a_k}{2k+2}\operatorname{tr}\!\left((X^\top X)^{k+1}\right),
+  \end{equation}
+  so $A_X$ is self-adjoint.  Let
+  $Q_X[H]=H-\langle X,H\rangle_FX$ denote projection onto $X^\perp$.
+  Differentiating current normalization gives
+  \begin{equation}
+    DF_h(M)=\frac{1}{r}A_XQ_X,
+    \qquad
+    S_M:=\operatorname{Sym}DF_h(M)
+       =\frac{A_XQ_X+Q_XA_X}{2r}.
+  \end{equation}
+  If $X=U\operatorname{Diag}(s_i)V^\top$, radial differentiation yields
+  \begin{equation}
+    A_XX=U\operatorname{Diag}(s_ih'(s_i))V^\top.
+  \end{equation}
+  Thus the slope mismatch implies $w:=Q_XA_XX\ne0$.  Yet
+  $\langle X,S_MX\rangle_F=0$ and $S_MX=w/(2r)\ne0$.  A symmetric positive-
+  or negative-semidefinite map whose quadratic form vanishes at $X$ must
+  annihilate $X$.  Hence $S_M$ is indefinite.  The differential necessary
+  condition for monotonicity gives the conclusion.
+\end{proof}
+
+\begin{corollary}[Nonlinear polynomials in matrix rank at least three]
+  If $d=\min\{m,n\}\ge3$ and $h$ is not affine, then $F_h$ is nonmonotone.
+\end{corollary}
+
+\begin{proof}
+  Since $h'$ is a nonconstant polynomial, choose
+  $a,b\in(0,1/\sqrt{2})$ with $h'(a)\ne h'(b)$ and set
+  $c=\sqrt{1-a^2-b^2}>0$.  A matrix with normalized singular spectrum
+  $(a,b,c,0,\ldots)$ satisfies the theorem.  In rank two the sharp slope
+  condition remains valid, but exceptional nonlinear polynomials can have
+  equal derivatives at every complementary pair, so the dimension qualifier
+  cannot simply be dropped.
+\end{proof}
+
+On positive diagonal matrices the same result has an elementary coordinate
+form.  Write $x=ru$, $D=\operatorname{Diag}(h'(u_i))$, and $P=I-uu^\top$.
+Then $JF_h(x)=DP/r$ and $\operatorname{Sym}JF_h(x)=(DP+PD)/(2r)$.  For two
+coordinates this is
+\begin{equation}
+  S(x)=\frac{1}{r}
+  \begin{bmatrix}
+    d_1u_2^2 & -\tfrac12(d_1+d_2)u_1u_2\\
+    -\tfrac12(d_1+d_2)u_1u_2 & d_2u_1^2
+  \end{bmatrix},
+\end{equation}
+and therefore
+\begin{equation}
+  \det S(x)
+  =-\frac{u_1^2u_2^2}{4r^2}(d_1-d_2)^2<0.
+\end{equation}
+
+\begin{proposition}[Minimal constant linear shift]
+  On any domain $\mathcal D$, define the pairwise deficit
+  \begin{equation}
+    \delta_{\mathrm{pair},\mathcal D}(T)
+    =\sup_{M\ne N\in\mathcal D}
+      \left[
+      -\frac{\langle T(M)-T(N),M-N\rangle_F}
+      {\lVert M-N\rVert_F^2}\right]_+.
+  \end{equation}
+  Then $T_\rho(M)=T(M)+\rho M$ is monotone on $\mathcal D$ if and only if
+  $\rho\ge\delta_{\mathrm{pair},\mathcal D}(T)$.  If $T$ is continuously
+  differentiable on an open convex $\mathcal D$, this pairwise deficit equals
+  \begin{equation}
+    \delta_{J,\mathcal D}(T)
+    =\sup_{M\in\mathcal D}
+      \max\!\left\{0,
+      -\lambda_{\min}\!\left(\operatorname{Sym}JT(M)\right)\right\}.
+  \end{equation}
+\end{proposition}
+
+\begin{proof}
+  For each pair, the repair adds exactly $\rho\lVert M-N\rVert_F^2$ to the
+  monotonicity product, proving the first statement.  The symmetric Jacobian
+  of $T_\rho$ is $\operatorname{Sym}JT(M)+\rho I$.  On an open convex domain,
+  integrating this Jacobian along line segments proves sufficiency of the
+  local supremum, while directional limits of pairs prove necessity.
+\end{proof}
+
+\begin{proposition}[Scale obstruction]
+  Suppose $T(\alpha M)=T(M)$ for every $\alpha>0$.  If $T$ has one violating
+  pair, then its pairwise deficit on the nonzero ambient space is infinite.
+  Hence no finite constant $\rho$ makes $T+\rho I$ globally monotone there.
+\end{proposition}
+
+\begin{proof}
+  Scale both members of a violating pair by $\alpha$.  The numerator of the
+  deficit ratio scales by $\alpha$, while its squared-distance denominator
+  scales by $\alpha^2$.  The positive deficit therefore scales as
+  $1/\alpha$ and diverges as $\alpha\downarrow0$.
+\end{proof}
