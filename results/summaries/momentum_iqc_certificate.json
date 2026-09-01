@@ -109,7 +109,7 @@
       "scripts/certify_momentum_stability.py": "1ec9b8e118a770878ecc624a7efe34e48c32a3539e2eddd71401ff6b9e4acdc5",
       "src/passive_muon/floored_certificate.py": "385dee8576e574bebc72fe09478220cf2ec29928045ee6341472c2e9becb6a72",
       "src/passive_muon/momentum_experiment.py": "e1d3cbe660a38f5df6345625c4a1de1d69837cf62de907afd89553330dd357c5",
-      "src/passive_muon/momentum_iqc.py": "18c6760e7badb66fe986b2f50a5ea7ab381554b5ed47e1b7fbfe46bf9cdf7f41",
+      "src/passive_muon/momentum_iqc.py": "de4154a05e6fa4be605ea681b93fc2ae9197a807bdb09963a6ef0e4760a413ff",
       "src/passive_muon/normalizers.py": "13a7e78b95dc1543bbbdeb046bbc46b493eb233c87dfb42c809aa186a5504338",
       "src/passive_muon/operator.py": "1a4985b608102da2f1aa325bfb726a43ef3312212bd805a60ce969056974938a",
       "src/passive_muon/orthogonalizers.py": "72687f59ad859ac5945279cc27a2e76b50a02ca408730326e24c9c1682f5c7c9",
@@ -119,7 +119,7 @@
       "tests/test_momentum_iqc.py": "a880df982bce845eb7193a8f45e245dcec86a1d77ad83282046396d9ccc59c53",
       "tests/test_result_manifests.py": "cef7255dc715cb176d041d952a278faa89490a06c0ebcad91b065ac9c8e16893",
       "theory/claims.md": "60e5d25a35801e9d78e5e0e5b5559eb0517397b0ec3e7cd8fba09ec4baec978b",
-      "theory/momentum_iqc_certificate.md": "ae720d8203565a9c88e1d4ab28a012f19731369ed86bdfb7e7cdaa26c5712b05",
+      "theory/momentum_iqc_certificate.md": "2f84fc5f925eae201faafd655b9191c4ba84d911f5829cba3cec9b7b2787b8cd",
       "third_party/UPSTREAM_COMMITS.md": "15e4b03cc471431a807d16cf8cc746564542f8e637098c78404f4ae1a1631651",
       "uv.lock": "f097fd7895b5c1c551a0bd233d025c3f8ae97b7dedce6a8690569f1b1f7c5cf1"
     }
@@ -128,7 +128,7 @@
     "branch": "p3",
     "dirty": false,
     "frozen_fallback_commit": "518cc9384a7a478f3c5956532fd26a6937f70d5f",
-    "sha": "923a99b92ff921f7059b8fc5f0145d180d37309f"
+    "sha": "f0b2db7c61b5c2b5d4e6c84df455b05d160f852e"
   },
   "hardware": {
     "byte_order": "little",
