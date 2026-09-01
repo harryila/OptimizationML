@@ -2,7 +2,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1380" height="650" viewBox="0 0 1380 650" role="img" aria-labelledby="title desc">
 <title id="title">Normalized upper endpoint of the finite target band</title>
 <desc id="desc">Reproducible research figure generated from committed JSON.</desc>
-<metadata>{&quot;generator&quot;: &quot;scripts/make_figures.py&quot;, &quot;sources&quot;: [{&quot;path&quot;: &quot;scripts/make_figures.py&quot;, &quot;sha256&quot;: &quot;fd60573f91260736525e45b035f7582154d2aa3fa14601e1a94a60d5e169076f&quot;}, {&quot;path&quot;: &quot;results/summaries/quadratic_lr_sweep.json&quot;, &quot;sha256&quot;: &quot;cd3dc6ccb847a4d2023eeb1627d0d345712f9d00d9febc92677d6f0c9cd00414&quot;}]}</metadata>
+<metadata>{&quot;generator&quot;: &quot;scripts/make_figures.py&quot;, &quot;sources&quot;: [{&quot;path&quot;: &quot;scripts/make_figures.py&quot;, &quot;sha256&quot;: &quot;fd60573f91260736525e45b035f7582154d2aa3fa14601e1a94a60d5e169076f&quot;}, {&quot;path&quot;: &quot;results/summaries/quadratic_lr_sweep.json&quot;, &quot;sha256&quot;: &quot;345edfe317292ce7d2605a80efa6dc0969700c4a94630a80beb09de3e72e2ebe&quot;}]}</metadata>
 <rect width="1380" height="650" fill="#FFFFFF"/>
 <text x="85.0" y="42.0" fill="#182230" font-size="25" font-weight="650" text-anchor="start" font-family="Inter, ui-sans-serif, system-ui, sans-serif">Normalized upper endpoint of the finite target band</text>
 <text x="85.0" y="70.0" fill="#667085" font-size="14" font-weight="400" text-anchor="start" font-family="Inter, ui-sans-serif, system-ui, sans-serif">32 diagonal quadratics, eps=1, 750 steps, final-50 hold, objective ratio ≤10⁻⁴ for ≥90% of problems</text>

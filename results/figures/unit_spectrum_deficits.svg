@@ -2,7 +2,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1380" height="650" viewBox="0 0 1380 650" role="img" aria-labelledby="title desc">
 <title id="title">Unit-spectrum local passivity deficits</title>
 <desc id="desc">Reproducible research figure generated from committed JSON.</desc>
-<metadata>{&quot;generator&quot;: &quot;scripts/make_figures.py&quot;, &quot;sources&quot;: [{&quot;path&quot;: &quot;scripts/make_figures.py&quot;, &quot;sha256&quot;: &quot;fd60573f91260736525e45b035f7582154d2aa3fa14601e1a94a60d5e169076f&quot;}, {&quot;path&quot;: &quot;results/summaries/deficit_audit.json&quot;, &quot;sha256&quot;: &quot;8d0a77d365576a3eb7a0352ff77b036a86b3cbaee6eb036926c3e016aaf87cc5&quot;}]}</metadata>
+<metadata>{&quot;generator&quot;: &quot;scripts/make_figures.py&quot;, &quot;sources&quot;: [{&quot;path&quot;: &quot;scripts/make_figures.py&quot;, &quot;sha256&quot;: &quot;fd60573f91260736525e45b035f7582154d2aa3fa14601e1a94a60d5e169076f&quot;}, {&quot;path&quot;: &quot;results/summaries/deficit_audit.json&quot;, &quot;sha256&quot;: &quot;cc5ab80928a66fb12f9a68448ef0438a393959f88fd455a66db81381d077018a&quot;}]}</metadata>
 <rect width="1380" height="650" fill="#FFFFFF"/>
 <text x="85.0" y="42.0" fill="#182230" font-size="25" font-weight="650" text-anchor="start" font-family="Inter, ui-sans-serif, system-ui, sans-serif">Unit-spectrum local passivity deficits</text>
 <text x="85.0" y="70.0" fill="#667085" font-size="14" font-weight="400" text-anchor="start" font-family="Inter, ui-sans-serif, system-ui, sans-serif">Exact-current normalization, fixed scale, and the normalization-clean subset; 2×2 angular grid</text>
