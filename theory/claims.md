@@ -167,7 +167,83 @@ surrogate. The quantized map is discontinuous and must be assessed pairwise;
 no autograd Jacobian claim should be labeled as a theorem about the exact BF16
 implementation.
 
-## C5. Circuit and optimization consequences — open
+## C5. Floored-normalizer full-matrix repair — proved with a tight bracket
+
+For `c>0`, define
+
+\[
+N_c(M)=\frac{M}{\max\{c,\lVert M\rVert_F\}},
+\qquad F_{h,c}=\mathcal H_h\circ N_c,
+\]
+
+where `h` is the five-step Jordan composition with exact coefficients
+`6889/2000`, `-191/40`, and `4063/2000`.  This is a max floor, not additive
+epsilon normalization.
+
+The map `N_c` is projection of `M/c` onto the Frobenius unit ball and is
+`1/c`-Lipschitz.  A full rectangular singular-vector tangent decomposition,
+including diagonal, off-diagonal, repeated/zero-singular-value, and
+rectangular null-side modes, reduces the derivative of `H_h` to secant
+averages of `h'`.  A 160/224-bit outward-rounded Arb certificate proves
+
+\[
+-159.5496<h'(s)<484.8763\qquad(0\le s\le1).
+\]
+
+For any self-adjoint `A` in this slope interval and any orthogonal projection
+`Q`, the sharp dimension-free anticommutator bound gives
+
+\[
+\lambda_{\min}\!\left(\frac{AQ+QA}{2}\right)
+\ge -\frac{(b-a)^2}{8(a+b)}.
+\]
+
+Pairwise line integration handles the nondifferentiable switching sphere; a
+Clarke-hull calculation gives the same boundary bound.  Therefore, for every
+fixed finite matrix shape,
+
+\[
+159.549525785<\delta(F_{h,1})
+\le\bar\delta_1
+=\frac{41528474059081}{260261360000}
+=159.564501081070\ldots.
+\]
+
+An exact rational finite-pair witness embedded in a rank-one interior mode
+proves the displayed strict lower endpoint.  The bracket width is `0.009386%`
+relative to that safe lower threshold.  Exact scaling gives
+
+\[
+\delta(F_{h,c})=\frac{\delta(F_{h,1})}{c},
+\]
+
+so `F_h,c(M)+(bar_delta_1/c)M` is globally monotone.  The upper certificate is
+dimension-uniform and near-minimal relative to the exact witness; it is not
+claimed to equal the minimal conductance for each fixed matrix shape.  See
+`floored_normalizer_certificate.md` and the locked result manifest.
+
+## C6. Simplified continuous-time stability — proved, training claim open
+
+For any `mu>0`, adding
+
+\[
+\rho=\frac{\bar\delta_1}{c}+\mu
+\]
+
+makes the floored real-arithmetic map `mu`-strongly monotone.  Consequently the
+explicitly specified system
+
+\[
+\dot M=-\bigl(F_{h,c}(M)+\rho M-b\bigr)
+\]
+
+has a unique equilibrium and contracts in Frobenius norm at rate `mu`.
+Global Lipschitzness gives well-posed trajectories, and the pairwise strong-
+monotonicity inequality gives the energy estimate directly.  This is a
+simplified continuous-time integrator-feedback result, not momentum-Muon or
+discrete training stability.
+
+## C7. Circuit and optimization consequences — open
 
 Boyd's framework models `y in partial f(x)` as a grounded multi-terminal
 device and its energy argument uses
@@ -177,8 +253,9 @@ adding `rho M` is a parallel linear **conductance** `rho` (a resistor of value
 `1/rho` when `rho>0`). A full port mapping and sign convention still need to be
 written before this becomes a formal circuit theorem.
 
-The full-matrix upper certificate and the claim that lower deficit predicts a
-wider stable learning-rate interval remain open. They require:
+The formal port mapping and the claim that lower deficit predicts a wider
+training learning-rate interval remain open. They require:
 
-1. interval/SOS or another rigorous global upper bound on a stated domain;
-2. controlled matrix-quadratic and small NanoGPT sweeps.
+1. a circuit sign convention and explicit interconnection model;
+2. matched-momentum matrix quadratics using the certified floored repair;
+3. only then, a controlled small NanoGPT sweep.

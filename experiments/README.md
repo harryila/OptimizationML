@@ -5,11 +5,12 @@ Experiment order is gated:
 1. exact and backend-specific executable witnesses;
 2. spectral/matrix audit;
 3. qualified diagonal matrix quadratics;
-4. a full-matrix certificate and matched momentum quadratics;
+4. the completed full-matrix floored certificate, then matched momentum quadratics;
 5. only then, a small matched NanoGPT learning-rate sweep.
 
-No GPU experiment should begin until a repair domain and a valid constant
-`rho` certificate are specified. Each run writes a self-contained JSON manifest
+The floored Jordan architecture now has a valid global constant-`rho`
+certificate. GPU work remains gated on matched momentum quadratics and a
+predeclared use of that architecture. Each run writes a self-contained JSON manifest
 and compact CSV tables under `results/summaries/`; the JSON records inputs,
 operator details, dtype, seed, software, hardware, and Git state.
 

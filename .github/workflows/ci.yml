@@ -41,3 +41,6 @@ jobs:
 
       - name: Execute the exact canonical witness
         run: uv run --locked python scripts/find_counterexample.py --output "$RUNNER_TEMP/canonical_witness.json"
+
+      - name: Execute the rigorous floored-repair certificate
+        run: uv run --locked python scripts/certify_floored_repair.py --output "$RUNNER_TEMP/floored_repair_certificate.json"

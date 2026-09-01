@@ -10,6 +10,7 @@ from torch import Tensor
 from passive_muon.normalizers import (
     ExactFrobeniusNormalizer,
     FixedScaleNormalizer,
+    FlooredFrobeniusNormalizer,
     FrobeniusPlusEpsNormalizer,
 )
 from passive_muon.orthogonalizers import ORTHOGONALIZERS
@@ -44,6 +45,7 @@ def orthogonalize(
     repair_rho: float = 0.0,
     steps: int | None = None,
     eps: float = 1e-7,
+    floor: float | None = None,
     fixed_scale: float | None = None,
 ) -> Tensor:
     """Convenience interface specified by the research brief."""
@@ -56,6 +58,10 @@ def orthogonalize(
         normalizer = ExactFrobeniusNormalizer()
     elif normalization == "current_frobenius_plus_eps":
         normalizer = FrobeniusPlusEpsNormalizer(eps=eps)
+    elif normalization == "floored_frobenius":
+        if floor is None:
+            raise ValueError("floor must be provided for floored Frobenius normalization")
+        normalizer = FlooredFrobeniusNormalizer(floor=floor)
     elif normalization == "fixed_scale":
         if fixed_scale is None:
             raise ValueError("fixed_scale must be provided for fixed normalization")

@@ -149,13 +149,58 @@ stability regions. Normalized endpoints above the local linear ceiling of two
 are likewise finite-horizon target outcomes; they are not evidence of
 asymptotic convergence to zero or of any particular attractor.
 
-## 6. Unrun gate
+## 6. Floored-normalizer full-matrix certificate
+
+For the real-arithmetic five-step Jordan map, define
+`F_h,c(M)=H_h(M/max(c, ||M||_F))`, with `c>0`, exact coefficients
+`(6889/2000, -191/40, 4063/2000)`, five iterations, and no additive epsilon.
+
+An adaptive dyadic interval proof using outward-rounded Arb balls certifies
+
+- `-159.5496 < h'(s) < 484.8763` for every `s` in `[0,1]`;
+- identical 25,370-leaf covers at 160 and 224 bits, maximum dyadic depth 32;
+- all diagonal, off-diagonal, repeated/zero, and rectangular-null tangent
+  modes lie in the same slope interval by exact secant-average formulas;
+- pairwise line integration handles the nondifferentiable floor boundary.
+
+The resulting dimension-uniform full-matrix bracket at `c=1` is
+
+\[
+159.549525785 < \delta(F_{h,1})
+\le \frac{41528474059081}{260261360000}
+=159.5645010810709665084\ldots.
+\]
+
+An exact rational finite pair embedded in a rank-one mode inside the floor
+proves the displayed strict lower bound; its actual deficit is approximately
+`159.54952578566153`. The upper endpoint comes from the projection-envelope
+bound. Its gap above the displayed safe lower threshold is `0.0149752961`, or
+`0.009386%` relative. It is about `32.91%` of the map's zero-input differential
+gain and about `3.04x` smaller than using that full `484.8763` gain as a
+generic Lipschitz repair.
+
+Exact rescaling proves `delta(F_h,c)=delta(F_h,1)/c`; therefore
+`rho=(41528474059081/260261360000)/c` is a globally sufficient constant
+conductance for every finite matrix shape. This is a certified near-minimal
+repair, not an exact fixed-shape minimum. Setting
+`rho=(41528474059081/260261360000)/c+mu` for `mu>0` yields a
+`mu`-strongly monotone map and an `exp(-mu*t)` contraction guarantee for the
+explicitly simplified system `dot(M)=-(F_h,c(M)+rho*M-b)`. This does not
+establish momentum-Muon training stability.
+
+Related finite-step regularization work by Chang et al. gives global
+Frobenius-Lipschitz bounds for an additive denominator regularizer. It does not
+provide a monotonicity-deficit certificate for this max-floor architecture:
+<https://arxiv.org/abs/2606.01720>.
+
+## 7. Unrun gate
 
 No NanoGPT result is reported. This machine exposes neither CUDA nor an
-available MPS device, and the current `rho` is only a finite-grid sampled
-repair rather than a continuous-domain certificate for training trajectories.
-The matched language-model sweep remains gated on suitable compute and a
-predeclared repair domain/certificate.
+available MPS device. The `rho` used in the existing quadratic study is only a
+finite-grid sampled repair; those results do not retroactively test the new
+floored architecture or its global certificate. A matched language-model
+sweep remains gated on suitable compute, matched-momentum quadratics, and a
+predeclared use of the certified floored design.
 
 ## Reproduce
 
@@ -164,6 +209,8 @@ uv run --locked python scripts/find_counterexample.py \
   --output results/summaries/canonical_witness.json
 uv run --locked python scripts/record_bf16_witness.py \
   --output results/summaries/bf16_witness.json
+uv run --locked python scripts/certify_floored_repair.py \
+  --output results/summaries/floored_repair_certificate.json
 uv run --locked python experiments/matrices/run_deficit_audit.py
 uv run --locked python experiments/quadratics/run_lr_sweep.py
 uv run --locked python experiments/quadratics/run_horizon_check.py

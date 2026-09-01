@@ -32,6 +32,20 @@ several intrinsically nonmonotone polynomial prefixes, but show no
 grid-resolved upper-endpoint benefit for the normalization-only classical and
 Taylor cases. See [`results/summaries/RESULTS.md`](results/summaries/RESULTS.md).
 
+The floored-normalizer proof gate is now complete for the five-step Jordan
+map. Outward-rounded Arb arithmetic and a full rectangular tangent reduction
+give the dimension-uniform bracket
+
+\[
+159.549525785 < \delta(F_{h,1}) \le 159.564501081071.
+\]
+
+Thus `rho = 159.564501081071 / c` is a rigorous global repair for
+`F_h,c(M)=H_h(M/max(c, ||M||_F))`. The upper endpoint is within `0.009386%` of
+an exact finite-pair lower witness. It is a certified near-minimal sufficient
+conductance, not the exact minimum for every fixed matrix shape. See
+[`theory/floored_normalizer_certificate.md`](theory/floored_normalizer_certificate.md).
+
 The repair claim is intentionally scoped. A constant `rho` is the exact minimal
 linear shift for a **specified point, pair, sample set, or domain with a finite
 certified deficit**. For exact scale-invariant normalization on every nonzero
@@ -48,6 +62,7 @@ Install Python 3.12 (the version in `.python-version`) and
 uv sync --locked
 uv run --locked python scripts/find_counterexample.py
 uv run --locked python scripts/record_bf16_witness.py
+uv run --locked python scripts/certify_floored_repair.py
 uv run --locked pytest
 ```
 
@@ -72,17 +87,19 @@ not support a universal claim across BF16 backends.
 
 ## Scope
 
-This repository stays focused on four technical goals:
+This repository stays focused on five technical goals:
 
 1. a theorem for current-input Frobenius normalization;
 2. exact local and finite-pair controls for the five-step Jordan map;
 3. passivity-deficit measurements for Jordan, classical Newton--Schulz, Polar
    Express, and CANS;
-4. qualified matrix and quadratic falsification studies.
+4. a rigorous full-matrix repair certificate for a fixed Frobenius floor;
+5. qualified matrix and quadratic falsification studies.
 
-Practical passivization, a stability theorem, formal circuit claims, and a
-NanoGPT benchmark are deferred until there is a useful full-matrix upper
-certificate for a stated domain.
+The floored architecture now has a simplified continuous-time contraction
+corollary. Momentum-Muon training stability, formal circuit ports, matched
+momentum quadratics, and a NanoGPT benchmark remain open and are not implied by
+that corollary.
 
 ## Layout
 

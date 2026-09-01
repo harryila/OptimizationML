@@ -42,3 +42,19 @@ def test_counterexample_cli_rejects_noncanonical_step_count() -> None:
     )
     assert completed.returncode == 2
     assert "invalid choice: '4'" in completed.stderr
+
+
+def test_floored_certificate_cli_replays_two_precisions() -> None:
+    root = Path(__file__).resolve().parents[1]
+    completed = subprocess.run(
+        [sys.executable, str(root / "scripts" / "certify_floored_repair.py")],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    payload = json.loads(completed.stdout)
+    assert payload["schema_version"] == "passive-muon-floored-certificate-v1"
+    passes = payload["scalar_interval_certificate"]["passes"]
+    assert [item["precision_bits"] for item in passes] == [160, 224]
+    assert len({item["ordered_leaf_trace_sha256"] for item in passes}) == 1

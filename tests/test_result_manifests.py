@@ -14,6 +14,7 @@ SWEEP_PATH = ROOT / "results/summaries/quadratic_lr_sweep.json"
 HORIZON_PATH = ROOT / "results/summaries/quadratic_horizon_check.json"
 WITNESS_PATH = ROOT / "results/summaries/canonical_witness.json"
 BF16_WITNESS_PATH = ROOT / "results/summaries/bf16_witness.json"
+FLOORED_CERTIFICATE_PATH = ROOT / "results/summaries/floored_repair_certificate.json"
 
 
 def _load(path: Path) -> dict:
@@ -37,8 +38,10 @@ def test_result_manifests_are_schema_versioned_and_hash_aligned() -> None:
 def test_result_source_snapshots_match_workspace_files() -> None:
     manifests = (_load(AUDIT_PATH), _load(SWEEP_PATH), _load(HORIZON_PATH))
     witness = _load(WITNESS_PATH)
+    floored = _load(FLOORED_CERTIFICATE_PATH)
     snapshots = [manifest["source_snapshot"] for manifest in manifests]
     snapshots.append(witness["experiment_provenance"]["source_snapshot"])
+    snapshots.append(floored["experiment_provenance"]["source_snapshot"])
     for snapshot in snapshots:
         assert snapshot
         for relative_path, expected_hash in snapshot.items():
@@ -48,10 +51,47 @@ def test_result_source_snapshots_match_workspace_files() -> None:
 
 
 def test_result_manifests_record_clean_git_revisions() -> None:
-    for path in (WITNESS_PATH, AUDIT_PATH, SWEEP_PATH, HORIZON_PATH):
+    for path in (
+        WITNESS_PATH,
+        AUDIT_PATH,
+        SWEEP_PATH,
+        HORIZON_PATH,
+        FLOORED_CERTIFICATE_PATH,
+    ):
         git = _load(path)["git"]
         assert len(git["sha"]) == 40
         assert git["dirty"] is False
+
+
+def test_floored_certificate_manifest_records_the_locked_rigorous_bracket() -> None:
+    payload = _load(FLOORED_CERTIFICATE_PATH)
+    assert payload["schema_version"] == "passive-muon-floored-certificate-v1"
+    assert payload["claim_scope"]["dimension_uniform"] is True
+    assert payload["claim_scope"]["matrix_domain"] == (
+        "R^(m x n) for every fixed finite positive m,n"
+    )
+    assert payload["operator"]["epsilon"] == "0"
+    assert payload["operator"]["steps"] == 5
+    scalar = payload["scalar_interval_certificate"]
+    assert Fraction(scalar["derivative_lower_exact"]) == Fraction(-1_595_496, 10_000)
+    assert Fraction(scalar["derivative_upper_exact"]) == Fraction(4_848_763, 10_000)
+    passes = scalar["passes"]
+    assert [item["precision_bits"] for item in passes] == [160, 224]
+    assert {item["configured_maximum_dyadic_power"] for item in passes} == {48}
+    assert {item["leaf_count"] for item in passes} == {25_370}
+    assert {item["maximum_dyadic_power"] for item in passes} == {32}
+    assert {item["ordered_leaf_trace_sha256"] for item in passes} == {
+        "701b9047e67c96d1f727642c693fb545f13c4981765310162a9a51b730f34d5e"
+    }
+    witness = payload["exact_finite_pair_lower_witness"]
+    assert witness["deficit_exact_sha256"] == (
+        "892028269006f41e58cd5e1f06633bc1ae6c591e355018daf40209797c368beb"
+    )
+    bracket = payload["certified_bracket_at_c_1"]
+    assert Fraction(bracket["strict_lower_exact"]) == Fraction(31_909_905_157, 200_000_000)
+    assert Fraction(bracket["upper_exact"]) == Fraction(41_528_474_059_081, 260_261_360_000)
+    assert float(bracket["relative_width_percent"]) < 0.01
+    assert payload["experiment_provenance"]["seed"] is None
 
 
 def test_bf16_result_manifest_schema_provenance_and_source_snapshot() -> None:

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from math import isfinite
 
 import torch
 from torch import Tensor
@@ -42,6 +43,26 @@ class FrobeniusPlusEpsNormalizer:
         norm = torch.linalg.vector_norm(matrix)
         eps = matrix.new_tensor(self.eps)
         return matrix / (norm + eps)
+
+
+@dataclass(frozen=True)
+class FlooredFrobeniusNormalizer:
+    """Return ``M / max(floor, ||M||_F)`` for a fixed positive floor."""
+
+    floor: float
+
+    def __post_init__(self) -> None:
+        if not isfinite(self.floor) or self.floor <= 0:
+            raise ValueError("floor must be finite and strictly positive")
+
+    def __call__(self, matrix: Tensor) -> Tensor:
+        _check_matrix(matrix)
+        norm = torch.linalg.vector_norm(matrix)
+        floor = matrix.new_tensor(self.floor)
+        if not bool(torch.isfinite(floor)) or bool(floor <= 0):
+            raise ValueError("floor must remain finite and positive in the matrix dtype")
+        denominator = torch.maximum(norm, floor)
+        return matrix / denominator
 
 
 @dataclass(frozen=True)
