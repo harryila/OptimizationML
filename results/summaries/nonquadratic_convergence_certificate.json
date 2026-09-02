@@ -1,0 +1,583 @@
+{
+  "claim_scope": {
+    "evidence_kind": "exact rational dimension-independent interpolation-storage certificate",
+    "guarantee": "global exponential convergence to the unique minimizer for the specified deterministic real-arithmetic repaired floored-Jordan EMA/Nesterov loop",
+    "incremental_distinction": "trajectory-to-minimizer convergence, not arbitrary-pair incremental contraction; the separate 5%-of-p4 certificate proves the latter",
+    "matrix_domain": "R^(m x n) for every fixed finite positive m,n",
+    "not_claimed": [
+      "stability of exact-current or additive-epsilon normalization",
+      "BF16, stochastic-gradient, time-varying-objective, or weight-decay stability",
+      "aspect-ratio-scaled or complete neural-network training convergence",
+      "a hard pointwise IQC after discarding the objective-gap storage",
+      "necessity or optimality of the learning rate or rate",
+      "a proof supplied by sampled nonlinear trajectories"
+    ],
+    "objective_domain": "every fixed differentiable globally 1-strongly-convex, 10-smooth scalar objective; nonlinear and trajectory-varying Hessian orientations allowed"
+  },
+  "comparison_and_gate": {
+    "classification": "excellent; major nonlinear theorem",
+    "declared_gate": "eta >= 0.1*eta_p4",
+    "full_p4_step_retained": true,
+    "full_step_over_incremental_p5": {
+      "decimal": "20",
+      "exact": "20"
+    },
+    "full_step_over_p3": {
+      "decimal": "161.55510013513387081355449767879488526456635744930",
+      "exact": "336372400608849/2082090880000"
+    },
+    "incremental_p5_learning_rate": {
+      "decimal": "0.0000015625",
+      "exact": "1/640000"
+    },
+    "p3_learning_rate": {
+      "decimal": "1.9343245724746989300351397176077324360567326987568E-7",
+      "exact": "65065340/336372400608849"
+    },
+    "p4_learning_rate": {
+      "decimal": "0.00003125",
+      "exact": "1/32000"
+    },
+    "rate_decrement_over_p4": {
+      "decimal": "40",
+      "exact": "40"
+    }
+  },
+  "git": {
+    "branch": "p5-nonquadratic-stability",
+    "dirty": false,
+    "frozen_p4_base_commit": "c9636358de2d3d17bf5e62b0f03c7aff12da97bd",
+    "sha": "7db9896c55bd131369e5e314a3e0175a9cf18c85"
+  },
+  "incremental_p5_reference": {
+    "manifest_path": "results/summaries/nonquadratic_stability_certificate.json",
+    "manifest_sha256": "d9dac9bbd762586e4b84b921d5a015811d915b207d7898fcd1eedf76f83c1d9f",
+    "status": "preserved as the stronger arbitrary-pair guarantee at five percent"
+  },
+  "independent_audit": {
+    "human_proof_audit": "pending",
+    "items": [
+      "F_(k,1) interpolation formula and every directed edge sign",
+      "exact objective-value flow cancellation",
+      "pinned EMA/Nesterov and residual scaling",
+      "positive storage and negative 5x5 LMI by exact rational replay",
+      "trajectory-to-minimizer scope rather than arbitrary-pair incrementality"
+    ],
+    "review_date": "2026-09-02",
+    "review_type": "independent automated exact-algebra reconstruction; not a human proof audit",
+    "status": "passed"
+  },
+  "locked_exact_certificate": {
+    "all_exact_checks_passed": true,
+    "beta": {
+      "decimal": "0.95",
+      "exact": "19/20"
+    },
+    "coordinates": "chi=(W-W_star,m/L,grad(f)/L,E(s)/(K_E*L),grad(f_next)/L)",
+    "dimensionless_step_eta_gamma_L": {
+      "decimal": "0.30319387516891733851694312209849360658070794681162",
+      "exact": "505021761888849/1665672704000000"
+    },
+    "exponential_rate_tau": {
+      "decimal": "0.9996",
+      "exact": "2499/2500"
+    },
+    "function_storage_c_F": {
+      "decimal": "0.2708163",
+      "exact": "2708163/10000000"
+    },
+    "function_values_cancel": true,
+    "interpolation_multipliers": {
+      "0_to_current": {
+        "decimal": "0.00270356",
+        "exact": "67589/25000000"
+      },
+      "current_to_next": {
+        "decimal": "0.273784450290608",
+        "exact": "17111528143163/62500000000000"
+      },
+      "next_to_0": {
+        "decimal": "0.002486950290608",
+        "exact": "155434393163/62500000000000"
+      },
+      "next_to_current": {
+        "decimal": "0.0004812",
+        "exact": "1203/2500000"
+      }
+    },
+    "interpolation_quadratic_matrices": {
+      "0_to_current": [
+        [
+          "-1/18",
+          "0",
+          "5/9",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "5/9",
+          "0",
+          "-5/9",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      "current_to_next": [
+        [
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "-3693108608682805707557182314334569/887828978192214917120000000000000000",
+          "13097623636415084523802916951082969/887828978192214917120000000000000000",
+          "-5096305107273548728493156409381/2219572445480537292800000000000000",
+          "-20256984004652721/133253816320000000"
+        ],
+        [
+          "0",
+          "13097623636415084523802916951082969/887828978192214917120000000000000000",
+          "-4413287347350053779455772031458642321/7990460803729934254080000000000000000",
+          "162666587890287906708187965928829/19976152009324835635200000000000000",
+          "646573232886334889/1199284346880000000"
+        ],
+        [
+          "0",
+          "-5096305107273548728493156409381/2219572445480537292800000000000000",
+          "162666587890287906708187965928829/19976152009324835635200000000000000",
+          "-63293814638495661384577622521/49940380023312089088000000000000",
+          "-251582619905461/2998210867200000"
+        ],
+        [
+          "0",
+          "-20256984004652721/133253816320000000",
+          "646573232886334889/1199284346880000000",
+          "-251582619905461/2998210867200000",
+          "-5/9"
+        ]
+      ],
+      "next_to_0": [
+        [
+          "-1/18",
+          "20256984004652721/1332538163200000000",
+          "2188427634851679/1332538163200000000",
+          "251582619905461/29982108672000000",
+          "1/18"
+        ],
+        [
+          "20256984004652721/1332538163200000000",
+          "-3693108608682805707557182314334569/887828978192214917120000000000000000",
+          "-398978492350774023808116648917031/887828978192214917120000000000000000",
+          "-5096305107273548728493156409381/2219572445480537292800000000000000",
+          "-20256984004652721/1332538163200000000"
+        ],
+        [
+          "2188427634851679/1332538163200000000",
+          "-398978492350774023808116648917031/887828978192214917120000000000000000",
+          "-43102939616842623070682962071369/887828978192214917120000000000000000",
+          "-550570357849496954047737119019/2219572445480537292800000000000000",
+          "-2188427634851679/1332538163200000000"
+        ],
+        [
+          "251582619905461/29982108672000000",
+          "-5096305107273548728493156409381/2219572445480537292800000000000000",
+          "-550570357849496954047737119019/2219572445480537292800000000000000",
+          "-63293814638495661384577622521/49940380023312089088000000000000",
+          "-251582619905461/29982108672000000"
+        ],
+        [
+          "1/18",
+          "-20256984004652721/1332538163200000000",
+          "-2188427634851679/1332538163200000000",
+          "-251582619905461/29982108672000000",
+          "-5/9"
+        ]
+      ],
+      "next_to_current": [
+        [
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "-3693108608682805707557182314334569/887828978192214917120000000000000000",
+          "134567042795307811452302219351082969/887828978192214917120000000000000000",
+          "-5096305107273548728493156409381/2219572445480537292800000000000000",
+          "-20256984004652721/1332538163200000000"
+        ],
+        [
+          "0",
+          "134567042795307811452302219351082969/887828978192214917120000000000000000",
+          "-4177078116741902271688994994658642321/7990460803729934254080000000000000000",
+          "1671262077888688320359746365928829/19976152009324835635200000000000000",
+          "6642994967286334889/11992843468800000000"
+        ],
+        [
+          "0",
+          "-5096305107273548728493156409381/2219572445480537292800000000000000",
+          "1671262077888688320359746365928829/19976152009324835635200000000000000",
+          "-63293814638495661384577622521/49940380023312089088000000000000",
+          "-251582619905461/29982108672000000"
+        ],
+        [
+          "0",
+          "-20256984004652721/1332538163200000000",
+          "6642994967286334889/11992843468800000000",
+          "-251582619905461/29982108672000000",
+          "-5/9"
+        ]
+      ]
+    },
+    "learning_rate_eta": {
+      "decimal": "0.00003125",
+      "exact": "1/32000"
+    },
+    "lmi_matrix": [
+      [
+        "-799865696161/2812500000000000",
+        "16592641469936350061087996523/83283635200000000000000000000000",
+        "-137198186485148169803956213907/749552716800000000000000000000000",
+        "-1363942432877828972193986857/1873881792000000000000000000000",
+        "155434393163/1125000000000000"
+      ],
+      [
+        "16592641469936350061087996523/83283635200000000000000000000000",
+        "-374783026711801852526168216073913691185250651747/27744655568506716160000000000000000000000000000000",
+        "1229036722999329975426560183350267191787361840947/27744655568506716160000000000000000000000000000000",
+        "277182953188757438374955752298807168972037897/69361638921266790400000000000000000000000000000",
+        "-3470037379722193391099121711753/83283635200000000000000000000000"
+      ],
+      [
+        "-137198186485148169803956213907/749552716800000000000000000000000",
+        "1229036722999329975426560183350267191787361840947/27744655568506716160000000000000000000000000000000",
+        "-37600719368623765383741809589327934153760547351323/249701900116560445440000000000000000000000000000000",
+        "1575744197767922479847307830134367009494696127/624254750291401113600000000000000000000000000000",
+        "110835287372852537833180322102977/749552716800000000000000000000000"
+      ],
+      [
+        "-1363942432877828972193986857/1873881792000000000000000000000",
+        "277182953188757438374955752298807168972037897/69361638921266790400000000000000000000000000000",
+        "1575744197767922479847307830134367009494696127/624254750291401113600000000000000000000000000000",
+        "-79436765975451006469913630505105874659723923/1560636875728502784000000000000000000000000000",
+        "-43096301747578778433874894573/1873881792000000000000000000000"
+      ],
+      [
+        "155434393163/1125000000000000",
+        "-3470037379722193391099121711753/83283635200000000000000000000000",
+        "110835287372852537833180322102977/749552716800000000000000000000000",
+        "-43096301747578778433874894573/1873881792000000000000000000000",
+        "-8648518768163/56250000000000"
+      ]
+    ],
+    "lmi_negative_definite": true,
+    "negative_lmi_leading_principal_minors": [
+      {
+        "decimal": "0.00028439669196835555555555555555555555555555555555556",
+        "exact": "799865696161/2812500000000000"
+      },
+      {
+        "decimal": "0.0000038020219691846899160351632924531902299975490095634",
+        "exact": "1186715137487904871557067688971440116954132283235839799344263/312127375145700556800000000000000000000000000000000000000000000000"
+      },
+      {
+        "decimal": "1.7217116441323649003172362882609913789215918528283E-8",
+        "exact": "80609000436123533111592697317996656675582781521036161908392740147968739/4681910627185508352000000000000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "decimal": "2.8006830348053933091171118280160765230190746449987E-11",
+        "exact": "426840744271924866703489876582747623378358902650288880982522217048917065256931/15240594489536160000000000000000000000000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "decimal": "8.8426632819076168981028945737962472713549255167418E-16",
+        "exact": "374354014686291560693271770756760938687166003695751463491130744858102650181826644319907/423349846931560000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+      }
+    ],
+    "rate_squared": {
+      "decimal": "0.99920016",
+      "exact": "6245001/6250000"
+    },
+    "residual_iqc_matrix": [
+      [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "130321/160000",
+        "14079/160000",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "14079/160000",
+        "1521/160000",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0",
+        "-1",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    ],
+    "residual_lipschitz_multiplier": {
+      "decimal": "0.05066256",
+      "exact": "316641/6250000"
+    },
+    "signal_selector": [
+      "0",
+      "361/400",
+      "39/400",
+      "0",
+      "0"
+    ],
+    "state_selection_matrix": [
+      [
+        "1",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "1",
+        "0",
+        "0",
+        "0"
+      ]
+    ],
+    "storage_P": [
+      [
+        "495723/100000000",
+        "-3085119/100000000"
+      ],
+      [
+        "-3085119/100000000",
+        "72422647/100000000"
+      ]
+    ],
+    "storage_formula": "V=[w,z]^T(P tensor I)[w,z]+c_F*(f(W)-f_star)/L",
+    "storage_leading_principal_minors": [
+      {
+        "decimal": "0.00495723",
+        "exact": "495723/100000000"
+      },
+      {
+        "decimal": "0.002638361259462",
+        "exact": "1319180629731/500000000000000"
+      }
+    ],
+    "storage_normalization_trace_P_plus_c_F": {
+      "decimal": "1",
+      "exact": "1"
+    },
+    "storage_positive_definite": true,
+    "transition_matrix": [
+      [
+        "1",
+        "-182312856041874489/666269081600000000",
+        "-19695848713665111/666269081600000000",
+        "-251582619905461/1665672704000000",
+        "0"
+      ],
+      [
+        "0",
+        "19/20",
+        "1/20",
+        "0",
+        "0"
+      ]
+    ]
+  },
+  "objective_interpolation": {
+    "condition_ratio_k": {
+      "decimal": "0.1",
+      "exact": "1/10"
+    },
+    "inequality": "I_ij=F_i-F_j-<u_j,x_i-x_j>-(||du||^2-2*k<dx,du>+k||dx||^2)/(2*(1-k)) >= 0",
+    "nodes": [
+      "minimizer",
+      "current iterate",
+      "next iterate"
+    ],
+    "normalization": "F=(f-f_star)/L, u=grad(f)/L, k=ell/L",
+    "qualification": "the quadratic edge supply is used with explicit objective-gap storage; it is not asserted as a standalone hard IQC",
+    "smoothness_L": {
+      "decimal": "10",
+      "exact": "10"
+    },
+    "strong_convexity_ell": {
+      "decimal": "1",
+      "exact": "1"
+    },
+    "weighted_function_coefficients": {
+      "actual_current_next": [
+        {
+          "decimal": "0.270599690290608",
+          "exact": "16912480643163/62500000000000"
+        },
+        {
+          "decimal": "-0.2708163",
+          "exact": "-2708163/10000000"
+        }
+      ],
+      "cancel_exactly": true,
+      "expected_to_cancel_lyapunov_gap": [
+        {
+          "decimal": "0.270599690290608",
+          "exact": "16912480643163/62500000000000"
+        },
+        {
+          "decimal": "-0.2708163",
+          "exact": "-2708163/10000000"
+        }
+      ]
+    }
+  },
+  "operator": {
+    "additive_epsilon": "not_applicable; denominator uses a max floor",
+    "coefficients_exact": {
+      "a": "6889/2000",
+      "b": "-191/40",
+      "c": "4063/2000"
+    },
+    "constant_repair_rho": {
+      "decimal": "807.56450108107096650843598143035908211653085959437",
+      "exact": "210177835339081/260261360000"
+    },
+    "domain": "every fixed finite real matrix shape",
+    "floor_c": {
+      "decimal": "1",
+      "exact": "1"
+    },
+    "formula": "R(M)=H_h(M/max(c,||M||_F))+rho*M",
+    "normalization": "fixed_frobenius_floor",
+    "orthogonalizer": "jordan_quintic",
+    "repair_deficit_upper": {
+      "decimal": "159.56450108107096650843598143035908211653085959437",
+      "exact": "41528474059081/260261360000"
+    },
+    "repair_margin_mu": {
+      "decimal": "648",
+      "exact": "648"
+    },
+    "steps": 5,
+    "upstream_revision": "f98f1cacc0263b04290753e32be8d498c1efc806"
+  },
+  "operator_decomposition": {
+    "center_gain_gamma": {
+      "decimal": "970.22040054053548325421799071517954105826542979719",
+      "exact": "505021761888849/520522720000"
+    },
+    "formula": "R(s)=gamma*s+E(s)",
+    "residual_lipschitz_K_E": {
+      "decimal": "483.32687554053548325421799071517954105826542979719",
+      "exact": "251582619905461/520522720000"
+    },
+    "residual_ratio_K_E_over_gamma": {
+      "decimal": "0.49816193853609064401114859516189161270408663031767",
+      "exact": "251582619905461/505021761888849"
+    }
+  },
+  "p4_fallback": {
+    "base_commit": "c9636358de2d3d17bf5e62b0f03c7aff12da97bd",
+    "manifest_path": "results/summaries/structure_aware_stability_certificate.json",
+    "manifest_sha256": "0d5f91232f3c4f0b4766260fea55fc540a4effb7a076f72147f2ac38ddd81cbc",
+    "status": "preserved on its own branch and commit"
+  },
+  "proof_replay_provenance": {
+    "analytic_seed": null,
+    "arithmetic": "fractions.Fraction exact rational arithmetic",
+    "discovery_only_solver": {
+      "clarabel": "0.11.1",
+      "cvxpy": "1.9.2",
+      "python": "3.12.11",
+      "role": "historical reported discovery environment; not replayed here and not authoritative for the theorem",
+      "sympy_exact_cross_check": "1.14.0"
+    },
+    "hardware": {
+      "machine": "arm64",
+      "platform": "macOS-15.5-arm64-arm-64bit",
+      "processor": "arm"
+    },
+    "software": {
+      "numpy": "2.5.2",
+      "python": "3.12.11 (main, Jul  8 2025, 20:41:49) [Clang 20.1.4 ]",
+      "torch": "2.13.0"
+    },
+    "source_snapshot": {
+      "pyproject.toml": "7a9988bf528baef5145f779516d4315349d1c2a6bbb7394c9b93fbbee1d4f596",
+      "scripts/certify_nonquadratic_convergence.py": "cc713dca9fc4b137c7d71ac2b93e16ce21df7a4f8228f588e7bd514eba075ef6",
+      "src/passive_muon/ema_nesterov_iqc.py": "190afa8de51fe055edbbc93d5312d2765b670f1dcc3233daf7ac65c4ed96397d",
+      "src/passive_muon/floored_certificate.py": "385dee8576e574bebc72fe09478220cf2ec29928045ee6341472c2e9becb6a72",
+      "src/passive_muon/momentum_iqc.py": "c1e7346473d2d8e96ad2e378ac7d47b98f35786752c31c50109375cec3ab415d",
+      "src/passive_muon/nonquadratic_convergence.py": "e98cc340eaf98583d0db538fc405eedd79f7363cda7ad6da3799e1e8b110d2f8",
+      "src/passive_muon/nonquadratic_stability.py": "f468545fbd513498c23350e142b7d49b223e80b22f506cfc025825ea00c8af91",
+      "src/passive_muon/normalizers.py": "13a7e78b95dc1543bbbdeb046bbc46b493eb233c87dfb42c809aa186a5504338",
+      "src/passive_muon/operator.py": "1a4985b608102da2f1aa325bfb726a43ef3312212bd805a60ce969056974938a",
+      "src/passive_muon/orthogonalizers.py": "72687f59ad859ac5945279cc27a2e76b50a02ca408730326e24c9c1682f5c7c9",
+      "src/passive_muon/polynomials.py": "82ee698373d33bd90818fd5cb740e532d410ecc767e82d128de7a61483d69925",
+      "src/passive_muon/specs.py": "85fcee0f87485fc3cac2f426d62ec6e55da7896caade2f5df2a1c87f7d9c5d6c",
+      "src/passive_muon/structure_aware_stability.py": "fbbbfa314b26c8c549dcc915bcbe590fadc55fb712288c1757ff24881ababc4a",
+      "src/passive_muon/upstream_momentum.py": "7479613bb307debbb2a02e04e6bbe53a428855c51e1e21210f9c2be2e68d3d7e",
+      "tests/test_nonquadratic_convergence.py": "91b32b619f042f5ffc017fe399a71fd923e07dde45a57fc706940ab4187df353",
+      "tests/test_nonquadratic_convergence_cli.py": "8704aa64d87f802704ef5c840847827d7aa92b0b8e1378166545830f54bbd6cf",
+      "theory/nonquadratic_convergence_certificate.md": "ae1115ac452064a7586d767be65f66ea566c0eac729eadb7e48628169b3bd9a7",
+      "third_party/UPSTREAM_COMMITS.md": "50394b43983d056631edada4e478c3ddfcc56528676f6a96eb8f4b42ac565008",
+      "uv.lock": "f097fd7895b5c1c551a0bd233d025c3f8ae97b7dedce6a8690569f1b1f7c5cf1"
+    }
+  },
+  "schema_version": "passive-muon-nonquadratic-convergence-certificate-v1",
+  "update_order": [
+    "g_t=grad_f(W_t)",
+    "m_(t+1)=beta*m_t+(1-beta)*g_t",
+    "s_(t+1)=beta*m_(t+1)+(1-beta)*g_t",
+    "W_(t+1)=W_t-eta*R(s_(t+1))"
+  ],
+  "upstream_provenance": {
+    "muon_py_sha256": "2479665a90124f62e4df557816665851ca317e42fcfda2af1da02c1f44ab5f3d",
+    "repository": "https://github.com/KellerJordan/Muon",
+    "revision": "f98f1cacc0263b04290753e32be8d498c1efc806"
+  }
+}
