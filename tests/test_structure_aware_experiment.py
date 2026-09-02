@@ -56,8 +56,7 @@ def test_small_full_matrix_probe_is_deterministic_and_finite() -> None:
         for trial in first.trials
     )
     assert all(
-        math.isclose(trial.hessian_eigenvalues[-1], 10.0, rel_tol=1e-12)
-        for trial in first.trials
+        math.isclose(trial.hessian_eigenvalues[-1], 10.0, rel_tol=1e-12) for trial in first.trials
     )
 
 
@@ -72,8 +71,6 @@ def test_manifest_keeps_sampling_qualification_and_exact_locked_step() -> None:
 
     assert payload["schema_version"] == "passive-muon-structure-aware-probe-v1"
     assert "sampling diagnostic only" in payload["claim_scope"]
-    assert payload["locked_exact_parameters"]["learning_rate"] == str(
-        LOCKED_P4_LEARNING_RATE
-    )
+    assert payload["locked_exact_parameters"]["learning_rate"] == str(LOCKED_P4_LEARNING_RATE)
     assert payload["operator"]["iterations"] == 5
     assert payload["operator"]["epsilon"] == 0.0

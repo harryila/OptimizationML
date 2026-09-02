@@ -230,9 +230,7 @@ def _normalized_random_matrix(
     return value * (scale / norm)
 
 
-def _repaired_floored_jordan(
-    signal: np.ndarray, *, floor: float, repair_rho: float
-) -> np.ndarray:
+def _repaired_floored_jordan(signal: np.ndarray, *, floor: float, repair_rho: float) -> np.ndarray:
     tensor = torch.from_numpy(signal)
     with torch.no_grad():
         update = orthogonalize(
@@ -367,9 +365,7 @@ def run_structure_aware_probe(
     return StructureAwareProbeSummary(
         config=selected,
         trials=trials,
-        worst_position_amplification=max(
-            trial.maximum_position_amplification for trial in trials
-        ),
+        worst_position_amplification=max(trial.maximum_position_amplification for trial in trials),
         worst_final_position_ratio=max(trial.final_position_ratio for trial in trials),
         divergence_count=sum(trial.exceeded_divergence_norm for trial in trials),
         nonfinite_count=nonfinite_count,

@@ -130,13 +130,9 @@ def _bernstein_payload(
             "lower_exact": str(certificate.interval_lower),
             "upper_exact": str(certificate.interval_upper),
         },
-        "power_coefficients_low_to_high": _polynomial_payload(
-            certificate.power_coefficients
-        ),
+        "power_coefficients_low_to_high": _polynomial_payload(certificate.power_coefficients),
         "bernstein_coefficients": [str(value) for value in certificate.coefficients],
-        "minimum_bernstein_coefficient": _fraction_payload(
-            certificate.minimum_coefficient
-        ),
+        "minimum_bernstein_coefficient": _fraction_payload(certificate.minimum_coefficient),
         "strictly_positive": certificate.strictly_positive,
     }
 
@@ -158,18 +154,15 @@ def _source_snapshot() -> dict[str, str]:
     }
 
 
-def _normalized_gain_at_frequency(
-    *, scaled_curvature: float, omega: float
-) -> float:
+def _normalized_gain_at_frequency(*, scaled_curvature: float, omega: float) -> float:
     beta = 0.95
     tau = float(LOCKED_TAU)
     center = float(LOCKED_CENTER_GAIN)
     residual = float(LOCKED_RESIDUAL_LIPSCHITZ)
     z = tau * np.exp(1j * omega)
     numerator = -scaled_curvature * (1 - beta) * ((1 + beta) * z - beta)
-    denominator = (
-        (z - 1) * (z - beta)
-        + center * scaled_curvature * (1 - beta) * ((1 + beta) * z - beta)
+    denominator = (z - 1) * (z - beta) + center * scaled_curvature * (1 - beta) * (
+        (1 + beta) * z - beta
     )
     return float(residual * abs(numerator / denominator))
 
@@ -189,9 +182,11 @@ def _peak_normalized_gain(scaled_curvature: float) -> tuple[float, float]:
     lower = float(frequencies[max(0, index - 2)])
     upper = float(frequencies[min(len(frequencies) - 1, index + 2)])
     optimized = minimize_scalar(
-        lambda omega: -_normalized_gain_at_frequency(
-            scaled_curvature=scaled_curvature,
-            omega=float(omega),
+        lambda omega: (
+            -_normalized_gain_at_frequency(
+                scaled_curvature=scaled_curvature,
+                omega=float(omega),
+            )
         ),
         bounds=(lower, upper),
         method="bounded",
@@ -209,9 +204,7 @@ def _frequency_diagnostics() -> dict[str, Any]:
     locked_peak, locked_frequency = peaks[index]
 
     def boundary_residual(learning_rate: float) -> float:
-        peak, _frequency = _peak_normalized_gain(
-            learning_rate * float(LOCKED_HESSIAN_UPPER)
-        )
+        peak, _frequency = _peak_normalized_gain(learning_rate * float(LOCKED_HESSIAN_UPPER))
         return peak - 1.0
 
     boundary = brentq(boundary_residual, 3.2e-5, 3.4e-5, xtol=1e-15, rtol=1e-13)
@@ -331,17 +324,11 @@ def build_payload(*, probe_trials_per_case: int, probe_iterations: int) -> dict[
             "upstream_revision": PINNED_KELLER_JORDAN_MUON_REVISION,
         },
         "structure_aware_center": {
-            "symmetric_jacobian_lower": _fraction_payload(
-                LOCKED_SYMMETRIC_GAIN_LOWER
-            ),
-            "symmetric_jacobian_upper": _fraction_payload(
-                LOCKED_SYMMETRIC_GAIN_UPPER
-            ),
+            "symmetric_jacobian_lower": _fraction_payload(LOCKED_SYMMETRIC_GAIN_LOWER),
+            "symmetric_jacobian_upper": _fraction_payload(LOCKED_SYMMETRIC_GAIN_UPPER),
             "skew_jacobian_norm_upper": _fraction_payload(LOCKED_SKEW_NORM_UPPER),
             "center_gain_gamma": _fraction_payload(LOCKED_CENTER_GAIN),
-            "residual_lipschitz_upper": _fraction_payload(
-                LOCKED_RESIDUAL_LIPSCHITZ
-            ),
+            "residual_lipschitz_upper": _fraction_payload(LOCKED_RESIDUAL_LIPSCHITZ),
             "decomposition": "R=gamma*I+E, with Lip(E)<=residual_lipschitz_upper",
             "skew_bound_formula": "(b-a)/(4*c)",
             "skew_bound_scope": (
@@ -383,8 +370,7 @@ def build_payload(*, probe_trials_per_case: int, probe_iterations: int) -> dict[
                 "upper": _fraction_payload(audit.parameters.scaled_curvature_upper),
             },
             "scaled_jury": [
-                _bernstein_payload(certificate)
-                for certificate in audit.jury_certificates
+                _bernstein_payload(certificate) for certificate in audit.jury_certificates
             ],
             "frequency_gap": {
                 "definition": (
@@ -396,9 +382,7 @@ def build_payload(*, probe_trials_per_case: int, probe_iterations: int) -> dict[
                 "q1_power_coefficients": _polynomial_payload(frequency.q1),
                 "q2_power_coefficients": _polynomial_payload(frequency.q2),
                 "vertex_power_coefficients": _polynomial_payload(frequency.vertex),
-                "q2_bernstein_certificate": _bernstein_payload(
-                    audit.q2_certificate
-                ),
+                "q2_bernstein_certificate": _bernstein_payload(audit.q2_certificate),
                 "negative_discriminant_bernstein_certificate": _bernstein_payload(
                     audit.vertex_certificate
                 ),
@@ -411,12 +395,8 @@ def build_payload(*, probe_trials_per_case: int, probe_iterations: int) -> dict[
             "p3_rate_squared": _fraction_payload(p3.rate_squared),
             "p4_over_p3_learning_rate": _fraction_payload(improvement),
             "predeclared_at_least_100x_gate_passed": improvement >= 100,
-            "linked_zero_mode_local_threshold": _fraction_payload(
-                linked_local_threshold
-            ),
-            "linked_local_threshold_over_p4": _fraction_payload(
-                remaining_local_gap
-            ),
+            "linked_zero_mode_local_threshold": _fraction_payload(linked_local_threshold),
+            "linked_local_threshold_over_p4": _fraction_payload(remaining_local_gap),
             "within_100x_of_linked_local_threshold": remaining_local_gap <= 100,
             "qualification": (
                 "the linked zero-mode value is a local necessary control, not a global "

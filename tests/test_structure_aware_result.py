@@ -15,9 +15,7 @@ def _payload() -> dict:
 
 def test_structure_aware_result_locks_exact_certificate_and_scope() -> None:
     payload = _payload()
-    assert payload["schema_version"] == (
-        "passive-muon-structure-aware-stability-certificate-v1"
-    )
+    assert payload["schema_version"] == ("passive-muon-structure-aware-stability-certificate-v1")
     assert payload["claim_scope"]["matrix_domain"] == (
         "R^(m x n) for every fixed finite positive m,n"
     )

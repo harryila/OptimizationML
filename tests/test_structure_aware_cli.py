@@ -25,9 +25,7 @@ def test_structure_aware_cli_replays_exact_certificate_and_gate() -> None:
     )
     payload = json.loads(completed.stdout)
 
-    assert payload["schema_version"] == (
-        "passive-muon-structure-aware-stability-certificate-v1"
-    )
+    assert payload["schema_version"] == ("passive-muon-structure-aware-stability-certificate-v1")
     locked = payload["locked_exact_certificate"]
     assert Fraction(locked["learning_rate_eta"]["exact"]) == Fraction(1, 32_000)
     assert Fraction(locked["exponential_rate_tau"]["exact"]) == Fraction(99_999, 100_000)
