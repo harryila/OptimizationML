@@ -1,0 +1,51 @@
+name: P5 nonquadratic replay
+
+on:
+  push:
+    branches:
+      - p5-nonquadratic-stability
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-and-falsification:
+    name: Exact LMI and nonlinear probe (Python 3.12)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          enable-cache: true
+
+      - name: Install the locked environment
+        run: uv sync --locked
+
+      - name: Replay the exact nonquadratic certificate
+        run: >-
+          uv run --locked python scripts/certify_nonquadratic_stability.py
+          --output "$RUNNER_TEMP/nonquadratic_stability_certificate.json"
+
+      - name: Replay the nonlinear changing-orientation probe
+        run: >-
+          uv run --locked python experiments/quadratics/run_nonquadratic_falsification.py
+          --output "$RUNNER_TEMP/nonquadratic_falsification.json"
+
+      - name: Run P5 integrity tests
+        run: >-
+          uv run --locked pytest -q
+          tests/test_nonquadratic_stability.py
+          tests/test_nonquadratic_certificate_cli.py
+          tests/test_nonquadratic_experiment.py
+          tests/test_nonquadratic_results.py
