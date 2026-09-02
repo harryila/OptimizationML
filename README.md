@@ -87,6 +87,31 @@ By the predeclared decision rule this is an appendix-level proof of principle,
 not a practical-stability headline. See
 [`theory/ema_nesterov_iqc_certificate.md`](theory/ema_nesterov_iqc_certificate.md).
 
+On branch `p4-structure-aware-stability`, the same pinned EMA/Nesterov ordering
+is certified for every deterministic quadratic with
+`I <= H <= 10 I` at the much larger step `eta=1/32000`. The proof uses the
+specific centered decomposition of the repaired floored Jordan map, rather
+than reducing it to a generic strongly-monotone/Lipschitz sector. It is the
+quadratic bridge to the nonlinear result.
+
+Branch `p5-nonquadratic-stability` proves two complementary theorems for every
+fixed differentiable globally `1`-strongly-convex, `10`-smooth objective on
+every finite real matrix shape. With the exact max floor `c=1`, no additive
+epsilon, five Jordan steps with coefficients `6889/2000`, `-191/40`, and
+`4063/2000`, constant repair
+`rho=210177835339081/260261360000`, and `beta=19/20`:
+
+- at `eta=1/640000`, a common quadratic storage proves arbitrary-pair global
+  incremental contraction;
+- at the full p4 step `eta=1/32000`, objective-gap/interpolation storage proves
+  global exponential convergence of each trajectory to the unique minimizer
+  at rate `tau=2499/2500`.
+
+The full-step result is the primary positive theorem. It permits changing
+local Hessian orientations, but it is trajectory-to-minimizer convergence,
+not arbitrary-pair incremental stability. See
+[`theory/nonquadratic_convergence_certificate.md`](theory/nonquadratic_convergence_certificate.md).
+
 The repair claim is intentionally scoped. A constant `rho` is the exact minimal
 linear shift for a **specified point, pair, sample set, or domain with a finite
 certified deficit**. For exact scale-invariant normalization on every nonzero
@@ -106,6 +131,10 @@ uv run --locked python scripts/record_bf16_witness.py
 uv run --locked python scripts/certify_floored_repair.py
 uv run --locked python scripts/certify_momentum_stability.py
 uv run --locked python scripts/certify_ema_nesterov_stability.py
+uv run --locked python scripts/certify_structure_aware_stability.py
+uv run --locked python scripts/certify_nonquadratic_stability.py
+uv run --locked python scripts/certify_nonquadratic_convergence.py
+uv run --locked python scripts/reconstruct_nonquadratic_convergence.py
 uv run --locked pytest
 ```
 
@@ -115,6 +144,8 @@ The complete CPU result pipeline is:
 uv run --locked python experiments/matrices/run_deficit_audit.py
 uv run --locked python experiments/quadratics/run_lr_sweep.py
 uv run --locked python experiments/quadratics/run_horizon_check.py
+uv run --locked python experiments/quadratics/run_nonquadratic_falsification.py
+uv run --locked python experiments/quadratics/run_nonquadratic_convergence_falsification.py
 uv run --locked python scripts/make_figures.py
 ```
 
@@ -130,7 +161,7 @@ not support a universal claim across BF16 backends.
 
 ## Scope
 
-This repository stays focused on six technical goals:
+This repository stays focused on eight technical goals:
 
 1. a theorem for current-input Frobenius normalization;
 2. exact local and finite-pair controls for the five-step Jordan map;
@@ -139,23 +170,25 @@ This repository stays focused on six technical goals:
 4. a rigorous full-matrix repair certificate for a fixed Frobenius floor;
 5. sector-IQC certificates for a stylized non-Nesterov loop and the pinned
    EMA/Nesterov state-and-signal ordering in deterministic quadratics;
-6. qualified matrix and quadratic falsification studies.
+6. a structure-aware full-step theorem for the pinned loop on fixed
+   quadratics;
+7. incremental and full-step convergence theorems for globally
+   strongly-convex/smooth nonlinear objectives;
+8. qualified matrix, quadratic, and nonlinear falsification studies.
 
-The floored architecture now has a simplified continuous-time contraction
-corollary, a stylized non-Nesterov theorem, and an appendix-level certificate
-for the pinned EMA/Nesterov ordering. The generic one-step-memory IQC framework
-is prior art; the new ingredient here is the certified full-matrix Muon
-operator sector and its repaired interconnection. Neither discrete result is a
-BF16, nonquadratic, stochastic, or neural-network convergence theorem.
-Formal circuit ports, a less conservative architecture-aware discrete-time
-certificate, nonquadratic or stochastic training theory, and a NanoGPT
-benchmark remain open.
+The P5 full-step theorem is the main constructive optimizer result; P4 is its
+quadratic bridge, and P3 is the conservative generic-IQC baseline. The generic
+one-step-memory IQC framework is prior art; the new ingredients are the
+certified full-matrix Muon operator and the structure-aware interconnection.
+PL/nonconvex objectives, stochastic gradients, BF16/quantized execution,
+weight decay, aspect-ratio scaling, complete neural-network training, and
+formal circuit ports remain open.
 
 ## Layout
 
 - `src/passive_muon/`: normalization, orthogonalizers, deficit metrics, repairs;
 - `theory/`: claim ledger, analytic proof, and exact/numerical certificates;
-- `experiments/`: matrix and qualified quadratic studies;
+- `experiments/`: matrix, qualified quadratic, and nonlinear falsification studies;
 - `scripts/`: reproducible entry points;
 - `results/`: committed manifests, summaries, and figures only;
 - `third_party/`: upstream revisions and license notices.

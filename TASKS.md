@@ -34,11 +34,26 @@
 - [x] Replay its exact rational rate LMI and matched rank-one boundary checks.
 - [x] Match the pinned EMA/Nesterov state-and-signal ordering in a second IQC.
 - [x] Replay the EMA/Nesterov exact rational LMI at the default `beta=0.95`.
+- [x] Derive and replay the full-step P4 structure-aware quadratic certificate
+      at `eta=1/32000`.
+- [x] Prove P5 arbitrary-pair nonlinear incremental contraction at
+      `eta=1/640000`.
+- [x] Prove P5 full-step trajectory-to-minimizer convergence for every fixed
+      differentiable globally `1`-strongly-convex, `10`-smooth objective at
+      `eta=1/32000`.
+- [x] Replay the P5 rational LMIs and run changing-orientation nonlinear
+      falsification probes.
+- [x] Add a standalone independent exact reconstruction of the P5 full-step
+      matrix and determinant checks.
 - [ ] Obtain independent human review of C7 and C8.
+- [ ] Obtain independent human review of C9 and C10.
 - [ ] Obtain an independent parity audit against the pinned upstream EMA/Nesterov
       update (the automated local two-`lerp` regression exists; external sign-off
       is still pending).
-- [ ] Derive a less conservative architecture-aware momentum region.
+- [x] Derive a less conservative architecture-aware momentum region for fixed
+      quadratics and the strongly-convex/smooth nonlinear class.
+- [ ] Extend the pinned repaired loop to smooth Polyak--Lojasiewicz objectives
+      without claiming a unique minimizer.
 - [ ] Run a small matched NanoGPT sweep only after the preceding gates pass.
 - [ ] Run an accelerator throughput benchmark only for a certified design.
 

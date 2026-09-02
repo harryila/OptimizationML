@@ -1,4 +1,4 @@
-# P5 nonquadratic stability result
+# P5 first-stage incremental stability result
 
 `p5-nonquadratic-stability` preserves p4 commit
 `c9636358de2d3d17bf5e62b0f03c7aff12da97bd` as the fixed-quadratic fallback.
@@ -34,7 +34,10 @@ The discovery-only static-IQC search found a rate-one feasibility boundary
 near `eta=1.69390537084e-6`, or `0.05420497 eta_p4`. The valid centered
 residual inner-product IQCs were inactive and did not materially move that
 boundary. This is not an impossibility theorem: dynamic or cyclic IQCs may
-certify larger steps. P5 does not retain the p4 step `1/32000`.
+certify larger steps. This common-quadratic incremental certificate does not
+retain the p4 step `1/32000`; the later objective-gap/interpolation certificate
+does retain it for trajectory-to-minimizer convergence. See
+`P5_FULL_STEP_RESULTS.md`.
 
 ## Falsification result
 

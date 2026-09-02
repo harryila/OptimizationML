@@ -47,6 +47,11 @@ jobs:
           uv run --locked python scripts/certify_nonquadratic_convergence.py
           --output "$RUNNER_TEMP/nonquadratic_convergence_certificate.json"
 
+      - name: Independently reconstruct the full-step certificate
+        run: >-
+          uv run --locked python scripts/reconstruct_nonquadratic_convergence.py
+          --output "$RUNNER_TEMP/nonquadratic_convergence_reconstruction.json"
+
       - name: Replay the full-step convergence probe
         run: >-
           uv run --locked python
@@ -62,5 +67,6 @@ jobs:
           tests/test_nonquadratic_results.py
           tests/test_nonquadratic_convergence.py
           tests/test_nonquadratic_convergence_cli.py
+          tests/test_nonquadratic_convergence_reconstruction.py
           tests/test_nonquadratic_convergence_experiment.py
           tests/test_nonquadratic_convergence_results.py

@@ -20,6 +20,20 @@ Current outputs:
 - `summaries/ema_nesterov_iqc_certificate.json`: exact rational LMI replay for
   the pinned EMA/Nesterov state-and-signal ordering, numerical repair-margin
   design scan, exact local threshold, and matched rank-one diagnostics;
+- `summaries/structure_aware_stability_certificate.json`: full-step,
+  dimension-independent P4 certificate for the repaired floored operator in
+  the pinned deterministic quadratic loop;
+- `summaries/nonquadratic_stability_certificate.json`: P5 arbitrary-pair
+  incremental certificate for globally `1`-strongly-convex, `10`-smooth
+  objectives at `eta=1/640000`;
+- `summaries/nonquadratic_convergence_certificate.json`: P5 objective-gap and
+  interpolation-storage certificate for trajectory-to-minimizer convergence
+  at the full P4 step `eta=1/32000`;
+- `summaries/nonquadratic_falsification.json` and
+  `summaries/nonquadratic_convergence_falsification.json`: qualified float64
+  changing-orientation implementation probes for the two P5 certificates;
+- `summaries/P5_RESULTS.md` and `summaries/P5_FULL_STEP_RESULTS.md`: scoped
+  human-readable summaries of the incremental and full-step P5 results;
 - `summaries/deficit_audit.{json,csv}`: 24-prefix spectral audit;
 - `summaries/quadratic_lr_sweep.json` plus CSV tables: gain-matched quadratic
   sweep and sensitivity classifications;

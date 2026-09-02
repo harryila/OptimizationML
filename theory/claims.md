@@ -296,7 +296,8 @@ about `2.599e-8`, whereas the linked curvature-10 zero-linearization loses
 local stability at about `4.726e-4`. The roughly `18,183x` gap is explicit:
 this is a rigorous but extremely conservative stylized-loop result. It does
 not establish nonquadratic, stochastic, BF16, or neural-network convergence.
-See `momentum_iqc_certificate.md`.
+See `momentum_iqc_certificate.md`. C9 and C10 below record the later
+structure-aware quadratic and nonlinear extensions.
 
 Prior-art references for the generic IQC framework are Lessard, Recht, and
 Packard (<https://arxiv.org/abs/1408.3595>) and Zhang, Bao, Lessard, and
@@ -375,10 +376,69 @@ That is `10,758.62x` the locked certified `eta`. At the numerical stationary
 design, the corresponding local threshold is `0.002081027708...`, about
 `9,923.44x` its complex-skew necessary boundary. The predeclared hard rule therefore classifies C8 as
 an appendix/proof-of-principle result, not a headline practical-stability
-claim. No nonquadratic, stochastic, BF16, or neural-network theorem follows.
-See `ema_nesterov_iqc_certificate.md`.
+claim. No nonquadratic, stochastic, BF16, or neural-network theorem follows
+from C8 alone. See `ema_nesterov_iqc_certificate.md`. C9 and C10 use additional
+operator and objective structure.
 
-## C9. Circuit and broader optimization consequences — open
+## C9. Structure-aware pinned-loop quadratic stability — proved
+
+Use the repaired real-arithmetic operator on every fixed finite matrix shape
+
+\[
+R(M)=\mathcal H_{q^{\circ5}}
+\!\left(\frac{M}{\max\{1,\lVert M\rVert_F\}}\right)+\rho M,
+\]
+
+where there is no additive epsilon,
+
+\[
+q(s)=\frac{6889}{2000}s-\frac{191}{40}s^3+\frac{4063}{2000}s^5,
+\qquad
+\rho=\frac{210177835339081}{260261360000}.
+\]
+
+For every deterministic quadratic with `I <= H <= 10 I`, the pinned
+EMA/Nesterov recurrence in C8 with `beta=19/20` is globally incrementally
+exponentially stable at
+
+\[
+\eta=\frac1{32000},\qquad \tau=\frac{99999}{100000}.
+\]
+
+The exact `4 x 4` certificate uses the specific centered decomposition
+`R(s)=gamma*s+E(s)` and `Lip(E)<=K_E`, not merely the generic sector used in
+C8. Its `P tensor I` storage is dimension independent and therefore covers
+arbitrary finite matrix shapes. This is the quadratic bridge, not a nonlinear,
+stochastic, BF16, or upstream-training theorem. See
+`structure_aware_stability_certificate.md`.
+
+## C10. Pinned-loop nonlinear strongly-convex stability — proved
+
+Keep exactly the C9 operator, max-floor normalization, lack of additive
+epsilon, five polynomial steps, constant repair, and `beta=19/20`. For every
+fixed differentiable objective on an arbitrary finite real matrix shape that
+is globally `1`-strongly convex and `10`-smooth, two distinct certificates
+hold:
+
+1. At `eta=1/640000`, a common quadratic `P tensor I` storage proves global
+   incremental exponential contraction between any two trajectories at
+   `tau=99999/100000`.
+2. At the full C9 step `eta=1/32000`, a storage containing the normalized
+   objective gap and exact smooth/strongly-convex interpolation supplies proves
+   global exponential convergence of every trajectory to the unique minimizer
+   at `tau=2499/2500`.
+
+The second result is trajectory-to-minimizer convergence, not an arbitrary-pair
+incremental theorem. It is the main positive stability result because it retains the full structure-aware
+quadratic step for the complete nonlinear function class. Neither proof fixes
+or diagonalizes a Hessian; local Hessian orientations may change along the
+trajectory. The claims remain deterministic and exact-real-arithmetic only:
+they exclude time-varying or stochastic objectives, BF16, weight decay,
+aspect-ratio scaling, additive-epsilon or exact-current normalization, and a
+complete neural-network optimizer. See `nonquadratic_stability_certificate.md`
+and `nonquadratic_convergence_certificate.md`.
+
+## C11. Circuit and broader optimization consequences — open
 
 Boyd's framework models `y in partial f(x)` as a grounded multi-terminal
 device and its energy argument uses
@@ -392,5 +452,6 @@ The formal port mapping and the claim that lower deficit predicts a wider
 training learning-rate interval remain open. They require:
 
 1. a circuit sign convention and explicit interconnection model;
-2. a less conservative architecture-aware discrete-time certificate;
-3. only then, a controlled small NanoGPT sweep.
+2. PL/nonconvex, stochastic, and quantized robustness extensions;
+3. implementation-level parity including weight decay and aspect scaling;
+4. only then, a controlled small neural-training sweep.

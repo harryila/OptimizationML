@@ -87,6 +87,8 @@ interpolation/LMI replay supplies the theorem.
   `f366af4345328fe66ffb269a4fe13ffe6d55d583`.
 - Full-step p5 code/proof checkpoint:
   `7db9896c55bd131369e5e314a3e0175a9cf18c85`.
+- Frozen final P5 checkpoint/tag target:
+  `a549fb4c206335ef9ec264524e0f581216b250d4`.
 
 The result does not cover stochastic or time-varying objectives, BF16,
 weight decay, aspect-ratio scaling, additive-epsilon or exact-current

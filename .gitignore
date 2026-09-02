@@ -40,3 +40,11 @@ results/raw/
 *.pt
 *.pth
 *.ckpt
+
+# Double-blind manuscripts and supplements must live outside this identifiable
+# public repository. These guards prevent accidental future staging.
+paper/
+submission/
+supplement/
+anonymous-supplement/
+anonymized-supplement/

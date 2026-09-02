@@ -1,7 +1,7 @@
 # Experiment results
 
-The spectral and quadratic results were generated in float64 on an arm64 CPU;
-Section 2 is the separately scoped BF16 deployment check. JSON files are the
+The spectral, quadratic, and nonlinear falsification results were generated in
+float64 on an arm64 CPU; Section 2 is the separately scoped BF16 deployment check. JSON files are the
 source-of-truth manifests; CSV files are flattened views. All grid extrema are
 lower-bound witnesses, not continuous-domain upper certificates.
 
@@ -320,7 +320,66 @@ An automated regression checks the literal two-`lerp` sequence and in-place
 gradient behavior against the algebraic recurrence. Independent parity and
 human proof audits remain unchecked.
 
-## 9. Unrun gate
+## 9. P4 structure-aware full-step quadratic certificate
+
+For every finite real matrix shape, use the exact-real-arithmetic repaired map
+
+\[
+R(M)=\mathcal H_{q^{\circ5}}
+\!\left(\frac{M}{\max\{1,\lVert M\rVert_F\}}\right)+\rho M,
+\]
+
+with no additive epsilon, five Jordan steps, exact coefficients
+`(6889/2000,-191/40,4063/2000)`, and constant
+`rho=210177835339081/260261360000`. For the pinned EMA/Nesterov ordering at
+`beta=19/20`, an exact dimension-independent `4 x 4` certificate proves
+arbitrary-pair global incremental exponential stability for every fixed
+quadratic `I <= H <= 10 I` at
+
+\[
+\eta=\frac1{32000},\qquad \tau=\frac{99999}{100000}.
+\]
+
+The structure-aware centered residual description retains the full locked
+step and is the quadratic bridge between the generic P3 sector baseline and
+P5. See `structure_aware_stability_certificate.json`.
+
+## 10. P5 nonlinear strongly-convex certificates
+
+P5 keeps exactly the P4 operator, normalization, coefficients, five-step
+count, constant repair, matrix domain, and pinned `beta=19/20`. It establishes
+two different guarantees for every fixed differentiable globally
+`1`-strongly-convex, `10`-smooth objective:
+
+- At `eta=1/640000`, a common quadratic storage proves arbitrary-pair global
+  incremental contraction at `tau=99999/100000`.
+- At the full P4 step `eta=1/32000`, exact objective-gap/interpolation storage
+  proves global exponential convergence of each trajectory to the unique
+  minimizer at `tau=2499/2500`.
+
+The full-step theorem is trajectory-to-minimizer convergence, not an
+incremental-stability claim. Neither proof
+freezes a Hessian basis, so local Hessian orientations may change over time.
+The full-step exact replay verifies positive storage, exact objective-value
+flow cancellation, and strict negativity of the `5 x 5` LMI using rational
+Sylvester minors. A separate standard-library-only implementation reconstructs
+the entire matrix and matches every exact canonical field without importing
+the project certificate code.
+
+The two deterministic CPU/float64 probes each contain 36 changing-orientation
+cases. The full-step probe ran 500 updates per case and observed no candidate
+implementation violation, Lyapunov-rate violation, divergence, or nonfinite
+value. Its maximum resolved `V_(t+1)/V_t` was `0.9799999799424988`, below
+`tau^2=0.99920016`. These sampled passes are falsification diagnostics, not the
+proof. See `P5_RESULTS.md`, `P5_FULL_STEP_RESULTS.md`, and the corresponding
+machine-readable manifests.
+
+The P5 results are for the repaired max-floored exact-arithmetic optimizer.
+They do not cover exact-current or additive-epsilon normalization, stochastic
+or time-varying objectives, BF16, weight decay, aspect-ratio scaling, or a
+complete neural-network training system.
+
+## 11. Unrun gate
 
 No NanoGPT result is reported. This machine exposes neither CUDA nor an
 available MPS device. The `rho` used in the existing quadratic study is only a
@@ -342,9 +401,21 @@ uv run --locked python scripts/certify_momentum_stability.py \
   --output results/summaries/momentum_iqc_certificate.json
 uv run --locked python scripts/certify_ema_nesterov_stability.py \
   --output results/summaries/ema_nesterov_iqc_certificate.json
+uv run --locked python scripts/certify_structure_aware_stability.py \
+  --output results/summaries/structure_aware_stability_certificate.json
+uv run --locked python scripts/certify_nonquadratic_stability.py \
+  --output results/summaries/nonquadratic_stability_certificate.json
+uv run --locked python scripts/certify_nonquadratic_convergence.py \
+  --output results/summaries/nonquadratic_convergence_certificate.json
+uv run --locked python scripts/reconstruct_nonquadratic_convergence.py
 uv run --locked python experiments/matrices/run_deficit_audit.py
 uv run --locked python experiments/quadratics/run_lr_sweep.py
 uv run --locked python experiments/quadratics/run_horizon_check.py
+uv run --locked python experiments/quadratics/run_nonquadratic_falsification.py \
+  --output results/summaries/nonquadratic_falsification.json
+uv run --locked python \
+  experiments/quadratics/run_nonquadratic_convergence_falsification.py \
+  --output results/summaries/nonquadratic_convergence_falsification.json
 uv run --locked python scripts/make_figures.py
 uv run --locked pytest -q
 ```

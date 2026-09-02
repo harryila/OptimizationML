@@ -10,16 +10,22 @@ Experiment order is gated:
    boundary checks;
 6. the pinned EMA/Nesterov state-and-signal ordering IQC, exact replay, and
    parity regression;
-7. only then, a small matched NanoGPT learning-rate sweep.
+7. the P4 structure-aware full-step quadratic certificate;
+8. the two P5 nonlinear certificates and changing-orientation falsification
+   probes;
+9. only after PL, stochastic, quantized, and implementation-parity gates, a
+   small matched neural-training sweep.
 
 The floored Jordan architecture now has a valid global constant-`rho`
 certificate, a stylized non-Nesterov quadratic theorem, and an exact rational
-certificate for the pinned EMA/Nesterov ordering in real arithmetic. Even
-at the numerical stationary repair-margin design, the latter's complex-skew
-necessary boundary is about `9,923.44x` below its matched local threshold. It is therefore retained
-as an appendix/proof of principle, not a practical-stability headline. GPU
-work remains gated on a stronger architecture-aware certificate and a
-predeclared use of that architecture. Each run writes a self-contained JSON
+certificate for the pinned EMA/Nesterov ordering in real arithmetic. Even at
+the numerical stationary repair-margin design, that generic P3 result's
+complex-skew necessary boundary is about `9,923.44x` below its matched local
+threshold. It is therefore retained as an appendix/proof of principle, not a
+practical-stability headline. P4 and P5 subsequently give structure-aware
+full-step quadratic and nonlinear results. GPU work remains gated on the
+remaining robustness and implementation-parity results and a predeclared use
+of the certified architecture. Each run writes a self-contained JSON
 manifest and compact CSV tables under `results/summaries/`; the JSON records
 inputs, operator details, dtype, seed, software, hardware, and Git state.
 
@@ -36,8 +42,10 @@ The exact rational LMI and Jury signs carry the claims. The committed float64
 trajectories are matched diagnostics, not sampled global certificates.
 The first command studies the explicitly stylized non-Nesterov recurrence;
 the second matches the pinned EMA state and Nesterov signal ordering after
-substituting the repaired floored map and omitting weight decay. Neither is a
-BF16, nonquadratic, stochastic, or neural-network theorem.
+substituting the repaired floored map and omitting weight decay. Neither P3
+certificate is a BF16, nonquadratic, stochastic, or neural-network theorem;
+the separate P5 certificates establish the deterministic exact-arithmetic
+nonlinear case.
 
 The deployed BF16 pair is a separate, backend-specific executable check. It
 does not use a Jacobian and does not support a universal BF16 claim. Record it
