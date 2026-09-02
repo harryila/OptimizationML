@@ -44,7 +44,9 @@ P4_RESULT_PATH = "results/summaries/structure_aware_stability_certificate.json"
 P5_INCREMENTAL_RESULT_PATH = "results/summaries/nonquadratic_stability_certificate.json"
 SOURCE_PATHS = (
     "scripts/certify_nonquadratic_convergence.py",
+    "src/passive_muon/ema_nesterov_iqc.py",
     "src/passive_muon/nonquadratic_convergence.py",
+    "src/passive_muon/nonquadratic_stability.py",
     "src/passive_muon/structure_aware_stability.py",
     "src/passive_muon/floored_certificate.py",
     "src/passive_muon/momentum_iqc.py",
@@ -279,6 +281,11 @@ def build_payload() -> dict[str, Any]:
         },
         "independent_audit": {
             "status": "passed",
+            "review_type": (
+                "independent automated exact-algebra reconstruction; not a human proof audit"
+            ),
+            "review_date": "2026-09-02",
+            "human_proof_audit": "pending",
             "items": [
                 "F_(k,1) interpolation formula and every directed edge sign",
                 "exact objective-value flow cancellation",
@@ -302,6 +309,10 @@ def build_payload() -> dict[str, Any]:
             "arithmetic": "fractions.Fraction exact rational arithmetic",
             "analytic_seed": None,
             "discovery_only_solver": {
+                "role": (
+                    "historical reported discovery environment; not replayed here and not "
+                    "authoritative for the theorem"
+                ),
                 "python": "3.12.11",
                 "cvxpy": "1.9.2",
                 "clarabel": "0.11.1",

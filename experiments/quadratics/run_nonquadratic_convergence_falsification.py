@@ -28,10 +28,13 @@ SOURCE_PATHS = (
     "src/passive_muon/nonquadratic_convergence_experiment.py",
     "src/passive_muon/nonquadratic_convergence.py",
     "src/passive_muon/nonquadratic_experiment.py",
+    "src/passive_muon/floored_certificate.py",
+    "src/passive_muon/momentum_iqc.py",
     "src/passive_muon/structure_aware_stability.py",
     "src/passive_muon/operator.py",
     "src/passive_muon/normalizers.py",
     "src/passive_muon/orthogonalizers.py",
+    "src/passive_muon/polynomials.py",
     "src/passive_muon/specs.py",
     "src/passive_muon/upstream_momentum.py",
     "tests/test_nonquadratic_convergence_experiment.py",
@@ -81,6 +84,7 @@ def build_payload(
     payload["certificate_references"] = {
         "full_step_convergence": {
             "source": "src/passive_muon/nonquadratic_convergence.py",
+            "source_sha256": _sha256("src/passive_muon/nonquadratic_convergence.py"),
             "scope": "trajectory-to-minimizer convergence at eta=1/32000",
         },
         "p4": {

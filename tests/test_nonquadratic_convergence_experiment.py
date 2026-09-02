@@ -142,3 +142,5 @@ def test_convergence_falsification_runner_quick_replay_records_provenance() -> N
     assert provenance["source_snapshot"]["src/passive_muon/nonquadratic_convergence_experiment.py"]
     assert payload["upstream_provenance"]["revision"]
     assert payload["certificate_references"]["p4"]["manifest_sha256"]
+    full_step = payload["certificate_references"]["full_step_convergence"]
+    assert len(full_step["source_sha256"]) == 64

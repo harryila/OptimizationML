@@ -253,7 +253,16 @@ The exact identity `trace(P)+c=1` merely fixes the certificate scale. Since
 
 Adding the nonnegative interpolation residuals and the nonnegative residual
 IQC to `V_+-tau^2 V` cancels the two objective values and leaves exactly
-`<chi,(M tensor I)chi>`. Hence
+`<chi,(M tensor I)chi>`:
+
+\[
+V_+-\tau^2V
++\sum_{(i,j)}\lambda_{ij}I_{ij}
++\lambda_E(\lVert p\rVert_F^2-\lVert v\rVert_F^2)
+=\langle\chi,(\mathcal M\otimes I)\chi\rangle_F<0.
+\]
+
+Hence
 
 \[
 V_{t+1}<\tau^2V_t

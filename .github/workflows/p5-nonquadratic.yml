@@ -42,6 +42,17 @@ jobs:
           uv run --locked python experiments/quadratics/run_nonquadratic_falsification.py
           --output "$RUNNER_TEMP/nonquadratic_falsification.json"
 
+      - name: Replay the exact full-step convergence certificate
+        run: >-
+          uv run --locked python scripts/certify_nonquadratic_convergence.py
+          --output "$RUNNER_TEMP/nonquadratic_convergence_certificate.json"
+
+      - name: Replay the full-step convergence probe
+        run: >-
+          uv run --locked python
+          experiments/quadratics/run_nonquadratic_convergence_falsification.py
+          --output "$RUNNER_TEMP/nonquadratic_convergence_falsification.json"
+
       - name: Run P5 integrity tests
         run: >-
           uv run --locked pytest -q
@@ -49,3 +60,7 @@ jobs:
           tests/test_nonquadratic_certificate_cli.py
           tests/test_nonquadratic_experiment.py
           tests/test_nonquadratic_results.py
+          tests/test_nonquadratic_convergence.py
+          tests/test_nonquadratic_convergence_cli.py
+          tests/test_nonquadratic_convergence_experiment.py
+          tests/test_nonquadratic_convergence_results.py

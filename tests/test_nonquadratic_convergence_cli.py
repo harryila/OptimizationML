@@ -43,4 +43,10 @@ def test_nonquadratic_convergence_cli_replays_full_step_and_scope() -> None:
     assert Fraction(gate["full_step_over_p3"]["exact"]) > 160
     assert Fraction(gate["rate_decrement_over_p4"]["exact"]) == 40
     assert gate["classification"] == "excellent; major nonlinear theorem"
-    assert payload["independent_audit"]["status"] == "passed"
+    independent_audit = payload["independent_audit"]
+    assert independent_audit["status"] == "passed"
+    assert "not a human proof audit" in independent_audit["review_type"]
+    assert independent_audit["human_proof_audit"] == "pending"
+    assert (
+        "not authoritative" in payload["proof_replay_provenance"]["discovery_only_solver"]["role"]
+    )
