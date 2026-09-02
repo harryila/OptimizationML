@@ -56,7 +56,7 @@ def test_structure_aware_result_was_generated_cleanly_from_hashed_sources() -> N
     git = payload["git"]
     assert git["branch"] == "p4-structure-aware-stability"
     assert git["dirty"] is False
-    assert git["sha"] == "5a505d47d5b737f39e4c8f5c93419072e0cc31f5"
+    assert git["sha"] == "09964c5234c17ca99c5d95b1f64d2c2d72e66f16"
 
     snapshot = payload["experiment_provenance"]["source_snapshot"]
     assert snapshot
