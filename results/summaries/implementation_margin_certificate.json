@@ -88,7 +88,7 @@
   "git": {
     "branch": "p11-certified-implementation-margin",
     "dirty": false,
-    "sha": "cbc87812cac53d751a28e96f56367e66422013d2"
+    "sha": "d3ea1cc58153e52ac9e5d424d58ae8459296f645"
   },
   "jointly_nonzero_subunit_profile": {
     "D11": {
@@ -1563,7 +1563,7 @@
     "python": "3.12.11 (main, Jul  8 2025, 20:41:49) [Clang 20.1.4 ]",
     "seed": null,
     "source_snapshot": {
-      ".github/workflows/p11-implementation-margin.yml": "e598074755fbdca47cd94d74b010f1691428bd3cf68adaa2c7220f8347782550",
+      ".github/workflows/p11-implementation-margin.yml": "93d8d200ea41434dbac19850523fd09d0aca2530e2b2b24f2b98ae7fcda6fc8e",
       "pyproject.toml": "7a9988bf528baef5145f779516d4315349d1c2a6bbb7394c9b93fbbee1d4f596",
       "results/summaries/P11_RESULTS.md": "7aaec482db018afeb76aeb7126a70f47579ac1630c4d5f43c9f3c263f3aeb205",
       "scripts/certify_implementation_margin.py": "4da005b337aeeb94be764b8fa2809dce0e73713af89d979120a29fc966d3d8c4",
