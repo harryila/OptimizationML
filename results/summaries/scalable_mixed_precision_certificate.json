@@ -1,0 +1,1977 @@
+{
+  "audit": {
+    "all_representative_exact_checks_passed": true,
+    "all_shape_checks": {
+      "3072x12288": {
+        "continuous_optimum_exists": true,
+        "finite_guard_is_forward_invariant": true,
+        "normalizer_is_certified": true,
+        "p7_affine_slope_gate": true,
+        "polynomial_tube_facts_are_certified": true,
+        "repair_shell_finite": true,
+        "selected_young_parameter_keeps_rate_strict": true,
+        "stage_1_bf16_boundary_finite": true,
+        "stage_1_input_in_spectral_tube": true,
+        "stage_1_intermediates_finite": true,
+        "stage_2_bf16_boundary_finite": true,
+        "stage_2_input_in_spectral_tube": true,
+        "stage_2_intermediates_finite": true,
+        "stage_3_bf16_boundary_finite": true,
+        "stage_3_input_in_spectral_tube": true,
+        "stage_3_intermediates_finite": true,
+        "stage_4_bf16_boundary_finite": true,
+        "stage_4_input_in_spectral_tube": true,
+        "stage_4_intermediates_finite": true,
+        "stage_5_bf16_boundary_finite": true,
+        "stage_5_input_in_spectral_tube": true,
+        "stage_5_intermediates_finite": true,
+        "two_term_bound_is_sterbenz_free": true,
+        "two_term_crumb_components_reconstruct": true,
+        "two_term_slope_components_reconstruct": true,
+        "two_term_slope_improves_one_term": true
+      },
+      "4096x11008": {
+        "continuous_optimum_exists": true,
+        "finite_guard_is_forward_invariant": true,
+        "normalizer_is_certified": true,
+        "p7_affine_slope_gate": true,
+        "polynomial_tube_facts_are_certified": true,
+        "repair_shell_finite": true,
+        "selected_young_parameter_keeps_rate_strict": true,
+        "stage_1_bf16_boundary_finite": true,
+        "stage_1_input_in_spectral_tube": true,
+        "stage_1_intermediates_finite": true,
+        "stage_2_bf16_boundary_finite": true,
+        "stage_2_input_in_spectral_tube": true,
+        "stage_2_intermediates_finite": true,
+        "stage_3_bf16_boundary_finite": true,
+        "stage_3_input_in_spectral_tube": true,
+        "stage_3_intermediates_finite": true,
+        "stage_4_bf16_boundary_finite": true,
+        "stage_4_input_in_spectral_tube": true,
+        "stage_4_intermediates_finite": true,
+        "stage_5_bf16_boundary_finite": true,
+        "stage_5_input_in_spectral_tube": true,
+        "stage_5_intermediates_finite": true,
+        "two_term_bound_is_sterbenz_free": true,
+        "two_term_crumb_components_reconstruct": true,
+        "two_term_slope_components_reconstruct": true,
+        "two_term_slope_improves_one_term": true
+      },
+      "4096x14336": {
+        "continuous_optimum_exists": true,
+        "finite_guard_is_forward_invariant": true,
+        "normalizer_is_certified": true,
+        "p7_affine_slope_gate": true,
+        "polynomial_tube_facts_are_certified": true,
+        "repair_shell_finite": true,
+        "selected_young_parameter_keeps_rate_strict": true,
+        "stage_1_bf16_boundary_finite": true,
+        "stage_1_input_in_spectral_tube": true,
+        "stage_1_intermediates_finite": true,
+        "stage_2_bf16_boundary_finite": true,
+        "stage_2_input_in_spectral_tube": true,
+        "stage_2_intermediates_finite": true,
+        "stage_3_bf16_boundary_finite": true,
+        "stage_3_input_in_spectral_tube": true,
+        "stage_3_intermediates_finite": true,
+        "stage_4_bf16_boundary_finite": true,
+        "stage_4_input_in_spectral_tube": true,
+        "stage_4_intermediates_finite": true,
+        "stage_5_bf16_boundary_finite": true,
+        "stage_5_input_in_spectral_tube": true,
+        "stage_5_intermediates_finite": true,
+        "two_term_bound_is_sterbenz_free": true,
+        "two_term_crumb_components_reconstruct": true,
+        "two_term_slope_components_reconstruct": true,
+        "two_term_slope_improves_one_term": true
+      },
+      "4096x4096": {
+        "continuous_optimum_exists": true,
+        "finite_guard_is_forward_invariant": true,
+        "normalizer_is_certified": true,
+        "p7_affine_slope_gate": true,
+        "polynomial_tube_facts_are_certified": true,
+        "repair_shell_finite": true,
+        "selected_young_parameter_keeps_rate_strict": true,
+        "stage_1_bf16_boundary_finite": true,
+        "stage_1_input_in_spectral_tube": true,
+        "stage_1_intermediates_finite": true,
+        "stage_2_bf16_boundary_finite": true,
+        "stage_2_input_in_spectral_tube": true,
+        "stage_2_intermediates_finite": true,
+        "stage_3_bf16_boundary_finite": true,
+        "stage_3_input_in_spectral_tube": true,
+        "stage_3_intermediates_finite": true,
+        "stage_4_bf16_boundary_finite": true,
+        "stage_4_input_in_spectral_tube": true,
+        "stage_4_intermediates_finite": true,
+        "stage_5_bf16_boundary_finite": true,
+        "stage_5_input_in_spectral_tube": true,
+        "stage_5_intermediates_finite": true,
+        "two_term_bound_is_sterbenz_free": true,
+        "two_term_crumb_components_reconstruct": true,
+        "two_term_slope_components_reconstruct": true,
+        "two_term_slope_improves_one_term": true
+      },
+      "768x3072": {
+        "continuous_optimum_exists": true,
+        "finite_guard_is_forward_invariant": true,
+        "normalizer_is_certified": true,
+        "p7_affine_slope_gate": true,
+        "polynomial_tube_facts_are_certified": true,
+        "repair_shell_finite": true,
+        "selected_young_parameter_keeps_rate_strict": true,
+        "stage_1_bf16_boundary_finite": true,
+        "stage_1_input_in_spectral_tube": true,
+        "stage_1_intermediates_finite": true,
+        "stage_2_bf16_boundary_finite": true,
+        "stage_2_input_in_spectral_tube": true,
+        "stage_2_intermediates_finite": true,
+        "stage_3_bf16_boundary_finite": true,
+        "stage_3_input_in_spectral_tube": true,
+        "stage_3_intermediates_finite": true,
+        "stage_4_bf16_boundary_finite": true,
+        "stage_4_input_in_spectral_tube": true,
+        "stage_4_intermediates_finite": true,
+        "stage_5_bf16_boundary_finite": true,
+        "stage_5_input_in_spectral_tube": true,
+        "stage_5_intermediates_finite": true,
+        "two_term_bound_is_sterbenz_free": true,
+        "two_term_crumb_components_reconstruct": true,
+        "two_term_slope_components_reconstruct": true,
+        "two_term_slope_improves_one_term": true
+      },
+      "768x50257": {
+        "continuous_optimum_exists": true,
+        "finite_guard_is_forward_invariant": true,
+        "normalizer_is_certified": true,
+        "p7_affine_slope_gate": true,
+        "polynomial_tube_facts_are_certified": true,
+        "repair_shell_finite": true,
+        "selected_young_parameter_keeps_rate_strict": true,
+        "stage_1_bf16_boundary_finite": true,
+        "stage_1_input_in_spectral_tube": true,
+        "stage_1_intermediates_finite": true,
+        "stage_2_bf16_boundary_finite": true,
+        "stage_2_input_in_spectral_tube": true,
+        "stage_2_intermediates_finite": true,
+        "stage_3_bf16_boundary_finite": true,
+        "stage_3_input_in_spectral_tube": true,
+        "stage_3_intermediates_finite": true,
+        "stage_4_bf16_boundary_finite": true,
+        "stage_4_input_in_spectral_tube": true,
+        "stage_4_intermediates_finite": true,
+        "stage_5_bf16_boundary_finite": true,
+        "stage_5_input_in_spectral_tube": true,
+        "stage_5_intermediates_finite": true,
+        "two_term_bound_is_sterbenz_free": true,
+        "two_term_crumb_components_reconstruct": true,
+        "two_term_slope_components_reconstruct": true,
+        "two_term_slope_improves_one_term": true
+      },
+      "768x768": {
+        "continuous_optimum_exists": true,
+        "finite_guard_is_forward_invariant": true,
+        "normalizer_is_certified": true,
+        "p7_affine_slope_gate": true,
+        "polynomial_tube_facts_are_certified": true,
+        "repair_shell_finite": true,
+        "selected_young_parameter_keeps_rate_strict": true,
+        "stage_1_bf16_boundary_finite": true,
+        "stage_1_input_in_spectral_tube": true,
+        "stage_1_intermediates_finite": true,
+        "stage_2_bf16_boundary_finite": true,
+        "stage_2_input_in_spectral_tube": true,
+        "stage_2_intermediates_finite": true,
+        "stage_3_bf16_boundary_finite": true,
+        "stage_3_input_in_spectral_tube": true,
+        "stage_3_intermediates_finite": true,
+        "stage_4_bf16_boundary_finite": true,
+        "stage_4_input_in_spectral_tube": true,
+        "stage_4_intermediates_finite": true,
+        "stage_5_bf16_boundary_finite": true,
+        "stage_5_input_in_spectral_tube": true,
+        "stage_5_intermediates_finite": true,
+        "two_term_bound_is_sterbenz_free": true,
+        "two_term_crumb_components_reconstruct": true,
+        "two_term_slope_components_reconstruct": true,
+        "two_term_slope_improves_one_term": true
+      }
+    },
+    "representative_shape_count": 7
+  },
+  "certificate": {
+    "arithmetic": {
+      "bf16_half_min_subnormal": "1/21778071482940061661655974875633165533184",
+      "bf16_max_finite": "338953138925153547590470800371487866880",
+      "bf16_unit_roundoff": "1/256",
+      "exact_a": "6889/2000",
+      "exact_b": "-191/40",
+      "exact_c": "4063/2000",
+      "exact_rho": "210177835339081/260261360000",
+      "fp32_a": "902955/262144",
+      "fp32_b": "-10013901/2097152",
+      "fp32_c": "8520729/4194304",
+      "fp32_half_min_subnormal": "1/1427247692705959881058285969449495136382746624",
+      "fp32_max_finite": "340282346638528859811704183484516925440",
+      "fp32_rho": "13231137/16384",
+      "fp32_unit_roundoff": "1/16777216",
+      "ideal_repaired_lipschitz": "336372400608849/260261360000",
+      "locked_safe_max_abs": "83076749736557242056487941267521536",
+      "normalizer_denominator_error_upper": "1/100000",
+      "normalizer_output_error_upper": "1/90000",
+      "p7_implementation_error_gain": "1/2000000",
+      "p7_rate": "399960001/400000000",
+      "p7_signal_storage_gain": "1655544025/2600084",
+      "p7_smoothness": "10",
+      "p7_storage_function_lower": "13533/50000",
+      "polynomial_lipschitz_on_tube": "3000459/512000",
+      "polynomial_spectral_upper": "121/100",
+      "spectral_tube": "5/4"
+    },
+    "locked_max_entries": 4503599627370496,
+    "locked_stages": 5,
+    "rank_gates": {
+      "ideal_two_term": 4693632,
+      "ordinary_one_term": 71,
+      "sterbenz_free_two_term": 4656751
+    },
+    "representative_shapes": [
+      [
+        768,
+        768
+      ],
+      [
+        768,
+        3072
+      ],
+      [
+        768,
+        50257
+      ],
+      [
+        3072,
+        12288
+      ],
+      [
+        4096,
+        4096
+      ],
+      [
+        4096,
+        11008
+      ],
+      [
+        4096,
+        14336
+      ]
+    ],
+    "serial_normalizer_obstruction": {
+      "computed_square_sum": 16777216,
+      "exact_square_sum": 45088768,
+      "leaves_spectral_tube": true,
+      "returned_singular_value_squared": "43/16",
+      "shape": [
+        4096,
+        11008
+      ]
+    },
+    "shape_audits": [
+      {
+        "certified": true,
+        "checks": {
+          "continuous_optimum_exists": true,
+          "finite_guard_is_forward_invariant": true,
+          "normalizer_is_certified": true,
+          "p7_affine_slope_gate": true,
+          "polynomial_tube_facts_are_certified": true,
+          "repair_shell_finite": true,
+          "selected_young_parameter_keeps_rate_strict": true,
+          "stage_1_bf16_boundary_finite": true,
+          "stage_1_input_in_spectral_tube": true,
+          "stage_1_intermediates_finite": true,
+          "stage_2_bf16_boundary_finite": true,
+          "stage_2_input_in_spectral_tube": true,
+          "stage_2_intermediates_finite": true,
+          "stage_3_bf16_boundary_finite": true,
+          "stage_3_input_in_spectral_tube": true,
+          "stage_3_intermediates_finite": true,
+          "stage_4_bf16_boundary_finite": true,
+          "stage_4_input_in_spectral_tube": true,
+          "stage_4_intermediates_finite": true,
+          "stage_5_bf16_boundary_finite": true,
+          "stage_5_input_in_spectral_tube": true,
+          "stage_5_intermediates_finite": true,
+          "two_term_bound_is_sterbenz_free": true,
+          "two_term_crumb_components_reconstruct": true,
+          "two_term_slope_components_reconstruct": true,
+          "two_term_slope_improves_one_term": true
+        },
+        "entries": 589824,
+        "initial_boundary_error": "8421855/549755813888",
+        "normalizer": {
+          "certified": true,
+          "checks": {
+            "floor_branch_denominator_bound": true,
+            "floor_branch_squared_error_below_one": true,
+            "norm_branch_denominator_bound": true,
+            "norm_branch_squared_error_below_one": true,
+            "normalizer_output_bound": true,
+            "pairwise_gamma_defined": true,
+            "pairwise_norm_sum_finite": true,
+            "small_floor_cannot_cross_one": true
+          },
+          "values": {
+            "floor_branch_denominator_error": "409603/549755813888",
+            "floor_branch_squared_error": "1507337/1099511627776",
+            "gamma": "688129/549755813888",
+            "norm_branch_denominator_error": "204801/274877906944",
+            "norm_branch_squared_error": "753667/549755813888",
+            "output_error": "11126301/1099511627776",
+            "relative_vector_error": "65537/1099511627776",
+            "small_floor_sum_upper": "137439141889/549755813888",
+            "sum_crumb": "1/1099511627776"
+          }
+        },
+        "operator_bound": {
+          "binary32_intercept": "581297245503/549755813888",
+          "binary32_slope": "60114853/549755813888",
+          "real_intercept": "1162594491007/1099511627776",
+          "real_slope": "102465557/549755813888"
+        },
+        "oriented_shape": [
+          768,
+          768
+        ],
+        "p7": {
+          "values": {
+            "forcing": "614853/1099511627776",
+            "function_gap_ultimate": "227249290275/1099511627776",
+            "rate": "137425214491/137438953472",
+            "safe_forcing_capacity": "595689785138215567102992858266909775175230687803980851952123391179752488151/549755813888",
+            "safe_storage_radius": "17945120248348596254688509761412697446510889220796667355893196633912968740864/1655544025"
+          },
+          "young_theta": 3006
+        },
+        "polynomial": {
+          "certified": true,
+          "checks": {
+            "derivative_endpoint_matches_lock": true,
+            "derivative_vertex_below_lock": true,
+            "derivative_vertex_is_in_interval": true,
+            "derivative_zero_below_lock": true,
+            "factor_has_no_real_root": true,
+            "factor_is_at_most_a_on_tube": true,
+            "factor_is_positive": true
+          },
+          "range_source": "P8 exact Sturm artifact proves 0<=q(x)<121/100 on 0<=x<=5/4",
+          "values": {
+            "derivative_at_endpoint": "3000459/512000",
+            "derivative_at_vertex": "-6525559/4063000",
+            "derivative_at_zero": "6889/2000",
+            "derivative_vertex": "2865/4063",
+            "factor_correction_at_endpoint": "-2049/1280",
+            "factor_discriminant": "-2594691/500000",
+            "squared_endpoint": "25/16"
+          }
+        },
+        "shape": [
+          768,
+          768
+        ],
+        "stages": [
+          {
+            "index": 1,
+            "values": {
+              "affine_error": "31445363/274877906944",
+              "boundary_error": "58022037/1099511627776",
+              "forward_error": "211819385/549755813888",
+              "gram_error": "720935/1099511627776",
+              "input_frobenius": "549770344141/549755813888",
+              "input_spectral": "549770344141/549755813888",
+              "intermediate_max_frobenius": "24053314156415/137438953472",
+              "next_frobenius": "3787621237103/1099511627776",
+              "next_spectral": "332665601481/274877906944",
+              "output_error_before_boundary": "97657139/549755813888",
+              "pre_boundary_frobenius": "1893781607533/549755813888",
+              "pre_boundary_spectral": "1330604383887/1099511627776",
+              "product_error": "113372413/1099511627776",
+              "scaled_gram_error": "854439/549755813888",
+              "shifted_gram_error": "6770099/549755813888"
+            }
+          },
+          {
+            "index": 2,
+            "values": {
+              "affine_error": "499978579/1099511627776",
+              "boundary_error": "199872907/1099511627776",
+              "forward_error": "3527111623/1099511627776",
+              "gram_error": "8554731/1099511627776",
+              "input_frobenius": "3787621237103/1099511627776",
+              "input_spectral": "332665601481/274877906944",
+              "intermediate_max_frobenius": "168463859933287163516732875/302231454903657293676544",
+              "next_frobenius": "13047505824621/1099511627776",
+              "next_spectral": "332863385757/274877906944",
+              "output_error_before_boundary": "13196883/17179869184",
+              "pre_boundary_frobenius": "6523652975857/549755813888",
+              "pre_boundary_spectral": "1331253670121/1099511627776",
+              "product_error": "243784759/549755813888",
+              "scaled_gram_error": "18397371/1099511627776",
+              "shifted_gram_error": "15325299/549755813888"
+            }
+          },
+          {
+            "index": 3,
+            "values": {
+              "affine_error": "1104858851/549755813888",
+              "boundary_error": "688526405/1099511627776",
+              "forward_error": "24859291387/1099511627776",
+              "gram_error": "101514539/1099511627776",
+              "input_frobenius": "13047505824621/1099511627776",
+              "input_spectral": "332863385757/274877906944",
+              "intermediate_max_frobenius": "290334327576709931966414315/151115727451828646838272",
+              "next_frobenius": "11236580818157/274877906944",
+              "next_spectral": "1334598529329/1099511627776",
+              "output_error_before_boundary": "3500933315/1099511627776",
+              "pre_boundary_frobenius": "44945634746223/1099511627776",
+              "pre_boundary_spectral": "333477500731/274877906944",
+              "product_error": "2197308539/1099511627776",
+              "scaled_gram_error": "209737167/1099511627776",
+              "shifted_gram_error": "223348513/1099511627776"
+            }
+          },
+          {
+            "index": 4,
+            "values": {
+              "affine_error": "14200411213/1099511627776",
+              "boundary_error": "1185986563/549755813888",
+              "forward_error": "84066667347/549755813888",
+              "gram_error": "1204651955/1099511627776",
+              "input_frobenius": "11236580818157/274877906944",
+              "input_spectral": "1334598529329/1099511627776",
+              "intermediate_max_frobenius": "4010173233011936496894891711/604462909807314587353088",
+              "next_frobenius": "19355007706353/137438953472",
+              "next_spectral": "1352860207865/1099511627776",
+              "output_error_before_boundary": "10039582565/549755813888",
+              "pre_boundary_frobenius": "77418844838849/549755813888",
+              "pre_boundary_spectral": "1350488234739/1099511627776",
+              "product_error": "1773500167/137438953472",
+              "scaled_gram_error": "2459371835/1099511627776",
+              "shifted_gram_error": "2477676209/1099511627776"
+            }
+          },
+          {
+            "index": 5,
+            "values": {
+              "affine_error": "129451347597/1099511627776",
+              "boundary_error": "8172976787/1099511627776",
+              "forward_error": "1162562644859/1099511627776",
+              "gram_error": "7148417723/549755813888",
+              "input_frobenius": "19355007706353/137438953472",
+              "input_spectral": "1352860207865/1099511627776",
+              "intermediate_max_frobenius": "1750919969067011038784215995/75557863725914323419136",
+              "next_frobenius": "266761924007121/549755813888",
+              "next_spectral": "1507664727587/1099511627776",
+              "output_error_before_boundary": "169082681191/1099511627776",
+              "pre_boundary_frobenius": "533515675037455/1099511627776",
+              "pre_boundary_spectral": "93718234425/68719476736",
+              "product_error": "64719465425/549755813888",
+              "scaled_gram_error": "14543176507/549755813888",
+              "shifted_gram_error": "3640140271/137438953472"
+            }
+          }
+        ]
+      },
+      {
+        "certified": true,
+        "checks": {
+          "continuous_optimum_exists": true,
+          "finite_guard_is_forward_invariant": true,
+          "normalizer_is_certified": true,
+          "p7_affine_slope_gate": true,
+          "polynomial_tube_facts_are_certified": true,
+          "repair_shell_finite": true,
+          "selected_young_parameter_keeps_rate_strict": true,
+          "stage_1_bf16_boundary_finite": true,
+          "stage_1_input_in_spectral_tube": true,
+          "stage_1_intermediates_finite": true,
+          "stage_2_bf16_boundary_finite": true,
+          "stage_2_input_in_spectral_tube": true,
+          "stage_2_intermediates_finite": true,
+          "stage_3_bf16_boundary_finite": true,
+          "stage_3_input_in_spectral_tube": true,
+          "stage_3_intermediates_finite": true,
+          "stage_4_bf16_boundary_finite": true,
+          "stage_4_input_in_spectral_tube": true,
+          "stage_4_intermediates_finite": true,
+          "stage_5_bf16_boundary_finite": true,
+          "stage_5_input_in_spectral_tube": true,
+          "stage_5_intermediates_finite": true,
+          "two_term_bound_is_sterbenz_free": true,
+          "two_term_crumb_components_reconstruct": true,
+          "two_term_slope_components_reconstruct": true,
+          "two_term_slope_improves_one_term": true
+        },
+        "entries": 2359296,
+        "initial_boundary_error": "8421855/549755813888",
+        "normalizer": {
+          "certified": true,
+          "checks": {
+            "floor_branch_denominator_bound": true,
+            "floor_branch_squared_error_below_one": true,
+            "norm_branch_denominator_bound": true,
+            "norm_branch_squared_error_below_one": true,
+            "normalizer_output_bound": true,
+            "pairwise_gamma_defined": true,
+            "pairwise_norm_sum_finite": true,
+            "small_floor_cannot_cross_one": true
+          },
+          "values": {
+            "floor_branch_denominator_error": "442371/549755813888",
+            "floor_branch_squared_error": "819205/549755813888",
+            "gamma": "1507331/1099511627776",
+            "norm_branch_denominator_error": "884741/1099511627776",
+            "norm_branch_squared_error": "1638407/1099511627776",
+            "output_error": "11126301/1099511627776",
+            "relative_vector_error": "65537/1099511627776",
+            "small_floor_sum_upper": "137439158273/549755813888",
+            "sum_crumb": "1/1099511627776"
+          }
+        },
+        "operator_bound": {
+          "binary32_intercept": "1210492207399/1099511627776",
+          "binary32_slope": "60114853/549755813888",
+          "real_intercept": "151311525925/137438953472",
+          "real_slope": "102465557/549755813888"
+        },
+        "oriented_shape": [
+          768,
+          3072
+        ],
+        "p7": {
+          "values": {
+            "forcing": "10415/17179869184",
+            "function_gap_ultimate": "123180082821/549755813888",
+            "rate": "137425214491/137438953472",
+            "safe_forcing_capacity": "595689785138215567102992858266909775175230687803980851952123391179752488151/549755813888",
+            "safe_storage_radius": "17945120248348596254688509761412697446510889220796667355893196633912968740864/1655544025"
+          },
+          "young_theta": 3006
+        },
+        "polynomial": {
+          "certified": true,
+          "checks": {
+            "derivative_endpoint_matches_lock": true,
+            "derivative_vertex_below_lock": true,
+            "derivative_vertex_is_in_interval": true,
+            "derivative_zero_below_lock": true,
+            "factor_has_no_real_root": true,
+            "factor_is_at_most_a_on_tube": true,
+            "factor_is_positive": true
+          },
+          "range_source": "P8 exact Sturm artifact proves 0<=q(x)<121/100 on 0<=x<=5/4",
+          "values": {
+            "derivative_at_endpoint": "3000459/512000",
+            "derivative_at_vertex": "-6525559/4063000",
+            "derivative_at_zero": "6889/2000",
+            "derivative_vertex": "2865/4063",
+            "factor_correction_at_endpoint": "-2049/1280",
+            "factor_discriminant": "-2594691/500000",
+            "squared_endpoint": "25/16"
+          }
+        },
+        "shape": [
+          768,
+          3072
+        ],
+        "stages": [
+          {
+            "index": 1,
+            "values": {
+              "affine_error": "126673669/1099511627776",
+              "boundary_error": "58022051/1099511627776",
+              "forward_error": "424531025/1099511627776",
+              "gram_error": "426007/549755813888",
+              "input_frobenius": "549770344141/549755813888",
+              "input_spectral": "549770344141/549755813888",
+              "intermediate_max_frobenius": "192426514143537/1099511627776",
+              "next_frobenius": "1893811064679/549755813888",
+              "next_spectral": "1330663298179/1099511627776",
+              "output_error_before_boundary": "196206519/1099511627776",
+              "pre_boundary_frobenius": "3787564107307/1099511627776",
+              "pre_boundary_spectral": "41581414879/34359738368",
+              "product_error": "57132315/549755813888",
+              "scaled_gram_error": "1975165/1099511627776",
+              "shifted_gram_error": "13806485/1099511627776"
+            }
+          },
+          {
+            "index": 2,
+            "values": {
+              "affine_error": "256017189/549755813888",
+              "boundary_error": "99936589/549755813888",
+              "forward_error": "3546931545/1099511627776",
+              "gram_error": "10110143/1099511627776",
+              "input_frobenius": "1893811064679/549755813888",
+              "input_spectral": "1330663298179/1099511627776",
+              "intermediate_max_frobenius": "10529004585214052705137767/18889465931478580854784",
+              "next_frobenius": "6523761744529/549755813888",
+              "next_spectral": "1331468134093/1099511627776",
+              "output_error_before_boundary": "429595653/549755813888",
+              "pre_boundary_frobenius": "1630915451985/137438953472",
+              "pre_boundary_spectral": "1331268260915/1099511627776",
+              "product_error": "124906329/274877906944",
+              "scaled_gram_error": "2694649/137438953472",
+              "shifted_gram_error": "8452605/274877906944"
+            }
+          },
+          {
+            "index": 3,
+            "values": {
+              "affine_error": "2352872575/1099511627776",
+              "boundary_error": "688529993/1099511627776",
+              "forward_error": "25148831939/1099511627776",
+              "gram_error": "119972067/1099511627776",
+              "input_frobenius": "6523761744529/549755813888",
+              "input_spectral": "1331468134093/1099511627776",
+              "intermediate_max_frobenius": "1161353262219085159507727073/604462909807314587353088",
+              "next_frobenius": "44946557508209/1099511627776",
+              "next_spectral": "1334771919757/1099511627776",
+              "output_error_before_boundary": "3674320155/1099511627776",
+              "pre_boundary_frobenius": "5618233622277/137438953472",
+              "pre_boundary_spectral": "333520847441/274877906944",
+              "product_error": "585115851/274877906944",
+              "scaled_gram_error": "247233683/1099511627776",
+              "shifted_gram_error": "260845055/1099511627776"
+            }
+          },
+          {
+            "index": 4,
+            "values": {
+              "affine_error": "1988103097/137438953472",
+              "boundary_error": "1186008609/549755813888",
+              "forward_error": "171901568399/1099511627776",
+              "gram_error": "5561307/4294967296",
+              "input_frobenius": "44946557508209/1099511627776",
+              "input_spectral": "1334771919757/1099511627776",
+              "intermediate_max_frobenius": "501342920408870165492582757/75557863725914323419136",
+              "next_frobenius": "154842939922747/1099511627776",
+              "next_spectral": "677465827665/549755813888",
+              "output_error_before_boundary": "22150568503/1099511627776",
+              "pre_boundary_frobenius": "154840567905529/1099511627776",
+              "pre_boundary_spectral": "42267488691/34359738368",
+              "product_error": "15892414797/1099511627776",
+              "scaled_gram_error": "2904358639/1099511627776",
+              "shifted_gram_error": "730665983/274877906944"
+            }
+          },
+          {
+            "index": 5,
+            "values": {
+              "affine_error": "18774967863/137438953472",
+              "boundary_error": "8173524115/1099511627776",
+              "forward_error": "1210460358397/1099511627776",
+              "gram_error": "16896890251/1099511627776",
+              "input_frobenius": "154842939922747/1099511627776",
+              "input_spectral": "677465827665/549755813888",
+              "intermediate_max_frobenius": "1753720196542050342557348991/75557863725914323419136",
+              "next_frobenius": "133389894265723/274877906944",
+              "next_spectral": "766739784299/549755813888",
+              "output_error_before_boundary": "97448487437/549755813888",
+              "pre_boundary_frobenius": "533551403538777/1099511627776",
+              "pre_boundary_spectral": "1525306044483/1099511627776",
+              "product_error": "18773415615/137438953472",
+              "scaled_gram_error": "537006727/17179869184",
+              "shifted_gram_error": "34403235749/1099511627776"
+            }
+          }
+        ]
+      },
+      {
+        "certified": true,
+        "checks": {
+          "continuous_optimum_exists": true,
+          "finite_guard_is_forward_invariant": true,
+          "normalizer_is_certified": true,
+          "p7_affine_slope_gate": true,
+          "polynomial_tube_facts_are_certified": true,
+          "repair_shell_finite": true,
+          "selected_young_parameter_keeps_rate_strict": true,
+          "stage_1_bf16_boundary_finite": true,
+          "stage_1_input_in_spectral_tube": true,
+          "stage_1_intermediates_finite": true,
+          "stage_2_bf16_boundary_finite": true,
+          "stage_2_input_in_spectral_tube": true,
+          "stage_2_intermediates_finite": true,
+          "stage_3_bf16_boundary_finite": true,
+          "stage_3_input_in_spectral_tube": true,
+          "stage_3_intermediates_finite": true,
+          "stage_4_bf16_boundary_finite": true,
+          "stage_4_input_in_spectral_tube": true,
+          "stage_4_intermediates_finite": true,
+          "stage_5_bf16_boundary_finite": true,
+          "stage_5_input_in_spectral_tube": true,
+          "stage_5_intermediates_finite": true,
+          "two_term_bound_is_sterbenz_free": true,
+          "two_term_crumb_components_reconstruct": true,
+          "two_term_slope_components_reconstruct": true,
+          "two_term_slope_improves_one_term": true
+        },
+        "entries": 38597376,
+        "initial_boundary_error": "8421855/549755813888",
+        "normalizer": {
+          "certified": true,
+          "checks": {
+            "floor_branch_denominator_bound": true,
+            "floor_branch_squared_error_below_one": true,
+            "norm_branch_denominator_bound": true,
+            "norm_branch_squared_error_below_one": true,
+            "normalizer_output_bound": true,
+            "pairwise_gamma_defined": true,
+            "pairwise_norm_sum_finite": true,
+            "small_floor_cannot_cross_one": true
+          },
+          "values": {
+            "floor_branch_denominator_error": "507907/549755813888",
+            "floor_branch_squared_error": "950277/549755813888",
+            "gamma": "1769475/1099511627776",
+            "norm_branch_denominator_error": "1015813/1099511627776",
+            "norm_branch_squared_error": "1900551/1099511627776",
+            "output_error": "11126301/1099511627776",
+            "relative_vector_error": "65537/1099511627776",
+            "small_floor_sum_upper": "137439191041/549755813888",
+            "sum_crumb": "1/1099511627776"
+          }
+        },
+        "operator_bound": {
+          "binary32_intercept": "653413477055/549755813888",
+          "binary32_slope": "60114853/549755813888",
+          "real_intercept": "1306826954111/1099511627776",
+          "real_slope": "102465557/549755813888"
+        },
+        "oriented_shape": [
+          768,
+          50257
+        ],
+        "p7": {
+          "values": {
+            "forcing": "776875/1099511627776",
+            "function_gap_ultimate": "1121611413/4294967296",
+            "rate": "137425214491/137438953472",
+            "safe_forcing_capacity": "595689785138215567102992858266909775175230687803980851952123391179752488151/549755813888",
+            "safe_storage_radius": "17945120248348596254688509761412697446510889220796667355893196633912968740864/1655544025"
+          },
+          "young_theta": 3006
+        },
+        "polynomial": {
+          "certified": true,
+          "checks": {
+            "derivative_endpoint_matches_lock": true,
+            "derivative_vertex_below_lock": true,
+            "derivative_vertex_is_in_interval": true,
+            "derivative_zero_below_lock": true,
+            "factor_has_no_real_root": true,
+            "factor_is_at_most_a_on_tube": true,
+            "factor_is_positive": true
+          },
+          "range_source": "P8 exact Sturm artifact proves 0<=q(x)<121/100 on 0<=x<=5/4",
+          "values": {
+            "derivative_at_endpoint": "3000459/512000",
+            "derivative_at_vertex": "-6525559/4063000",
+            "derivative_at_zero": "6889/2000",
+            "derivative_vertex": "2865/4063",
+            "factor_correction_at_endpoint": "-2049/1280",
+            "factor_discriminant": "-2594691/500000",
+            "squared_endpoint": "25/16"
+          }
+        },
+        "shape": [
+          768,
+          50257
+        ],
+        "stages": [
+          {
+            "index": 1,
+            "values": {
+              "affine_error": "128458111/1099511627776",
+              "boundary_error": "29011039/549755813888",
+              "forward_error": "426315543/1099511627776",
+              "gram_error": "1114173/1099511627776",
+              "input_frobenius": "549770344141/549755813888",
+              "input_spectral": "549770344141/549755813888",
+              "intermediate_max_frobenius": "192426515927979/1099511627776",
+              "next_frobenius": "946905978469/274877906944",
+              "next_spectral": "1330665082697/1099511627776",
+              "output_error_before_boundary": "98995505/549755813888",
+              "pre_boundary_frobenius": "1893782945899/549755813888",
+              "pre_boundary_spectral": "1330607060619/1099511627776",
+              "product_error": "7253067/68719476736",
+              "scaled_gram_error": "1253871/549755813888",
+              "shifted_gram_error": "7169531/549755813888"
+            }
+          },
+          {
+            "index": 2,
+            "values": {
+              "affine_error": "536146067/1099511627776",
+              "boundary_error": "199873719/1099511627776",
+              "forward_error": "3586571601/1099511627776",
+              "gram_error": "13220971/1099511627776",
+              "input_frobenius": "946905978469/274877906944",
+              "input_spectral": "1330665082697/1099511627776",
+              "intermediate_max_frobenius": "673858000901556346968141203/1208925819614629174706176",
+              "next_frobenius": "13047558818127/1099511627776",
+              "next_spectral": "665748658195/549755813888",
+              "output_error_before_boundary": "444186531/549755813888",
+              "pre_boundary_frobenius": "1630919868051/137438953472",
+              "pre_boundary_spectral": "1331297442671/1099511627776",
+              "product_error": "130934251/274877906944",
+              "scaled_gram_error": "13938421/549755813888",
+              "shifted_gram_error": "40130071/1099511627776"
+            }
+          },
+          {
+            "index": 3,
+            "values": {
+              "affine_error": "2639195765/1099511627776",
+              "boundary_error": "344268585/549755813888",
+              "forward_error": "25727941965/1099511627776",
+              "gram_error": "156887437/1099511627776",
+              "input_frobenius": "13047558818127/1099511627776",
+              "input_spectral": "665748658195/549755813888",
+              "intermediate_max_frobenius": "580692583180973856608368065/302231454903657293676544",
+              "next_frobenius": "44947026007723/1099511627776",
+              "next_spectral": "1335118728293/1099511627776",
+              "output_error_before_boundary": "2010560757/549755813888",
+              "pre_boundary_frobenius": "44946337470553/1099511627776",
+              "pre_boundary_spectral": "1334430191123/1099511627776",
+              "product_error": "2626786577/1099511627776",
+              "scaled_gram_error": "40278419/137438953472",
+              "shifted_gram_error": "41979847/137438953472"
+            }
+          },
+          {
+            "index": 4,
+            "values": {
+              "affine_error": "9657657347/549755813888",
+              "boundary_error": "2372105459/1099511627776",
+              "forward_error": "89720918843/549755813888",
+              "gram_error": "930896861/549755813888",
+              "input_frobenius": "44947026007723/1099511627776",
+              "input_spectral": "1335118728293/1099511627776",
+              "intermediate_max_frobenius": "501485467212958386442755393/75557863725914323419136",
+              "next_frobenius": "77424350098319/549755813888",
+              "next_spectral": "1359078182645/1099511627776",
+              "output_error_before_boundary": "26297007577/1099511627776",
+              "pre_boundary_frobenius": "154846328091179/1099511627776",
+              "pre_boundary_spectral": "678353038593/549755813888",
+              "product_error": "301607883/17179869184",
+              "scaled_gram_error": "3794360395/1099511627776",
+              "shifted_gram_error": "3812667527/1099511627776"
+            }
+          },
+          {
+            "index": 5,
+            "values": {
+              "affine_error": "191924541437/1099511627776",
+              "boundary_error": "8174626889/1099511627776",
+              "forward_error": "653397549683/549755813888",
+              "gram_error": "22097582675/1099511627776",
+              "input_frobenius": "77424350098319/549755813888",
+              "input_spectral": "1359078182645/1099511627776",
+              "intermediate_max_frobenius": "3518652607981183594709063885/151115727451828646838272",
+              "next_frobenius": "266815782521095/549755813888",
+              "next_spectral": "1585626284479/1099511627776",
+              "output_error_before_boundary": "247042587981/1099511627776",
+              "pre_boundary_frobenius": "533623390415301/1099511627776",
+              "pre_boundary_spectral": "788725828795/549755813888",
+              "product_error": "95956060483/549755813888",
+              "scaled_gram_error": "44933769665/1099511627776",
+              "shifted_gram_error": "44968647087/1099511627776"
+            }
+          }
+        ]
+      },
+      {
+        "certified": true,
+        "checks": {
+          "continuous_optimum_exists": true,
+          "finite_guard_is_forward_invariant": true,
+          "normalizer_is_certified": true,
+          "p7_affine_slope_gate": true,
+          "polynomial_tube_facts_are_certified": true,
+          "repair_shell_finite": true,
+          "selected_young_parameter_keeps_rate_strict": true,
+          "stage_1_bf16_boundary_finite": true,
+          "stage_1_input_in_spectral_tube": true,
+          "stage_1_intermediates_finite": true,
+          "stage_2_bf16_boundary_finite": true,
+          "stage_2_input_in_spectral_tube": true,
+          "stage_2_intermediates_finite": true,
+          "stage_3_bf16_boundary_finite": true,
+          "stage_3_input_in_spectral_tube": true,
+          "stage_3_intermediates_finite": true,
+          "stage_4_bf16_boundary_finite": true,
+          "stage_4_input_in_spectral_tube": true,
+          "stage_4_intermediates_finite": true,
+          "stage_5_bf16_boundary_finite": true,
+          "stage_5_input_in_spectral_tube": true,
+          "stage_5_intermediates_finite": true,
+          "two_term_bound_is_sterbenz_free": true,
+          "two_term_crumb_components_reconstruct": true,
+          "two_term_slope_components_reconstruct": true,
+          "two_term_slope_improves_one_term": true
+        },
+        "entries": 37748736,
+        "initial_boundary_error": "8421855/549755813888",
+        "normalizer": {
+          "certified": true,
+          "checks": {
+            "floor_branch_denominator_bound": true,
+            "floor_branch_squared_error_below_one": true,
+            "norm_branch_denominator_bound": true,
+            "norm_branch_squared_error_below_one": true,
+            "normalizer_output_bound": true,
+            "pairwise_gamma_defined": true,
+            "pairwise_norm_sum_finite": true,
+            "small_floor_cannot_cross_one": true
+          },
+          "values": {
+            "floor_branch_denominator_error": "507907/549755813888",
+            "floor_branch_squared_error": "950277/549755813888",
+            "gamma": "1769475/1099511627776",
+            "norm_branch_denominator_error": "1015813/1099511627776",
+            "norm_branch_squared_error": "1900551/1099511627776",
+            "output_error": "11126301/1099511627776",
+            "relative_vector_error": "65537/1099511627776",
+            "small_floor_sum_upper": "137439191041/549755813888",
+            "sum_crumb": "1/1099511627776"
+          }
+        },
+        "operator_bound": {
+          "binary32_intercept": "1994999115193/1099511627776",
+          "binary32_slope": "60114853/549755813888",
+          "real_intercept": "997499557597/549755813888",
+          "real_slope": "102465557/549755813888"
+        },
+        "oriented_shape": [
+          3072,
+          12288
+        ],
+        "p7": {
+          "values": {
+            "forcing": "1810507/1099511627776",
+            "function_gap_ultimate": "334581136293/549755813888",
+            "rate": "137425214491/137438953472",
+            "safe_forcing_capacity": "595689785138215567102992858266909775175230687803980851952123391179752488151/549755813888",
+            "safe_storage_radius": "17945120248348596254688509761412697446510889220796667355893196633912968740864/1655544025"
+          },
+          "young_theta": 3006
+        },
+        "polynomial": {
+          "certified": true,
+          "checks": {
+            "derivative_endpoint_matches_lock": true,
+            "derivative_vertex_below_lock": true,
+            "derivative_vertex_is_in_interval": true,
+            "derivative_zero_below_lock": true,
+            "factor_has_no_real_root": true,
+            "factor_is_at_most_a_on_tube": true,
+            "factor_is_positive": true
+          },
+          "range_source": "P8 exact Sturm artifact proves 0<=q(x)<121/100 on 0<=x<=5/4",
+          "values": {
+            "derivative_at_endpoint": "3000459/512000",
+            "derivative_at_vertex": "-6525559/4063000",
+            "derivative_at_zero": "6889/2000",
+            "derivative_vertex": "2865/4063",
+            "factor_correction_at_endpoint": "-2049/1280",
+            "factor_discriminant": "-2594691/500000",
+            "squared_endpoint": "25/16"
+          }
+        },
+        "shape": [
+          3072,
+          12288
+        ],
+        "stages": [
+          {
+            "index": 1,
+            "values": {
+              "affine_error": "283113369/1099511627776",
+              "boundary_error": "14506475/274877906944",
+              "forward_error": "675791709/1099511627776",
+              "gram_error": "983093/1099511627776",
+              "input_frobenius": "549770344141/549755813888",
+              "input_spectral": "549770344141/549755813888",
+              "intermediate_max_frobenius": "24053316128319/68719476736",
+              "next_frobenius": "1893936695021/549755813888",
+              "next_spectral": "1330914558863/1099511627776",
+              "output_error_before_boundary": "223731677/549755813888",
+              "pre_boundary_frobenius": "1893907682071/549755813888",
+              "pre_boundary_spectral": "1330856532963/1099511627776",
+              "product_error": "129147645/549755813888",
+              "scaled_gram_error": "2241453/1099511627776",
+              "shifted_gram_error": "25770949/1099511627776"
+            }
+          },
+          {
+            "index": 2,
+            "values": {
+              "affine_error": "137732819/137438953472",
+              "boundary_error": "199902379/1099511627776",
+              "forward_error": "6060141005/1099511627776",
+              "gram_error": "5833549/549755813888",
+              "input_frobenius": "1893936695021/549755813888",
+              "input_spectral": "1330914558863/1099511627776",
+              "intermediate_max_frobenius": "674028428767717341921373745/604462909807314587353088",
+              "next_frobenius": "13049429710123/1099511627776",
+              "next_spectral": "333127221933/274877906944",
+              "output_error_before_boundary": "59372367/34359738368",
+              "pre_boundary_frobenius": "101947107873/8589934592",
+              "pre_boundary_spectral": "1332308985353/1099511627776",
+              "product_error": "1077044425/1099511627776",
+              "scaled_gram_error": "12360203/549755813888",
+              "shifted_gram_error": "3041997/68719476736"
+            }
+          },
+          {
+            "index": 3,
+            "values": {
+              "affine_error": "2209175567/549755813888",
+              "boundary_error": "344343099/549755813888",
+              "forward_error": "21753933781/549755813888",
+              "gram_error": "138469777/1099511627776",
+              "input_frobenius": "13049429710123/1099511627776",
+              "input_spectral": "333127221933/274877906944",
+              "intermediate_max_frobenius": "4649725453761918408016672933/1208925819614629174706176",
+              "next_frobenius": "22478377216279/549755813888",
+              "next_spectral": "83650179103/68719476736",
+              "output_error_before_boundary": "7305109841/1099511627776",
+              "pre_boundary_frobenius": "5619508218295/137438953472",
+              "pre_boundary_spectral": "668857089725/549755813888",
+              "product_error": "4393532809/1099511627776",
+              "scaled_gram_error": "142407521/549755813888",
+              "shifted_gram_error": "9691449/34359738368"
+            }
+          },
+          {
+            "index": 4,
+            "values": {
+              "affine_error": "12113171023/549755813888",
+              "boundary_error": "74149083/34359738368",
+              "forward_error": "9173465593/34359738368",
+              "gram_error": "410867543/274877906944",
+              "input_frobenius": "22478377216279/549755813888",
+              "input_spectral": "83650179103/68719476736",
+              "intermediate_max_frobenius": "4022548197892010591294090793/302231454903657293676544",
+              "next_frobenius": "154892123626303/1099511627776",
+              "next_spectral": "1368992052965/1099511627776",
+              "output_error_before_boundary": "9052553175/274877906944",
+              "pre_boundary_frobenius": "154889750855647/1099511627776",
+              "pre_boundary_spectral": "1366619282309/1099511627776",
+              "product_error": "6050380635/274877906944",
+              "scaled_gram_error": "3350868513/1099511627776",
+              "shifted_gram_error": "3380891485/1099511627776"
+            }
+          },
+          {
+            "index": 5,
+            "values": {
+              "affine_error": "12214460265/68719476736",
+              "boundary_error": "8177216297/1099511627776",
+              "forward_error": "1994967219431/1099511627776",
+              "gram_error": "1219300103/68719476736",
+              "input_frobenius": "154892123626303/1099511627776",
+              "input_spectral": "1368992052965/1099511627776",
+              "intermediate_max_frobenius": "886164383632349083504230633/18889465931478580854784",
+              "next_frobenius": "266900299543875/549755813888",
+              "next_spectral": "802544163279/549755813888",
+              "output_error_before_boundary": "66625510163/274877906944",
+              "pre_boundary_frobenius": "533792421871453/1099511627776",
+              "pre_boundary_spectral": "1596911110261/1099511627776",
+              "product_error": "97703267265/549755813888",
+              "scaled_gram_error": "39674982651/1099511627776",
+              "shifted_gram_error": "39721733545/1099511627776"
+            }
+          }
+        ]
+      },
+      {
+        "certified": true,
+        "checks": {
+          "continuous_optimum_exists": true,
+          "finite_guard_is_forward_invariant": true,
+          "normalizer_is_certified": true,
+          "p7_affine_slope_gate": true,
+          "polynomial_tube_facts_are_certified": true,
+          "repair_shell_finite": true,
+          "selected_young_parameter_keeps_rate_strict": true,
+          "stage_1_bf16_boundary_finite": true,
+          "stage_1_input_in_spectral_tube": true,
+          "stage_1_intermediates_finite": true,
+          "stage_2_bf16_boundary_finite": true,
+          "stage_2_input_in_spectral_tube": true,
+          "stage_2_intermediates_finite": true,
+          "stage_3_bf16_boundary_finite": true,
+          "stage_3_input_in_spectral_tube": true,
+          "stage_3_intermediates_finite": true,
+          "stage_4_bf16_boundary_finite": true,
+          "stage_4_input_in_spectral_tube": true,
+          "stage_4_intermediates_finite": true,
+          "stage_5_bf16_boundary_finite": true,
+          "stage_5_input_in_spectral_tube": true,
+          "stage_5_intermediates_finite": true,
+          "two_term_bound_is_sterbenz_free": true,
+          "two_term_crumb_components_reconstruct": true,
+          "two_term_slope_components_reconstruct": true,
+          "two_term_slope_improves_one_term": true
+        },
+        "entries": 16777216,
+        "initial_boundary_error": "8421855/549755813888",
+        "normalizer": {
+          "certified": true,
+          "checks": {
+            "floor_branch_denominator_bound": true,
+            "floor_branch_squared_error_below_one": true,
+            "norm_branch_denominator_bound": true,
+            "norm_branch_squared_error_below_one": true,
+            "normalizer_output_bound": true,
+            "pairwise_gamma_defined": true,
+            "pairwise_norm_sum_finite": true,
+            "small_floor_cannot_cross_one": true
+          },
+          "values": {
+            "floor_branch_denominator_error": "475139/549755813888",
+            "floor_branch_squared_error": "884741/549755813888",
+            "gamma": "1638403/1099511627776",
+            "norm_branch_denominator_error": "950277/1099511627776",
+            "norm_branch_squared_error": "1769479/1099511627776",
+            "output_error": "11126301/1099511627776",
+            "relative_vector_error": "65537/1099511627776",
+            "small_floor_sum_upper": "137439174657/549755813888",
+            "sum_crumb": "1/1099511627776"
+          }
+        },
+        "operator_bound": {
+          "binary32_intercept": "2130249956217/1099511627776",
+          "binary32_slope": "60114853/549755813888",
+          "real_intercept": "1065124978109/549755813888",
+          "real_slope": "102465557/549755813888"
+        },
+        "oriented_shape": [
+          4096,
+          4096
+        ],
+        "p7": {
+          "values": {
+            "forcing": "2064315/1099511627776",
+            "function_gap_ultimate": "762969553133/1099511627776",
+            "rate": "137425214491/137438953472",
+            "safe_forcing_capacity": "595689785138215567102992858266909775175230687803980851952123391179752488151/549755813888",
+            "safe_storage_radius": "17945120248348596254688509761412697446510889220796667355893196633912968740864/1655544025"
+          },
+          "young_theta": 3006
+        },
+        "polynomial": {
+          "certified": true,
+          "checks": {
+            "derivative_endpoint_matches_lock": true,
+            "derivative_vertex_below_lock": true,
+            "derivative_vertex_is_in_interval": true,
+            "derivative_zero_below_lock": true,
+            "factor_has_no_real_root": true,
+            "factor_is_at_most_a_on_tube": true,
+            "factor_is_positive": true
+          },
+          "range_source": "P8 exact Sturm artifact proves 0<=q(x)<121/100 on 0<=x<=5/4",
+          "values": {
+            "derivative_at_endpoint": "3000459/512000",
+            "derivative_at_vertex": "-6525559/4063000",
+            "derivative_at_zero": "6889/2000",
+            "derivative_vertex": "2865/4063",
+            "factor_correction_at_endpoint": "-2049/1280",
+            "factor_discriminant": "-2594691/500000",
+            "squared_endpoint": "25/16"
+          }
+        },
+        "shape": [
+          4096,
+          4096
+        ],
+        "stages": [
+          {
+            "index": 1,
+            "values": {
+              "affine_error": "321656039/1099511627776",
+              "boundary_error": "29013425/549755813888",
+              "forward_error": "368906923/549755813888",
+              "gram_error": "426007/549755813888",
+              "input_frobenius": "549770344141/549755813888",
+              "input_spectral": "549770344141/549755813888",
+              "intermediate_max_frobenius": "439832064444309/1099511627776",
+              "next_frobenius": "3787935412179/1099511627776",
+              "next_spectral": "166372072625/137438953472",
+              "output_error_before_boundary": "509484541/1099511627776",
+              "pre_boundary_frobenius": "3787877385329/1099511627776",
+              "pre_boundary_spectral": "665459277075/549755813888",
+              "product_error": "293292521/1099511627776",
+              "scaled_gram_error": "1975165/1099511627776",
+              "shifted_gram_error": "28846997/1099511627776"
+            }
+          },
+          {
+            "index": 2,
+            "values": {
+              "affine_error": "1234041029/1099511627776",
+              "boundary_error": "199909343/1099511627776",
+              "forward_error": "1666142687/274877906944",
+              "gram_error": "10111815/1099511627776",
+              "input_frobenius": "3787935412179/1099511627776",
+              "input_spectral": "166372072625/137438953472",
+              "intermediate_max_frobenius": "192591609686945900198893125/151115727451828646838272",
+              "next_frobenius": "3262471077139/274877906944",
+              "next_spectral": "666374925457/549755813888",
+              "output_error_before_boundary": "1070435981/549755813888",
+              "pre_boundary_frobenius": "13049684399213/1099511627776",
+              "pre_boundary_spectral": "1332549941571/1099511627776",
+              "product_error": "1205677457/1099511627776",
+              "scaled_gram_error": "21560913/1099511627776",
+              "shifted_gram_error": "24427415/549755813888"
+            }
+          },
+          {
+            "index": 3,
+            "values": {
+              "affine_error": "594085193/137438953472",
+              "boundary_error": "688720679/1099511627776",
+              "forward_error": "47734957351/1099511627776",
+              "gram_error": "120015487/1099511627776",
+              "input_frobenius": "3262471077139/274877906944",
+              "input_spectral": "666374925457/549755813888",
+              "intermediate_max_frobenius": "1328777649418289570879079285/302231454903657293676544",
+              "next_frobenius": "22479502632131/549755813888",
+              "next_spectral": "1339087833049/1099511627776",
+              "output_error_before_boundary": "7990042761/1099511627776",
+              "pre_boundary_frobenius": "44958316543583/1099511627776",
+              "pre_boundary_spectral": "669199556185/549755813888",
+              "product_error": "2362158881/549755813888",
+              "scaled_gram_error": "123662953/549755813888",
+              "shifted_gram_error": "137989989/549755813888"
+            }
+          },
+          {
+            "index": 4,
+            "values": {
+              "affine_error": "24160309047/1099511627776",
+              "boundary_error": "2372903135/1099511627776",
+              "forward_error": "159608949303/549755813888",
+              "gram_error": "1424483273/1099511627776",
+              "input_frobenius": "22479502632131/549755813888",
+              "input_spectral": "1339087833049/1099511627776",
+              "intermediate_max_frobenius": "4599749847865847524366667029/302231454903657293676544",
+              "next_frobenius": "154900771721985/1099511627776",
+              "next_spectral": "1369887158843/1099511627776",
+              "output_error_before_boundary": "37105186099/1099511627776",
+              "pre_boundary_frobenius": "77449199409425/549755813888",
+              "pre_boundary_spectral": "341878563927/274877906944",
+              "product_error": "6032986027/274877906944",
+              "scaled_gram_error": "2906003411/1099511627776",
+              "shifted_gram_error": "22963847/8589934592"
+            }
+          },
+          {
+            "index": 5,
+            "values": {
+              "affine_error": "90238712267/549755813888",
+              "boundary_error": "4088720157/549755813888",
+              "forward_error": "2130218052393/1099511627776",
+              "gram_error": "4227378535/274877906944",
+              "input_frobenius": "154900771721985/1099511627776",
+              "input_spectral": "1369887158843/1099511627776",
+              "intermediate_max_frobenius": "8107450519418867890085268905/151115727451828646838272",
+              "next_frobenius": "133453805675067/274877906944",
+              "next_spectral": "1589923573499/1099511627776",
+              "output_error_before_boundary": "31417132947/137438953472",
+              "pre_boundary_frobenius": "266903522629977/549755813888",
+              "pre_boundary_spectral": "1581746133185/1099511627776",
+              "product_error": "90224525139/549755813888",
+              "scaled_gram_error": "17197279955/549755813888",
+              "shifted_gram_error": "34444669399/1099511627776"
+            }
+          }
+        ]
+      },
+      {
+        "certified": true,
+        "checks": {
+          "continuous_optimum_exists": true,
+          "finite_guard_is_forward_invariant": true,
+          "normalizer_is_certified": true,
+          "p7_affine_slope_gate": true,
+          "polynomial_tube_facts_are_certified": true,
+          "repair_shell_finite": true,
+          "selected_young_parameter_keeps_rate_strict": true,
+          "stage_1_bf16_boundary_finite": true,
+          "stage_1_input_in_spectral_tube": true,
+          "stage_1_intermediates_finite": true,
+          "stage_2_bf16_boundary_finite": true,
+          "stage_2_input_in_spectral_tube": true,
+          "stage_2_intermediates_finite": true,
+          "stage_3_bf16_boundary_finite": true,
+          "stage_3_input_in_spectral_tube": true,
+          "stage_3_intermediates_finite": true,
+          "stage_4_bf16_boundary_finite": true,
+          "stage_4_input_in_spectral_tube": true,
+          "stage_4_intermediates_finite": true,
+          "stage_5_bf16_boundary_finite": true,
+          "stage_5_input_in_spectral_tube": true,
+          "stage_5_intermediates_finite": true,
+          "two_term_bound_is_sterbenz_free": true,
+          "two_term_crumb_components_reconstruct": true,
+          "two_term_slope_components_reconstruct": true,
+          "two_term_slope_improves_one_term": true
+        },
+        "entries": 45088768,
+        "initial_boundary_error": "8421855/549755813888",
+        "normalizer": {
+          "certified": true,
+          "checks": {
+            "floor_branch_denominator_bound": true,
+            "floor_branch_squared_error_below_one": true,
+            "norm_branch_denominator_bound": true,
+            "norm_branch_squared_error_below_one": true,
+            "normalizer_output_bound": true,
+            "pairwise_gamma_defined": true,
+            "pairwise_norm_sum_finite": true,
+            "small_floor_cannot_cross_one": true
+          },
+          "values": {
+            "floor_branch_denominator_error": "507907/549755813888",
+            "floor_branch_squared_error": "950277/549755813888",
+            "gamma": "1769475/1099511627776",
+            "norm_branch_denominator_error": "1015813/1099511627776",
+            "norm_branch_squared_error": "1900551/1099511627776",
+            "output_error": "11126301/1099511627776",
+            "relative_vector_error": "65537/1099511627776",
+            "small_floor_sum_upper": "137439191041/549755813888",
+            "sum_crumb": "1/1099511627776"
+          }
+        },
+        "operator_bound": {
+          "binary32_intercept": "1089541606515/549755813888",
+          "binary32_slope": "60114853/549755813888",
+          "real_intercept": "2179083213031/1099511627776",
+          "real_slope": "102465557/549755813888"
+        },
+        "oriented_shape": [
+          4096,
+          11008
+        ],
+        "p7": {
+          "values": {
+            "forcing": "2160043/1099511627776",
+            "function_gap_ultimate": "798350562999/1099511627776",
+            "rate": "137425214491/137438953472",
+            "safe_forcing_capacity": "595689785138215567102992858266909775175230687803980851952123391179752488151/549755813888",
+            "safe_storage_radius": "17945120248348596254688509761412697446510889220796667355893196633912968740864/1655544025"
+          },
+          "young_theta": 3006
+        },
+        "polynomial": {
+          "certified": true,
+          "checks": {
+            "derivative_endpoint_matches_lock": true,
+            "derivative_vertex_below_lock": true,
+            "derivative_vertex_is_in_interval": true,
+            "derivative_zero_below_lock": true,
+            "factor_has_no_real_root": true,
+            "factor_is_at_most_a_on_tube": true,
+            "factor_is_positive": true
+          },
+          "range_source": "P8 exact Sturm artifact proves 0<=q(x)<121/100 on 0<=x<=5/4",
+          "values": {
+            "derivative_at_endpoint": "3000459/512000",
+            "derivative_at_vertex": "-6525559/4063000",
+            "derivative_at_zero": "6889/2000",
+            "derivative_vertex": "2865/4063",
+            "factor_correction_at_endpoint": "-2049/1280",
+            "factor_discriminant": "-2594691/500000",
+            "squared_endpoint": "25/16"
+          }
+        },
+        "shape": [
+          4096,
+          11008
+        ],
+        "stages": [
+          {
+            "index": 1,
+            "values": {
+              "affine_error": "322548279/1099511627776",
+              "boundary_error": "3626679/68719476736",
+              "forward_error": "738706125/1099511627776",
+              "gram_error": "983093/1099511627776",
+              "input_frobenius": "549770344141/549755813888",
+              "input_spectral": "549770344141/549755813888",
+              "intermediate_max_frobenius": "439832065336549/1099511627776",
+              "next_frobenius": "1893968152229/549755813888",
+              "next_spectral": "1330977473279/1099511627776",
+              "output_error_before_boundary": "255188403/549755813888",
+              "pre_boundary_frobenius": "1893939138797/549755813888",
+              "pre_boundary_spectral": "1330919446415/1099511627776",
+              "product_error": "294184761/1099511627776",
+              "scaled_gram_error": "2241453/1099511627776",
+              "shifted_gram_error": "29113285/1099511627776"
+            }
+          },
+          {
+            "index": 2,
+            "values": {
+              "affine_error": "1246101939/1099511627776",
+              "boundary_error": "199909613/1099511627776",
+              "forward_error": "6684401137/1099511627776",
+              "gram_error": "5833743/549755813888",
+              "input_frobenius": "1893968152229/549755813888",
+              "input_spectral": "1330977473279/1099511627776",
+              "intermediate_max_frobenius": "1540734810536711238396330453/1208925819614629174706176",
+              "next_frobenius": "13049901983403/1099511627776",
+              "next_spectral": "666382226153/549755813888",
+              "output_error_before_boundary": "538868271/274877906944",
+              "pre_boundary_frobenius": "6524851036895/549755813888",
+              "pre_boundary_spectral": "1332564542693/1099511627776",
+              "product_error": "608869183/549755813888",
+              "scaled_gram_error": "6180315/274877906944",
+              "shifted_gram_error": "52015177/1099511627776"
+            }
+          },
+          {
+            "index": 3,
+            "values": {
+              "affine_error": "2448015641/549755813888",
+              "boundary_error": "344362137/549755813888",
+              "forward_error": "24012500065/549755813888",
+              "gram_error": "138479799/1099511627776",
+              "input_frobenius": "13049901983403/1099511627776",
+              "input_spectral": "666382226153/549755813888",
+              "intermediate_max_frobenius": "1328795706284245045091578923/302231454903657293676544",
+              "next_frobenius": "11239809994147/274877906944",
+              "next_spectral": "1339261664365/1099511627776",
+              "output_error_before_boundary": "4081935241/549755813888",
+              "pre_boundary_frobenius": "22479275626157/549755813888",
+              "pre_boundary_spectral": "1338572940091/1099511627776",
+              "product_error": "4867667491/1099511627776",
+              "scaled_gram_error": "284836203/1099511627776",
+              "shifted_gram_error": "313490301/1099511627776"
+            }
+          },
+          {
+            "index": 4,
+            "values": {
+              "affine_error": "6467907061/274877906944",
+              "boundary_error": "296618439/137438953472",
+              "forward_error": "80751515291/274877906944",
+              "gram_error": "1643651903/1099511627776",
+              "input_frobenius": "11239809994147/274877906944",
+              "input_spectral": "1339261664365/1099511627776",
+              "intermediate_max_frobenius": "9200790926748682057193773373/604462909807314587353088",
+              "next_frobenius": "154903668621723/1099511627776",
+              "next_spectral": "685987795987/549755813888",
+              "output_error_before_boundary": "39193574853/1099511627776",
+              "pre_boundary_frobenius": "154901295674211/1099511627776",
+              "pre_boundary_spectral": "684801322231/549755813888",
+              "product_error": "25843263203/1099511627776",
+              "scaled_gram_error": "1675623087/549755813888",
+              "shifted_gram_error": "846154025/274877906944"
+            }
+          },
+          {
+            "index": 5,
+            "values": {
+              "affine_error": "100772186919/549755813888",
+              "boundary_error": "511125073/68719476736",
+              "forward_error": "272381413287/137438953472",
+              "gram_error": "19511709961/1099511627776",
+              "input_frobenius": "154903668621723/1099511627776",
+              "input_spectral": "685987795987/549755813888",
+              "intermediate_max_frobenius": "64961586961098301573833555645/1208925819614629174706176",
+              "next_frobenius": "533851834664301/1099511627776",
+              "next_spectral": "1616557166385/1099511627776",
+              "output_error_before_boundary": "34746261951/137438953472",
+              "pre_boundary_frobenius": "533843656663133/1099511627776",
+              "pre_boundary_spectral": "1608379165217/1099511627776",
+              "product_error": "100757999163/549755813888",
+              "scaled_gram_error": "39680987471/1099511627776",
+              "shifted_gram_error": "39731133339/1099511627776"
+            }
+          }
+        ]
+      },
+      {
+        "certified": true,
+        "checks": {
+          "continuous_optimum_exists": true,
+          "finite_guard_is_forward_invariant": true,
+          "normalizer_is_certified": true,
+          "p7_affine_slope_gate": true,
+          "polynomial_tube_facts_are_certified": true,
+          "repair_shell_finite": true,
+          "selected_young_parameter_keeps_rate_strict": true,
+          "stage_1_bf16_boundary_finite": true,
+          "stage_1_input_in_spectral_tube": true,
+          "stage_1_intermediates_finite": true,
+          "stage_2_bf16_boundary_finite": true,
+          "stage_2_input_in_spectral_tube": true,
+          "stage_2_intermediates_finite": true,
+          "stage_3_bf16_boundary_finite": true,
+          "stage_3_input_in_spectral_tube": true,
+          "stage_3_intermediates_finite": true,
+          "stage_4_bf16_boundary_finite": true,
+          "stage_4_input_in_spectral_tube": true,
+          "stage_4_intermediates_finite": true,
+          "stage_5_bf16_boundary_finite": true,
+          "stage_5_input_in_spectral_tube": true,
+          "stage_5_intermediates_finite": true,
+          "two_term_bound_is_sterbenz_free": true,
+          "two_term_crumb_components_reconstruct": true,
+          "two_term_slope_components_reconstruct": true,
+          "two_term_slope_improves_one_term": true
+        },
+        "entries": 58720256,
+        "initial_boundary_error": "8421855/549755813888",
+        "normalizer": {
+          "certified": true,
+          "checks": {
+            "floor_branch_denominator_bound": true,
+            "floor_branch_squared_error_below_one": true,
+            "norm_branch_denominator_bound": true,
+            "norm_branch_squared_error_below_one": true,
+            "normalizer_output_bound": true,
+            "pairwise_gamma_defined": true,
+            "pairwise_norm_sum_finite": true,
+            "small_floor_cannot_cross_one": true
+          },
+          "values": {
+            "floor_branch_denominator_error": "507907/549755813888",
+            "floor_branch_squared_error": "950277/549755813888",
+            "gamma": "1769475/1099511627776",
+            "norm_branch_denominator_error": "1015813/1099511627776",
+            "norm_branch_squared_error": "1900551/1099511627776",
+            "output_error": "11126301/1099511627776",
+            "relative_vector_error": "65537/1099511627776",
+            "small_floor_sum_upper": "137439191041/549755813888",
+            "sum_crumb": "1/1099511627776"
+          }
+        },
+        "operator_bound": {
+          "binary32_intercept": "1089541606515/549755813888",
+          "binary32_slope": "60114853/549755813888",
+          "real_intercept": "2179083213031/1099511627776",
+          "real_slope": "102465557/549755813888"
+        },
+        "oriented_shape": [
+          4096,
+          14336
+        ],
+        "p7": {
+          "values": {
+            "forcing": "2160043/1099511627776",
+            "function_gap_ultimate": "798350562999/1099511627776",
+            "rate": "137425214491/137438953472",
+            "safe_forcing_capacity": "595689785138215567102992858266909775175230687803980851952123391179752488151/549755813888",
+            "safe_storage_radius": "17945120248348596254688509761412697446510889220796667355893196633912968740864/1655544025"
+          },
+          "young_theta": 3006
+        },
+        "polynomial": {
+          "certified": true,
+          "checks": {
+            "derivative_endpoint_matches_lock": true,
+            "derivative_vertex_below_lock": true,
+            "derivative_vertex_is_in_interval": true,
+            "derivative_zero_below_lock": true,
+            "factor_has_no_real_root": true,
+            "factor_is_at_most_a_on_tube": true,
+            "factor_is_positive": true
+          },
+          "range_source": "P8 exact Sturm artifact proves 0<=q(x)<121/100 on 0<=x<=5/4",
+          "values": {
+            "derivative_at_endpoint": "3000459/512000",
+            "derivative_at_vertex": "-6525559/4063000",
+            "derivative_at_zero": "6889/2000",
+            "derivative_vertex": "2865/4063",
+            "factor_correction_at_endpoint": "-2049/1280",
+            "factor_discriminant": "-2594691/500000",
+            "squared_endpoint": "25/16"
+          }
+        },
+        "shape": [
+          4096,
+          14336
+        ],
+        "stages": [
+          {
+            "index": 1,
+            "values": {
+              "affine_error": "322548279/1099511627776",
+              "boundary_error": "3626679/68719476736",
+              "forward_error": "738706125/1099511627776",
+              "gram_error": "983093/1099511627776",
+              "input_frobenius": "549770344141/549755813888",
+              "input_spectral": "549770344141/549755813888",
+              "intermediate_max_frobenius": "439832065336549/1099511627776",
+              "next_frobenius": "1893968152229/549755813888",
+              "next_spectral": "1330977473279/1099511627776",
+              "output_error_before_boundary": "255188403/549755813888",
+              "pre_boundary_frobenius": "1893939138797/549755813888",
+              "pre_boundary_spectral": "1330919446415/1099511627776",
+              "product_error": "294184761/1099511627776",
+              "scaled_gram_error": "2241453/1099511627776",
+              "shifted_gram_error": "29113285/1099511627776"
+            }
+          },
+          {
+            "index": 2,
+            "values": {
+              "affine_error": "1246101939/1099511627776",
+              "boundary_error": "199909613/1099511627776",
+              "forward_error": "6684401137/1099511627776",
+              "gram_error": "5833743/549755813888",
+              "input_frobenius": "1893968152229/549755813888",
+              "input_spectral": "1330977473279/1099511627776",
+              "intermediate_max_frobenius": "1540734810536711238396330453/1208925819614629174706176",
+              "next_frobenius": "13049901983403/1099511627776",
+              "next_spectral": "666382226153/549755813888",
+              "output_error_before_boundary": "538868271/274877906944",
+              "pre_boundary_frobenius": "6524851036895/549755813888",
+              "pre_boundary_spectral": "1332564542693/1099511627776",
+              "product_error": "608869183/549755813888",
+              "scaled_gram_error": "6180315/274877906944",
+              "shifted_gram_error": "52015177/1099511627776"
+            }
+          },
+          {
+            "index": 3,
+            "values": {
+              "affine_error": "2448015641/549755813888",
+              "boundary_error": "344362137/549755813888",
+              "forward_error": "24012500065/549755813888",
+              "gram_error": "138479799/1099511627776",
+              "input_frobenius": "13049901983403/1099511627776",
+              "input_spectral": "666382226153/549755813888",
+              "intermediate_max_frobenius": "1328795706284245045091578923/302231454903657293676544",
+              "next_frobenius": "11239809994147/274877906944",
+              "next_spectral": "1339261664365/1099511627776",
+              "output_error_before_boundary": "4081935241/549755813888",
+              "pre_boundary_frobenius": "22479275626157/549755813888",
+              "pre_boundary_spectral": "1338572940091/1099511627776",
+              "product_error": "4867667491/1099511627776",
+              "scaled_gram_error": "284836203/1099511627776",
+              "shifted_gram_error": "313490301/1099511627776"
+            }
+          },
+          {
+            "index": 4,
+            "values": {
+              "affine_error": "6467907061/274877906944",
+              "boundary_error": "296618439/137438953472",
+              "forward_error": "80751515291/274877906944",
+              "gram_error": "1643651903/1099511627776",
+              "input_frobenius": "11239809994147/274877906944",
+              "input_spectral": "1339261664365/1099511627776",
+              "intermediate_max_frobenius": "9200790926748682057193773373/604462909807314587353088",
+              "next_frobenius": "154903668621723/1099511627776",
+              "next_spectral": "685987795987/549755813888",
+              "output_error_before_boundary": "39193574853/1099511627776",
+              "pre_boundary_frobenius": "154901295674211/1099511627776",
+              "pre_boundary_spectral": "684801322231/549755813888",
+              "product_error": "25843263203/1099511627776",
+              "scaled_gram_error": "1675623087/549755813888",
+              "shifted_gram_error": "846154025/274877906944"
+            }
+          },
+          {
+            "index": 5,
+            "values": {
+              "affine_error": "100772186919/549755813888",
+              "boundary_error": "511125073/68719476736",
+              "forward_error": "272381413287/137438953472",
+              "gram_error": "19511709961/1099511627776",
+              "input_frobenius": "154903668621723/1099511627776",
+              "input_spectral": "685987795987/549755813888",
+              "intermediate_max_frobenius": "64961586961098301573833555645/1208925819614629174706176",
+              "next_frobenius": "533851834664301/1099511627776",
+              "next_spectral": "1616557166385/1099511627776",
+              "output_error_before_boundary": "34746261951/137438953472",
+              "pre_boundary_frobenius": "533843656663133/1099511627776",
+              "pre_boundary_spectral": "1608379165217/1099511627776",
+              "product_error": "100757999163/549755813888",
+              "scaled_gram_error": "39680987471/1099511627776",
+              "shifted_gram_error": "39731133339/1099511627776"
+            }
+          }
+        ]
+      }
+    ],
+    "two_term_boundary": {
+      "sterbenz_free": true,
+      "values": {
+        "chi": "72341289546351105/1569275433846670190958947355801916604025588861116008628224",
+        "high_plus_low_crumb": "12901745153/93536104789177786765035829293842113257979682750464",
+        "low_rounding_crumb": "4311744769/93536104789177786765035829293842113257979682750464",
+        "low_rounding_slope": "16777217/1099511627776",
+        "omega": "282587406795009/18446744073709551616",
+        "reconstruction_rounding_crumb": "1112413372929/1569275433846670190958947355801916604025588861116008628224",
+        "reconstruction_rounding_slope": "1108118339841/18446744073709551616",
+        "residual_rounding_crumb": "257/365375409332725729550921208179070754913983135744",
+        "residual_rounding_slope": "1/4294967296",
+        "rounded_residual_crumb": "16777473/365375409332725729550921208179070754913983135744"
+      }
+    },
+    "upper_grid_denominator": "1099511627776"
+  },
+  "claim_scope": {
+    "evidence_kind": "exact rational shape-parameterized forward-error certificate",
+    "guarantee": "for every listed shape, ||R_hat(s)-R(s)||_F <= A_rc||s||_F+B_rc with the exact shape-row coefficients, and the resulting P7 rate is <1",
+    "matrix_domain": "finite contiguous CPU FP32 matrices at seven fixed Transformer shapes, max_abs<=2^116 and entries<=2^52; an all-real RN32 boundary adapter is included in each operator row",
+    "normalization": "exact target s/max(1,||s||_F), no additive epsilon",
+    "not_claimed": [
+      "literal upstream Muon or its current-plus-epsilon normalizer",
+      "a dimension-free certificate for every matrix shape",
+      "a native BLAS, GPU, tensor-core, or production-throughput implementation",
+      "state compression; two BF16 buffers use the same nominal storage as FP32",
+      "end-to-end FP32 EMA/Nesterov or parameter-update convergence",
+      "aspect-ratio scaling, weight decay, or stochastic-gradient coverage",
+      "minimality or tightness of the affine intercepts and P7 neighborhoods"
+    ],
+    "polynomial": "five Jordan quintic stages with exact coefficients 6889/2000, -191/40, 4063/2000 and the P7 deficit-derived linear repair",
+    "qualified_frontier": "4608x18432 is one audited 4:1 out-of-envelope point failing only the stage-five input tube; it is not a global largest-rank theorem"
+  },
+  "display_summary": [
+    {
+      "A_rc": {
+        "decimal": "0.000186383762411423958837985992431640625",
+        "exact": "102465557/549755813888"
+      },
+      "B_rc": {
+        "decimal": "1.0573735298812607652507722377777099609375",
+        "exact": "1162594491007/1099511627776"
+      },
+      "function_gap_ultimate": {
+        "decimal": "0.2066820254867707262746989727020263671875",
+        "exact": "227249290275/1099511627776"
+      },
+      "q_rc": {
+        "decimal": "0.9999000357565819285809993743896484375",
+        "exact": "137425214491/137438953472"
+      },
+      "shape": [
+        768,
+        768
+      ]
+    },
+    {
+      "A_rc": {
+        "decimal": "0.000186383762411423958837985992431640625",
+        "exact": "102465557/549755813888"
+      },
+      "B_rc": {
+        "decimal": "1.1009362491677165962755680084228515625",
+        "exact": "151311525925/137438953472"
+      },
+      "function_gap_ultimate": {
+        "decimal": "0.224063265379299991764128208160400390625",
+        "exact": "123180082821/549755813888"
+      },
+      "q_rc": {
+        "decimal": "0.9999000357565819285809993743896484375",
+        "exact": "137425214491/137438953472"
+      },
+      "shape": [
+        768,
+        3072
+      ]
+    },
+    {
+      "A_rc": {
+        "decimal": "0.000186383762411423958837985992431640625",
+        "exact": "102465557/549755813888"
+      },
+      "B_rc": {
+        "decimal": "1.1885521908980081207118928432464599609375",
+        "exact": "1306826954111/1099511627776"
+      },
+      "function_gap_ultimate": {
+        "decimal": "0.26114550721831619739532470703125",
+        "exact": "1121611413/4294967296"
+      },
+      "q_rc": {
+        "decimal": "0.9999000357565819285809993743896484375",
+        "exact": "137425214491/137438953472"
+      },
+      "shape": [
+        768,
+        50257
+      ]
+    },
+    {
+      "A_rc": {
+        "decimal": "0.000186383762411423958837985992431640625",
+        "exact": "102465557/549755813888"
+      },
+      "B_rc": {
+        "decimal": "1.814441125310622737742960453033447265625",
+        "exact": "997499557597/549755813888"
+      },
+      "function_gap_ultimate": {
+        "decimal": "0.608599541543298983015120029449462890625",
+        "exact": "334581136293/549755813888"
+      },
+      "q_rc": {
+        "decimal": "0.9999000357565819285809993743896484375",
+        "exact": "137425214491/137438953472"
+      },
+      "shape": [
+        3072,
+        12288
+      ]
+    },
+    {
+      "A_rc": {
+        "decimal": "0.000186383762411423958837985992431640625",
+        "exact": "102465557/549755813888"
+      },
+      "B_rc": {
+        "decimal": "1.937451048632283345796167850494384765625",
+        "exact": "1065124978109/549755813888"
+      },
+      "function_gap_ultimate": {
+        "decimal": "0.6939167661885221605189144611358642578125",
+        "exact": "762969553133/1099511627776"
+      },
+      "q_rc": {
+        "decimal": "0.9999000357565819285809993743896484375",
+        "exact": "137425214491/137438953472"
+      },
+      "shape": [
+        4096,
+        4096
+      ]
+    },
+    {
+      "A_rc": {
+        "decimal": "0.000186383762411423958837985992431640625",
+        "exact": "102465557/549755813888"
+      },
+      "B_rc": {
+        "decimal": "1.9818646369740235968492925167083740234375",
+        "exact": "2179083213031/1099511627776"
+      },
+      "function_gap_ultimate": {
+        "decimal": "0.7260956072050248621962964534759521484375",
+        "exact": "798350562999/1099511627776"
+      },
+      "q_rc": {
+        "decimal": "0.9999000357565819285809993743896484375",
+        "exact": "137425214491/137438953472"
+      },
+      "shape": [
+        4096,
+        11008
+      ]
+    },
+    {
+      "A_rc": {
+        "decimal": "0.000186383762411423958837985992431640625",
+        "exact": "102465557/549755813888"
+      },
+      "B_rc": {
+        "decimal": "1.9818646369740235968492925167083740234375",
+        "exact": "2179083213031/1099511627776"
+      },
+      "function_gap_ultimate": {
+        "decimal": "0.7260956072050248621962964534759521484375",
+        "exact": "798350562999/1099511627776"
+      },
+      "q_rc": {
+        "decimal": "0.9999000357565819285809993743896484375",
+        "exact": "137425214491/137438953472"
+      },
+      "shape": [
+        4096,
+        14336
+      ]
+    }
+  ],
+  "git": {
+    "branch": "p9-scalable-mixed-precision",
+    "dirty": false,
+    "sha": "01627c9176c1f1ff1ff0ed959871e411eb270937"
+  },
+  "implementation_contract": {
+    "boundary": "high=RN_bf16(Y); residual=fl32(Y-fp32(high)); low=RN_bf16(residual); X_next=fl32(fp32(high)+fp32(low))",
+    "fma_and_reassociation": "excluded",
+    "normalizer": "sigma=max(1,maxabs(s)); z=fl32(s/sigma); balanced FP32 norm; fl32(z/max(fl32(1/sigma),fl32(sqrt(sum(z*z)))))",
+    "orientation": "transpose once to p=min(rows,columns), d=max(rows,columns)",
+    "rounding": "IEEE-754 round-to-nearest, ties-to-even; gradual underflow",
+    "stage_dag": [
+      "G=balanced_fp32(X X^T)",
+      "T=fl32(c32*G+b32*I)",
+      "D=balanced_fp32(T G)",
+      "E=fl32(D+a32*I)",
+      "Y=balanced_fp32(E X)"
+    ],
+    "upper_rationalization": "every named propagated upper bound rounds upward to denominator 2^40"
+  },
+  "proof_replay_provenance": {
+    "arithmetic": "fractions.Fraction exact arithmetic with explicit upward 2^-40 grid",
+    "hardware": {
+      "machine": "arm64",
+      "platform": "macOS-15.5-arm64-arm-64bit",
+      "processor": "arm"
+    },
+    "numeric_solver_role": "none",
+    "software": {
+      "python": "3.12.11 (main, Jul  8 2025, 20:41:49) [Clang 20.1.4 ]"
+    },
+    "source_snapshot": {
+      ".github/workflows/p9-scalable-mixed-precision.yml": "d31c5c0f9c9f3c538eabe1675737800acd3ca22f01bfff2f6595348b7bf324cc",
+      "pyproject.toml": "7a9988bf528baef5145f779516d4315349d1c2a6bbb7394c9b93fbbee1d4f596",
+      "scripts/certify_scalable_mixed_precision.py": "419f60bd169bed3e904a28bfd7bb9c9cb6e31bfbb853d42ecbb44259824914d0",
+      "scripts/reconstruct_scalable_mixed_precision.py": "feb6e584e213e9ed8a117528a5fcd0f3e252b5ee18da6daaa39e3362335a90f0",
+      "src/passive_muon/floored_certificate.py": "385dee8576e574bebc72fe09478220cf2ec29928045ee6341472c2e9becb6a72",
+      "src/passive_muon/mixed_precision_certificate.py": "f260b4e83905b38aab5cfc6af29a4a59ce0275f01b9214792d8854528cea7dfc",
+      "src/passive_muon/pl_convergence.py": "d59d56d6e2ba808aaa519770f3b4442ccfb54aa5144755b760bcb2c7cea8b446",
+      "src/passive_muon/robust_dissipativity.py": "4be3e2716bb968bdebada22d8bcb9bf81eef27852f624f8af53b0b6710da23d2",
+      "src/passive_muon/scalable_mixed_precision.py": "4e18c2f4629846f6b7155d49b734ddc84c446557727419dc9d6a95e7cb2a2453",
+      "src/passive_muon/scalable_mixed_precision_certificate.py": "c73e9bcba24b09f4948105e978cbab9f3723d2d1359b1b231912bc1cc165f93a",
+      "src/passive_muon/specs.py": "85fcee0f87485fc3cac2f426d62ec6e55da7896caade2f5df2a1c87f7d9c5d6c",
+      "src/passive_muon/structure_aware_stability.py": "fbbbfa314b26c8c549dcc915bcbe590fadc55fb712288c1757ff24881ababc4a",
+      "tests/test_scalable_mixed_precision.py": "44b86e70cebb4d1a7b32d839f423f4ee77923f573232beb1f2b899f6889ab302",
+      "tests/test_scalable_mixed_precision_certificate.py": "20bf1d940547be692755f52d0197ca2c7238ec48bb10be33227196c8c1b35bd5",
+      "tests/test_scalable_mixed_precision_cli.py": "b4b7fc4f35be10d644eaeca8e700c2bcb0fb29281a0e3d2dacb1df05191234cd",
+      "tests/test_scalable_mixed_precision_reconstruction.py": "5acd1ba111fe7852e152400af9bc83edabb28f83672a05c757afba180d1c0050",
+      "theory/audits/P9_HUMAN_PROOF_AUDIT.md": "da494f4220ba87da6c312d0d5b792864a2b009b6ed66d9847010d152a2b63279",
+      "theory/mixed_precision_certificate.md": "f82448036379e91bb6cb28cc51328ea0398c5ea0bade0871bd7bb61c7797b924",
+      "theory/robust_dissipativity_certificate.md": "96e412ddc1e2b0fb7d49c77b0316e0387b1e054f0b3ad7a5bb04d382208fb2d6",
+      "theory/scalable_mixed_precision_certificate.md": "990613bf470f42a9248b70140e942bfe19f3839440fc91c35cab0f6ec28ae29f",
+      "uv.lock": "f097fd7895b5c1c551a0bd233d025c3f8ae97b7dedce6a8690569f1b1f7c5cf1"
+    }
+  },
+  "qualified_negative_controls": {
+    "audited_4_to_1_case": {
+      "failed_checks": [
+        "stage_5_input_in_spectral_tube"
+      ],
+      "interpretation": "specific recurrence boundary, not a global rank frontier",
+      "shape": [
+        4608,
+        18432
+      ]
+    },
+    "one_term_boundary": "the generic one-term BF16 spectral-tube proof supports rank at most 71; this is a proof obstruction, not an instability theorem",
+    "serial_normalizer": "the 4096x11008 all-ones serial FP32 square sum sticks at 2^24 and returns squared singular value 43/16, outside the 5/4 tube"
+  },
+  "schema_version": "passive-muon-scalable-mixed-precision-certificate-v1"
+}
