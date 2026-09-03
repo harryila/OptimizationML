@@ -1,0 +1,537 @@
+{
+  "arb_interval_certificate": {
+    "cross_precision_cover_match": true,
+    "global_derivative_strict_upper": {
+      "decimal": "484.8763",
+      "exact": "4848763/10000"
+    },
+    "method": "outward-rounded Arb evaluation of the five-stage value/derivative recurrence on adaptive scaled-dyadic covers",
+    "passes": [
+      {
+        "elapsed_seconds": 0.28373066702624783,
+        "global_derivative_cover": {
+          "configured_maximum_dyadic_power": 48,
+          "initial_dyadic_power": 12,
+          "leaf_count": 25370,
+          "maximum_dyadic_power": 32,
+          "ordered_leaf_trace_sha256": "701b9047e67c96d1f727642c693fb545f13c4981765310162a9a51b730f34d5e"
+        },
+        "precision_bits": 160,
+        "prefix_derivative_covers": [
+          {
+            "configured_maximum_dyadic_power": 48,
+            "derivative_strict_lower_exact": "-504/5",
+            "endpoint_exact": "1/200",
+            "initial_dyadic_power": 8,
+            "leaf_count": 276,
+            "maximum_dyadic_power": 19,
+            "ordered_leaf_trace_sha256": "8bd62eb57bed686f163694b0a076b04c891a773482e794f05c29967bd90be3c7"
+          },
+          {
+            "configured_maximum_dyadic_power": 48,
+            "derivative_strict_lower_exact": "-77877/500",
+            "endpoint_exact": "3/500",
+            "initial_dyadic_power": 8,
+            "leaf_count": 367,
+            "maximum_dyadic_power": 23,
+            "ordered_leaf_trace_sha256": "32a09cd669930a67d0b1be0079f359f0b56ceb16f785b60ac3a57a14af403a23"
+          },
+          {
+            "configured_maximum_dyadic_power": 48,
+            "derivative_strict_lower_exact": "-6379/40",
+            "endpoint_exact": "63/10000",
+            "initial_dyadic_power": 8,
+            "leaf_count": 909,
+            "maximum_dyadic_power": 23,
+            "ordered_leaf_trace_sha256": "bda19826bba8413a2a8b8b0e12911da78ca38e6cd089545f561e772206860b1a"
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 0.30392629199195653,
+        "global_derivative_cover": {
+          "configured_maximum_dyadic_power": 48,
+          "initial_dyadic_power": 12,
+          "leaf_count": 25370,
+          "maximum_dyadic_power": 32,
+          "ordered_leaf_trace_sha256": "701b9047e67c96d1f727642c693fb545f13c4981765310162a9a51b730f34d5e"
+        },
+        "precision_bits": 224,
+        "prefix_derivative_covers": [
+          {
+            "configured_maximum_dyadic_power": 48,
+            "derivative_strict_lower_exact": "-504/5",
+            "endpoint_exact": "1/200",
+            "initial_dyadic_power": 8,
+            "leaf_count": 276,
+            "maximum_dyadic_power": 19,
+            "ordered_leaf_trace_sha256": "8bd62eb57bed686f163694b0a076b04c891a773482e794f05c29967bd90be3c7"
+          },
+          {
+            "configured_maximum_dyadic_power": 48,
+            "derivative_strict_lower_exact": "-77877/500",
+            "endpoint_exact": "3/500",
+            "initial_dyadic_power": 8,
+            "leaf_count": 367,
+            "maximum_dyadic_power": 23,
+            "ordered_leaf_trace_sha256": "32a09cd669930a67d0b1be0079f359f0b56ceb16f785b60ac3a57a14af403a23"
+          },
+          {
+            "configured_maximum_dyadic_power": 48,
+            "derivative_strict_lower_exact": "-6379/40",
+            "endpoint_exact": "63/10000",
+            "initial_dyadic_power": 8,
+            "leaf_count": 909,
+            "maximum_dyadic_power": 23,
+            "ordered_leaf_trace_sha256": "bda19826bba8413a2a8b8b0e12911da78ca38e6cd089545f561e772206860b1a"
+          }
+        ]
+      }
+    ]
+  },
+  "audit": {
+    "all_exact_checks_passed": true,
+    "all_interval_checks_passed": true,
+    "human_proof_audit": "pending; packet committed but unsigned"
+  },
+  "certified_bracket_at_epsilon_1": {
+    "absolute_width": {
+      "decimal": "0.427281205386839382342426858908291265364939305627235637283998",
+      "exact": "17792766018626903/41641817600000000"
+    },
+    "relative_width": {
+      "decimal": "0.00270230608278199763438350915324985051703643664711984490074256",
+      "exact": "17792766018626903/6584289667256872960"
+    },
+    "relative_width_percent": {
+      "decimal": "0.270230608278199763438350915324985051703643664711984490074256",
+      "exact": "88963830093134515/329214483362843648"
+    },
+    "strict_lower": {
+      "decimal": "158.1172496",
+      "exact": "98823281/625000"
+    },
+    "upper": {
+      "decimal": "158.544530805386839382342426858908291265364939305627235637284",
+      "exact": "6602082433275499863/41641817600000000"
+    }
+  },
+  "claim_scope": {
+    "arithmetic_model": "exact real arithmetic",
+    "dimension_uniform_upper": true,
+    "evidence_kind": "dimension_uniform_full_rectangular_global_upper_certificate_and_exact_rational_finite_pair_lower_witness",
+    "lower_witness_shape": [
+      2,
+      2
+    ],
+    "matrix_domain": "R^(m x n) for every fixed finite positive m,n",
+    "not_claimed": [
+      "the exact deficit or minimal repair for any fixed shape",
+      "continuity or monotonicity of the deployed BF16 map",
+      "stability of unrepaired or literal upstream Muon"
+    ]
+  },
+  "deficit_definition": {
+    "authority": "global pairwise deficit",
+    "exact_scaling": "delta(E_h,eps)=delta(E_h,1)/eps",
+    "formula": "sup_(A!=B)[-<E(A)-E(B),A-B>_F/||A-B||_F^2]_+",
+    "restricted_domain_caveat": "a restricted domain must scale with eps",
+    "scaling_identity": "E_h,eps(eps*X)=E_h,1(X)"
+  },
+  "epsilon_evaluations": [
+    {
+      "epsilon": {
+        "decimal": "1",
+        "exact": "1"
+      },
+      "strict_lower": {
+        "decimal": "158.1172496",
+        "exact": "98823281/625000"
+      },
+      "upper_and_sufficient_repair": {
+        "decimal": "158.544530805386839382342426858908291265364939305627235637284",
+        "exact": "6602082433275499863/41641817600000000"
+      },
+      "zero_input_derivative_gain": {
+        "decimal": "484.87628710018292028125",
+        "exact": "15516041187205853449/32000000000000000"
+      }
+    },
+    {
+      "epsilon": {
+        "decimal": "0.1",
+        "exact": "1/10"
+      },
+      "strict_lower": {
+        "decimal": "1581.172496",
+        "exact": "98823281/62500"
+      },
+      "upper_and_sufficient_repair": {
+        "decimal": "1585.44530805386839382342426858908291265364939305627235637284",
+        "exact": "6602082433275499863/4164181760000000"
+      },
+      "zero_input_derivative_gain": {
+        "decimal": "4848.7628710018292028125",
+        "exact": "15516041187205853449/3200000000000000"
+      }
+    },
+    {
+      "epsilon": {
+        "decimal": "0.001",
+        "exact": "1/1000"
+      },
+      "strict_lower": {
+        "decimal": "158117.2496",
+        "exact": "98823281/625"
+      },
+      "upper_and_sufficient_repair": {
+        "decimal": "158544.530805386839382342426858908291265364939305627235637284",
+        "exact": "6602082433275499863/41641817600000"
+      },
+      "zero_input_derivative_gain": {
+        "decimal": "484876.28710018292028125",
+        "exact": "15516041187205853449/32000000000000"
+      }
+    },
+    {
+      "epsilon": {
+        "decimal": "1E-7",
+        "exact": "1/10000000"
+      },
+      "strict_lower": {
+        "decimal": "1581172496",
+        "exact": "1581172496"
+      },
+      "upper_and_sufficient_repair": {
+        "decimal": "1585445308.05386839382342426858908291265364939305627235637284",
+        "exact": "6602082433275499863/4164181760"
+      },
+      "zero_input_derivative_gain": {
+        "decimal": "4848762871.0018292028125",
+        "exact": "15516041187205853449/3200000000"
+      }
+    }
+  ],
+  "exact_finite_pair_lower_witness": {
+    "construction": "M_left=r*diag(u_low,u_high), M_right=r*diag(u_high,u_low)",
+    "embedding": "zero-pad into every shape with min(m,n)>=2",
+    "exact_deficit_sha256": "de076057ce58ad174a52a8e0e492f7efffe0488bbca19c03cd1ce0fee75a7336",
+    "exact_denominator_decimal_digits": 49621,
+    "exact_numerator_decimal_digits": 49624,
+    "high_precision_decimal": "158.117249648512764297947151603084659243632147170481858317003",
+    "normalized_radius": {
+      "decimal": "0.008974467",
+      "exact": "8974467/1000000000"
+    },
+    "raw_radius_at_eps_1": {
+      "decimal": "0.00905573741660599576095886522431304502020332911039134649621585",
+      "exact": "8974467/991025533"
+    },
+    "shape": [
+      2,
+      2
+    ],
+    "strict_lower": {
+      "decimal": "158.1172496",
+      "exact": "98823281/625000"
+    },
+    "unit_direction_check": "1",
+    "unit_direction_high": {
+      "decimal": "0.707107221060465967384218550544608067818022343842511012246973",
+      "exact": "803761/1136689"
+    },
+    "unit_direction_low": {
+      "decimal": "0.707106341312355446388590018905786895096196057144918267001792",
+      "exact": "803760/1136689"
+    }
+  },
+  "full_rectangular_reduction": {
+    "band_bound": "Sym(DE)>=((1-t)/eps)*((1-t)*a_band+t*Gamma(a_band,b))*I",
+    "decomposition": "I-tP=(1-t)I+tQ with Q=I-P",
+    "mode_envelope": "every mode is a secant average of even h' on [-t,t], hence lies between the certified prefix lower bound and global upper bound",
+    "pairwise_promotion": "E is globally C1 and Lipschitz; integrate the symmetric Jacobian bound along line segments",
+    "projection_lemma": "Sym(AQ)>=Gamma(a,b)I",
+    "radial_location": "P_M acts only in the diagonal singular-value block",
+    "spectral_derivative_modes": [
+      "h'(sigma_i)",
+      "(h(sigma_i)-h(sigma_j))/(sigma_i-sigma_j)",
+      "(h(sigma_i)+h(sigma_j))/(sigma_i+sigma_j)",
+      "h(sigma_i)/sigma_i on rectangular null-side modes"
+    ]
+  },
+  "git": {
+    "branch": "p12-additive-epsilon-deficit",
+    "dirty": false,
+    "sha": "c889e17415afc7c014314d00a130a6f5a13a0e6f"
+  },
+  "hardware": {
+    "byte_order": "little",
+    "logical_cpu_count": 10,
+    "machine_architecture": "arm64",
+    "operating_system": "Darwin",
+    "operating_system_release": "24.5.0",
+    "platform": "macOS-15.5-arm64-arm-64bit",
+    "processor": "arm"
+  },
+  "negative_controls_and_boundaries": {
+    "affine_identity_control": "for h(s)=s, N_eps is monotone: tangential eigenvalue 1/(r+eps) and radial eigenvalue eps/(r+eps)^2",
+    "infinite_radius_limit": "t approaches 1 and the certified derivative bound tends to 0",
+    "origin_control": {
+      "decimal": "484.87628710018292028125",
+      "exact": "15516041187205853449/32000000000000000"
+    },
+    "under_repair_control": "any rho<=strict finite-pair lower endpoint fails monotonicity on the locked pair"
+  },
+  "normalizer_derivative": {
+    "nonzero_input": "DN_eps=(1-t)/eps*(I-t*P_M)",
+    "normalized_radius": "t=||M||_F/(eps+||M||_F)",
+    "origin": "DN_eps(0)=I/eps; the whole quotient is Frechet differentiable",
+    "outer_factor": "(1-t)/eps"
+  },
+  "operator": {
+    "coefficients_exact": {
+      "a": "6889/2000",
+      "b": "-191/40",
+      "c": "4063/2000"
+    },
+    "epsilon_domain": "every real eps>0",
+    "formula": "E_h,eps(M)=H_h(M/(||M||_F+eps))",
+    "normalization_rule": "additive Frobenius epsilon",
+    "orthogonalizer": "jordan_quintic",
+    "scalar_composition": "h=q composed with itself exactly 5 times",
+    "source": "KellerJordan/Muon@f98f1cacc0263b04290753e32be8d498c1efc806",
+    "steps": 5
+  },
+  "prior_artifacts": {
+    "results/summaries/bf16_witness.json": {
+      "matched": true,
+      "sha256": "b5b1c0cba2326b3c07b06c3dc85dceb4e10a31ab57318d5b348934c4aef0694c"
+    },
+    "results/summaries/deficit_audit.json": {
+      "matched": true,
+      "sha256": "cc5ab80928a66fb12f9a68448ef0438a393959f88fd455a66db81381d077018a"
+    },
+    "results/summaries/floored_repair_certificate.json": {
+      "matched": true,
+      "sha256": "244e9abd35f86451d8cd5d7f48b59abe961313ca5b633fc4a6365d396997ade9"
+    },
+    "results/summaries/implementation_margin_certificate.json": {
+      "matched": true,
+      "sha256": "ad74050d66f711d2bb8e3e37f80fc29f4d6162419a2f5224931e1ca7fd2e536f"
+    }
+  },
+  "proof_replay_provenance": {
+    "command": "uv run --locked python scripts/certify_additive_epsilon_deficit.py --output results/summaries/additive_epsilon_deficit_certificate.json",
+    "randomness": "none; exact rational and outward-rounded interval arithmetic",
+    "seed": null,
+    "source_snapshot": {
+      ".github/workflows/p12-additive-epsilon-deficit.yml": "5e5a65c0022dafa87d0c9c2b01374b195c85b1c8d74842440e72f09541f860b1",
+      "README.md": "7417851a73cfb8aaae373fe407a1a14fd7c1439b96a11c6e8cc6daa528080d6a",
+      "TASKS.md": "30b55f729a9327ef61cdfe1d2e2933a0d367442f2e9776bfb18a51f0e556a744",
+      "experiments/README.md": "bb24dee006caf2a2fbdc4a6a4bd9eaa64af46041a47098c927b24598c67ad82d",
+      "pyproject.toml": "7a9988bf528baef5145f779516d4315349d1c2a6bbb7394c9b93fbbee1d4f596",
+      "results/README.md": "4c832a670b42a68f81c38d02ab37654ba96bd589389d3e0883404452a1234a3e",
+      "results/summaries/P12_ADDITIVE_EPSILON_RESULTS.md": "753823005d500e867716d0dca9cabdccbeb6485e5f227998c28d085ba76e0b05",
+      "results/summaries/RESULTS.md": "55dd08b5de4a2d575e73ba0df8429618e8b6121db49ba81415a806ea453ebae8",
+      "scripts/certify_additive_epsilon_deficit.py": "43bbc6b32671ca4a96e8d05ea0a0d8f96dd55fe0030c6326e99422ed7245b5c0",
+      "scripts/reconstruct_additive_epsilon_deficit.py": "1db3ff9b00a350306613933643587d3c4cc996249bd00e0294f695b038ea94ac",
+      "src/passive_muon/additive_epsilon_deficit.py": "24de25c79ddf37565db4833369993b3ad4950afe4b962fdb186c63777b4d1c71",
+      "src/passive_muon/floored_certificate.py": "385dee8576e574bebc72fe09478220cf2ec29928045ee6341472c2e9becb6a72",
+      "src/passive_muon/specs.py": "85fcee0f87485fc3cac2f426d62ec6e55da7896caade2f5df2a1c87f7d9c5d6c",
+      "src/passive_muon/upstream_momentum.py": "7479613bb307debbb2a02e04e6bbe53a428855c51e1e21210f9c2be2e68d3d7e",
+      "tests/test_additive_epsilon_deficit.py": "5ad2f1a44baa404016bed908222537d8cadf0c96e2f062014d700535251f4bb5",
+      "tests/test_additive_epsilon_deficit_cli.py": "bba5b1d78c465c19d7d6fdfd05d5cec0e2b7ba5e1b1025a7c90df864b1c2b9f8",
+      "tests/test_additive_epsilon_deficit_reconstruction.py": "e4f826a8b60de9bd025576b683afa9ba1e895c47d7bc721277b0625813fc15b6",
+      "tests/test_additive_epsilon_deficit_result_manifest.py": "d0ae3824a36bbe0a3605fd35f744b3d3dd689f9e63af9dbac577bee1ca8f023d",
+      "tests/test_current_research_index.py": "bdce20b267c68c63940e4836aeba2ecb8a65c6dbcd9c9c1a05732978a01bc2cf",
+      "theory/additive_epsilon_deficit_certificate.md": "f4f2e7830bf87ebf96afff57876680457fe77b48892f220736a0a111709cbe94",
+      "theory/audits/P12_ADDITIVE_EPSILON_HUMAN_PROOF_AUDIT.md": "21d7375049cf57611ce5b66ef18f8b2dc7f326629846668c5672bdaf0e00cf46",
+      "theory/claims.md": "e519e8bfd7d9add76e9b18e8f055dfd9dffea35242b9df31f9ab0e0bdfa17db0",
+      "third_party/UPSTREAM_COMMITS.md": "50394b43983d056631edada4e478c3ddfcc56528676f6a96eb8f4b42ac565008",
+      "uv.lock": "f097fd7895b5c1c551a0bd233d025c3f8ae97b7dedce6a8690569f1b1f7c5cf1"
+    }
+  },
+  "radius_band_envelope": [
+    {
+      "active": false,
+      "deficit_upper": {
+        "decimal": "100.8",
+        "exact": "504/5"
+      },
+      "left": {
+        "decimal": "0",
+        "exact": "0"
+      },
+      "maximizing_radius": {
+        "decimal": "0",
+        "exact": "0"
+      },
+      "prefix_derivative_strict_lower": {
+        "decimal": "-100.8",
+        "exact": "-504/5"
+      },
+      "projection_lower": {
+        "decimal": "-111.636909248790539796389415332318083672436961093407742159566",
+        "exact": "-34301672838169/307261040000"
+      },
+      "right": {
+        "decimal": "0.005",
+        "exact": "1/200"
+      }
+    },
+    {
+      "active": false,
+      "deficit_upper": {
+        "decimal": "154.975816241510123193566646805761870283478208556515313608346",
+        "exact": "1632191906745061351/10531913600000000"
+      },
+      "left": {
+        "decimal": "0.005",
+        "exact": "1/200"
+      },
+      "maximizing_radius": {
+        "decimal": "0.005",
+        "exact": "1/200"
+      },
+      "prefix_derivative_strict_lower": {
+        "decimal": "-155.754",
+        "exact": "-77877/500"
+      },
+      "projection_lower": {
+        "decimal": "-155.871837489471998706863679550124680096122322917650976551878",
+        "exact": "-41040718127809/263297840000"
+      },
+      "right": {
+        "decimal": "0.006",
+        "exact": "3/500"
+      }
+    },
+    {
+      "active": false,
+      "deficit_upper": {
+        "decimal": "158.518245350470464915167825082444354094467354617206507779778",
+        "exact": "491257553435828999/3099060000000000"
+      },
+      "left": {
+        "decimal": "0.006",
+        "exact": "3/500"
+      },
+      "maximizing_radius": {
+        "decimal": "0.006",
+        "exact": "3/500"
+      },
+      "prefix_derivative_strict_lower": {
+        "decimal": "-159.475",
+        "exact": "-6379/40"
+      },
+      "projection_lower": {
+        "decimal": "-159.490987671104110524450885721722685189026595775739064349159",
+        "exact": "-41518859781169/260321040000"
+      },
+      "right": {
+        "decimal": "0.0063",
+        "exact": "63/10000"
+      }
+    },
+    {
+      "active": true,
+      "deficit_upper": {
+        "decimal": "158.544530805386839382342426858908291265364939305627235637284",
+        "exact": "6602082433275499863/41641817600000000"
+      },
+      "left": {
+        "decimal": "0.0063",
+        "exact": "63/10000"
+      },
+      "maximizing_radius": {
+        "decimal": "0.0063",
+        "exact": "63/10000"
+      },
+      "prefix_derivative_strict_lower": {
+        "decimal": "-159.5496",
+        "exact": "-199437/1250"
+      },
+      "projection_lower": {
+        "decimal": "-159.564501081070966508435981430359082116530859594370827847822",
+        "exact": "-41528474059081/260261360000"
+      },
+      "right": {
+        "decimal": "1",
+        "exact": "1"
+      }
+    }
+  ],
+  "real_arithmetic_vs_bf16": {
+    "deployed_map": "backend-specific and discontinuous because of BF16 casts",
+    "recorded_backend_witness_sha256": "b5b1c0cba2326b3c07b06c3dc85dceb4e10a31ab57318d5b348934c4aef0694c",
+    "recorded_epsilon_absorption": "the pinned CPU BF16 witness records epsilon being absorbed in denominator rounding",
+    "separation": "the upstream pin supports formula provenance; it does not transfer this Jacobian or repair theorem to the BF16 implementation",
+    "theorem": "continuous exact-real surrogate only"
+  },
+  "repair": {
+    "deployed_epsilon": {
+      "decimal": "1E-7",
+      "exact": "1/10000000"
+    },
+    "deployed_necessary_strict_lower": {
+      "decimal": "1581172496",
+      "exact": "1581172496"
+    },
+    "deployed_sufficient": {
+      "decimal": "1585445308.05386839382342426858908291265364939305627235637284",
+      "exact": "6602082433275499863/4164181760"
+    },
+    "deployed_sufficient_over_floor_c_1": {
+      "decimal": "9936077.87015447099719830059285412709057369450564967917943990",
+      "exact": "825260304159437482875/83056948118162"
+    },
+    "epsilon_1": {
+      "decimal": "158.544530805386839382342426858908291265364939305627235637284",
+      "exact": "6602082433275499863/41641817600000000"
+    },
+    "max_floor_c_1_sufficient": {
+      "decimal": "159.564501081070966508435981430359082116530859594370827847822",
+      "exact": "41528474059081/260261360000"
+    },
+    "minimality_qualification": "the sufficient upper endpoint is not claimed minimal; in a shape containing the pair, every global repair must strictly exceed the locked strict lower endpoint",
+    "sufficient_formula": "rho_eps=bar_delta_1/eps"
+  },
+  "schema_version": "passive-muon-additive-epsilon-deficit-certificate-v1",
+  "software": {
+    "flint": "3.6.0",
+    "python": "3.12.11",
+    "python_flint": "0.9.0",
+    "python_implementation": "CPython"
+  },
+  "upstream_formula_provenance": {
+    "audited_file": "muon.py",
+    "audited_file_sha256": "2479665a90124f62e4df557816665851ca317e42fcfda2af1da02c1f44ab5f3d",
+    "coefficient_order": "A=X@X.T; B=b*A+(c*A)@A; X=a*X+B@X",
+    "epsilon_placement": "added to the BF16 Frobenius norm before division",
+    "formula": "X/(X.norm(dim=(-2,-1),keepdim=True)+1e-7)",
+    "operation_order": "cast input to BF16; orient once; norm; add Python-float epsilon; divide; run five BF16 Jordan stages; orient back",
+    "provenance_file": "third_party/UPSTREAM_COMMITS.md",
+    "repository": "https://github.com/KellerJordan/Muon",
+    "revision": "f98f1cacc0263b04290753e32be8d498c1efc806"
+  },
+  "usefulness_at_deployed_epsilon": {
+    "base_operator_global_norm_upper": {
+      "decimal": "484.8763",
+      "exact": "4848763/10000"
+    },
+    "classification": "catastrophically large as a constant global repair",
+    "necessary_repair_over_base_upper": {
+      "decimal": "3260981.19458509314643755531049878082306765663737328469137386",
+      "exact": "15811724960000/4848763"
+    },
+    "reason": "for ||M||_F=1, ||H_h(N_eps(M))||_F<=sup|h'|*||N_eps(M)||_F<484.8763, while any global constant repair exceeds 1.581e9 in norm",
+    "sufficient_repair_over_base_upper": {
+      "decimal": "3269793.36390305814869364468543643587581750106791417183387359",
+      "exact": "825260304159437482875/252389130539536"
+    },
+    "unit_input_repair_component_norm": {
+      "decimal": "1585445308.05386839382342426858908291265364939305627235637284",
+      "exact": "6602082433275499863/4164181760"
+    }
+  }
+}
