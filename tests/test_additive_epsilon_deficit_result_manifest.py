@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import subprocess
 from fractions import Fraction
 from pathlib import Path
 
@@ -50,10 +51,16 @@ def test_committed_manifest_source_snapshot_and_prior_artifacts_match() -> None:
     payload = _load()
     snapshot = payload["proof_replay_provenance"]["source_snapshot"]
     assert snapshot
+    source_commit = payload["git"]["sha"]
+    assert payload["git"]["dirty"] is False
     for path, expected in snapshot.items():
-        source = ROOT / path
-        assert source.is_file(), path
-        assert hashlib.sha256(source.read_bytes()).hexdigest() == expected
+        completed = subprocess.run(
+            ["git", "show", f"{source_commit}:{path}"],
+            cwd=ROOT,
+            capture_output=True,
+            check=True,
+        )
+        assert hashlib.sha256(completed.stdout).hexdigest() == expected
     for path, record in payload["prior_artifacts"].items():
         assert record["matched"] is True
         assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == record["sha256"]

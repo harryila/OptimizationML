@@ -174,6 +174,27 @@
       pairwise promotion, exact witness, and exact-real/BF16 separation; the
       unsigned packet is
       `theory/audits/P12_ADDITIVE_EPSILON_HUMAN_PROOF_AUDIT.md`.
+- [x] Integrate a positive nonincreasing majorant of P12's pointwise
+      full-matrix deficit into an exact radial correction with a closed-form
+      logarithmic primitive.
+- [x] Prove `E_(h,epsilon)+G_epsilon` globally monotone in every finite
+      rectangular shape by bounding both radial and tangential repair modes
+      and integrating the complete symmetric Jacobian.
+- [x] Certify the deployed-scale correction magnitudes at unit norm and P11's
+      exact signal guard with two-precision Arb arithmetic and an independent
+      standard-library rational-log reconstruction.
+- [x] Prove the exact identity
+      `Lip(G_epsilon)=6602082433275499863/(41641817600000000*epsilon)` and the
+      universal strict lower `Lip(C)>158.1172496/epsilon` for every globally
+      Lipschitz passivator in shapes with `min(m,n)>=2`.
+- [x] Add exact correction-only and full-operator pinned EMA/Nesterov Jury
+      failures plus a finite rational one-step scalar-quadratic expansion
+      control at `epsilon=1e-7` and `eta=1/32000`.
+- [ ] Obtain an independent human proof audit of C19, including P12-envelope
+      inheritance, radial/tangential derivatives, pairwise promotion, Arb and
+      rational-log enclosures, universal stiffness lower bound, Jury algebra,
+      and exact-real/BF16 separation; the unsigned packet is
+      `theory/audits/P13_RADIAL_PASSIVATION_HUMAN_PROOF_AUDIT.md`.
 - [ ] Bound the complete error of a pinned deployed BF16 backend by the C12
       disturbance model and certify its ultimate neighborhood; P8--P10 are
       proposed proof-reference designs, not literal upstream parity.

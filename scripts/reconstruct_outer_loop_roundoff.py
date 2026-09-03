@@ -13,6 +13,7 @@ import argparse
 import hashlib
 import json
 import string
+import subprocess
 from fractions import Fraction
 from math import isqrt
 from pathlib import Path
@@ -92,6 +93,28 @@ def _envelope(slope: Fraction, intercept: Fraction) -> dict[str, Fraction]:
 
 def _source_snapshot() -> dict[str, str]:
     return {path: hashlib.sha256((ROOT / path).read_bytes()).hexdigest() for path in SOURCE_PATHS}
+
+
+def _source_snapshot_for(git: dict[str, object]) -> dict[str, str]:
+    """Rebuild a clean canonical snapshot at its recorded source commit."""
+
+    if git.get("dirty") is not False:
+        return _source_snapshot()
+    commit = git.get("sha")
+    if not isinstance(commit, str):
+        raise RuntimeError("canonical P10 source commit is missing")
+    snapshot: dict[str, str] = {}
+    for path in SOURCE_PATHS:
+        completed = subprocess.run(
+            ["git", "show", f"{commit}:{path}"],
+            cwd=ROOT,
+            capture_output=True,
+            check=False,
+        )
+        if completed.returncode != 0:
+            raise RuntimeError(f"could not read frozen P10 source {commit}:{path}")
+        snapshot[path] = hashlib.sha256(completed.stdout).hexdigest()
+    return snapshot
 
 
 def reconstruct() -> dict[str, Any]:
@@ -616,8 +639,8 @@ def _canonical_comparison(path: Path, rebuilt: dict[str, Any]) -> dict[str, Any]
     }
     provenance = canonical.get("proof_replay_provenance", {})
     snapshot = provenance.get("source_snapshot", {})
-    current_snapshot = _source_snapshot()
     git = canonical.get("git", {})
+    current_snapshot = _source_snapshot_for(git)
     sha = git.get("sha")
     provenance_checks = {
         "arithmetic": provenance.get("arithmetic")

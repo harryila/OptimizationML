@@ -27,7 +27,10 @@ Experiment order is gated:
 15. the P12 exact-real additive-epsilon full-rectangular deficit certificate,
     exact rank-two lower witness, boundary controls, and independent directed-
     interval replay;
-16. only after model-forward use of the logical master, aspect scaling, weight
+16. the P13 exact-real radial-passivation theorem, two-precision logarithmic
+    magnitude evaluation, independent rational-log reconstruction, universal
+    stiffness lower bound, and explicit-step negative controls;
+17. only after model-forward use of the logical master, aspect scaling, weight
     decay, and implementation-parity gates, a small matched neural-training
     sweep.
 
@@ -53,7 +56,10 @@ them. P12 separately proves exact `1/epsilon` deficit scaling and a
 dimension-uniform four-band upper for the continuous additive-epsilon
 surrogate. At the pinned `1e-7` scale its required constant repair is
 catastrophically large; this is not a certificate for the discontinuous BF16
-backend. Each run writes a self-contained JSON manifest and compact CSV
+backend. P13 proves a nonlinear radial correction can shrink output magnitude
+to logarithmic growth, while a pair lower bound and exact scalar controls show
+the `1/epsilon` stiffness and explicit-step obstruction remain. Each run
+writes a self-contained JSON manifest and compact CSV
 tables under `results/summaries/`; the JSON records inputs, operator details,
 dtype, seed, software, hardware, and Git state.
 
@@ -115,9 +121,13 @@ uv run --locked python scripts/certify_additive_epsilon_deficit.py \
   --output results/summaries/additive_epsilon_deficit_certificate.json
 uv run --locked python scripts/reconstruct_additive_epsilon_deficit.py \
   --require-canonical
+uv run --locked python scripts/certify_radial_passivation_tradeoff.py \
+  --output results/summaries/radial_passivation_tradeoff_certificate.json
+uv run --locked python scripts/reconstruct_radial_passivation_tradeoff.py \
+  --require-canonical
 ```
 
-The P9--P12 generators and standard-library-only reconstructions carry their
+The P9--P13 generators and standard-library-only reconstructions carry their
 exact claims. P11's adjacent controls establish rejection of the sufficient
 certificate, not actual closed-loop instability. P12's older sampled epsilon
 grid is discovery evidence only; its exact/interval generator carries the

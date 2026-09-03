@@ -109,7 +109,7 @@ def test_p10_cli_output_file_matches_stdout(tmp_path: Path) -> None:
     assert json.loads(output.read_text(encoding="utf-8")) == payload
 
 
-def test_checked_p10_source_snapshot_is_current_and_clean() -> None:
+def test_checked_p10_source_snapshot_matches_recorded_clean_commit() -> None:
     root = Path(__file__).resolve().parents[1]
     canonical_path = root / "results/summaries/outer_loop_roundoff_certificate.json"
     assert canonical_path.is_file(), "the committed P10 exact certificate is mandatory"
@@ -122,6 +122,10 @@ def test_checked_p10_source_snapshot_is_current_and_clean() -> None:
     snapshot = canonical["proof_replay_provenance"]["source_snapshot"]
     assert snapshot
     for relative_path, expected_digest in snapshot.items():
-        source = root / relative_path
-        assert source.is_file(), relative_path
-        assert hashlib.sha256(source.read_bytes()).hexdigest() == expected_digest
+        completed = subprocess.run(
+            ["git", "show", f"{git['sha']}:{relative_path}"],
+            cwd=root,
+            capture_output=True,
+            check=True,
+        )
+        assert hashlib.sha256(completed.stdout).hexdigest() == expected_digest

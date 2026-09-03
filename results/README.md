@@ -120,6 +120,18 @@ Current outputs:
   upper/lower bracket, repair consequence, boundary controls, max-floor
   comparison, and BF16 exclusions; the human proof audit remains pending and
   unsigned;
+- `summaries/radial_passivation_tradeoff_certificate.json`: canonical P13
+  exact-real radial repair certificate, including the closed-form logarithmic
+  primitive, dimension-uniform full-matrix monotonicity argument, two-
+  precision Arb magnitudes, universal rank-two Lipschitz lower bound, and
+  exact explicit-step controls; generate it with
+  `scripts/certify_radial_passivation_tradeoff.py` and independently check it
+  with the standard-library-only
+  `scripts/reconstruct_radial_passivation_tradeoff.py`;
+- `summaries/P13_RADIAL_PASSIVATION_RESULTS.md`: scoped P13 constructive
+  passivation, magnitude/stiffness tradeoff, scalar negative controls, and
+  exact-real/BF16 exclusions; the human proof audit remains pending and
+  unsigned;
 - `summaries/deficit_audit.{json,csv}`: 24-prefix spectral audit;
 - `summaries/quadratic_lr_sweep.json` plus CSV tables: gain-matched quadratic
   sweep and sensitivity classifications;

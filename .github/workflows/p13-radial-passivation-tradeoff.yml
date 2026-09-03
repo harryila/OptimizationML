@@ -1,0 +1,63 @@
+name: P13 radial-passivation tradeoff replay
+
+on:
+  push:
+    branches:
+      - main
+      - p13-radial-passivation-tradeoff
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  radial-passivation-tradeoff:
+    name: Exact identities, Arb magnitudes, and independent replay (Python 3.12)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository with certificate history
+        uses: actions/checkout@v7
+        with:
+          # P12's frozen source snapshot is checked against its recorded
+          # historical commit rather than mutable files at the P13 head.
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          enable-cache: true
+
+      - name: Install the locked environment
+        run: uv sync --locked
+
+      - name: Generate the exact and Arb radial-passivation certificate
+        run: >-
+          uv run --locked python scripts/certify_radial_passivation_tradeoff.py
+          --output "$RUNNER_TEMP/radial_passivation_tradeoff_certificate.json"
+
+      - name: Independently reconstruct the fresh certificate
+        run: >-
+          uv run --locked python scripts/reconstruct_radial_passivation_tradeoff.py
+          --canonical "$RUNNER_TEMP/radial_passivation_tradeoff_certificate.json"
+          --require-canonical
+
+      - name: Compare the committed canonical certificate
+        run: >-
+          uv run --locked python scripts/reconstruct_radial_passivation_tradeoff.py
+          --require-canonical
+
+      - name: Run P13 theorem, boundary, negative-control, and replay tests
+        run: >-
+          uv run --locked pytest -q
+          tests/test_radial_passivation_tradeoff.py
+          tests/test_radial_passivation_tradeoff_cli.py
+          tests/test_radial_passivation_tradeoff_reconstruction.py
+          tests/test_radial_passivation_tradeoff_result_manifest.py
+          tests/test_current_research_index.py

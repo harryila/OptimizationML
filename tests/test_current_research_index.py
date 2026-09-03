@@ -178,6 +178,38 @@ def test_current_indexes_record_scoped_p12_additive_epsilon_result() -> None:
     assert "catastrophically large" in " ".join(results.split())
 
 
+def test_current_indexes_record_scoped_p13_radial_passivation_tradeoff() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    tasks = (ROOT / "TASKS.md").read_text(encoding="utf-8")
+    results_index = (ROOT / "results/README.md").read_text(encoding="utf-8")
+    experiments = (ROOT / "experiments/README.md").read_text(encoding="utf-8")
+    results = (ROOT / "results/summaries/RESULTS.md").read_text(encoding="utf-8")
+    claims = (ROOT / "theory/claims.md").read_text(encoding="utf-8")
+
+    for artifact in (
+        "radial_passivation_tradeoff_certificate.json",
+        "P13_RADIAL_PASSIVATION_RESULTS.md",
+    ):
+        assert artifact in results_index
+    for command in (
+        "certify_radial_passivation_tradeoff.py",
+        "reconstruct_radial_passivation_tradeoff.py",
+    ):
+        assert command in readme
+        assert command in experiments
+        assert command in results
+    for text in (readme, results, claims):
+        assert "2571.857826" in text
+        assert "3086.959580" in text
+        assert "158.1172496" in text
+        assert "1/epsilon" in text
+        assert "BF16" in text
+    assert "## 19. P13 radial passivation tradeoff" in results
+    assert "## C19. Nonlinear radial passivation and unavoidable stiffness" in claims
+    assert "human proof audit of C19" in tasks
+    assert "scalar" in results and "Jury" in results
+
+
 def test_double_blind_material_is_guarded_from_the_public_repository() -> None:
     ignore = (ROOT / ".gitignore").read_text(encoding="utf-8")
     for pattern in (

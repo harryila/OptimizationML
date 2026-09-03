@@ -390,6 +390,36 @@ not certified. Human proof review is pending and unsigned. See
 and
 [`results/summaries/P12_ADDITIVE_EPSILON_RESULTS.md`](results/summaries/P12_ADDITIVE_EPSILON_RESULTS.md).
 
+Branch `p13-radial-passivation-tradeoff` converts that negative result into a
+constructive exact-real repair. With `z=||M||_F/epsilon`, it integrates a
+positive nonincreasing majorant `d_hat(z)` of P12's full-matrix pointwise
+deficit and defines
+
+\[
+G_\epsilon(M)=p(z)\frac{M}{\lVert M\rVert_F},
+\qquad p(z)=\int_0^z\widehat d(u)\,du.
+\]
+
+The complete Frobenius derivative has radial eigenvalue
+`d_hat(z)/epsilon` and tangential eigenvalue `p(z)/(epsilon*z)`, so
+`E_(h,epsilon)+G_epsilon` is globally monotone in every finite rectangular
+shape. The closed form grows only logarithmically: at `epsilon=1e-7`, its
+norm is certified near `2571.857826` at unit raw norm and `3086.959580` at
+P11's exact `25.233506...` signal guard, instead of the constant repair's
+`1.585e9` and `4.001e10`.
+
+The improvement is output magnitude, not differential stiffness. The
+construction has exact `Lip(G_epsilon)=158.544530805386.../epsilon`, while
+P12's pair proves that every globally Lipschitz passivating correction in a
+shape with `min(m,n)>=2` has Lipschitz constant strictly above
+`158.1172496/epsilon`. An exact scalar quadratic control shows that the radial
+repair alone is locally unstable in the pinned EMA/Nesterov ordering at
+`beta=0.95`, `eta=1/32000`, and `epsilon=1e-7`; the theorem therefore does
+not reuse the max-floor stability claims. See
+[`theory/radial_passivation_tradeoff.md`](theory/radial_passivation_tradeoff.md)
+and
+[`results/summaries/P13_RADIAL_PASSIVATION_RESULTS.md`](results/summaries/P13_RADIAL_PASSIVATION_RESULTS.md).
+
 The repair claim is intentionally scoped. A constant `rho` is the exact minimal
 linear shift for a **specified point, pair, sample set, or domain with a finite
 certified deficit**. For exact scale-invariant normalization on every nonzero
@@ -428,6 +458,9 @@ uv run --locked python scripts/reconstruct_implementation_margin.py
 uv run --locked python scripts/certify_additive_epsilon_deficit.py
 uv run --locked python scripts/reconstruct_additive_epsilon_deficit.py \
   --require-canonical
+uv run --locked python scripts/certify_radial_passivation_tradeoff.py
+uv run --locked python scripts/reconstruct_radial_passivation_tradeoff.py \
+  --require-canonical
 uv run --locked pytest
 ```
 
@@ -459,7 +492,7 @@ not support a universal claim across BF16 backends.
 
 ## Scope
 
-This repository stays focused on fifteen technical goals:
+This repository stays focused on sixteen technical goals:
 
 1. a theorem for current-input Frobenius normalization;
 2. exact local and finite-pair controls for the five-step Jordan map;
@@ -487,7 +520,10 @@ This repository stays focused on fifteen technical goals:
 14. an exact-real, shape-uniform additive-epsilon deficit upper certificate,
     an exact rank-two lower witness, and the resulting deployed-epsilon
     constant-repair obstruction;
-15. qualified matrix, quadratic, nonlinear, and precision diagnostics.
+15. a full-matrix nonlinear radial passivator with logarithmic output growth,
+    together with a universal near-matching `1/epsilon` stiffness lower bound
+    and explicit-step negative control;
+16. qualified matrix, quadratic, nonlinear, and precision diagnostics.
 
 P7 is the submission cutoff and broadest robustness theorem; P6 is its
 zero-disturbance smooth-PL corollary. P8 and P9 instantiate one P7 disturbance
@@ -500,7 +536,10 @@ outer arithmetic shell, and P11 quantifies additional admissible discrepancies
 without asserting that any deployed system meets them. P12 shows that the
 exact-real additive-epsilon alternative has a finite but catastrophically
 large global repair at the pinned `1e-7` scale; it does not certify the BF16
-backend. Production-gradient measurement, model-forward use of the logical
+backend. P13 reduces that repair's output magnitude through an exact radial
+construction but proves that the worst-case `1/epsilon` differential
+stiffness is unavoidable; it does not inherit P7--P11 stability. Production-
+gradient measurement, model-forward use of the logical
 master, weight decay, aspect-ratio scaling, complete stochastic neural-network
 training, production-kernel parity, and formal circuit ports remain open.
 

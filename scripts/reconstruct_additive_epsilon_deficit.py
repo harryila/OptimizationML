@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import subprocess
 import sys
 from dataclasses import dataclass
 from decimal import ROUND_CEILING, ROUND_FLOOR, Decimal, localcontext
@@ -337,6 +338,40 @@ def _file_sha256(path: str) -> str:
     return hashlib.sha256((ROOT / path).read_bytes()).hexdigest()
 
 
+def _git_blob_sha256(commit: str, path: str) -> str:
+    """Hash ``path`` exactly as recorded at ``commit``.
+
+    Frozen certificates bind the source tree that generated them, not a later
+    branch's mutable overview files.  CI therefore checks out full history and
+    replays these hashes from the manifest's recorded clean source commit.
+    """
+
+    completed = subprocess.run(
+        ["git", "show", f"{commit}:{path}"],
+        cwd=ROOT,
+        capture_output=True,
+        check=False,
+    )
+    if completed.returncode != 0:
+        raise RuntimeError(f"could not read frozen source {commit}:{path}")
+    return hashlib.sha256(completed.stdout).hexdigest()
+
+
+def _source_snapshot_for(canonical: dict[str, object]) -> dict[str, str]:
+    """Rebuild a canonical snapshot from its recorded repository state."""
+
+    provenance = canonical["proof_replay_provenance"]
+    expected = provenance["source_snapshot"]
+    if set(expected) != set(EXPECTED_SOURCE_PATHS):
+        raise RuntimeError("frozen source snapshot path set does not match the P12 lock")
+    git = canonical["git"]
+    if git["dirty"] is False:
+        return {path: _git_blob_sha256(git["sha"], path) for path in expected}
+    # A freshly generated temporary artifact may intentionally record a dirty
+    # development tree.  In that case its snapshot refers to the worktree.
+    return {path: _file_sha256(path) for path in expected}
+
+
 def _reconstruct() -> dict[str, object]:
     global_cover = _cover(
         endpoint=Fraction(1),
@@ -356,7 +391,6 @@ def _reconstruct() -> dict[str, object]:
     absolute_width = upper - PAIR_LOWER
     relative_width = absolute_width / PAIR_LOWER
     prior_hashes = {path: _file_sha256(path) for path in EXPECTED_PRIOR_HASHES}
-    source_snapshot = {path: _file_sha256(path) for path in EXPECTED_SOURCE_PATHS}
     checks = {
         "independent_global_interval_cover_closed": bool(global_cover["leaf_count"]),
         "independent_prefix_interval_covers_closed": all(
@@ -455,7 +489,6 @@ def _reconstruct() -> dict[str, object]:
             )
         ],
         "prior_artifact_hashes": prior_hashes,
-        "source_snapshot": source_snapshot,
         "upstream": {
             "repository": "https://github.com/KellerJordan/Muon",
             "revision": EXPECTED_UPSTREAM_REVISION,
@@ -643,7 +676,7 @@ def _compare_canonical(
         }
         == reconstruction["prior_artifact_hashes"],
         "source_snapshot": canonical["proof_replay_provenance"]["source_snapshot"]
-        == reconstruction["source_snapshot"],
+        == _source_snapshot_for(canonical),
         "upstream_provenance": {
             key: canonical["upstream_formula_provenance"][key]
             for key in (

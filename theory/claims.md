@@ -1119,3 +1119,92 @@ KellerJordan/Muon revision
 pairwise, or repair theorem to literal BF16 Muon. See
 `additive_epsilon_deficit_certificate.md`; the human audit packet is pending
 and unsigned.
+
+## C19. Nonlinear radial passivation and unavoidable stiffness — proved for the exact-real surrogate
+
+Retain C18's five-stage Jordan operator, additive normalization, exact
+rational coefficients, and domain of every fixed finite real rectangular
+matrix space. Put
+
+\[
+U=\frac{6602082433275499863}{41641817600000000},\quad
+a=-\frac{199437}{1250},\quad
+\Gamma=-\frac{41528474059081}{260261360000},\quad
+z_0=\frac{63}{9937}.
+\]
+
+For `z>=0`, define
+
+\[
+\widehat d(z)=
+\begin{cases}
+U,&z\le z_0,\\
+-\dfrac{a+\Gamma z}{(1+z)^2},&z\ge z_0,
+\end{cases}
+\qquad p(z)=\int_0^z\widehat d(u)\,du,
+\]
+
+and set `G_epsilon(0)=0` and
+
+\[
+G_\epsilon(M)=p(\lVert M\rVert_F/\epsilon)
+\frac{M}{\lVert M\rVert_F}\quad(M\ne0).
+\]
+
+The two branches join exactly at `z0`, and the tail derivative is
+`(2a-Gamma+Gamma*z)/(1+z)^3<0`. Thus `d_hat` is positive and
+nonincreasing. It majorizes C18's complete pointwise full-matrix deficit
+envelope. The primitive is linear below `z0` and, above it, equals
+
+\[
+Uz_0-\Gamma\log\!\frac{1+z}{1+z_0}
++(a-\Gamma)\left(\frac1{1+z}-\frac1{1+z_0}\right).
+\]
+
+On the full Frobenius tangent space, `DG_epsilon` has radial eigenvalue
+`d_hat(z)/epsilon` and tangential eigenvalue `p(z)/(epsilon*z)`. Since
+`d_hat(z)<=p(z)/z<=U`, its smallest derivative cancels C18's pointwise
+deficit everywhere. The map is `C1` at zero and at the switch. Integrating
+the complete symmetric-Jacobian inequality along line segments proves
+
+\[
+E_{h,\epsilon}+G_\epsilon\quad\text{is globally monotone}
+\]
+
+for every finite shape. No diagonal certificate is promoted to this claim.
+
+The correction has logarithmic rather than linear output growth and exact
+Lipschitz constant `U/epsilon`. At `epsilon=1e-7`, two Arb precisions and an
+independent exact rational-log reconstruction enclose its magnitude between
+`2571.857826470212145` and `2571.857826470212146` at unit raw norm, and
+between `3086.959580254301425` and `3086.959580254301426` at P11's exact
+signal guard `13872266672489/549755813888`. The corresponding P12 constant
+repair outputs are about `1.585e9` and `4.001e10`.
+
+The improvement cannot remove worst-case differential stiffness. Applying
+monotonicity and Cauchy--Schwarz to C18's scaled rank-two pair proves, for
+every globally Lipschitz correction `C` that passivates it,
+
+\[
+\operatorname{Lip}(C)>
+\frac1\epsilon\frac{98823281}{625000}.
+\]
+
+This statement applies to shapes with `min(m,n)>=2` and assumes neither a
+radial nor an odd correction. The proposed `G_epsilon` is within
+`0.270231%` of that universal strict witness lower in Lipschitz stiffness;
+this is not a proof of an exact fixed-shape optimum.
+
+Finally, a scalar curvature-one quadratic under the pinned exact-real
+EMA/Nesterov order, `beta=19/20`, provides a genuine negative control. At
+`epsilon=1e-7`, the correction-only Jury threshold is about `1.69647e-8` and
+the complete repaired-operator threshold is about `4.18024e-9`, so the prior
+`eta=1/32000` is locally unstable. A finite exact one-step witness gives
+objective growth strictly above `23,325,554`. Hence global monotonicity does
+not justify reusing the max-floor explicit stability theorem.
+
+C19 is exact-real only. Literal upstream BF16 is backend-specific and
+discontinuous, and neither C18 nor C19 certifies it. C19 also does not
+propagate the radial repair through the P7--P11 stack, prove strong
+monotonicity, or establish neural-network convergence. See
+`radial_passivation_tradeoff.md`; independent human review is pending.

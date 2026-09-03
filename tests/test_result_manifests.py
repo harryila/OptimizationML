@@ -4,6 +4,7 @@ import csv
 import hashlib
 import json
 import math
+import subprocess
 import xml.etree.ElementTree as ET
 from fractions import Fraction
 from pathlib import Path
@@ -19,15 +20,6 @@ MOMENTUM_CERTIFICATE_PATH = ROOT / "results/summaries/momentum_iqc_certificate.j
 EMA_NESTEROV_CERTIFICATE_PATH = ROOT / "results/summaries/ema_nesterov_iqc_certificate.json"
 OUTER_LOOP_CERTIFICATE_PATH = ROOT / "results/summaries/outer_loop_roundoff_certificate.json"
 OUTER_LOOP_DIAGNOSTIC_PATH = ROOT / "results/summaries/finite_precision_outer_loop_diagnostic.json"
-MUTABLE_OVERVIEW_PATHS = {
-    "README.md",
-    "TASKS.md",
-    "experiments/README.md",
-    "results/README.md",
-    "results/summaries/RESULTS.md",
-    "tests/test_result_manifests.py",
-    "theory/claims.md",
-}
 
 
 def _load(path: Path) -> dict:
@@ -56,25 +48,37 @@ def test_result_source_snapshots_match_immutable_workspace_files() -> None:
     ema_nesterov = _load(EMA_NESTEROV_CERTIFICATE_PATH)
     outer_loop = _load(OUTER_LOOP_CERTIFICATE_PATH)
     outer_diagnostic = _load(OUTER_LOOP_DIAGNOSTIC_PATH)
-    snapshots = [manifest["source_snapshot"] for manifest in manifests]
-    snapshots.append(witness["experiment_provenance"]["source_snapshot"])
-    snapshots.append(floored["experiment_provenance"]["source_snapshot"])
-    snapshots.append(momentum["experiment_provenance"]["source_snapshot"])
-    snapshots.append(ema_nesterov["experiment_provenance"]["source_snapshot"])
-    snapshots.append(outer_loop["proof_replay_provenance"]["source_snapshot"])
-    snapshots.append(outer_diagnostic["experiment_provenance"]["source_snapshot"])
-    for snapshot in snapshots:
+    records = [(manifest["source_snapshot"], manifest["git"]["sha"]) for manifest in manifests]
+    records.extend(
+        (
+            item["experiment_provenance"]["source_snapshot"],
+            item["git"]["sha"],
+        )
+        for item in (witness, floored)
+    )
+    records.extend(
+        (item["experiment_provenance"]["source_snapshot"], item["git"]["sha"])
+        for item in (momentum, ema_nesterov)
+    )
+    records.append(
+        (outer_loop["proof_replay_provenance"]["source_snapshot"], outer_loop["git"]["sha"])
+    )
+    records.append(
+        (
+            outer_diagnostic["experiment_provenance"]["source_snapshot"],
+            outer_diagnostic["experiment_provenance"]["git"]["sha"],
+        )
+    )
+    for snapshot, source_commit in records:
         assert snapshot
         for relative_path, expected_hash in snapshot.items():
-            path = ROOT / relative_path
-            assert path.is_file()
-            # Historical result manifests remain byte-for-byte immutable while
-            # overview ledgers continue to report later checkpoints. Their
-            # recorded hashes describe the producing commit, not current prose.
-            if relative_path in MUTABLE_OVERVIEW_PATHS:
-                assert len(expected_hash) == 64
-                continue
-            assert hashlib.sha256(path.read_bytes()).hexdigest() == expected_hash
+            completed = subprocess.run(
+                ["git", "show", f"{source_commit}:{relative_path}"],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+            )
+            assert hashlib.sha256(completed.stdout).hexdigest() == expected_hash
 
 
 def test_result_manifests_record_clean_git_revisions() -> None:

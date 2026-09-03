@@ -789,6 +789,77 @@ is pending and unsigned. See `P12_ADDITIVE_EPSILON_RESULTS.md`,
 `additive_epsilon_deficit_certificate.json`, and
 `../../theory/additive_epsilon_deficit_certificate.md`.
 
+## 19. P13 radial passivation tradeoff
+
+P13 keeps P12's exact-real additive-epsilon operator and defines a radial
+correction from a positive nonincreasing majorant of its certified pointwise
+full-matrix deficit. With
+
+\[
+U=\frac{6602082433275499863}{41641817600000000},\qquad
+z_0=\frac{63}{9937},
+\]
+
+the majorant is `U` through `z0` and
+`-(a+Gamma*z)/(1+z)^2` afterward, using P12's exact final-band
+`a=-199437/1250` and
+`Gamma=-41528474059081/260261360000`. Its integral `p` has an exact
+rational/logarithmic closed form. The radial map
+
+\[
+G_\epsilon(M)=p(\lVert M\rVert_F/\epsilon)
+\frac{M}{\lVert M\rVert_F},\qquad G_\epsilon(0)=0,
+\]
+
+has full-space derivative eigenvalues `d_hat(z)/epsilon` in the radial
+direction and `p(z)/(epsilon*z)` in every tangential direction. Since the
+latter is the average of the decreasing majorant, both dominate P12's local
+deficit. Line-segment integration proves
+`E_(h,epsilon)+G_epsilon` globally monotone for every finite rectangular
+matrix shape. This is a full-matrix result, not a diagonal certificate.
+
+At `epsilon=1e-7`, two outward-rounded Arb passes and an independent exact
+rational-log reconstruction certify
+
+| Raw norm | `||G_epsilon(M)||_F` | P12 constant-repair output |
+| ---: | ---: | ---: |
+| `1` | `2571.857826470212...` | `1,585,445,308.053868...` |
+| P11 exact guard `25.2335060804...` | `3086.959580254301...` | `40,006,343,820.950377...` |
+
+The reduction does not eliminate stiffness. Exactly,
+
+\[
+\operatorname{Lip}(G_\epsilon)=\frac{U}{\epsilon},
+\]
+
+while P12's finite pair proves that every globally Lipschitz correction that
+passivates that pair satisfies
+
+\[
+\operatorname{Lip}(C_\epsilon)>
+\frac{158.1172496}{\epsilon}.
+\]
+
+The universal lower statement is qualified to shapes with `min(m,n)>=2`.
+The constructed stiffness is within `0.270231%` of this strict witness lower.
+
+An exact scalar curvature-one quadratic control uses the pinned real-arithmetic
+EMA/Nesterov order with `beta=19/20`. The correction alone is locally Schur
+stable only below
+`1082687257600/63820130188329832009 = 1.69647e-8` at `epsilon=1e-7`;
+the complete repaired operator lowers the threshold to approximately
+`4.18024e-9`. Thus `eta=1/32000` fails both exact Jury checks. A separate
+rational one-step witness expands the scalar objective by a factor strictly
+above `23,325,554`. These are explicit instability controls for the old step,
+not claims about every initialization or an implicit method.
+
+P13 concerns only the continuous exact-real surrogate. It does not certify
+the backend-specific discontinuous BF16 map, propagate the new repair through
+P7--P11, or establish neural-network convergence. The human proof audit is
+pending and unsigned. See `P13_RADIAL_PASSIVATION_RESULTS.md`,
+`radial_passivation_tradeoff_certificate.json`, and
+`../../theory/radial_passivation_tradeoff.md`.
+
 ## Reproduce
 
 ```bash
@@ -829,6 +900,10 @@ uv run --locked python scripts/reconstruct_outer_loop_roundoff.py \
 uv run --locked python scripts/certify_additive_epsilon_deficit.py \
   --output results/summaries/additive_epsilon_deficit_certificate.json
 uv run --locked python scripts/reconstruct_additive_epsilon_deficit.py \
+  --require-canonical
+uv run --locked python scripts/certify_radial_passivation_tradeoff.py \
+  --output results/summaries/radial_passivation_tradeoff_certificate.json
+uv run --locked python scripts/reconstruct_radial_passivation_tradeoff.py \
   --require-canonical
 uv run --locked python experiments/matrices/run_deficit_audit.py
 uv run --locked python experiments/quadratics/run_lr_sweep.py
