@@ -58,6 +58,17 @@ Current outputs:
 - `summaries/P7_RESULTS.md`: scoped human-readable P7 theorem, deterministic
   and bounded-second-moment stochastic consequences, diagnostic readout, and
   strict exclusion of full-state ISS and a BF16 deployment claim;
+- `summaries/mixed_precision_certificate.json`: exact fixed-`2 x 2` P8
+  forward-error certificate for the proposed FP32 serial-Horner kernel with
+  BF16 stage-boundary storage, including the affine operator-error bound,
+  arbitrary-real input adapter, five-stage invariant, locked finite-input
+  domain, and exact P7 error-to-objective closure; the independent
+  reconstruction entry point is `scripts/reconstruct_mixed_precision.py`;
+- `summaries/mixed_precision_falsification.json`: deterministic 82-case P8
+  fixed-`2 x 2` CPU diagnostic against a float64, non-exact evaluation of the
+  ideal formula; it is falsification evidence, not the proof;
+- `summaries/P8_RESULTS.md`: concise scoped P8 theorem, exact replay, and
+  diagnostic readout;
 - `summaries/deficit_audit.{json,csv}`: 24-prefix spectral audit;
 - `summaries/quadratic_lr_sweep.json` plus CSV tables: gain-matched quadratic
   sweep and sensitivity classifications;

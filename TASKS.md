@@ -73,9 +73,32 @@
       and record the flat-minimizer harmonic-drift counterexample to iterate
       convergence under merely square-summable errors.
 - [ ] Obtain an independent human proof audit of C12, including disturbance
-      placement, physical-unit gain conversion, and the stochastic corollary.
-- [ ] Bound the complete error of a pinned BF16/rounding backend by the C12
-      post-operator disturbance model and certify its ultimate neighborhood.
+      placement, physical-unit gain conversion, and the stochastic corollary;
+      the unsigned review packet is
+      `theory/audits/P7_HUMAN_PROOF_AUDIT.md`.
+- [x] Specify a proposed fixed-`2 x 2` mixed-precision repaired operator with
+      FP32 scaled max-floor normalization and repair, a BF16-normalized stage
+      input and five BF16 stage outputs, and a fixed serial-FP32-Horner kernel.
+- [x] Prove the exact affine operator-error bound
+      `||Rhat(s)-R(s)||_F <= (11/100000) ||s||_F + 347/100` for finite FP32
+      inputs with maximum absolute entry at most `2^116` under the locked IEEE
+      arithmetic contract.
+- [x] Extend the operator interface to arbitrary real `2 x 2` inputs in the
+      same range by an explicit entrywise FP32 cast, proving the affine bound
+      `||Rhat_R(s)-R(s)||_F <= (1/5000) ||s||_F + 347/100`.
+- [x] Close that affine error through the P7 post-operator port in an otherwise
+      exact-real loop, obtaining an exact rate below one and the certified
+      zero-gradient-noise objective-gap neighborhood `2.22630172325...`, with
+      an exact sufficient initial-storage invariant that preserves the finite
+      input range.
+- [x] Add a standalone standard-library reconstruction of the fixed-`2 x 2`
+      P8 certificate and its exact rational comparisons.
+- [ ] Extend P8 to a dimension-scalable mixed-precision kernel certificate.
+- [ ] Bound FP32 EMA/Nesterov and parameter-update rounding through appropriate
+      internal ports or a compensated/higher-precision master-weight design.
+- [ ] Bound the complete error of a pinned deployed BF16 backend by the C12
+      disturbance model and certify its ultimate neighborhood; P8's proposed
+      stage-boundary design is not literal upstream parity.
 - [ ] Run a small matched NanoGPT sweep only after the preceding gates pass.
 - [ ] Run an accelerator throughput benchmark only for a certified design.
 

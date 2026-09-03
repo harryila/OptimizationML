@@ -418,14 +418,117 @@ stochastic gradients, BF16, weight decay, aspect-ratio scaling, exact-current
 or additive-epsilon normalization, an unrepaired upstream implementation, or
 complete neural-network training.
 
-## 12. Unrun gate
+## 12. P7 robust dissipativity
+
+P7 keeps the P6 repaired exact-real operator, global smooth-PL class, pinned
+EMA/Nesterov ordering, and full `eta=1/32000` step while adding gradient error
+`xi_t` and post-operator output error `e_t`. An exact, dimension-independent
+`6 x 6` rational certificate proves, for every disturbance realization,
+
+\[
+V_{t+1}\le
+\frac{399960001}{400000000}V_t
++\frac12\lVert\xi_t\rVert_F^2
++\frac1{2000000}\lVert e_t\rVert_F^2.
+\]
+
+The exact convolution yields deterministic bounded-input neighborhoods,
+storage/output convergence for square-summable disturbances, and expected
+storage/function-gap neighborhoods under conditional second-moment bounds.
+Unbiasedness is not needed for that expectation inequality because the base
+certificate is pathwise. Square-summable disturbances do not ensure iterate
+convergence on a nonunique minimizer set: the committed flat-direction
+harmonic-drift example supplies an explicit counterexample. Absolute
+summability is a sufficient stronger condition.
+
+The 144-case, 17,280-update CPU/float64 falsification grid found zero candidate
+violations. It covers bounded deterministic, seeded stochastic, and
+implementation-only disturbances, but remains a diagnostic rather than the
+proof. The exact certificate and diagnostic source revision is
+`c55d3e65fa2220f6a9e91c1a3d29b0cff04e3b8a`; the completed checkpoint is
+`30b55e53f50525ea980dc41f3201fdd160d4a75e`, tagged `p7-checkpoint`. The human
+audit of C11--C12 remains pending. P7 is the submission cutoff, and P6 is its
+zero-disturbance corollary. See `P7_RESULTS.md` and the two
+`robust_dissipativity_*.json` manifests.
+
+## 13. P8 fixed-2x2 mixed-precision operator certificate
+
+P8 instantiates P7's post-operator error port for one proposed, fixed-`2 x 2`
+implementation. The max-floor normalizer, each complete fixed-order serial
+Horner stage, and the repair use FP32; the normalized stage input and each of
+the five completed stage outputs are stored in BF16. Under IEEE
+round-to-nearest, ties-to-even arithmetic with
+gradual underflow and no FTZ/DAZ, every finite FP32 input whose maximum
+absolute entry is at most `2^116` satisfies the exact bound
+
+\[
+\lVert\widehat R(s)-R(s)\rVert_F
+\le\frac{11}{100000}\lVert s\rVert_F+\frac{347}{100}.
+\]
+
+Entrywise FP32 conversion extends the interface to every real `2 x 2` input
+in the same range. Using the exact global Lipschitz bound for the ideal
+repaired map gives
+
+\[
+\lVert\widehat R_{\mathbb R}(s)-R(s)\rVert_F
+\le\frac1{5000}\lVert s\rVert_F+\frac{347}{100}.
+\]
+
+An exact Sturm calculation and rational matrix-roundoff recurrence close the
+full five-stage invariant. Placing the real-input adapter in the otherwise
+exact-real P7 loop, setting gradient noise to zero, and using Young's
+inequality with `theta=5124` gives
+
+\[
+V_{t+1}\le
+\frac{41597186684695561}{41601344000000000}V_t
++\frac{4936769}{819840000000}.
+\]
+
+For
+
+\[
+H_{\rm safe}=\frac{2600084\,2^{232}}{1655544025}
+\approx1.08394\times10^{67},
+\]
+
+the exact replay checks that `V_0<=H_safe` is invariant and implies every
+signal has Frobenius norm at most `2^116`. Thus all adapter calls remain in the
+certified range. The rate is strictly below one, and P7's exact storage
+conversion gives
+
+\[
+\limsup_t(f(W_t)-f_\star)
+\le
+\frac{462392438350000000}{207695315294468001}
+=2.22630172325\ldots.
+\]
+
+A deterministic 82-case CPU falsification grid found zero candidate bound
+violations and zero nonfinite results. The maximum observed kernel-bound ratio
+was `0.32618452101249257`, and the maximum all-real-adapter-bound ratio was
+`0.18142092780684033`. Its ideal-formula comparator uses float64 rather than
+exact arithmetic, so these are diagnostics rather than the proof.
+
+This is a worst-case certificate, not a measured loss and not a tightness
+claim. It is not literal upstream Muon, not an all-BF16-intermediate or native
+accelerator kernel, not valid for arbitrary shapes, and not a whole-FP32-loop
+theorem. FP32 EMA/Nesterov and parameter-update rounding remain outside the
+single P7 output-error port; parameter subtraction can stall at large binades.
+See `P8_RESULTS.md`, `mixed_precision_certificate.json`,
+`mixed_precision_falsification.json`, and
+`../../theory/mixed_precision_certificate.md`.
+
+## 14. Unrun gate
 
 No NanoGPT result is reported. This machine exposes neither CUDA nor an
 available MPS device. The `rho` used in the existing quadratic study is only a
 finite-grid sampled repair; those results do not retroactively test the new
 floored architecture or its global certificate. A matched language-model
-sweep remains gated on suitable compute, matched-momentum quadratics, and a
-predeclared use of the certified floored design.
+sweep remains gated on suitable compute, a predeclared comparison, and
+implementation-level parity for the chosen floored design. P8's fixed-`2 x 2`
+operator certificate does not by itself clear that training gate.
 
 ## Reproduce
 
@@ -449,6 +552,13 @@ uv run --locked python scripts/certify_nonquadratic_convergence.py \
 uv run --locked python scripts/reconstruct_nonquadratic_convergence.py
 uv run --locked python scripts/certify_pl_convergence.py \
   --output results/summaries/pl_convergence_certificate.json
+uv run --locked python scripts/reconstruct_pl_convergence.py
+uv run --locked python scripts/certify_robust_dissipativity.py \
+  --output results/summaries/robust_dissipativity_certificate.json
+uv run --locked python scripts/reconstruct_robust_dissipativity.py
+uv run --locked python scripts/certify_mixed_precision.py \
+  --output results/summaries/mixed_precision_certificate.json
+uv run --locked python scripts/reconstruct_mixed_precision.py
 uv run --locked python experiments/matrices/run_deficit_audit.py
 uv run --locked python experiments/quadratics/run_lr_sweep.py
 uv run --locked python experiments/quadratics/run_horizon_check.py
@@ -459,6 +569,12 @@ uv run --locked python \
   --output results/summaries/nonquadratic_convergence_falsification.json
 uv run --locked python experiments/nonconvex/run_pl_falsification.py \
   --output results/summaries/pl_falsification.json
+uv run --locked python \
+  experiments/nonconvex/run_robust_dissipativity_falsification.py \
+  --output results/summaries/robust_dissipativity_falsification.json
+uv run --locked python \
+  experiments/mixed_precision/run_mixed_precision_falsification.py \
+  --output results/summaries/mixed_precision_falsification.json
 uv run --locked python scripts/make_figures.py
 uv run --locked pytest -q
 ```

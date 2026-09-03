@@ -590,14 +590,101 @@ stochastic, and implementation-only disturbances found zero candidate
 violations. These sampled passes are not the proof. See
 `robust_dissipativity_certificate.md` and the exact machine-readable artifact.
 
-C12 does not establish full-state ISS, a BF16 error bound, or a theorem for
-unrepaired upstream Muon, additive-epsilon or exact-current normalization,
-weight decay, aspect-ratio scaling, time-varying objectives, complete
-stochastic neural-network training, or errors injected at unspecified internal
-locations. The two disturbance gains are sufficient and are not claimed
-minimal.
+C12 by itself does not establish full-state ISS, a BF16 error bound, or a
+theorem for unrepaired upstream Muon, additive-epsilon or exact-current
+normalization, weight decay, aspect-ratio scaling, time-varying objectives,
+complete stochastic neural-network training, or errors injected at
+unspecified internal locations. The two disturbance gains are sufficient and
+are not claimed minimal.
 
-## C13. Circuit and broader optimization consequences — open
+## C13. Fixed-2x2 mixed-precision operator error — proved for a proposed kernel
+
+Fix shape `2 x 2` and retain the exact-real C12 reference operator, exact max
+floor `c=1`, no additive epsilon, five Jordan stages, exact coefficients, and
+constant repair. The proposed implementation computes a scaled max-floor
+normalizer and the linear repair in FP32. It stores the normalized initial
+stage input and each of five completed stage outputs in BF16; within each
+stage it evaluates the fixed Horner form in FP32 using serial length-two,
+separately rounded multiply/add dot products. FMA contraction is excluded. It
+is not a native all-BF16-intermediate kernel.
+
+Under IEEE round-to-nearest, ties-to-even arithmetic with gradual underflow,
+no FTZ/DAZ, the locked FP32 coefficient encodings and operation order, and for
+every finite FP32 input satisfying `max_ij |s_ij| <= 2^116`, exact rational
+error propagation proves
+
+\[
+\lVert\widehat R(s)-R(s)\rVert_F
+\le \frac{11}{100000}\lVert s\rVert_F+\frac{347}{100}.
+\]
+
+This is a global input-wise bound on that finite binary32 domain, not a sampled
+maximum. An exact Sturm calculation and a five-stage norm invariant cover the
+entire matrix input set. The fixed-shape qualification is essential: C13 is
+not the dimension-uniform operator theorem of C5--C12.
+
+For an arbitrary real `2 x 2` input with the same magnitude bound, first round
+entries to binary32 and then call the locked kernel. The exact global
+Frobenius Lipschitz bound
+
+\[
+\operatorname{Lip}(R)\le
+\rho+\frac{4848763}{10000}
+=\frac{336372400608849}{260261360000}
+\]
+
+absorbs this interface cast and proves
+
+\[
+\lVert\widehat R_{\mathbb R}(s)-R(s)\rVert_F
+\le \frac1{5000}\lVert s\rVert_F+\frac{347}{100}.
+\]
+
+Embedding this operator in the otherwise exact-real C12 loop, setting gradient
+noise to zero, and assuming every signal remains in the certified magnitude
+range gives
+
+\[
+V_{t+1}\le
+\frac{41597186684695561}{41601344000000000}V_t
++\frac{4936769}{819840000000}.
+\]
+
+The rate is strictly below one. The range premise has an explicit sufficient
+invariant. With
+`C_s=1655544025/2600084`, let
+
+\[
+H_{\rm safe}=\frac{2^{232}}{C_s}
+=\frac{2600084\,2^{232}}{1655544025}.
+\]
+
+The exact certificate checks
+`4936769/819840000000 <= (1-q_8)H_safe`. Hence, for zero gradient
+noise, `V_0<=H_safe` implies `V_t<=H_safe` and
+`||s_(t+1)||_F<=2^116` for all `t`; every adapter call is covered. With
+gradient noise, the operator signal contains an additional direct noise term,
+so this storage-only range invariant does not apply.
+
+Using C12's storage-to-function conversion, the zero-gradient-noise
+initial-storage condition consequently gives
+
+\[
+\limsup_t(f(W_t)-f_\star)
+\le
+\frac{462392438350000000}{207695315294468001}
+=2.22630172325\ldots.
+\]
+
+This is an exact end-to-end operator-error-to-objective certificate for the
+proposed fixed-`2 x 2` design, not literal upstream Muon. It does not cover
+rounding in FP32 EMA/Nesterov state updates or parameter updates, native BF16
+matmul, GPU kernels, other shapes, weight decay, aspect scaling, or
+current-plus-epsilon normalization. In particular, finite-precision parameter
+subtraction can stall at large binades, so C13 is not a whole-FP32-optimizer
+convergence theorem. See `mixed_precision_certificate.md`.
+
+## C14. Circuit and broader optimization consequences — open
 
 Boyd's framework models `y in partial f(x)` as a grounded multi-terminal
 device and its energy argument uses
@@ -611,6 +698,7 @@ The formal port mapping and the claim that lower deficit predicts a wider
 training learning-rate interval remain open. They require:
 
 1. a circuit sign convention and explicit interconnection model;
-2. backend-specific quantization bounds that instantiate the C12 error input;
+2. shape-scalable backend-parity quantization bounds, including the
+   finite-precision outer-loop errors excluded by C13;
 3. implementation-level parity including weight decay and aspect scaling;
 4. only then, a controlled small neural-training sweep.

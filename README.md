@@ -163,6 +163,69 @@ candidate violations. See
 [`theory/robust_dissipativity_certificate.md`](theory/robust_dissipativity_certificate.md)
 and [`results/summaries/P7_RESULTS.md`](results/summaries/P7_RESULTS.md).
 
+The completed P7 checkpoint is
+`30b55e53f50525ea980dc41f3201fdd160d4a75e`, frozen by the annotated tag
+`p7-checkpoint`. P7 is the submission cutoff; P6 is its zero-disturbance
+corollary. The independent human audit of C11--C12 is still pending in
+[`theory/audits/P7_HUMAN_PROOF_AUDIT.md`](theory/audits/P7_HUMAN_PROOF_AUDIT.md).
+
+Branch `p8-certified-mixed-precision` supplies a deliberately narrow
+constructive implementation result. For a proposed fixed-`2 x 2` kernel,
+FP32 computes the scaled max-floor normalizer, each complete serial-Horner
+stage, and the linear repair; the normalized stage input and each of the five
+completed stage outputs are stored in BF16. Under the locked IEEE
+round-to-nearest, gradual-underflow,
+no-FTZ arithmetic contract, every finite FP32 input with maximum absolute
+entry at most `2^116` satisfies
+
+\[
+\lVert\widehat R(s)-R(s)\rVert_F
+\le \frac{11}{100000}\lVert s\rVert_F+\frac{347}{100}.
+\]
+
+For an arbitrary real input in the same shape and range, an entrywise FP32
+input adapter and the exact Lipschitz bound for `R` give
+
+\[
+\lVert\widehat R_{\mathbb R}(s)-R(s)\rVert_F
+\le \frac1{5000}\lVert s\rVert_F+\frac{347}{100}.
+\]
+
+Placing that adapter inside the otherwise exact-real P7 loop with zero
+gradient noise gives the exact rate
+
+\[
+q_8=\frac{41597186684695561}{41601344000000000}<1
+\]
+
+provided `V_0 <= H_safe`, where
+
+\[
+H_{\rm safe}=\frac{2600084\,2^{232}}{1655544025}
+\approx1.08394\times10^{67}.
+\]
+
+The certificate checks that this storage range is invariant and keeps every
+operator signal below the `2^116` input limit. It then gives the worst-case
+objective-gap neighborhood
+
+\[
+\limsup_t(f(W_t)-f_\star)
+\le
+\frac{462392438350000000}{207695315294468001}
+=2.22630172325\ldots.
+\]
+
+This is not literal upstream Muon, not a native all-BF16-intermediate kernel,
+not an arbitrary-shape certificate, and not a whole-FP32-optimizer theorem.
+In particular, FP32 momentum/Nesterov and parameter-update rounding are not
+covered by P7's single post-operator port; parameter subtraction has a genuine
+large-binade stalling obstruction. A deterministic 82-case CPU falsification
+grid found zero candidate violations of either affine bound; its float64
+reference is not exact, so this is diagnostic rather than proof. See
+[`theory/mixed_precision_certificate.md`](theory/mixed_precision_certificate.md)
+and [`results/summaries/P8_RESULTS.md`](results/summaries/P8_RESULTS.md).
+
 The repair claim is intentionally scoped. A constant `rho` is the exact minimal
 linear shift for a **specified point, pair, sample set, or domain with a finite
 certified deficit**. For exact scale-invariant normalization on every nonzero
@@ -190,6 +253,8 @@ uv run --locked python scripts/certify_pl_convergence.py
 uv run --locked python scripts/reconstruct_pl_convergence.py
 uv run --locked python scripts/certify_robust_dissipativity.py
 uv run --locked python scripts/reconstruct_robust_dissipativity.py
+uv run --locked python scripts/certify_mixed_precision.py
+uv run --locked python scripts/reconstruct_mixed_precision.py
 uv run --locked pytest
 ```
 
@@ -203,6 +268,7 @@ uv run --locked python experiments/quadratics/run_nonquadratic_falsification.py
 uv run --locked python experiments/quadratics/run_nonquadratic_convergence_falsification.py
 uv run --locked python experiments/nonconvex/run_pl_falsification.py
 uv run --locked python experiments/nonconvex/run_robust_dissipativity_falsification.py
+uv run --locked python experiments/mixed_precision/run_mixed_precision_falsification.py
 uv run --locked python scripts/make_figures.py
 ```
 
@@ -218,7 +284,7 @@ not support a universal claim across BF16 backends.
 
 ## Scope
 
-This repository stays focused on ten technical goals:
+This repository stays focused on eleven technical goals:
 
 1. a theorem for current-input Frobenius normalization;
 2. exact local and finite-pair controls for the five-step Jordan map;
@@ -235,16 +301,20 @@ This repository stays focused on ten technical goals:
    including nonconvex objectives with nonunique minimizers;
 9. exact robust dissipativity and bounded-second-moment guarantees under
    additive gradient and repaired-operator-output errors;
-10. qualified matrix, quadratic, and nonlinear falsification studies.
+10. a fixed-`2 x 2` mixed-precision operator-error certificate that
+    instantiates the repaired-operator-output port for one proposed kernel;
+11. qualified matrix, quadratic, and nonlinear falsification studies.
 
-P7 is the broadest robustness result, while P6 is the underlying deterministic
-smooth-PL convergence theorem. P5 supplies the stronger strongly-convex
-conclusions, P4 is the quadratic bridge, and P3 is the conservative generic-IQC
-baseline. The generic one-step-memory IQC framework is prior art; the new
-ingredients are the certified full-matrix Muon operator and the
-structure-aware interconnection. A concrete BF16 error bound, quantized
-execution theorem, weight decay, aspect-ratio scaling, complete stochastic
-neural-network training, and formal circuit ports remain open.
+P7 is the submission cutoff and broadest robustness theorem; P6 is its
+zero-disturbance smooth-PL corollary. P8 instantiates one P7 disturbance port
+for a proposed fixed-shape kernel and does not replace that headline. P5
+supplies the stronger strongly-convex conclusions, P4 is the quadratic bridge,
+and P3 is the conservative generic-IQC baseline. The generic one-step-memory
+IQC framework is prior art; the new ingredients are the certified full-matrix
+Muon operator and the structure-aware interconnection. A dimension-scalable
+mixed-precision certificate, a whole finite-precision optimizer theorem,
+weight decay, aspect-ratio scaling, complete stochastic neural-network
+training, and formal circuit ports remain open.
 
 ## Layout
 

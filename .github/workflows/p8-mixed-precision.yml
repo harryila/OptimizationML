@@ -1,0 +1,64 @@
+name: P8 mixed-precision replay
+
+on:
+  push:
+    branches:
+      - p8-certified-mixed-precision
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-and-kernel:
+    name: Exact forward-error replay and fixed-2x2 kernel (Python 3.12)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          enable-cache: true
+
+      - name: Install the locked environment
+        run: uv sync --locked
+
+      - name: Replay the exact mixed-precision certificate
+        run: >-
+          uv run --locked python scripts/certify_mixed_precision.py
+          --output "$RUNNER_TEMP/mixed_precision_certificate.json"
+
+      - name: Independently reconstruct the freshly generated certificate
+        run: >-
+          uv run --locked python scripts/reconstruct_mixed_precision.py
+          --canonical "$RUNNER_TEMP/mixed_precision_certificate.json"
+          --require-canonical
+
+      - name: Compare the committed canonical certificate
+        run: >-
+          uv run --locked python scripts/reconstruct_mixed_precision.py
+          --require-canonical
+
+      - name: Replay the fixed-2x2 falsification grid
+        run: >-
+          uv run --locked python
+          experiments/mixed_precision/run_mixed_precision_falsification.py
+          --output "$RUNNER_TEMP/mixed_precision_falsification.json"
+
+      - name: Run P8 integrity and fixed-kernel tests
+        run: >-
+          uv run --locked pytest -q
+          tests/test_mixed_precision.py
+          tests/test_mixed_precision_certificate.py
+          tests/test_mixed_precision_cli.py
+          tests/test_mixed_precision_experiment.py
+          tests/test_mixed_precision_reconstruction.py
