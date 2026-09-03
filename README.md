@@ -318,6 +318,39 @@ aspect scaling, or native accelerator kernels. See
 [`theory/finite_precision_outer_loop_certificate.md`](theory/finite_precision_outer_loop_certificate.md)
 and [`results/summaries/P10_RESULTS.md`](results/summaries/P10_RESULTS.md).
 
+Branch `p11-certified-implementation-margin` keeps every P10 theorem and
+implementation parameter fixed while exposing two additional interfaces: a
+pre-cast total gradient discrepancy `zeta` and a deployed-output discrepancy
+`nu` beyond the P9 reference kernel. For budgets
+
+\[
+\|\zeta_t\|_F\le a_g\sqrt{V_t}+b_g,\qquad
+\|\nu_t\|_F\le a_R\sqrt{V_t}+b_R,
+\]
+
+the exact composition proves
+
+\[
+V_{t+1}\le q_{11}(a_g,a_R)V_t+D_{11}(b_g,b_R).
+\]
+
+Zero error reproduces P10 exactly. On the declared `2^-40` budget grid, the
+one-axis maxima are `10815225547/2^40` for `a_g`,
+`513245498810/2^40` for `a_R`, `10879487718/2^40` for `b_g`, and
+`13351103462525/2^40` for `b_R`; one more grid unit on each axis rejects the
+forward-invariance certificate. A jointly nonzero profile
+`(1/4096,1/128,1/4096,1/8)` retains a subunit objective-gap bound of
+`930325132219/2^40`. These are acceptance limits for the stated sufficient
+certificate, not measured production errors or instability thresholds. The
+deployed output must already be a finite contiguous FP32 tensor, the
+`2^30` high-word guard remains conditional, and human proof review is still
+pending. See
+[`theory/implementation_margin_certificate.md`](theory/implementation_margin_certificate.md)
+and [`results/summaries/P11_RESULTS.md`](results/summaries/P11_RESULTS.md).
+The inherited P10 provenance roles remain distinct: theorem source
+`2d62b566...`, exact-artifact commit `6e7ea000...`, and diagnostic/checkpoint
+commit `3246972d...`.
+
 The repair claim is intentionally scoped. A constant `rho` is the exact minimal
 linear shift for a **specified point, pair, sample set, or domain with a finite
 certified deficit**. For exact scale-invariant normalization on every nonzero
@@ -351,6 +384,8 @@ uv run --locked python scripts/certify_scalable_mixed_precision.py
 uv run --locked python scripts/reconstruct_scalable_mixed_precision.py
 uv run --locked python scripts/certify_outer_loop_roundoff.py
 uv run --locked python scripts/reconstruct_outer_loop_roundoff.py
+uv run --locked python scripts/certify_implementation_margin.py
+uv run --locked python scripts/reconstruct_implementation_margin.py
 uv run --locked pytest
 ```
 
@@ -382,7 +417,7 @@ not support a universal claim across BF16 backends.
 
 ## Scope
 
-This repository stays focused on thirteen technical goals:
+This repository stays focused on fourteen technical goals:
 
 1. a theorem for current-input Frobenius normalization;
 2. exact local and finite-pair controls for the five-step Jordan map;
@@ -405,7 +440,9 @@ This repository stays focused on thirteen technical goals:
     Transformer matrix shapes, with balanced reductions and overflow guards;
 12. a port-augmented finite-precision outer-shell certificate using FP32
     EMA/Nesterov arithmetic and a compensated three-word FP32 master;
-13. qualified matrix, quadratic, nonlinear, and precision diagnostics.
+13. exact two-port implementation-acceptance margins above that locked shell,
+    including coordinatewise boundary controls and Pareto slices;
+14. qualified matrix, quadratic, nonlinear, and precision diagnostics.
 
 P7 is the submission cutoff and broadest robustness theorem; P6 is its
 zero-disturbance smooth-PL corollary. P8 and P9 instantiate one P7 disturbance
@@ -413,10 +450,12 @@ port for proposed fixed-shape kernels and do not replace that headline. P5
 supplies the stronger strongly-convex conclusions, P4 is the quadratic bridge,
 and P3 is the conservative generic-IQC baseline. The generic one-step-memory
 IQC framework is prior art; the new ingredients are the certified full-matrix
-Muon operator and the structure-aware interconnection. Gradient-evaluation
-rounding, model-forward use of the logical master, weight decay, aspect-ratio
-scaling, complete stochastic neural-network training, production-kernel
-parity, and formal circuit ports remain open.
+Muon operator and the structure-aware interconnection. P10 closes one proposed
+outer arithmetic shell, and P11 quantifies additional admissible discrepancies
+without asserting that any deployed system meets them. Production-gradient
+measurement, model-forward use of the logical master, weight decay,
+aspect-ratio scaling, complete stochastic neural-network training,
+production-kernel parity, and formal circuit ports remain open.
 
 ## Layout
 

@@ -22,7 +22,9 @@ Experiment order is gated:
     native-matmul diagnostic, with realistic shapes enabled only explicitly;
 13. the P10 finite-precision outer-shell replay, three-word compensated-master
     checks, raw-FP32 subtraction witness, and modest CPU diagnostic;
-14. only after model-forward use of the logical master, aspect scaling, weight
+14. the P11 exact two-port implementation-margin replay, grid boundaries,
+    coordinatewise-maximal frontier slices, and adjacent rejection controls;
+15. only after model-forward use of the logical master, aspect scaling, weight
     decay, and implementation-parity gates, a small matched neural-training
     sweep.
 
@@ -42,7 +44,9 @@ that port for proposed proof-reference kernels. P10 closes exact FP32
 EMA/Nesterov and compensated logical-master residuals for one guarded
 `4096 x 11008` CPU shell, but it does not specify how a model forward pass
 consumes the three-word master or establish native accelerator/upstream
-parity. Each run writes a self-contained JSON manifest and compact CSV tables
+parity. P11 then computes exact additional gradient and deployed-operator
+acceptance margins without asserting that a production implementation meets
+them. Each run writes a self-contained JSON manifest and compact CSV tables
 under `results/summaries/`; the JSON records inputs, operator details, dtype,
 seed, software, hardware, and Git state.
 
@@ -96,10 +100,15 @@ uv run --locked python scripts/certify_outer_loop_roundoff.py \
   --output results/summaries/outer_loop_roundoff_certificate.json
 uv run --locked python scripts/reconstruct_outer_loop_roundoff.py \
   --require-canonical
+uv run --locked python scripts/certify_implementation_margin.py \
+  --output results/summaries/implementation_margin_certificate.json
+uv run --locked python scripts/reconstruct_implementation_margin.py \
+  --require-canonical
 ```
 
-The P9 and P10 generators and standard-library-only reconstructions carry
-their exact claims. P9's separate CPU diagnostic is a native-matmul
+The P9--P11 generators and standard-library-only reconstructions carry their
+exact claims. P11's adjacent controls establish rejection of the sufficient
+certificate, not actual closed-loop instability. P9's separate CPU diagnostic is a native-matmul
 falsification probe against a float64, non-exact target:
 
 ```bash

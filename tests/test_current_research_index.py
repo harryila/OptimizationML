@@ -66,7 +66,7 @@ def test_current_indexes_record_scoped_p7_p8_and_p9_results() -> None:
     assert "137425214491" in results
     assert "137438953472" in results
     assert "4608` is not a universal rank frontier" in results
-    assert "## 16. Unrun gate" in results
+    assert "## 17. Unrun gate" in results
     assert "model forward/backward" in results_flat
     assert "three-word master" in results_flat
 
@@ -103,9 +103,43 @@ def test_current_indexes_record_scoped_p10_outer_loop_result() -> None:
 
     assert "## 15. P10 finite-precision outer-loop certificate" in results
     assert "## C15. Finite-precision outer-loop storage certificate" in claims
-    assert "## C16. Circuit and broader optimization consequences" in claims
+    assert "## C17. Circuit and broader optimization consequences" in claims
     assert "standard-library-only" in results_index
     assert "human proof audit of C15" in tasks
+
+
+def test_current_indexes_record_scoped_p11_implementation_margin_result() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    tasks = (ROOT / "TASKS.md").read_text(encoding="utf-8")
+    results_index = (ROOT / "results/README.md").read_text(encoding="utf-8")
+    experiments = (ROOT / "experiments/README.md").read_text(encoding="utf-8")
+    results = (ROOT / "results/summaries/RESULTS.md").read_text(encoding="utf-8")
+    claims = (ROOT / "theory/claims.md").read_text(encoding="utf-8")
+
+    for artifact in (
+        "implementation_margin_certificate.json",
+        "P11_RESULTS.md",
+    ):
+        assert artifact in results_index
+
+    for command in (
+        "certify_implementation_margin.py",
+        "reconstruct_implementation_margin.py",
+    ):
+        assert command in readme
+        assert command in experiments
+        assert command in results
+
+    for text in (readme, results, claims):
+        assert "10815225547" in text
+        assert "13351103462525" in text
+        assert "2^-40" in text
+
+    assert "## 16. P11 certified implementation margins" in results
+    assert "## C16. Certified implementation margins above P10" in claims
+    assert "## C17. Circuit and broader optimization consequences" in claims
+    assert "human proof audit of C16" in tasks
+    assert "P10 human proof audit remains pending" in tasks
 
 
 def test_double_blind_material_is_guarded_from_the_public_repository() -> None:

@@ -130,6 +130,28 @@
       gradient cast, residual placement, three-word master identity, range
       guards, and physical-units conversion; the unsigned review packet is
       `theory/audits/P10_HUMAN_PROOF_AUDIT.md`.
+- [x] Add P11 pre-cast gradient/model-weight and post-P9 deployed-output
+      discrepancy ports without changing the P10 step, repair, objective
+      class, max-floor normalization, or locked `4096 x 11008` shape.
+- [x] Derive the exact affine external sensitivities, including cast/EMA,
+      Nesterov-signal cancellation, P9 magnitude/error, and master-rounding
+      feedback, and reproduce the P10 `q10`, `D10`, and objective fraction at
+      zero additional error.
+- [x] Compute exact one-axis maxima on the declared `2^-40` budget grid,
+      coordinatewise-maximal slope/intercept Pareto slices, and adjacent-grid
+      rejection controls without calling certificate rejection instability.
+- [x] Exhibit a jointly nonzero P11 budget with `q11<1`, a forward-invariant
+      `V<=1` set, a subunit objective-gap neighborhood, and closed signal,
+      `2^15` output, step, and master-word guards.
+- [x] Add a standalone standard-library reconstruction of the P11 port
+      reduction, grid boundaries, frontiers, exact fractions, and guards.
+- [ ] Obtain an independent human proof audit of C16, including external-port
+      placement, the exact signal cancellation, master-rounding feedback,
+      grid-maximality claims, and representation premises; the unsigned packet
+      is `theory/audits/P11_HUMAN_PROOF_AUDIT.md`.
+- [ ] P10 human proof audit remains pending; P11 does not retroactively provide
+      the external sign-off requested in
+      `theory/audits/P10_HUMAN_PROOF_AUDIT.md`.
 - [ ] Bound the complete error of a pinned deployed BF16 backend by the C12
       disturbance model and certify its ultimate neighborhood; P8--P10 are
       proposed proof-reference designs, not literal upstream parity.

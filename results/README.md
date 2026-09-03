@@ -98,6 +98,15 @@ Current outputs:
 - `summaries/P10_RESULTS.md`: scoped P10 rounding-envelope, compensated-master,
   port-closure, objective-neighborhood, stalling-obstruction, and deployment-
   exclusion summary;
+- `summaries/implementation_margin_certificate.json`: canonical exact P11
+  replay for the two affine discrepancy ports above the frozen P10 shell,
+  including zero-error identity, four exact `2^-40`-grid axis maxima,
+  coordinatewise-maximal slope/intercept frontier slices, adjacent rejection
+  controls, and a jointly nonzero subunit-objective profile; generate it with
+  `scripts/certify_implementation_margin.py` and independently check it with
+  the standard-library-only `scripts/reconstruct_implementation_margin.py`;
+- `summaries/P11_RESULTS.md`: scoped P11 margin table, guard closure, negative-
+  control interpretation, P10 provenance roles, and deployment exclusions;
 - `summaries/deficit_audit.{json,csv}`: 24-prefix spectral audit;
 - `summaries/quadratic_lr_sweep.json` plus CSV tables: gain-matched quadratic
   sweep and sensitivity classifications;

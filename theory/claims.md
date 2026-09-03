@@ -898,7 +898,91 @@ normalization, or neural-network convergence. See
 `finite_precision_outer_loop_certificate.md`. Independent human review is
 still pending.
 
-## C16. Circuit and broader optimization consequences — open
+## C16. Certified implementation margins above P10 — proved on a locked grid
+
+Retain C15 unchanged at shape `4096 x 11008`, `beta=19/20`,
+`eta=1/32000`, exact max floor `c=1`, no additive epsilon, five Jordan
+stages with coefficients `(6889/2000,-191/40,4063/2000)`, and constant
+repair `rho=210177835339081/260261360000`. Let the real input to the final
+gradient cast and the finite represented FP32 output consumed by the master
+update satisfy
+
+\[
+y_t=\nabla f(W_t)+\zeta_t,\qquad
+U_t^{\rm dep}=\widehat R_{9}(s_{t+1})+\nu_t,
+\]
+
+where the second equality defines `nu` over the reals rather than executing
+another rounded addition. Under the affine Frobenius budgets
+
+\[
+\lVert\zeta_t\rVert_F\le a_g\sqrt{V_t}+b_g,\qquad
+\lVert\nu_t\rVert_F\le a_R\sqrt{V_t}+b_R,
+\]
+
+exact rational propagation proves
+
+\[
+V_{t+1}\le q_{11}(a_g,a_R)V_t+D_{11}(b_g,b_R).
+\]
+
+The common explicit `zeta` term is placed in P7's effective gradient port and
+cancels exactly from the implemented-versus-nominal Nesterov signal mismatch.
+The proof nevertheless includes its effects on the final cast, FP32 EMA,
+actual signal, P9 error and magnitude, and master-update rounding. The `nu`
+port enters both directly and through the output-dependent master residual.
+All augmented squares retain their cross terms.
+
+On the declared nonnegative `2^-40` budget grid, the exact one-axis maxima
+that preserve `V<=1` are
+
+\[
+\begin{array}{c|c}
+a_g & 10815225547/2^{40}\\
+a_R & 513245498810/2^{40}\\
+b_g & 10879487718/2^{40}\\
+b_R & 13351103462525/2^{40}.
+\end{array}
+\]
+
+At every maximum, `q_11+D_11=1`; increasing that coordinate by one grid unit
+makes the sum `1+2^-40`. These are exact maxima on the declared grid, not
+claims about an unrestricted irrational supremum. The outside points reject
+this sufficient certificate; they do not prove actual instability.
+
+A jointly nonzero interior profile
+
+\[
+(a_g,a_R,b_g,b_R)=(1/4096,1/128,1/4096,1/8)
+\]
+
+gives
+
+\[
+q_{11}=\frac{274850515349}{274877906944},\qquad
+D_{11}=\frac{1254603}{549755813888},
+\]
+
+and the subunit consequence
+
+\[
+\limsup_t(f(W_t)-f_\star)
+\le\frac{930325132219}{1099511627776}
+=0.846125778679\ldots.
+\]
+
+The `2^116` signal, `2^15` deployed-output, step-below-two, and middle/low
+master-word guards close at this profile. The `2^30` high-word guard remains
+conditional exactly as in C15. A model-weight reconstruction error is covered
+only after it is converted into the declared total pre-cast gradient
+discrepancy; global `10`-smoothness supplies the bound
+`||Delta g||_F<=10||Delta W||_F` for that component. C16 measures an
+acceptance margin for future implementations. It does not measure or certify
+a production model, gradient implementation, CUDA kernel, or literal upstream
+Muon. See `implementation_margin_certificate.md`; independent human review is
+pending.
+
+## C17. Circuit and broader optimization consequences — open
 
 Boyd's framework models `y in partial f(x)` as a grounded multi-terminal
 device and its energy argument uses
@@ -913,6 +997,6 @@ training learning-rate interval remain open. They require:
 
 1. a circuit sign convention and explicit interconnection model;
 2. shape-scalable backend-parity quantization bounds, including production
-      outer-loop semantics not covered by the proposed C13--C15 kernels;
+      outer-loop semantics not covered by the proposed C13--C16 certificates;
 3. implementation-level parity including weight decay and aspect scaling;
 4. only then, a controlled small neural-training sweep.

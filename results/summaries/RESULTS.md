@@ -629,7 +629,73 @@ result. See `P10_RESULTS.md`, `outer_loop_roundoff_certificate.json`,
 `finite_precision_outer_loop_diagnostic.json`, and
 `../../theory/finite_precision_outer_loop_certificate.md`.
 
-## 16. Unrun gate
+## 16. P11 certified implementation margins
+
+P11 preserves the complete P10 theorem and arithmetic shell at
+`4096 x 11008`, `beta=19/20`, `eta=1/32000`, exact max floor `c=1`, no
+additive epsilon, five Jordan stages with coefficients
+`(6889/2000,-191/40,4063/2000)`, and constant repair
+`rho=210177835339081/260261360000`. It introduces a total pre-cast gradient
+discrepancy `zeta` and a deployed-output discrepancy `nu` beyond the P9
+reference kernel:
+
+\[
+\|\zeta_t\|_F\le a_g\sqrt{V_t}+b_g,\qquad
+\|\nu_t\|_F\le a_R\sqrt{V_t}+b_R.
+\]
+
+Exact composition gives
+
+\[
+V_{t+1}\le q_{11}(a_g,a_R)V_t+D_{11}(b_g,b_R).
+\]
+
+Zero external error reproduces the P10 fractions exactly. On the declared
+`2^-40` budget grid, the exact one-axis maxima are
+
+| axis | largest certified value | adjacent rejected value |
+|---|---:|---:|
+| `a_g` | `10815225547/2^40` | `10815225548/2^40` |
+| `a_R` | `513245498810/2^40` | `513245498811/2^40` |
+| `b_g` | `10879487718/2^40` | `10879487719/2^40` |
+| `b_R` | `13351103462525/2^40` | `13351103462526/2^40` |
+
+Every accepted endpoint has `q11+D11=1`; the adjacent point has
+`q11+D11=1+2^-40`. These controls show rejection of the sufficient
+certificate, not actual instability. Two nine-row coordinatewise-maximal
+gradient/operator frontier slices are recorded exactly in the canonical JSON.
+
+The all-positive profile
+`(a_g,a_R,b_g,b_R)=(1/4096,1/128,1/4096,1/8)` certifies
+
+\[
+q_{11}=\frac{274850515349}{274877906944},\qquad
+D_{11}=\frac{1254603}{549755813888},
+\]
+
+with objective-gap limsup at most
+`930325132219/1099511627776 = 0.846125778679... < 1`. Its signal, deployed
+output, rounded step, and middle/low master-word guards close; the high word
+remains a conditional premise. The theorem requires the deployed output to
+already be a finite contiguous FP32 tensor, and model-weight error is covered
+only insofar as it induces the declared pre-cast gradient discrepancy.
+
+Replay the generator and standalone standard-library reconstruction with:
+
+```bash
+uv run --locked python scripts/certify_implementation_margin.py \
+  --output results/summaries/implementation_margin_certificate.json
+uv run --locked python scripts/reconstruct_implementation_margin.py \
+  --require-canonical
+```
+
+The P10 provenance roles are explicit: theorem source `2d62b566...`, exact
+artifact commit `6e7ea000...`, and diagnostic/head checkpoint `3246972d...`.
+The P10 and P11 human audits remain pending. See `P11_RESULTS.md`,
+`implementation_margin_certificate.json`, and
+`../../theory/implementation_margin_certificate.md`.
+
+## 17. Unrun gate
 
 No NanoGPT result is reported. This machine exposes neither CUDA nor an
 available MPS device. The `rho` used in the existing quadratic study is only a
@@ -641,7 +707,8 @@ proposed outer shell but does not specify how a model forward/backward pass
 consumes the logical three-word master, so it does not clear that training
 gate. Remaining implementation work includes aspect-ratio scaling, weight
 decay, gradient-evaluation and represented-model error, and optimized-kernel
-parity.
+parity. P11 supplies exact acceptance budgets for two aggregate discrepancy
+ports, but no production error has yet been measured against those budgets.
 
 ## Reproduce
 

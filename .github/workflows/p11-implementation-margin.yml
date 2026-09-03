@@ -1,0 +1,59 @@
+name: P11 certified implementation-margin replay
+
+on:
+  push:
+    branches:
+      - main
+      - p11-certified-implementation-margin
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-margin:
+    name: Exact two-port margins and reconstruction (Python 3.12)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          enable-cache: true
+
+      - name: Install the locked environment
+        run: uv sync --locked
+
+      - name: Replay the exact P11 implementation-margin certificate
+        run: >-
+          uv run --locked python scripts/certify_implementation_margin.py
+          --output "$RUNNER_TEMP/implementation_margin_certificate.json"
+
+      - name: Independently reconstruct the fresh certificate
+        run: >-
+          uv run --locked python scripts/reconstruct_implementation_margin.py
+          --canonical "$RUNNER_TEMP/implementation_margin_certificate.json"
+          --require-canonical
+
+      - name: Compare the committed canonical certificate
+        run: >-
+          uv run --locked python scripts/reconstruct_implementation_margin.py
+          --require-canonical
+
+      - name: Run P11 integrity, boundary, and reconstruction tests
+        run: >-
+          uv run --locked pytest -q
+          tests/test_implementation_margin_certificate.py
+          tests/test_implementation_margin_cli.py
+          tests/test_implementation_margin_reconstruction.py
+          tests/test_current_research_index.py
+
