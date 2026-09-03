@@ -112,6 +112,24 @@ local Hessian orientations, but it is trajectory-to-minimizer convergence,
 not arbitrary-pair incremental stability. See
 [`theory/nonquadratic_convergence_certificate.md`](theory/nonquadratic_convergence_certificate.md).
 
+Branch `p6-pl-convergence` retains the full P5 step while dropping convexity.
+For every fixed differentiable globally `10`-smooth objective with finite
+infimum satisfying the global PL inequality with constant `1`, an exact
+value--momentum storage certificate proves
+
+\[
+f(W_t)-f_\star\le C
+\left(\frac{399960001}{400000000}\right)^t,
+\qquad m_t\to0,
+\]
+
+at `eta=1/32000`. The objective may be nonconvex and its minimizer set may be
+non-singleton. This is global function-value convergence, not arbitrary-pair
+incremental contraction; no unique or preselected minimizer is claimed. The
+proof is dimension independent and allows changing local Hessian orientations
+where Hessians exist. See
+[`theory/pl_convergence_certificate.md`](theory/pl_convergence_certificate.md).
+
 The repair claim is intentionally scoped. A constant `rho` is the exact minimal
 linear shift for a **specified point, pair, sample set, or domain with a finite
 certified deficit**. For exact scale-invariant normalization on every nonzero
@@ -135,6 +153,7 @@ uv run --locked python scripts/certify_structure_aware_stability.py
 uv run --locked python scripts/certify_nonquadratic_stability.py
 uv run --locked python scripts/certify_nonquadratic_convergence.py
 uv run --locked python scripts/reconstruct_nonquadratic_convergence.py
+uv run --locked python scripts/certify_pl_convergence.py
 uv run --locked pytest
 ```
 
@@ -146,6 +165,7 @@ uv run --locked python experiments/quadratics/run_lr_sweep.py
 uv run --locked python experiments/quadratics/run_horizon_check.py
 uv run --locked python experiments/quadratics/run_nonquadratic_falsification.py
 uv run --locked python experiments/quadratics/run_nonquadratic_convergence_falsification.py
+uv run --locked python experiments/nonconvex/run_pl_falsification.py
 uv run --locked python scripts/make_figures.py
 ```
 
@@ -161,7 +181,7 @@ not support a universal claim across BF16 backends.
 
 ## Scope
 
-This repository stays focused on eight technical goals:
+This repository stays focused on nine technical goals:
 
 1. a theorem for current-input Frobenius normalization;
 2. exact local and finite-pair controls for the five-step Jordan map;
@@ -174,15 +194,17 @@ This repository stays focused on eight technical goals:
    quadratics;
 7. incremental and full-step convergence theorems for globally
    strongly-convex/smooth nonlinear objectives;
-8. qualified matrix, quadratic, and nonlinear falsification studies.
+8. full-step function-value convergence for globally smooth PL objectives,
+   including nonconvex objectives with nonunique minimizers;
+9. qualified matrix, quadratic, and nonlinear falsification studies.
 
-The P5 full-step theorem is the main constructive optimizer result; P4 is its
-quadratic bridge, and P3 is the conservative generic-IQC baseline. The generic
-one-step-memory IQC framework is prior art; the new ingredients are the
-certified full-matrix Muon operator and the structure-aware interconnection.
-PL/nonconvex objectives, stochastic gradients, BF16/quantized execution,
-weight decay, aspect-ratio scaling, complete neural-network training, and
-formal circuit ports remain open.
+P6 is the broadest constructive optimizer result; P5 supplies the stronger
+strongly-convex conclusions, P4 is the quadratic bridge, and P3 is the
+conservative generic-IQC baseline. The generic one-step-memory IQC framework
+is prior art; the new ingredients are the certified full-matrix Muon operator
+and the structure-aware interconnection. Stochastic gradients,
+BF16/quantized execution, weight decay, aspect-ratio scaling, complete
+neural-network training, and formal circuit ports remain open.
 
 ## Layout
 

@@ -34,6 +34,15 @@ Current outputs:
   changing-orientation implementation probes for the two P5 certificates;
 - `summaries/P5_RESULTS.md` and `summaries/P5_FULL_STEP_RESULTS.md`: scoped
   human-readable summaries of the incremental and full-step P5 results;
+- `summaries/pl_convergence_certificate.json`: exact dimension-independent P6
+  value--momentum certificate for global function-gap convergence and momentum
+  decay on differentiable globally `10`-smooth objectives satisfying the
+  global PL inequality with constant `1`, at `eta=1/32000`;
+- `summaries/pl_falsification.json`: 72-case CPU/float64 diagnostic on an
+  analytic nonconvex PL family, including negative curvature, changing Hessian
+  orientations, and nonunique minimizers;
+- `summaries/P6_RESULTS.md`: scoped human-readable P6 theorem and diagnostic
+  readout;
 - `summaries/deficit_audit.{json,csv}`: 24-prefix spectral audit;
 - `summaries/quadratic_lr_sweep.json` plus CSV tables: gain-matched quadratic
   sweep and sensitivity classifications;

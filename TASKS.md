@@ -46,14 +46,22 @@
 - [x] Add a standalone independent exact reconstruction of the P5 full-step
       matrix and determinant checks.
 - [ ] Obtain independent human review of C7 and C8.
-- [ ] Obtain independent human review of C9 and C10.
+- [ ] Obtain independent human review of C9, C10, and C11.
 - [ ] Obtain an independent parity audit against the pinned upstream EMA/Nesterov
       update (the automated local two-`lerp` regression exists; external sign-off
       is still pending).
 - [x] Derive a less conservative architecture-aware momentum region for fixed
       quadratics and the strongly-convex/smooth nonlinear class.
-- [ ] Extend the pinned repaired loop to smooth Polyak--Lojasiewicz objectives
-      without claiming a unique minimizer.
+- [x] Prove full-step global function-value convergence and momentum decay for
+      every fixed differentiable globally `10`-smooth objective satisfying the
+      global Polyak--Lojasiewicz (PL) inequality with constant `1`, without
+      claiming a unique minimizer.
+- [x] Replay the P6 rational value--momentum LMI and run the 72-case nonconvex,
+      changing-orientation, nonunique-minimizer falsification grid.
+- [ ] Extend the P6 result to input-to-state or mean-square robustness under
+      stochastic-gradient noise.
+- [ ] Treat BF16 and rounding as disturbances and certify an ultimate error
+      neighborhood.
 - [ ] Run a small matched NanoGPT sweep only after the preceding gates pass.
 - [ ] Run an accelerator throughput benchmark only for a certified design.
 

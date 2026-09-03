@@ -379,7 +379,46 @@ They do not cover exact-current or additive-epsilon normalization, stochastic
 or time-varying objectives, BF16, weight decay, aspect-ratio scaling, or a
 complete neural-network training system.
 
-## 11. Unrun gate
+## 11. P6 smooth-PL function-value convergence
+
+P6 keeps the P5 repaired exact-real operator and pinned EMA/Nesterov ordering
+but drops convexity. For every fixed differentiable globally `10`-smooth
+objective with finite infimum satisfying the global PL inequality with
+constant `1`, an exact dimension-independent value--momentum certificate at
+the full P5 step proves
+
+\[
+f(W_t)-f_\star\le C
+\left(\frac{399960001}{400000000}\right)^t,
+\qquad m_t\to0,
+\qquad \eta=\frac1{32000}.
+\]
+
+This is global function-value convergence, not arbitrary-pair incremental
+stability. PL permits nonconvex objectives and nonunique minimizers; no unique
+or preselected minimizer is claimed. Summability of the certified update
+signal additionally makes each trajectory converge to some
+trajectory-dependent global minimizer. The exact replay checks function-value
+cancellation, positive storage, and strict negativity of the `4 x 4` rational
+LMI.
+
+The accompanying 72-case, 500-update CPU/float64 falsification grid uses an
+analytic PL objective family with Hessian spectrum in `[-3/8,9]`. It includes
+36 rank-deficient nonunique-minimizer cases; 59 cases sampled negative
+curvature, and all 72 changed Hessian orientation. It found zero candidate,
+Lyapunov-rate, nonpositive-storage, unresolved-resurgence, analytic-bound,
+divergence, or nonfinite violations. All 72 had at least one individual
+objective increase, which is allowed because the theorem contracts a
+composite storage rather than objective value pointwise. These sampled passes
+are diagnostics, not the proof. See `P6_RESULTS.md`,
+`pl_convergence_certificate.json`, and `pl_falsification.json`.
+
+P6 remains deterministic and exact-real-arithmetic. It does not cover
+stochastic gradients, BF16, weight decay, aspect-ratio scaling, exact-current
+or additive-epsilon normalization, an unrepaired upstream implementation, or
+complete neural-network training.
+
+## 12. Unrun gate
 
 No NanoGPT result is reported. This machine exposes neither CUDA nor an
 available MPS device. The `rho` used in the existing quadratic study is only a
@@ -408,6 +447,8 @@ uv run --locked python scripts/certify_nonquadratic_stability.py \
 uv run --locked python scripts/certify_nonquadratic_convergence.py \
   --output results/summaries/nonquadratic_convergence_certificate.json
 uv run --locked python scripts/reconstruct_nonquadratic_convergence.py
+uv run --locked python scripts/certify_pl_convergence.py \
+  --output results/summaries/pl_convergence_certificate.json
 uv run --locked python experiments/matrices/run_deficit_audit.py
 uv run --locked python experiments/quadratics/run_lr_sweep.py
 uv run --locked python experiments/quadratics/run_horizon_check.py
@@ -416,6 +457,8 @@ uv run --locked python experiments/quadratics/run_nonquadratic_falsification.py 
 uv run --locked python \
   experiments/quadratics/run_nonquadratic_convergence_falsification.py \
   --output results/summaries/nonquadratic_convergence_falsification.json
+uv run --locked python experiments/nonconvex/run_pl_falsification.py \
+  --output results/summaries/pl_falsification.json
 uv run --locked python scripts/make_figures.py
 uv run --locked pytest -q
 ```

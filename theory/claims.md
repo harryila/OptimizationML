@@ -296,7 +296,7 @@ about `2.599e-8`, whereas the linked curvature-10 zero-linearization loses
 local stability at about `4.726e-4`. The roughly `18,183x` gap is explicit:
 this is a rigorous but extremely conservative stylized-loop result. It does
 not establish nonquadratic, stochastic, BF16, or neural-network convergence.
-See `momentum_iqc_certificate.md`. C9 and C10 below record the later
+See `momentum_iqc_certificate.md`. C9--C11 below record the later
 structure-aware quadratic and nonlinear extensions.
 
 Prior-art references for the generic IQC framework are Lessard, Recht, and
@@ -377,7 +377,7 @@ design, the corresponding local threshold is `0.002081027708...`, about
 `9,923.44x` its complex-skew necessary boundary. The predeclared hard rule therefore classifies C8 as
 an appendix/proof-of-principle result, not a headline practical-stability
 claim. No nonquadratic, stochastic, BF16, or neural-network theorem follows
-from C8 alone. See `ema_nesterov_iqc_certificate.md`. C9 and C10 use additional
+from C8 alone. See `ema_nesterov_iqc_certificate.md`. C9--C11 use additional
 operator and objective structure.
 
 ## C9. Structure-aware pinned-loop quadratic stability — proved
@@ -429,8 +429,9 @@ hold:
    at `tau=2499/2500`.
 
 The second result is trajectory-to-minimizer convergence, not an arbitrary-pair
-incremental theorem. It is the main positive stability result because it retains the full structure-aware
-quadratic step for the complete nonlinear function class. Neither proof fixes
+incremental theorem. It is P5's primary positive result and supplies the
+stronger unique-minimizer conclusion for its strongly-convex class; C11 later
+retains the same step for the broader smooth-PL class. Neither proof fixes
 or diagonalizes a Hessian; local Hessian orientations may change along the
 trajectory. The claims remain deterministic and exact-real-arithmetic only:
 they exclude time-varying or stochastic objectives, BF16, weight decay,
@@ -438,7 +439,45 @@ aspect-ratio scaling, additive-epsilon or exact-current normalization, and a
 complete neural-network optimizer. See `nonquadratic_stability_certificate.md`
 and `nonquadratic_convergence_certificate.md`.
 
-## C11. Circuit and broader optimization consequences — open
+## C11. Pinned-loop smooth-PL function-value convergence — proved
+
+Keep exactly the C9 repaired real-arithmetic operator, exact max floor `c=1`,
+no additive epsilon, five Jordan steps with exact coefficients
+`(6889/2000,-191/40,4063/2000)`, constant
+`rho=210177835339081/260261360000`, and the pinned EMA/Nesterov ordering with
+`beta=19/20`. Let `f` be any fixed differentiable objective on an arbitrary
+finite real matrix shape with finite `f_star=inf f`, globally `10`-Lipschitz
+gradient, and global PL constant `1` under the convention
+
+\[
+\frac12\lVert\nabla f(W)\rVert_F^2
+\ge f(W)-f_\star.
+\]
+
+At the full C9/C10 step `eta=1/32000`, an exact value--momentum storage and the
+directed smooth nonconvex interpolation inequalities prove
+
+\[
+f(W_t)-f_\star\le C
+\left(\frac{399960001}{400000000}\right)^t,
+\qquad m_t\longrightarrow0.
+\]
+
+The objective may be nonconvex and the minimizer set may be non-singleton.
+This is a global function-value convergence theorem, not arbitrary-pair
+incremental contraction. It does not assume or conclude a unique or
+preselected minimizer. Geometric decay of the certified signal makes the
+updates summable, so each trajectory additionally converges to some
+trajectory-dependent global minimizer. Local Hessian orientations may change
+where Hessians exist. See `pl_convergence_certificate.md` and the exact result
+manifest.
+
+The proof is deterministic and exact-real-arithmetic only. It does not cover
+stochastic or time-varying gradients, BF16, weight decay, aspect-ratio scaling,
+additive-epsilon or exact-current normalization, an unrepaired upstream Muon
+implementation, or complete neural-network training.
+
+## C12. Circuit and broader optimization consequences — open
 
 Boyd's framework models `y in partial f(x)` as a grounded multi-terminal
 device and its energy argument uses
@@ -452,6 +491,6 @@ The formal port mapping and the claim that lower deficit predicts a wider
 training learning-rate interval remain open. They require:
 
 1. a circuit sign convention and explicit interconnection model;
-2. PL/nonconvex, stochastic, and quantized robustness extensions;
+2. stochastic and quantized robustness extensions beyond C11;
 3. implementation-level parity including weight decay and aspect scaling;
 4. only then, a controlled small neural-training sweep.
