@@ -1,0 +1,1802 @@
+{
+  "audit": {
+    "all_exact_checks_passed": true,
+    "checks": {
+      "all_frontier_coordinatewise_next_grid_controls_fail": true,
+      "all_frontier_points_are_certified": true,
+      "axis_negative_controls_are_adjacent": true,
+      "four_axis_maxima_are_exact_on_locked_grid": true,
+      "intercept_frontier_has_locked_size": true,
+      "joint_budget_closes_signal_output_step_and_master_guards": true,
+      "joint_budget_preserves_subunit_objective_gap": true,
+      "joint_budget_preserves_unit_storage": true,
+      "jointly_nonzero_budget_is_certified": true,
+      "p10_checkpoint_replays": true,
+      "p10_provenance_roles_are_distinct": true,
+      "slope_frontier_has_locked_size": true,
+      "zero_budget_reproduces_D10_exactly": true,
+      "zero_budget_reproduces_all_p10_envelopes": true,
+      "zero_budget_reproduces_function_gap_exactly": true,
+      "zero_budget_reproduces_q10_exactly": true
+    }
+  },
+  "canonical_result_path": "results/summaries/implementation_margin_certificate.json",
+  "claim_scope": {
+    "budget_maximum_scope": "largest accepted nonnegative multiple of 2^-40 on each reported axis or frontier ray; not an unrestricted-rational maximum",
+    "evidence_kind": "exact rational composition of the frozen P10 certificate on a 2^-40 acceptance-budget grid",
+    "guarantee": "for every external error realization satisfying the displayed affine Frobenius budgets, V_(t+1)<=q11*V_t+D11; q11<1 and D11<=1-q11 preserve V<=1 while all displayed guards hold",
+    "matrix_domain": "the locked 4096x11008 P10 proof-reference shell",
+    "normalization": "exact target s/max(1,||s||_F), no additive epsilon",
+    "not_claimed": [
+      "measurement of a production model, gradient implementation, or CUDA kernel",
+      "literal upstream Muon, current-plus-epsilon normalization, or an unrepaired map",
+      "actual instability immediately outside a certified budget",
+      "an unconditional invariant for the high master word",
+      "model-forward parity when only one master word is consumed",
+      "full-parameter ISS, a unique minimizer, or arbitrary-pair contraction",
+      "tightness of P7 gains, P10 envelopes, or P11 margins"
+    ],
+    "objective_domain": "differentiable globally 10-smooth objectives satisfying the global PL inequality with constant 1; nonconvex objectives and nonunique minimizers are included"
+  },
+  "exact_external_sensitivities": {
+    "actual_signal_from_gradient": {
+      "decimal": "0.097500023953618997207946606460573865802836357964114",
+      "exact": "583665437278275251998286207614539114531218407859159/5986310706507378352962293074805895248510699696029696"
+    },
+    "effective_gradient_from_gradient": {
+      "decimal": "1.0000001937151088426961973287960642835992435281594",
+      "exact": "316912711447825849804331679745/316912650057057350374175801344"
+    },
+    "effective_operator_from_gradient": {
+      "decimal": "0.000064793938560094928255153890557584808041821248881526",
+      "exact": "655198442224693240489165467660238007535872208879976942879888144049071243071967175652599421991/10112032958407233499780712126761646212569316752100218854214912004470489483546708856376865587200000"
+    },
+    "effective_operator_from_operator": {
+      "decimal": "1.0000001667067500710219274305192463337885189211818",
+      "exact": "302231505287680909901875/302231454903657293676544"
+    },
+    "master_residual_from_gradient": {
+      "decimal": "6.5647565578354703423502352919305351370914746440446E-10",
+      "exact": "42485142193121470740181018853646419796578156140101916387362892145948283365363585900891660091/64717010933806294398596557611274535760443627213441400666975436828611132694698936680811939758080000000"
+    },
+    "master_residual_from_operator": {
+      "decimal": "5.2095859397194352322037264479308912162869305007007E-12",
+      "exact": "50384023616225331/9671406556917033397649408000"
+    },
+    "momentum_residual_from_gradient": {
+      "decimal": "9.6857554421348098664398032141799621764079722128810E-9",
+      "exact": "61390768499430155878401/6338253001141147007483516026880"
+    },
+    "p9_output_from_gradient": {
+      "decimal": "126.01301972549892282871436290367069721955749440284",
+      "exact": "843226466324532330841976033957197692951925811251020313756195594262347807961/6691582093353360021429212659538505006617087701727699326620674042101760000"
+    },
+    "signal_residual_from_gradient": {
+      "decimal": "1.5944244453614094737243524000689302132847714712678E-8",
+      "exact": "95447201279840940208162060506973961448367063/5986310706507378352962293074805895248510699696029696"
+    }
+  },
+  "external_port_contract": {
+    "deployed_output": "Udep_t is a finite contiguous FP32 tensor and nu_t=Udep_t-U9_t over the reals",
+    "gradient_budget": "||zeta_t||_F<=a_g*sqrt(V_t)+b_g",
+    "no_executed_nu_addition": true,
+    "operator_budget": "||nu_t||_F<=a_R*sqrt(V_t)+b_R",
+    "p9_reference_output": "U9_t=Rhat_P9(s_(t+1))",
+    "pre_cast_gradient": "y_t=grad f(W_t)+zeta_t; g_hat_t=C32(y_t)",
+    "weight_error_conversion": "zeta has gradient units; under 10-smoothness, a reconstructed-weight error dW contributes at most 10*||dW||_F before any other gradient error"
+  },
+  "git": {
+    "branch": "p11-certified-implementation-margin",
+    "dirty": false,
+    "sha": "cbc87812cac53d751a28e96f56367e66422013d2"
+  },
+  "jointly_nonzero_subunit_profile": {
+    "D11": {
+      "decimal": "0.000002282109562656842172145843505859375",
+      "exact": "1254603/549755813888"
+    },
+    "augmented_envelopes": {
+      "actual_signal": {
+        "intercept": {
+          "decimal": "0.0000238037182498374022543430328369140625",
+          "exact": "26172465/1099511627776"
+        },
+        "slope": {
+          "decimal": "25.2334822767015793942846357822418212890625",
+          "exact": "27744507172513/1099511627776"
+        }
+      },
+      "deployed_output": {
+        "intercept": {
+          "decimal": "2.1376295355430556810460984706878662109375",
+          "exact": "2350348530207/1099511627776"
+        },
+        "slope": {
+          "decimal": "32612.7926195023801483330316841602325439453125",
+          "exact": "35858144699390181/1099511627776"
+        }
+      },
+      "effective_gradient_error": {
+        "intercept": {
+          "decimal": "0.0002441406913931132294237613677978515625",
+          "exact": "268435529/1099511627776"
+        },
+        "slope": {
+          "decimal": "0.0003027600623681792058050632476806640625",
+          "exact": "332888209/1099511627776"
+        }
+      },
+      "effective_operator_error": {
+        "intercept": {
+          "decimal": "2.107060457448824308812618255615234375",
+          "exact": "144796092087/68719476736"
+        },
+        "slope": {
+          "decimal": "0.0247080429680863744579255580902099609375",
+          "exact": "27166780543/1099511627776"
+        }
+      },
+      "momentum_port": {
+        "intercept": {
+          "decimal": "3.63797880709171295166015625E-12",
+          "exact": "1/274877906944"
+        },
+        "slope": {
+          "decimal": "0.000002930972186732105910778045654296875",
+          "exact": "1611319/549755813888"
+        }
+      },
+      "p9_reference_output": {
+        "intercept": {
+          "decimal": "2.0126295355430556810460984706878662109375",
+          "exact": "2212909576735/1099511627776"
+        },
+        "slope": {
+          "decimal": "32612.7848070023801483330316841602325439453125",
+          "exact": "35858136109455589/1099511627776"
+        }
+      },
+      "parameter_port": {
+        "intercept": {
+          "decimal": "6.1190803535282611846923828125E-9",
+          "exact": "841/137438953472"
+        },
+        "slope": {
+          "decimal": "1.698999767540954053401947021484375E-7",
+          "exact": "186807/1099511627776"
+        }
+      },
+      "signal_port": {
+        "intercept": {
+          "decimal": "5.456968210637569427490234375E-12",
+          "exact": "3/549755813888"
+        },
+        "slope": {
+          "decimal": "0.0000038001135180820710957050323486328125",
+          "exact": "4178269/1099511627776"
+        }
+      }
+    },
+    "budget": {
+      "gradient_intercept": {
+        "decimal": "0.000244140625",
+        "exact": "1/4096"
+      },
+      "gradient_slope": {
+        "decimal": "0.000244140625",
+        "exact": "1/4096"
+      },
+      "operator_intercept": {
+        "decimal": "0.125",
+        "exact": "1/8"
+      },
+      "operator_slope": {
+        "decimal": "0.0078125",
+        "exact": "1/128"
+      }
+    },
+    "certified": true,
+    "checks": {
+      "certificate_output_is_in_runtime_domain": true,
+      "deployed_output_is_below_2^15": true,
+      "deployed_output_range_is_finite": true,
+      "external_sensitivities_are_positive": true,
+      "gradient_cast_and_ema_intermediates_are_finite": true,
+      "high_guard_is_explicitly_conditional": true,
+      "middle_low_guards_are_preserved": true,
+      "p10_base_certificate_replays": true,
+      "p9_signal_guard_closes": true,
+      "rate_is_strict": true,
+      "rounded_step_is_below_two": true,
+      "unit_storage_is_forward_invariant": true
+    },
+    "function_gap_ultimate": {
+      "decimal": "0.8461257786793794366531074047088623046875",
+      "exact": "930325132219/1099511627776"
+    },
+    "guards_at_V_le_1": {
+      "certificate_output_max_abs": {
+        "decimal": "32768",
+        "exact": "32768"
+      },
+      "deployed_output_frobenius_bound": {
+        "decimal": "32614.93024903792320401407778263092041015625",
+        "exact": "8965123761980097/274877906944"
+      },
+      "ema_intermediate_frobenius_bounds": {
+        "beta_momentum": {
+          "decimal": "13.1607369615312563837505877017974853515625",
+          "exact": "14470383319305/1099511627776"
+        },
+        "beta_momentum_next": {
+          "decimal": "20.4309184283583817887119948863983154296875",
+          "exact": "22464032378123/1099511627776"
+        },
+        "momentum_next": {
+          "decimal": "21.506228912583537749014794826507568359375",
+          "exact": "11823174379499/549755813888"
+        },
+        "pre_cast_gradient": {
+          "decimal": "166.9097909992606219020672142505645751953125",
+          "exact": "183519255993349/1099511627776"
+        },
+        "represented_gradient": {
+          "decimal": "166.909800947860276210121810436248779296875",
+          "exact": "91759633465975/549755813888"
+        },
+        "signal": {
+          "decimal": "25.233506080419829231686890125274658203125",
+          "exact": "13872266672489/549755813888"
+        },
+        "true_gradient": {
+          "decimal": "166.9093027180106219020672142505645751953125",
+          "exact": "183518719122437/1099511627776"
+        },
+        "weighted_gradient": {
+          "decimal": "8.3454906691813448560424149036407470703125",
+          "exact": "9175964030261/1099511627776"
+        }
+      },
+      "ema_intermediates_are_finite": true,
+      "high_word_guard": "conditional |high|<=2^30 premise, rechecked per call",
+      "middle_low_invariant_checks": {
+        "certificate_output_profile_implies_step_guard": true,
+        "high_two_sum_cannot_overflow": true,
+        "middle_candidate_below_2^8": true,
+        "new_low_within_guard": true,
+        "new_middle_within_guard": true,
+        "pending_below_three": true
+      },
+      "p9_reference_output_frobenius_bound": {
+        "decimal": "32614.79743653792320401407778263092041015625",
+        "exact": "8965087254758081/274877906944"
+      },
+      "rounded_step_entrywise_bound": {
+        "decimal": "1.0192166794431614107452332973480224609375",
+        "exact": "1120640590271/1099511627776"
+      },
+      "rounded_step_max_abs": {
+        "decimal": "2",
+        "exact": "2"
+      },
+      "runtime_output_max_abs": {
+        "decimal": "65536",
+        "exact": "65536"
+      },
+      "signal_frobenius_bound": {
+        "decimal": "25.233506080419829231686890125274658203125",
+        "exact": "13872266672489/549755813888"
+      },
+      "signal_max_abs_limit": {
+        "decimal": "83076749736557242056487941267521536",
+        "exact": "83076749736557242056487941267521536"
+      }
+    },
+    "one_minus_q11_minus_D11": {
+      "decimal": "0.000097367932539782486855983734130859375",
+      "exact": "53528587/549755813888"
+    },
+    "q11": {
+      "decimal": "0.99990034995789756067097187042236328125",
+      "exact": "274850515349/274877906944"
+    }
+  },
+  "locked_model": {
+    "beta": {
+      "decimal": "0.95",
+      "exact": "19/20"
+    },
+    "epsilon": "none; exact max-floor normalization",
+    "floor_c": {
+      "decimal": "1",
+      "exact": "1"
+    },
+    "gradient_young": 1,
+    "learning_rate_eta": {
+      "decimal": "0.00003125",
+      "exact": "1/32000"
+    },
+    "newton_schulz_iteration_count": 5,
+    "operator_young": 837,
+    "orthogonalizer": "jordan_quintic",
+    "polynomial_coefficients_exact": {
+      "a": "6889/2000",
+      "b": "-191/40",
+      "c": "4063/2000"
+    },
+    "repair_rho": {
+      "decimal": "807.56450108107096650843598143035908211653085959437",
+      "exact": "210177835339081/260261360000"
+    },
+    "shape": [
+      4096,
+      11008
+    ],
+    "upstream_muon_sha256": "2479665a90124f62e4df557816665851ca317e42fcfda2af1da02c1f44ab5f3d",
+    "upstream_revision": "f98f1cacc0263b04290753e32be8d498c1efc806"
+  },
+  "one_axis_grid_maxima": {
+    "gradient_intercept": {
+      "accepted_D11": {
+        "decimal": "0.000099874456282122991979122161865234375",
+        "exact": "54906563/549755813888"
+      },
+      "accepted_invariance_slack": {
+        "decimal": "0",
+        "exact": "0"
+      },
+      "accepted_q11": {
+        "decimal": "0.999900125543717877008020877838134765625",
+        "exact": "549700907325/549755813888"
+      },
+      "active_constraint": "unit_storage_is_forward_invariant",
+      "adjacent_control_failed_checks": [
+        "unit_storage_is_forward_invariant"
+      ],
+      "adjacent_rejected_grid_ticks": 10879487719,
+      "adjacent_rejected_grid_value": {
+        "decimal": "0.0098948364384341402910649776458740234375",
+        "exact": "10879487719/1099511627776"
+      },
+      "axis": "gradient_intercept",
+      "fixed_budget": {
+        "gradient_intercept": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "gradient_slope": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "operator_intercept": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "operator_slope": {
+          "decimal": "0",
+          "exact": "0"
+        }
+      },
+      "grid_step": {
+        "decimal": "9.094947017729282379150390625E-13",
+        "exact": "1/1099511627776"
+      },
+      "largest_certified_grid_ticks": 10879487718,
+      "largest_certified_grid_value": {
+        "decimal": "0.009894836437524645589292049407958984375",
+        "exact": "5439743859/549755813888"
+      },
+      "negative_control_interpretation": "rejection of this sufficient certificate, not a dynamical-instability witness",
+      "rejected_invariance_slack": {
+        "decimal": "-9.094947017729282379150390625E-13",
+        "exact": "-1/1099511627776"
+      }
+    },
+    "gradient_slope": {
+      "accepted_D11": {
+        "decimal": "0.0000019666285879793576896190643310546875",
+        "exact": "2162331/1099511627776"
+      },
+      "accepted_invariance_slack": {
+        "decimal": "0",
+        "exact": "0"
+      },
+      "accepted_q11": {
+        "decimal": "0.9999980333714120206423103809356689453125",
+        "exact": "1099509465445/1099511627776"
+      },
+      "active_constraint": "unit_storage_is_forward_invariant",
+      "adjacent_control_failed_checks": [
+        "unit_storage_is_forward_invariant"
+      ],
+      "adjacent_rejected_grid_ticks": 10815225548,
+      "adjacent_rejected_grid_value": {
+        "decimal": "0.00983639033438521437346935272216796875",
+        "exact": "2703806387/274877906944"
+      },
+      "axis": "gradient_slope",
+      "fixed_budget": {
+        "gradient_intercept": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "gradient_slope": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "operator_intercept": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "operator_slope": {
+          "decimal": "0",
+          "exact": "0"
+        }
+      },
+      "grid_step": {
+        "decimal": "9.094947017729282379150390625E-13",
+        "exact": "1/1099511627776"
+      },
+      "largest_certified_grid_ticks": 10815225547,
+      "largest_certified_grid_value": {
+        "decimal": "0.0098363903334757196716964244842529296875",
+        "exact": "10815225547/1099511627776"
+      },
+      "negative_control_interpretation": "rejection of this sufficient certificate, not a dynamical-instability witness",
+      "rejected_invariance_slack": {
+        "decimal": "-9.094947017729282379150390625E-13",
+        "exact": "-1/1099511627776"
+      }
+    },
+    "operator_intercept": {
+      "accepted_D11": {
+        "decimal": "0.000099874456282122991979122161865234375",
+        "exact": "54906563/549755813888"
+      },
+      "accepted_invariance_slack": {
+        "decimal": "0",
+        "exact": "0"
+      },
+      "accepted_q11": {
+        "decimal": "0.999900125543717877008020877838134765625",
+        "exact": "549700907325/549755813888"
+      },
+      "active_constraint": "unit_storage_is_forward_invariant",
+      "adjacent_control_failed_checks": [
+        "unit_storage_is_forward_invariant"
+      ],
+      "adjacent_rejected_grid_ticks": 13351103462526,
+      "adjacent_rejected_grid_value": {
+        "decimal": "12.142757861989593948237597942352294921875",
+        "exact": "6675551731263/549755813888"
+      },
+      "axis": "operator_intercept",
+      "fixed_budget": {
+        "gradient_intercept": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "gradient_slope": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "operator_intercept": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "operator_slope": {
+          "decimal": "0",
+          "exact": "0"
+        }
+      },
+      "grid_step": {
+        "decimal": "9.094947017729282379150390625E-13",
+        "exact": "1/1099511627776"
+      },
+      "largest_certified_grid_ticks": 13351103462525,
+      "largest_certified_grid_value": {
+        "decimal": "12.1427578619886844535358250141143798828125",
+        "exact": "13351103462525/1099511627776"
+      },
+      "negative_control_interpretation": "rejection of this sufficient certificate, not a dynamical-instability witness",
+      "rejected_invariance_slack": {
+        "decimal": "-9.094947017729282379150390625E-13",
+        "exact": "-1/1099511627776"
+      }
+    },
+    "operator_slope": {
+      "accepted_D11": {
+        "decimal": "0.0000019666285879793576896190643310546875",
+        "exact": "2162331/1099511627776"
+      },
+      "accepted_invariance_slack": {
+        "decimal": "0",
+        "exact": "0"
+      },
+      "accepted_q11": {
+        "decimal": "0.9999980333714120206423103809356689453125",
+        "exact": "1099509465445/1099511627776"
+      },
+      "active_constraint": "unit_storage_is_forward_invariant",
+      "adjacent_control_failed_checks": [
+        "unit_storage_is_forward_invariant"
+      ],
+      "adjacent_rejected_grid_ticks": 513245498811,
+      "adjacent_rejected_grid_value": {
+        "decimal": "0.4667940618774082395248115062713623046875",
+        "exact": "513245498811/1099511627776"
+      },
+      "axis": "operator_slope",
+      "fixed_budget": {
+        "gradient_intercept": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "gradient_slope": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "operator_intercept": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "operator_slope": {
+          "decimal": "0",
+          "exact": "0"
+        }
+      },
+      "grid_step": {
+        "decimal": "9.094947017729282379150390625E-13",
+        "exact": "1/1099511627776"
+      },
+      "largest_certified_grid_ticks": 513245498810,
+      "largest_certified_grid_value": {
+        "decimal": "0.466794061876498744823038578033447265625",
+        "exact": "256622749405/549755813888"
+      },
+      "negative_control_interpretation": "rejection of this sufficient certificate, not a dynamical-instability witness",
+      "rejected_invariance_slack": {
+        "decimal": "-9.094947017729282379150390625E-13",
+        "exact": "-1/1099511627776"
+      }
+    }
+  },
+  "p10_provenance_roles": {
+    "diagnostic_head_checkpoint_commit": "3246972d44fc6e04c15cf4e205615acbb879df36",
+    "exact_artifact_recorded_commit": "6e7ea000692a269cbd3766146eb7423733d18694",
+    "human_audit_status": "pending; no external sign-off is claimed",
+    "theorem_source_commit": "2d62b566e5a34895470d4eeb4b76789add826cbe"
+  },
+  "pareto_frontiers": {
+    "intercept_slice_a_g_eq_a_R_eq_0": [
+      {
+        "D11": {
+          "decimal": "0.000099874456282122991979122161865234375",
+          "exact": "54906563/549755813888"
+        },
+        "adjacent_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_operator_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_rejected_gradient_grid_ticks": 2623,
+        "adjacent_rejected_gradient_value": {
+          "decimal": "2.3856046027503907680511474609375E-9",
+          "exact": "2623/1099511627776"
+        },
+        "adjacent_rejected_operator_grid_ticks": 13351103462526,
+        "adjacent_rejected_operator_value": {
+          "decimal": "12.142757861989593948237597942352294921875",
+          "exact": "6675551731263/549755813888"
+        },
+        "deployed_output_at_V_le_1": {
+          "decimal": "32626.878664905627374537289142608642578125",
+          "exact": "2242102029381277/68719476736"
+        },
+        "gradient_axis": "gradient_intercept",
+        "gradient_grid_ticks": 2622,
+        "gradient_value": {
+          "decimal": "2.384695108048617839813232421875E-9",
+          "exact": "1311/549755813888"
+        },
+        "invariance_slack": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "largest_certified_operator_value": {
+          "decimal": "12.1427578619886844535358250141143798828125",
+          "exact": "13351103462525/1099511627776"
+        },
+        "operator_axis": "operator_intercept",
+        "operator_grid_ticks": 13351103462525,
+        "q11": {
+          "decimal": "0.999900125543717877008020877838134765625",
+          "exact": "549700907325/549755813888"
+        }
+      },
+      {
+        "D11": {
+          "decimal": "0.000099874456282122991979122161865234375",
+          "exact": "54906563/549755813888"
+        },
+        "adjacent_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_operator_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_rejected_gradient_grid_ticks": 1359935965,
+        "adjacent_rejected_gradient_value": {
+          "decimal": "0.0012368545549179543741047382354736328125",
+          "exact": "1359935965/1099511627776"
+        },
+        "adjacent_rejected_operator_grid_ticks": 13231702254351,
+        "adjacent_rejected_operator_value": {
+          "decimal": "12.0341630957691450021229684352874755859375",
+          "exact": "13231702254351/1099511627776"
+        },
+        "deployed_output_at_V_le_1": {
+          "decimal": "32626.9259296162153987097553908824920654296875",
+          "exact": "35873684438199307/1099511627776"
+        },
+        "gradient_axis": "gradient_intercept",
+        "gradient_grid_ticks": 1359935964,
+        "gradient_value": {
+          "decimal": "0.00123685455400845967233180999755859375",
+          "exact": "339983991/274877906944"
+        },
+        "invariance_slack": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "largest_certified_operator_value": {
+          "decimal": "12.034163095768235507421195507049560546875",
+          "exact": "6615851127175/549755813888"
+        },
+        "operator_axis": "operator_intercept",
+        "operator_grid_ticks": 13231702254350,
+        "q11": {
+          "decimal": "0.999900125543717877008020877838134765625",
+          "exact": "549700907325/549755813888"
+        }
+      },
+      {
+        "D11": {
+          "decimal": "0.000099874456282122991979122161865234375",
+          "exact": "54906563/549755813888"
+        },
+        "adjacent_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_operator_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_rejected_gradient_grid_ticks": 2719871930,
+        "adjacent_rejected_gradient_value": {
+          "decimal": "0.002473709109835908748209476470947265625",
+          "exact": "1359935965/549755813888"
+        },
+        "adjacent_rejected_operator_grid_ticks": 12867815091069,
+        "adjacent_rejected_operator_value": {
+          "decimal": "11.7032096487209855695255100727081298828125",
+          "exact": "12867815091069/1099511627776"
+        },
+        "deployed_output_at_V_le_1": {
+          "decimal": "32626.7508359465937246568500995635986328125",
+          "exact": "4484186490084201/137438953472"
+        },
+        "gradient_axis": "gradient_intercept",
+        "gradient_grid_ticks": 2719871929,
+        "gradient_value": {
+          "decimal": "0.0024737091089264140464365482330322265625",
+          "exact": "2719871929/1099511627776"
+        },
+        "invariance_slack": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "largest_certified_operator_value": {
+          "decimal": "11.70320964872007607482373714447021484375",
+          "exact": "3216953772767/274877906944"
+        },
+        "operator_axis": "operator_intercept",
+        "operator_grid_ticks": 12867815091068,
+        "q11": {
+          "decimal": "0.999900125543717877008020877838134765625",
+          "exact": "549700907325/549755813888"
+        }
+      },
+      {
+        "D11": {
+          "decimal": "0.000099874456282122991979122161865234375",
+          "exact": "54906563/549755813888"
+        },
+        "adjacent_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_operator_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_rejected_gradient_grid_ticks": 4079807895,
+        "adjacent_rejected_gradient_value": {
+          "decimal": "0.0037105636647538631223142147064208984375",
+          "exact": "4079807895/1099511627776"
+        },
+        "adjacent_rejected_operator_grid_ticks": 12240945421028,
+        "adjacent_rejected_operator_value": {
+          "decimal": "11.13307500511655234731733798980712890625",
+          "exact": "3060236355257/274877906944"
+        },
+        "deployed_output_at_V_le_1": {
+          "decimal": "32626.336561080415776814334094524383544921875",
+          "exact": "17936518210320575/549755813888"
+        },
+        "gradient_axis": "gradient_intercept",
+        "gradient_grid_ticks": 4079807894,
+        "gradient_value": {
+          "decimal": "0.003710563663844368420541286468505859375",
+          "exact": "2039903947/549755813888"
+        },
+        "invariance_slack": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "largest_certified_operator_value": {
+          "decimal": "11.1330750051156428526155650615692138671875",
+          "exact": "12240945421027/1099511627776"
+        },
+        "operator_axis": "operator_intercept",
+        "operator_grid_ticks": 12240945421027,
+        "q11": {
+          "decimal": "0.999900125543717877008020877838134765625",
+          "exact": "549700907325/549755813888"
+        }
+      },
+      {
+        "D11": {
+          "decimal": "0.000099874456282122991979122161865234375",
+          "exact": "54906563/549755813888"
+        },
+        "adjacent_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_operator_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_rejected_gradient_grid_ticks": 5439743860,
+        "adjacent_rejected_gradient_value": {
+          "decimal": "0.00494741821967181749641895294189453125",
+          "exact": "1359935965/274877906944"
+        },
+        "adjacent_rejected_operator_grid_ticks": 11314491418803,
+        "adjacent_rejected_operator_value": {
+          "decimal": "10.2904699986565901781432330608367919921875",
+          "exact": "11314491418803/1099511627776"
+        },
+        "deployed_output_at_V_le_1": {
+          "decimal": "32625.64981585138230002485215663909912109375",
+          "exact": "8968070334069127/274877906944"
+        },
+        "gradient_axis": "gradient_intercept",
+        "gradient_grid_ticks": 5439743859,
+        "gradient_value": {
+          "decimal": "0.0049474182187623227946460247039794921875",
+          "exact": "5439743859/1099511627776"
+        },
+        "invariance_slack": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "largest_certified_operator_value": {
+          "decimal": "10.290469998655680683441460132598876953125",
+          "exact": "5657245709401/549755813888"
+        },
+        "operator_axis": "operator_intercept",
+        "operator_grid_ticks": 11314491418802,
+        "q11": {
+          "decimal": "0.999900125543717877008020877838134765625",
+          "exact": "549700907325/549755813888"
+        }
+      },
+      {
+        "D11": {
+          "decimal": "0.000099874456282122991979122161865234375",
+          "exact": "54906563/549755813888"
+        },
+        "adjacent_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_operator_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_rejected_gradient_grid_ticks": 6799679824,
+        "adjacent_rejected_gradient_value": {
+          "decimal": "0.006184272773680277168750762939453125",
+          "exact": "424979989/68719476736"
+        },
+        "adjacent_rejected_operator_grid_ticks": 10020390941551,
+        "adjacent_rejected_operator_value": {
+          "decimal": "9.1134924710340783349238336086273193359375",
+          "exact": "10020390941551/1099511627776"
+        },
+        "deployed_output_at_V_le_1": {
+          "decimal": "32624.6286981010716772289015352725982666015625",
+          "exact": "35871158605436713/1099511627776"
+        },
+        "gradient_axis": "gradient_intercept",
+        "gradient_grid_ticks": 6799679823,
+        "gradient_value": {
+          "decimal": "0.0061842727727707824669778347015380859375",
+          "exact": "6799679823/1099511627776"
+        },
+        "invariance_slack": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "largest_certified_operator_value": {
+          "decimal": "9.113492471033168840222060680389404296875",
+          "exact": "5010195470775/549755813888"
+        },
+        "operator_axis": "operator_intercept",
+        "operator_grid_ticks": 10020390941550,
+        "q11": {
+          "decimal": "0.999900125543717877008020877838134765625",
+          "exact": "549700907325/549755813888"
+        }
+      },
+      {
+        "D11": {
+          "decimal": "0.000099874456282122991979122161865234375",
+          "exact": "54906563/549755813888"
+        },
+        "adjacent_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_operator_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_rejected_gradient_grid_ticks": 8159615789,
+        "adjacent_rejected_gradient_value": {
+          "decimal": "0.0074211273285982315428555011749267578125",
+          "exact": "8159615789/1099511627776"
+        },
+        "adjacent_rejected_operator_grid_ticks": 8222316916290,
+        "adjacent_rejected_operator_value": {
+          "decimal": "7.478153671663676504977047443389892578125",
+          "exact": "4111158458145/549755813888"
+        },
+        "deployed_output_at_V_le_1": {
+          "decimal": "32623.1492190791277607786469161510467529296875",
+          "exact": "35869531901049035/1099511627776"
+        },
+        "gradient_axis": "gradient_intercept",
+        "gradient_grid_ticks": 8159615788,
+        "gradient_value": {
+          "decimal": "0.00742112732768873684108257293701171875",
+          "exact": "2039903947/274877906944"
+        },
+        "invariance_slack": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "largest_certified_operator_value": {
+          "decimal": "7.4781536716627670102752745151519775390625",
+          "exact": "8222316916289/1099511627776"
+        },
+        "operator_axis": "operator_intercept",
+        "operator_grid_ticks": 8222316916289,
+        "q11": {
+          "decimal": "0.999900125543717877008020877838134765625",
+          "exact": "549700907325/549755813888"
+        }
+      },
+      {
+        "D11": {
+          "decimal": "0.000099874456282122991979122161865234375",
+          "exact": "54906563/549755813888"
+        },
+        "adjacent_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_operator_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_rejected_gradient_grid_ticks": 9519551754,
+        "adjacent_rejected_gradient_value": {
+          "decimal": "0.008657981883516185916960239410400390625",
+          "exact": "4759775877/549755813888"
+        },
+        "adjacent_rejected_operator_grid_ticks": 5577370189288,
+        "adjacent_rejected_operator_value": {
+          "decimal": "5.0725886369837098754942417144775390625",
+          "exact": "697171273661/137438953472"
+        },
+        "deployed_output_at_V_le_1": {
+          "decimal": "32620.8995138218742795288562774658203125",
+          "exact": "560422786311869/17179869184"
+        },
+        "gradient_axis": "gradient_intercept",
+        "gradient_grid_ticks": 9519551753,
+        "gradient_value": {
+          "decimal": "0.0086579818826066912151873111724853515625",
+          "exact": "9519551753/1099511627776"
+        },
+        "invariance_slack": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "largest_certified_operator_value": {
+          "decimal": "5.0725886369828003807924687862396240234375",
+          "exact": "5577370189287/1099511627776"
+        },
+        "operator_axis": "operator_intercept",
+        "operator_grid_ticks": 5577370189287,
+        "q11": {
+          "decimal": "0.999900125543717877008020877838134765625",
+          "exact": "549700907325/549755813888"
+        }
+      },
+      {
+        "D11": {
+          "decimal": "0.000099874456282122991979122161865234375",
+          "exact": "54906563/549755813888"
+        },
+        "adjacent_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_operator_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_rejected_gradient_grid_ticks": 10879487719,
+        "adjacent_rejected_gradient_value": {
+          "decimal": "0.0098948364384341402910649776458740234375",
+          "exact": "10879487719/1099511627776"
+        },
+        "adjacent_rejected_operator_grid_ticks": 8584,
+        "adjacent_rejected_operator_value": {
+          "decimal": "7.8071025200188159942626953125E-9",
+          "exact": "1073/137438953472"
+        },
+        "deployed_output_at_V_le_1": {
+          "decimal": "32615.9827849701241575530730187892913818359375",
+          "exact": "35861652323416495/1099511627776"
+        },
+        "gradient_axis": "gradient_intercept",
+        "gradient_grid_ticks": 10879487718,
+        "gradient_value": {
+          "decimal": "0.009894836437524645589292049407958984375",
+          "exact": "5439743859/549755813888"
+        },
+        "invariance_slack": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "largest_certified_operator_value": {
+          "decimal": "7.8061930253170430660247802734375E-9",
+          "exact": "8583/1099511627776"
+        },
+        "operator_axis": "operator_intercept",
+        "operator_grid_ticks": 8583,
+        "q11": {
+          "decimal": "0.999900125543717877008020877838134765625",
+          "exact": "549700907325/549755813888"
+        }
+      }
+    ],
+    "interpretation": "two exact two-dimensional slices of the four-dimensional acceptance set; each row is coordinatewise maximal and each adjacent gradient/operator control is one 2^-40 tick outside",
+    "slope_slice_b_g_eq_b_R_eq_0": [
+      {
+        "D11": {
+          "decimal": "0.0000019666285879793576896190643310546875",
+          "exact": "2162331/1099511627776"
+        },
+        "adjacent_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_operator_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_rejected_gradient_grid_ticks": 1,
+        "adjacent_rejected_gradient_value": {
+          "decimal": "9.094947017729282379150390625E-13",
+          "exact": "1/1099511627776"
+        },
+        "adjacent_rejected_operator_grid_ticks": 513245498811,
+        "adjacent_rejected_operator_value": {
+          "decimal": "0.4667940618774082395248115062713623046875",
+          "exact": "513245498811/1099511627776"
+        },
+        "deployed_output_at_V_le_1": {
+          "decimal": "32615.202700805011772899888455867767333984375",
+          "exact": "17930397305903155/549755813888"
+        },
+        "gradient_axis": "gradient_slope",
+        "gradient_grid_ticks": 0,
+        "gradient_value": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "invariance_slack": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "largest_certified_operator_value": {
+          "decimal": "0.466794061876498744823038578033447265625",
+          "exact": "256622749405/549755813888"
+        },
+        "operator_axis": "operator_slope",
+        "operator_grid_ticks": 513245498810,
+        "q11": {
+          "decimal": "0.9999980333714120206423103809356689453125",
+          "exact": "1099509465445/1099511627776"
+        }
+      },
+      {
+        "D11": {
+          "decimal": "0.0000019666285879793576896190643310546875",
+          "exact": "2162331/1099511627776"
+        },
+        "adjacent_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_operator_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_rejected_gradient_grid_ticks": 1351903194,
+        "adjacent_rejected_gradient_value": {
+          "decimal": "0.001229548792252899147570133209228515625",
+          "exact": "675951597/549755813888"
+        },
+        "adjacent_rejected_operator_grid_ticks": 508734339016,
+        "adjacent_rejected_operator_value": {
+          "decimal": "0.4626911859450046904385089874267578125",
+          "exact": "63591792377/137438953472"
+        },
+        "deployed_output_at_V_le_1": {
+          "decimal": "32615.353537085176867549307644367218017578125",
+          "exact": "17930480229025121/549755813888"
+        },
+        "gradient_axis": "gradient_slope",
+        "gradient_grid_ticks": 1351903193,
+        "gradient_value": {
+          "decimal": "0.0012295487913434044457972049713134765625",
+          "exact": "1351903193/1099511627776"
+        },
+        "invariance_slack": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "largest_certified_operator_value": {
+          "decimal": "0.4626911859440951957367360591888427734375",
+          "exact": "508734339015/1099511627776"
+        },
+        "operator_axis": "operator_slope",
+        "operator_grid_ticks": 508734339015,
+        "q11": {
+          "decimal": "0.9999980333714120206423103809356689453125",
+          "exact": "1099509465445/1099511627776"
+        }
+      },
+      {
+        "D11": {
+          "decimal": "0.0000019666285879793576896190643310546875",
+          "exact": "2162331/1099511627776"
+        },
+        "adjacent_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_operator_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_rejected_gradient_grid_ticks": 2703806387,
+        "adjacent_rejected_gradient_value": {
+          "decimal": "0.0024590975835963035933673381805419921875",
+          "exact": "2703806387/1099511627776"
+        },
+        "adjacent_rejected_operator_grid_ticks": 495772587383,
+        "adjacent_rejected_operator_value": {
+          "decimal": "0.4509025415090945898555219173431396484375",
+          "exact": "495772587383/1099511627776"
+        },
+        "deployed_output_at_V_le_1": {
+          "decimal": "32615.4966875968375461525283753871917724609375",
+          "exact": "35861117853702335/1099511627776"
+        },
+        "gradient_axis": "gradient_slope",
+        "gradient_grid_ticks": 2703806386,
+        "gradient_value": {
+          "decimal": "0.002459097582686808891594409942626953125",
+          "exact": "1351903193/549755813888"
+        },
+        "invariance_slack": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "largest_certified_operator_value": {
+          "decimal": "0.450902541508185095153748989105224609375",
+          "exact": "247886293691/549755813888"
+        },
+        "operator_axis": "operator_slope",
+        "operator_grid_ticks": 495772587382,
+        "q11": {
+          "decimal": "0.9999980333714120206423103809356689453125",
+          "exact": "1099509465445/1099511627776"
+        }
+      },
+      {
+        "D11": {
+          "decimal": "0.0000019666285879793576896190643310546875",
+          "exact": "2162331/1099511627776"
+        },
+        "adjacent_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_operator_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_rejected_gradient_grid_ticks": 4055709581,
+        "adjacent_rejected_gradient_value": {
+          "decimal": "0.0036886463758492027409374713897705078125",
+          "exact": "4055709581/1099511627776"
+        },
+        "adjacent_rejected_operator_grid_ticks": 473693173923,
+        "adjacent_rejected_operator_value": {
+          "decimal": "0.4308214319489707122556865215301513671875",
+          "exact": "473693173923/1099511627776"
+        },
+        "deployed_output_at_V_le_1": {
+          "decimal": "32615.6315456434895168058574199676513671875",
+          "exact": "4482658266461591/137438953472"
+        },
+        "gradient_axis": "gradient_slope",
+        "gradient_grid_ticks": 4055709580,
+        "gradient_value": {
+          "decimal": "0.00368864637493970803916454315185546875",
+          "exact": "1013927395/274877906944"
+        },
+        "invariance_slack": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "largest_certified_operator_value": {
+          "decimal": "0.430821431948061217553913593292236328125",
+          "exact": "236846586961/549755813888"
+        },
+        "operator_axis": "operator_slope",
+        "operator_grid_ticks": 473693173922,
+        "q11": {
+          "decimal": "0.9999980333714120206423103809356689453125",
+          "exact": "1099509465445/1099511627776"
+        }
+      },
+      {
+        "D11": {
+          "decimal": "0.0000019666285879793576896190643310546875",
+          "exact": "2162331/1099511627776"
+        },
+        "adjacent_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_operator_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_rejected_gradient_grid_ticks": 5407612774,
+        "adjacent_rejected_gradient_value": {
+          "decimal": "0.004918195167192607186734676361083984375",
+          "exact": "2703806387/549755813888"
+        },
+        "adjacent_rejected_operator_grid_ticks": 441184385743,
+        "adjacent_rejected_operator_value": {
+          "decimal": "0.4012548613382023177109658718109130859375",
+          "exact": "441184385743/1099511627776"
+        },
+        "deployed_output_at_V_le_1": {
+          "decimal": "32615.756918228975337115116417407989501953125",
+          "exact": "17930701990154137/549755813888"
+        },
+        "gradient_axis": "gradient_slope",
+        "gradient_grid_ticks": 5407612773,
+        "gradient_value": {
+          "decimal": "0.0049181951662831124849617481231689453125",
+          "exact": "5407612773/1099511627776"
+        },
+        "invariance_slack": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "largest_certified_operator_value": {
+          "decimal": "0.401254861337292823009192943572998046875",
+          "exact": "220592192871/549755813888"
+        },
+        "operator_axis": "operator_slope",
+        "operator_grid_ticks": 441184385742,
+        "q11": {
+          "decimal": "0.9999980333714120206423103809356689453125",
+          "exact": "1099509465445/1099511627776"
+        }
+      },
+      {
+        "D11": {
+          "decimal": "0.0000019666285879793576896190643310546875",
+          "exact": "2162331/1099511627776"
+        },
+        "adjacent_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_operator_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_rejected_gradient_grid_ticks": 6759515967,
+        "adjacent_rejected_gradient_value": {
+          "decimal": "0.0061477439585360116325318813323974609375",
+          "exact": "6759515967/1099511627776"
+        },
+        "adjacent_rejected_operator_grid_ticks": 395798829227,
+        "adjacent_rejected_operator_value": {
+          "decimal": "0.3599769381498845177702605724334716796875",
+          "exact": "395798829227/1099511627776"
+        },
+        "deployed_output_at_V_le_1": {
+          "decimal": "32615.8705794618845175136812031269073486328125",
+          "exact": "35861528952155485/1099511627776"
+        },
+        "gradient_axis": "gradient_slope",
+        "gradient_grid_ticks": 6759515966,
+        "gradient_value": {
+          "decimal": "0.006147743957626516930758953094482421875",
+          "exact": "3379757983/549755813888"
+        },
+        "invariance_slack": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "largest_certified_operator_value": {
+          "decimal": "0.359976938148975023068487644195556640625",
+          "exact": "197899414613/549755813888"
+        },
+        "operator_axis": "operator_slope",
+        "operator_grid_ticks": 395798829226,
+        "q11": {
+          "decimal": "0.9999980333714120206423103809356689453125",
+          "exact": "1099509465445/1099511627776"
+        }
+      },
+      {
+        "D11": {
+          "decimal": "0.0000019666285879793576896190643310546875",
+          "exact": "2162331/1099511627776"
+        },
+        "adjacent_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_operator_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_rejected_gradient_grid_ticks": 8111419161,
+        "adjacent_rejected_gradient_value": {
+          "decimal": "0.0073772927507889107801020145416259765625",
+          "exact": "8111419161/1099511627776"
+        },
+        "adjacent_rejected_operator_grid_ticks": 332578695400,
+        "adjacent_rejected_operator_value": {
+          "decimal": "0.3024785613888525404036045074462890625",
+          "exact": "41572336925/137438953472"
+        },
+        "deployed_output_at_V_le_1": {
+          "decimal": "32615.968020241334670572541654109954833984375",
+          "exact": "17930818044712755/549755813888"
+        },
+        "gradient_axis": "gradient_slope",
+        "gradient_grid_ticks": 8111419160,
+        "gradient_value": {
+          "decimal": "0.0073772927498794160783290863037109375",
+          "exact": "1013927395/137438953472"
+        },
+        "invariance_slack": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "largest_certified_operator_value": {
+          "decimal": "0.3024785613879430457018315792083740234375",
+          "exact": "332578695399/1099511627776"
+        },
+        "operator_axis": "operator_slope",
+        "operator_grid_ticks": 332578695399,
+        "q11": {
+          "decimal": "0.9999980333714120206423103809356689453125",
+          "exact": "1099509465445/1099511627776"
+        }
+      },
+      {
+        "D11": {
+          "decimal": "0.0000019666285879793576896190643310546875",
+          "exact": "2162331/1099511627776"
+        },
+        "adjacent_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_operator_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_rejected_gradient_grid_ticks": 9463322354,
+        "adjacent_rejected_gradient_value": {
+          "decimal": "0.008606841542132315225899219512939453125",
+          "exact": "4731661177/549755813888"
+        },
+        "adjacent_rejected_operator_grid_ticks": 238696271395,
+        "adjacent_rejected_operator_value": {
+          "decimal": "0.2170929941667054663412272930145263671875",
+          "exact": "238696271395/1099511627776"
+        },
+        "deployed_output_at_V_le_1": {
+          "decimal": "32616.037573830210021696984767913818359375",
+          "exact": "2241357035275327/68719476736"
+        },
+        "gradient_axis": "gradient_slope",
+        "gradient_grid_ticks": 9463322353,
+        "gradient_value": {
+          "decimal": "0.0086068415412228205241262912750244140625",
+          "exact": "9463322353/1099511627776"
+        },
+        "invariance_slack": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "largest_certified_operator_value": {
+          "decimal": "0.217092994165795971639454364776611328125",
+          "exact": "119348135697/549755813888"
+        },
+        "operator_axis": "operator_slope",
+        "operator_grid_ticks": 238696271394,
+        "q11": {
+          "decimal": "0.9999980333714120206423103809356689453125",
+          "exact": "1099509465445/1099511627776"
+        }
+      },
+      {
+        "D11": {
+          "decimal": "0.0000019666285879793576896190643310546875",
+          "exact": "2162331/1099511627776"
+        },
+        "adjacent_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_failed_checks": [
+          "unit_storage_is_forward_invariant"
+        ],
+        "adjacent_gradient_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_operator_control_invariance_slack": {
+          "decimal": "-9.094947017729282379150390625E-13",
+          "exact": "-1/1099511627776"
+        },
+        "adjacent_rejected_gradient_grid_ticks": 10815225548,
+        "adjacent_rejected_gradient_value": {
+          "decimal": "0.00983639033438521437346935272216796875",
+          "exact": "2703806387/274877906944"
+        },
+        "adjacent_rejected_operator_grid_ticks": 1296,
+        "adjacent_rejected_operator_value": {
+          "decimal": "1.178705133497714996337890625E-9",
+          "exact": "81/68719476736"
+        },
+        "deployed_output_at_V_le_1": {
+          "decimal": "32615.9754199934332064003683626651763916015625",
+          "exact": "35861644225538985/1099511627776"
+        },
+        "gradient_axis": "gradient_slope",
+        "gradient_grid_ticks": 10815225547,
+        "gradient_value": {
+          "decimal": "0.0098363903334757196716964244842529296875",
+          "exact": "10815225547/1099511627776"
+        },
+        "invariance_slack": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "largest_certified_operator_value": {
+          "decimal": "1.1777956387959420680999755859375E-9",
+          "exact": "1295/1099511627776"
+        },
+        "operator_axis": "operator_slope",
+        "operator_grid_ticks": 1295,
+        "q11": {
+          "decimal": "0.9999980333714120206423103809356689453125",
+          "exact": "1099509465445/1099511627776"
+        }
+      }
+    ]
+  },
+  "port_reduction": {
+    "effective_gradient_error": "xi_eff=zeta+r_m/(1-beta)",
+    "effective_operator_error": "e_eff=R(s)-R(s0)+(U9-R(s))+nu-r_W/eta",
+    "exact_signal_cancellation": "implemented signal minus P7 nominal signal equals r_s-r_m; the explicit zeta term cancels",
+    "momentum_residual_definition": "r_m=epsilon_m+(1-beta)*(C32(g+zeta)-(g+zeta))",
+    "rounding_rule": "add exact incremental sensitivities to frozen safe P10 envelopes, then round each augmented slope/intercept and q11,D11 upward once on 2^-40",
+    "signal_residual_definition": "r_s=epsilon_s+(1-beta)*(C32(g+zeta)-(g+zeta))",
+    "total_square_rule": "retain the full augmented Xi and E squares, including base/external and gradient/operator cross terms"
+  },
+  "proof_replay_provenance": {
+    "arithmetic": "fractions.Fraction exact rational arithmetic",
+    "budget_grid_denominator": 1099511627776,
+    "machine": "arm64",
+    "platform": "macOS-15.5-arm64-arm-64bit",
+    "python": "3.12.11 (main, Jul  8 2025, 20:41:49) [Clang 20.1.4 ]",
+    "seed": null,
+    "source_snapshot": {
+      ".github/workflows/p11-implementation-margin.yml": "e598074755fbdca47cd94d74b010f1691428bd3cf68adaa2c7220f8347782550",
+      "pyproject.toml": "7a9988bf528baef5145f779516d4315349d1c2a6bbb7394c9b93fbbee1d4f596",
+      "results/summaries/P11_RESULTS.md": "7aaec482db018afeb76aeb7126a70f47579ac1630c4d5f43c9f3c263f3aeb205",
+      "scripts/certify_implementation_margin.py": "4da005b337aeeb94be764b8fa2809dce0e73713af89d979120a29fc966d3d8c4",
+      "scripts/reconstruct_implementation_margin.py": "d87c1d89e344afeb08de29bf106756c9824648d720250e80e84246ed5dcbf6ab",
+      "src/passive_muon/finite_precision_outer_loop.py": "f347e0dc2e573592327eb12bb31536d0a0807153cf5866b2a34bb0c4b2901a32",
+      "src/passive_muon/implementation_margin_certificate.py": "4dbbcccd3c5b75a7ec5722e658f03ca470b4f4ea7d06929cac512a7b471105db",
+      "src/passive_muon/outer_loop_roundoff_certificate.py": "20ea0e3b79c3a16ea78ed620fa52e7baf0bd86c1bf4c87dfa90ca85cf4942aa5",
+      "src/passive_muon/robust_dissipativity.py": "4be3e2716bb968bdebada22d8bcb9bf81eef27852f624f8af53b0b6710da23d2",
+      "src/passive_muon/scalable_mixed_precision_certificate.py": "c73e9bcba24b09f4948105e978cbab9f3723d2d1359b1b231912bc1cc165f93a",
+      "src/passive_muon/specs.py": "85fcee0f87485fc3cac2f426d62ec6e55da7896caade2f5df2a1c87f7d9c5d6c",
+      "src/passive_muon/structure_aware_stability.py": "fbbbfa314b26c8c549dcc915bcbe590fadc55fb712288c1757ff24881ababc4a",
+      "src/passive_muon/upstream_momentum.py": "7479613bb307debbb2a02e04e6bbe53a428855c51e1e21210f9c2be2e68d3d7e",
+      "tests/conftest.py": "6e9b10448b2748b5e3ef1e397b8d5af239eb6e7fecbd5b402190e376e52a9cc1",
+      "tests/test_implementation_margin_certificate.py": "0b76b2af22eceea19fdc42900028a0c1ed826a84331af9e1e9dfe6b423de20b6",
+      "tests/test_implementation_margin_cli.py": "5b819f862dfab28c32c42d463867645359e4f517a3b7f4878402b2150c6eeaf1",
+      "tests/test_implementation_margin_reconstruction.py": "e0a7bdef02549d90ef46f249aaff6b420d710a370465f3ba3d421f36fcc71643",
+      "tests/test_p11_result_manifest.py": "dc6c8f8b7308ffb266b4eb20bbea889b8be3c2748c7b51cce9b40bf862a45482",
+      "theory/audits/P11_HUMAN_PROOF_AUDIT.md": "a3f7ffc33be436bb76dcb3a2836f1a4ed59280ece0d8a65d03806ab68c53c554",
+      "theory/implementation_margin_certificate.md": "b15833aebb816b25ac2c4bdc98699913d98f53064788cbac7788e7a656785875",
+      "uv.lock": "f097fd7895b5c1c551a0bd233d025c3f8ae97b7dedce6a8690569f1b1f7c5cf1"
+    },
+    "torch": "2.13.0"
+  },
+  "schema_version": "passive-muon-implementation-margin-certificate-v1",
+  "zero_external_error_replay": {
+    "D11": {
+      "decimal": "0.0000019666285879793576896190643310546875",
+      "exact": "2162331/1099511627776"
+    },
+    "augmented_envelopes": {
+      "actual_signal": {
+        "intercept": {
+          "decimal": "9.094947017729282379150390625E-13",
+          "exact": "1/1099511627776"
+        },
+        "slope": {
+          "decimal": "25.2334584729842390515841543674468994140625",
+          "exact": "27744481000049/1099511627776"
+        }
+      },
+      "deployed_output": {
+        "intercept": {
+          "decimal": "1.9818646381490907515399158000946044921875",
+          "exact": "2179083214323/1099511627776"
+        },
+        "slope": {
+          "decimal": "32612.7540421049861834035255014896392822265625",
+          "exact": "35858102283093177/1099511627776"
+        }
+      },
+      "effective_gradient_error": {
+        "intercept": {
+          "decimal": "1.818989403545856475830078125E-11",
+          "exact": "5/274877906944"
+        },
+        "slope": {
+          "decimal": "0.00005861938916496001183986663818359375",
+          "exact": "16113175/274877906944"
+        }
+      },
+      "effective_operator_error": {
+        "intercept": {
+          "decimal": "1.9820604207916403538547456264495849609375",
+          "exact": "2179298479615/1099511627776"
+        },
+        "slope": {
+          "decimal": "0.016895525846848613582551479339599609375",
+          "exact": "9288413563/549755813888"
+        }
+      },
+      "momentum_port": {
+        "intercept": {
+          "decimal": "9.094947017729282379150390625E-13",
+          "exact": "1/1099511627776"
+        },
+        "slope": {
+          "decimal": "0.0000029309694582480005919933319091796875",
+          "exact": "3222635/1099511627776"
+        }
+      },
+      "p9_reference_output": {
+        "intercept": {
+          "decimal": "1.9818646381490907515399158000946044921875",
+          "exact": "2179083214323/1099511627776"
+        },
+        "slope": {
+          "decimal": "32612.7540421049861834035255014896392822265625",
+          "exact": "35858102283093177/1099511627776"
+        }
+      },
+      "parameter_port": {
+        "intercept": {
+          "decimal": "6.1181708588264882564544677734375E-9",
+          "exact": "6727/1099511627776"
+        },
+        "slope": {
+          "decimal": "1.69899067259393632411956787109375E-7",
+          "exact": "93403/549755813888"
+        }
+      },
+      "signal_port": {
+        "intercept": {
+          "decimal": "9.094947017729282379150390625E-13",
+          "exact": "1/1099511627776"
+        },
+        "slope": {
+          "decimal": "0.0000038001089706085622310638427734375",
+          "exact": "522283/137438953472"
+        }
+      }
+    },
+    "budget": {
+      "gradient_intercept": {
+        "decimal": "0",
+        "exact": "0"
+      },
+      "gradient_slope": {
+        "decimal": "0",
+        "exact": "0"
+      },
+      "operator_intercept": {
+        "decimal": "0",
+        "exact": "0"
+      },
+      "operator_slope": {
+        "decimal": "0",
+        "exact": "0"
+      }
+    },
+    "certified": true,
+    "checks": {
+      "certificate_output_is_in_runtime_domain": true,
+      "deployed_output_is_below_2^15": true,
+      "deployed_output_range_is_finite": true,
+      "external_sensitivities_are_positive": true,
+      "gradient_cast_and_ema_intermediates_are_finite": true,
+      "high_guard_is_explicitly_conditional": true,
+      "middle_low_guards_are_preserved": true,
+      "p10_base_certificate_replays": true,
+      "p9_signal_guard_closes": true,
+      "rate_is_strict": true,
+      "rounded_step_is_below_two": true,
+      "unit_storage_is_forward_invariant": true
+    },
+    "function_gap_ultimate": {
+      "decimal": "0.727518166766458307392895221710205078125",
+      "exact": "399957341889/549755813888"
+    },
+    "guards_at_V_le_1": {
+      "certificate_output_max_abs": {
+        "decimal": "32768",
+        "exact": "32768"
+      },
+      "deployed_output_frobenius_bound": {
+        "decimal": "32614.73590674313527415506541728973388671875",
+        "exact": "8965070341576875/274877906944"
+      },
+      "ema_intermediate_frobenius_bounds": {
+        "beta_momentum": {
+          "decimal": "13.1607369615312563837505877017974853515625",
+          "exact": "14470383319305/1099511627776"
+        },
+        "beta_momentum_next": {
+          "decimal": "20.43089523499293136410415172576904296875",
+          "exact": "5616001719187/274877906944"
+        },
+        "momentum_next": {
+          "decimal": "21.5062044985161264776252210140228271484375",
+          "exact": "23646321915447/1099511627776"
+        },
+        "pre_cast_gradient": {
+          "decimal": "166.9093027180106219020672142505645751953125",
+          "exact": "183518719122437/1099511627776"
+        },
+        "represented_gradient": {
+          "decimal": "166.909312666581172379665076732635498046875",
+          "exact": "91759365030503/549755813888"
+        },
+        "signal": {
+          "decimal": "25.233458472985148546285927295684814453125",
+          "exact": "13872240500025/549755813888"
+        },
+        "true_gradient": {
+          "decimal": "166.9093027180106219020672142505645751953125",
+          "exact": "183518719122437/1099511627776"
+        },
+        "weighted_gradient": {
+          "decimal": "8.3454662551148430793546140193939208984375",
+          "exact": "9175937186711/1099511627776"
+        }
+      },
+      "ema_intermediates_are_finite": true,
+      "high_word_guard": "conditional |high|<=2^30 premise, rechecked per call",
+      "middle_low_invariant_checks": {
+        "certificate_output_profile_implies_step_guard": true,
+        "high_two_sum_cannot_overflow": true,
+        "middle_candidate_below_2^8": true,
+        "new_low_within_guard": true,
+        "new_middle_within_guard": true,
+        "pending_below_three": true
+      },
+      "p9_reference_output_frobenius_bound": {
+        "decimal": "32614.73590674313527415506541728973388671875",
+        "exact": "8965070341576875/274877906944"
+      },
+      "rounded_step_entrywise_bound": {
+        "decimal": "1.019210606245906092226505279541015625",
+        "exact": "70039619545/68719476736"
+      },
+      "rounded_step_max_abs": {
+        "decimal": "2",
+        "exact": "2"
+      },
+      "runtime_output_max_abs": {
+        "decimal": "65536",
+        "exact": "65536"
+      },
+      "signal_frobenius_bound": {
+        "decimal": "25.233458472985148546285927295684814453125",
+        "exact": "13872240500025/549755813888"
+      },
+      "signal_max_abs_limit": {
+        "decimal": "83076749736557242056487941267521536",
+        "exact": "83076749736557242056487941267521536"
+      }
+    },
+    "one_minus_q11_minus_D11": {
+      "decimal": "0.0000979078276941436342895030975341796875",
+      "exact": "107650795/1099511627776"
+    },
+    "q11": {
+      "decimal": "0.999900125543717877008020877838134765625",
+      "exact": "549700907325/549755813888"
+    }
+  }
+}
