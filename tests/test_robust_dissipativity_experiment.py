@@ -178,6 +178,10 @@ def test_robust_falsification_cli_records_full_provenance() -> None:
     assert payload["operator"]["additive_epsilon"].startswith("not_applicable")
     assert payload["operator"]["iterations"] == 5
     assert payload["p6_reference"]["checkpoint_tag"] == "p6-checkpoint"
+    assert payload["p6_reference"]["result_manifest_path"] == (
+        "results/summaries/pl_convergence_certificate.json"
+    )
+    assert len(payload["p6_reference"]["result_manifest_sha256"]) == 64
     assert payload["upstream_provenance"]["revision"]
     provenance = payload["experiment_provenance"]
     assert provenance["seed"] == 2_026_090_3
@@ -189,4 +193,8 @@ def test_robust_falsification_cli_records_full_provenance() -> None:
     assert provenance["source_snapshot"][
         "experiments/nonconvex/run_robust_dissipativity_falsification.py"
     ]
+    assert provenance["source_snapshot"]["src/passive_muon/nonquadratic_experiment.py"]
+    assert provenance["source_snapshot"]["src/passive_muon/nonquadratic_stability.py"]
+    assert provenance["source_snapshot"]["src/passive_muon/floored_certificate.py"]
+    assert provenance["source_snapshot"]["src/passive_muon/momentum_iqc.py"]
     assert provenance["source_snapshot"]["tests/test_robust_dissipativity_experiment.py"]

@@ -59,6 +59,7 @@ from passive_muon.upstream_momentum import (
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 P6_CHECKPOINT = "ef88d8f5b26148af0ec1ca70b506048938bf9bef"
+P6_RESULT_PATH = "results/summaries/pl_convergence_certificate.json"
 
 # Candidate P7 physical-unit inequality:
 # V_(t+1) <= q_bar*V_t + gamma_g*||xi_t||_F^2 + gamma_R*||e_t||_F^2.
@@ -73,7 +74,11 @@ SOURCE_PATHS = (
     "experiments/nonconvex/run_robust_dissipativity_falsification.py",
     "src/passive_muon/pl_experiment.py",
     "src/passive_muon/pl_convergence.py",
+    "src/passive_muon/nonquadratic_experiment.py",
+    "src/passive_muon/nonquadratic_stability.py",
     "src/passive_muon/robust_dissipativity.py",
+    "src/passive_muon/floored_certificate.py",
+    "src/passive_muon/momentum_iqc.py",
     "src/passive_muon/operator.py",
     "src/passive_muon/normalizers.py",
     "src/passive_muon/orthogonalizers.py",
@@ -727,6 +732,8 @@ def run_probe(config: RobustProbeConfig | None = None) -> dict[str, Any]:
             "checkpoint": P6_CHECKPOINT,
             "checkpoint_tag": "p6-checkpoint",
             "storage_source": "src/passive_muon/pl_convergence.py",
+            "result_manifest_path": P6_RESULT_PATH,
+            "result_manifest_sha256": _sha256(P6_RESULT_PATH),
             "scope_boundary": (
                 "P6 is deterministic; P7 adds exogenous gradient and implementation errors"
             ),
