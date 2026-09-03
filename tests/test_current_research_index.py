@@ -35,6 +35,42 @@ def test_current_ledgers_record_p5_and_the_completed_p6_step() -> None:
     assert "P6" in experiments
 
 
+def test_current_indexes_record_scoped_p7_p8_and_p9_results() -> None:
+    results_index = (ROOT / "results/README.md").read_text(encoding="utf-8")
+    experiments = (ROOT / "experiments/README.md").read_text(encoding="utf-8")
+    results = (ROOT / "results/summaries/RESULTS.md").read_text(encoding="utf-8")
+    results_flat = " ".join(results.split())
+
+    for artifact in (
+        "robust_dissipativity_certificate.json",
+        "mixed_precision_certificate.json",
+        "scalable_mixed_precision_certificate.json",
+        "scalable_mixed_precision_diagnostic.json",
+        "P9_RESULTS.md",
+    ):
+        assert artifact in results_index
+
+    for command in (
+        "certify_scalable_mixed_precision.py",
+        "reconstruct_scalable_mixed_precision.py",
+        "run_scalable_mixed_precision_diagnostic.py",
+    ):
+        assert command in experiments
+        assert command in results
+
+    assert "standard-library-only" in results_index
+    assert "native-matmul" in experiments
+    assert "falsification" in experiments
+    assert "## 14. P9 scalable mixed-precision certificate" in results
+    assert "seven locked Transformer shapes" in results
+    assert "137425214491" in results
+    assert "137438953472" in results
+    assert "4608` is not a universal rank frontier" in results
+    assert "## 15. Unrun gate" in results
+    assert "FP32 EMA/Nesterov disturbance ports" in results_flat
+    assert "master weights" in results_flat
+
+
 def test_double_blind_material_is_guarded_from_the_public_repository() -> None:
     ignore = (ROOT / ".gitignore").read_text(encoding="utf-8")
     for pattern in (

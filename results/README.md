@@ -69,6 +69,19 @@ Current outputs:
   ideal formula; it is falsification evidence, not the proof;
 - `summaries/P8_RESULTS.md`: concise scoped P8 theorem, exact replay, and
   diagnostic readout;
+- `summaries/scalable_mixed_precision_certificate.json`: canonical replay
+  target for the exact P9 shape-parameterized recurrence, seven locked
+  Transformer shapes, affine operator-error bounds, and the resulting P7
+  rates; generate it with `scripts/certify_scalable_mixed_precision.py` and
+  independently check it with the standard-library-only
+  `scripts/reconstruct_scalable_mixed_precision.py`;
+- `summaries/scalable_mixed_precision_diagnostic.json`: output target for the
+  P9 CPU/native-matmul falsification probe. Its default run uses modest shapes;
+  realistic shapes are an explicit expensive opt-in, and neither mode is the
+  proof reference;
+- `summaries/P9_RESULTS.md`: scoped P9 theorem, exact recurrence/replay,
+  serial-normalizer and one-term-proof obstructions, qualified frontier
+  evidence, and deployment exclusions;
 - `summaries/deficit_audit.{json,csv}`: 24-prefix spectral audit;
 - `summaries/quadratic_lr_sweep.json` plus CSV tables: gain-matched quadratic
   sweep and sensitivity classifications;

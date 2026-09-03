@@ -226,6 +226,49 @@ reference is not exact, so this is diagnostic rather than proof. See
 [`theory/mixed_precision_certificate.md`](theory/mixed_precision_certificate.md)
 and [`results/summaries/P8_RESULTS.md`](results/summaries/P8_RESULTS.md).
 
+Branch `p9-scalable-mixed-precision` replaces the two parts of P8 that do not
+scale. A fixed balanced FP32 tree replaces the long serial norm and dot
+reductions, and every stage boundary is stored as a compensated BF16 pair
+`(high, low)` before reconstruction in FP32. For each audited shape `(r,c)`,
+with `rc<=2^52` and maximum input magnitude at most `2^116`, exact rational
+propagation proves
+
+\[
+\lVert\widehat R_{r,c,\mathbb R}(s)-R_{r,c}(s)\rVert_F
+\le A_{r,c}\lVert s\rVert_F+B_{r,c},
+\qquad
+A_{r,c}=\frac{102465557}{549755813888}.
+\]
+
+All seven predeclared representative Transformer shapes certify, including
+`768 x 3072`, `3072 x 12288`, `4096 x 11008`, and `4096 x 14336`. The largest
+listed intercept is `2179083213031/1099511627776 = 1.98186463697...`.
+Absorbing this affine error through P7 at zero gradient noise gives the common
+strict rate
+
+\[
+q_9=\frac{137425214491}{137438953472}<1,
+\]
+
+and the largest listed objective-gap neighborhood is
+`798350562999/1099511627776 = 0.726095607205...`. The proof includes explicit
+FP32/BF16 overflow guards and an invariant sufficient to keep every operator
+signal inside the finite input domain.
+
+P9 also records why the arithmetic had to change. On an all-ones
+`4096 x 11008` input, P8-style serial FP32 square accumulation sticks at
+`2^24`; the returned normalized rank-one singular value has exact square
+`43/16>25/16`, outside the proof tube before BF16 is involved. Ordinary
+one-term BF16 storage separately loses the generic normwise boundary proof at
+rank 72; that second statement is a proof obstruction, not an impossibility
+theorem. The compensated boundary raises its corresponding slope-only gate
+from 71 to 4,656,751. The implemented balanced kernel is deliberately a slow
+CPU proof reference, so no BLAS, GPU, throughput, upstream-Muon, or whole-FP32
+optimizer claim follows. Its two BF16 buffers have the same nominal storage as
+one FP32 buffer, so it does not claim compression. See
+[`theory/scalable_mixed_precision_certificate.md`](theory/scalable_mixed_precision_certificate.md)
+and [`results/summaries/P9_RESULTS.md`](results/summaries/P9_RESULTS.md).
+
 The repair claim is intentionally scoped. A constant `rho` is the exact minimal
 linear shift for a **specified point, pair, sample set, or domain with a finite
 certified deficit**. For exact scale-invariant normalization on every nonzero
@@ -255,6 +298,8 @@ uv run --locked python scripts/certify_robust_dissipativity.py
 uv run --locked python scripts/reconstruct_robust_dissipativity.py
 uv run --locked python scripts/certify_mixed_precision.py
 uv run --locked python scripts/reconstruct_mixed_precision.py
+uv run --locked python scripts/certify_scalable_mixed_precision.py
+uv run --locked python scripts/reconstruct_scalable_mixed_precision.py
 uv run --locked pytest
 ```
 
@@ -269,6 +314,7 @@ uv run --locked python experiments/quadratics/run_nonquadratic_convergence_falsi
 uv run --locked python experiments/nonconvex/run_pl_falsification.py
 uv run --locked python experiments/nonconvex/run_robust_dissipativity_falsification.py
 uv run --locked python experiments/mixed_precision/run_mixed_precision_falsification.py
+uv run --locked python experiments/mixed_precision/run_scalable_mixed_precision_diagnostic.py
 uv run --locked python scripts/make_figures.py
 ```
 
@@ -284,7 +330,7 @@ not support a universal claim across BF16 backends.
 
 ## Scope
 
-This repository stays focused on eleven technical goals:
+This repository stays focused on twelve technical goals:
 
 1. a theorem for current-input Frobenius normalization;
 2. exact local and finite-pair controls for the five-step Jordan map;
@@ -303,18 +349,20 @@ This repository stays focused on eleven technical goals:
    additive gradient and repaired-operator-output errors;
 10. a fixed-`2 x 2` mixed-precision operator-error certificate that
     instantiates the repaired-operator-output port for one proposed kernel;
-11. qualified matrix, quadratic, and nonlinear falsification studies.
+11. a shape-parameterized compensated-BF16 certificate for representative
+    Transformer matrix shapes, with balanced reductions and overflow guards;
+12. qualified matrix, quadratic, nonlinear, and precision diagnostics.
 
 P7 is the submission cutoff and broadest robustness theorem; P6 is its
-zero-disturbance smooth-PL corollary. P8 instantiates one P7 disturbance port
-for a proposed fixed-shape kernel and does not replace that headline. P5
+zero-disturbance smooth-PL corollary. P8 and P9 instantiate one P7 disturbance
+port for proposed fixed-shape kernels and do not replace that headline. P5
 supplies the stronger strongly-convex conclusions, P4 is the quadratic bridge,
 and P3 is the conservative generic-IQC baseline. The generic one-step-memory
 IQC framework is prior art; the new ingredients are the certified full-matrix
-Muon operator and the structure-aware interconnection. A dimension-scalable
-mixed-precision certificate, a whole finite-precision optimizer theorem,
+Muon operator and the structure-aware interconnection. FP32 EMA/Nesterov
+disturbance ports, a compensated or higher-precision master-weight theorem,
 weight decay, aspect-ratio scaling, complete stochastic neural-network
-training, and formal circuit ports remain open.
+training, production-kernel parity, and formal circuit ports remain open.
 
 ## Layout
 

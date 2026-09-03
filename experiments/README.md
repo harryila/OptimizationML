@@ -15,8 +15,14 @@ Experiment order is gated:
    probes;
 9. the P6 smooth-PL value certificate and nonconvex, rank-deficient,
    changing-orientation falsification probe;
-10. only after stochastic, quantized, and implementation-parity gates, a
-   small matched neural-training sweep.
+10. the P7 robust dissipativity certificate and disturbed nonconvex-PL
+    falsification probe;
+11. the P8 exact fixed-`2 x 2` mixed-precision certificate and CPU diagnostic;
+12. the P9 shape-parameterized exact mixed-precision replay and CPU
+    native-matmul diagnostic, with realistic shapes enabled only explicitly;
+13. only after FP32 EMA/Nesterov disturbance ports, compensated or
+    higher-precision master weights, aspect scaling, weight decay, and
+    implementation-parity gates, a small matched neural-training sweep.
 
 The floored Jordan architecture now has a valid global constant-`rho`
 certificate, a stylized non-Nesterov quadratic theorem, and an exact rational
@@ -29,9 +35,12 @@ full-step quadratic and strongly-convex nonlinear results, while P6 retains
 the full step for globally smooth PL objectives that may be nonconvex and have
 nonunique minimizers. GPU work remains gated on the remaining robustness and
 implementation-parity results and a predeclared use of the certified
-architecture. Each run writes a self-contained JSON
-manifest and compact CSV tables under `results/summaries/`; the JSON records
-inputs, operator details, dtype, seed, software, hardware, and Git state.
+architecture. P7 supplies the robust post-operator port; P8 and P9 instantiate
+that port for proposed proof-reference kernels. P9 does not yet cover outer
+FP32 EMA/Nesterov or master-weight rounding. Each run writes a self-contained
+JSON manifest and compact CSV tables under `results/summaries/`; the JSON
+records inputs, operator details, dtype, seed, software, hardware, and Git
+state.
 
 Replay the CPU-only momentum result with:
 
@@ -64,6 +73,37 @@ The first command replays the exact rational certificate. The second runs a
 72-case CPU/float64 falsification grid containing negative curvature,
 changing Hessian orientations, and nonunique minimizers. A sampled failure can
 falsify the implementation; sampled passes do not prove the theorem.
+
+Replay the P7 robust theorem, the P8 fixed-shape theorem, and the P9 scalable
+theorem with their independent reconstructions:
+
+```bash
+uv run --locked python scripts/certify_robust_dissipativity.py \
+  --output results/summaries/robust_dissipativity_certificate.json
+uv run --locked python scripts/reconstruct_robust_dissipativity.py
+uv run --locked python scripts/certify_mixed_precision.py \
+  --output results/summaries/mixed_precision_certificate.json
+uv run --locked python scripts/reconstruct_mixed_precision.py
+uv run --locked python scripts/certify_scalable_mixed_precision.py \
+  --output results/summaries/scalable_mixed_precision_certificate.json
+uv run --locked python scripts/reconstruct_scalable_mixed_precision.py \
+  --require-canonical
+```
+
+The P9 generator and standard-library-only reconstruction carry the exact
+shape-parameterized claim. Its separate CPU diagnostic is a native-matmul
+falsification probe against a float64, non-exact target:
+
+```bash
+uv run --locked python \
+  experiments/mixed_precision/run_scalable_mixed_precision_diagnostic.py \
+  --output results/summaries/scalable_mixed_precision_diagnostic.json
+```
+
+That default diagnostic deliberately uses modest shapes. Pass
+`--include-realistic-shapes` only for the explicitly requested, substantially
+more expensive Transformer-shape run. Neither diagnostic mode proves the
+theorem or establishes GPU/BLAS parity.
 
 The deployed BF16 pair is a separate, backend-specific executable check. It
 does not use a Jacobian and does not support a universal BF16 claim. Record it

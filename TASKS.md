@@ -93,7 +93,22 @@
       input range.
 - [x] Add a standalone standard-library reconstruction of the fixed-`2 x 2`
       P8 certificate and its exact rational comparisons.
-- [ ] Extend P8 to a dimension-scalable mixed-precision kernel certificate.
+- [x] Identify the executable serial-FP32 normalization obstruction on the
+      all-ones `4096 x 11008` shape and replace the long serial reduction by a
+      scale-free balanced FP32 normalizer.
+- [x] Specify the P9 compensated two-term BF16 stage boundary and balanced
+      FP32 thick-Horner proof-reference kernel for guarded arbitrary shapes.
+- [x] Derive exact shape-parameterized affine coefficients `A_(r,c),B_(r,c)`,
+      including subnormal crumbs, `2^116`/`2^52` overflow guards, and the full
+      five-stage spectral-tube recurrence.
+- [x] Certify the seven locked representative Transformer shapes, including
+      `4096 x 11008` and `4096 x 14336`, while retaining the exact P7 rate
+      `137425214491/137438953472<1` and a finite objective-gap neighborhood.
+- [x] Add a standalone standard-library reconstruction of the P9 recurrence,
+      operator bound, overflow gates, and P7 absorption.
+- [ ] Obtain an independent human proof audit of C14 and a parity audit of any
+      optimized BLAS/GPU implementation against the slow balanced reference;
+      the current theorem does not transfer automatically to native kernels.
 - [ ] Bound FP32 EMA/Nesterov and parameter-update rounding through appropriate
       internal ports or a compensated/higher-precision master-weight design.
 - [ ] Bound the complete error of a pinned deployed BF16 backend by the C12

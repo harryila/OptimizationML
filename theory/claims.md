@@ -684,7 +684,114 @@ current-plus-epsilon normalization. In particular, finite-precision parameter
 subtraction can stall at large binades, so C13 is not a whole-FP32-optimizer
 convergence theorem. See `mixed_precision_certificate.md`.
 
-## C14. Circuit and broader optimization consequences — open
+## C14. Shape-scalable mixed-precision operator error — proved for audited shapes
+
+Retain the C13 exact-real reference operator: exact max floor `c=1`, no
+additive epsilon, five Jordan stages with coefficients
+`(6889/2000,-191/40,4063/2000)`, and constant repair
+`rho=210177835339081/260261360000`. For a fixed matrix shape `(r,c)`, orient
+the input once to `p x d`, where `p=min(r,c)` and `d=max(r,c)`. The P9
+arithmetic contract requires `rc<=2^52`, finite inputs with maximum absolute
+entry at most `2^116`, IEEE round-to-nearest ties-to-even, gradual underflow,
+and no FTZ/DAZ.
+
+The proposed proof-reference kernel uses the scale-free identity
+
+\[
+N(s)=\frac{s/\sigma}
+{\max\{1/\sigma,\lVert s/\sigma\rVert_F\}},
+\qquad \sigma=\max\{1,\max_{ij}|s_{ij}|\},
+\]
+
+with a fixed balanced FP32 reduction. Each thick-Horner matrix product uses
+separately rounded FP32 products and adjacent balanced FP32 additions. At the
+normalized input and after each of five complete stages, it stores
+
+\[
+h=\operatorname{RN}_{b}(Y),\quad
+r=\operatorname{fl}_{32}(Y-h),\quad
+l=\operatorname{RN}_{b}(r),\quad
+X_+=\operatorname{fl}_{32}(h+l).
+\]
+
+Exact error propagation, without a Sterbenz assumption, gives the boundary
+bound
+
+\[
+\lVert X_+-Y\rVert_F
+\le \omega\lVert Y\rVert_F+\lceil\sqrt{rc}\rceil\chi,
+\qquad
+\omega=\frac{282587406795009}{2^{64}}.
+\]
+
+The positive subnormal constant `chi` and all of its operation-level terms
+are retained exactly in the certificate. Pairwise dot factors depend on the
+reduction depth, and every propagated envelope is rounded upward by the
+declared exact operator
+`U(x)=ceil(2^40 x)/2^40`. Thus the recurrence is finite and independently
+replayable rather than a sampled or machine-float estimate.
+
+For every shape whose exact recurrence closes, the arbitrary-real adapter
+obeys
+
+\[
+\lVert\widehat R_{r,c,\mathbb R}(s)-R_{r,c}(s)\rVert_F
+\le A_{r,c}\lVert s\rVert_F+B_{r,c},
+\qquad
+A_{r,c}=\frac{102465557}{549755813888},
+\]
+
+where `B_(r,c)` is the exact shape recurrence reported in the machine-readable
+certificate. All seven locked representative shapes pass, including
+`768 x 3072`, `3072 x 12288`, `4096 x 4096`, `4096 x 11008`, and
+`4096 x 14336`. The maximum listed value is
+
+\[
+B_{4096,11008}=B_{4096,14336}
+=\frac{2179083213031}{1099511627776}
+=1.981864636974\ldots.
+\]
+
+At zero gradient noise, Young absorption through C12 with `theta=3006`
+proves, for every passing shape,
+
+\[
+V_{t+1}\le
+\frac{137425214491}{137438953472}V_t+D_{r,c},
+\]
+
+with an exact shape-specific `D_(r,c)`. The rate is strictly below one. The
+largest representative objective-gap neighborhood is
+
+\[
+\frac{798350562999}{1099511627776}
+=0.726095607205\ldots<1.
+\]
+
+The finite signal premise is closed by the same sufficient initial-storage
+invariant used in C13. With gradient noise, the direct noisy-signal term needs
+a separate range argument and is not covered by this closure.
+
+There are two different negative findings. First, P8-style serial FP32 norm
+accumulation has a genuine executable obstruction: on an all-ones
+`4096 x 11008` matrix it sticks at `2^24`, so the returned normalized
+rank-one singular value has exact square `43/16>25/16`. Second, ordinary
+one-term BF16 boundaries lose this generic Frobenius-to-spectral proof at
+rank 72. The latter is only a proof obstruction; it is not a universal
+one-term-kernel impossibility result. The compensated slope-only boundary gate
+is 4,656,751, while the full recurrence currently stops before
+`4608 x 18432` because its fifth stage input leaves the `5/4` proof tube.
+That frontier is likewise not an executable instability claim.
+
+C14 is a theorem for the stated slow balanced CPU reference semantics and the
+specific shapes whose audit passes. It is not native BLAS/tensor-core parity,
+an upstream Muon theorem, a throughput claim, or a whole finite-precision
+optimizer theorem. FP32 EMA/Nesterov rounding, parameter storage/update
+rounding, weight decay, aspect scaling, and the additive-epsilon upstream
+normalizer remain outside its scope. See
+`scalable_mixed_precision_certificate.md`.
+
+## C15. Circuit and broader optimization consequences — open
 
 Boyd's framework models `y in partial f(x)` as a grounded multi-terminal
 device and its energy argument uses
@@ -699,6 +806,6 @@ training learning-rate interval remain open. They require:
 
 1. a circuit sign convention and explicit interconnection model;
 2. shape-scalable backend-parity quantization bounds, including the
-   finite-precision outer-loop errors excluded by C13;
+      finite-precision outer-loop errors excluded by C13--C14;
 3. implementation-level parity including weight decay and aspect scaling;
 4. only then, a controlled small neural-training sweep.

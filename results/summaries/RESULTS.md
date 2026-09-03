@@ -520,7 +520,56 @@ See `P8_RESULTS.md`, `mixed_precision_certificate.json`,
 `mixed_precision_falsification.json`, and
 `../../theory/mixed_precision_certificate.md`.
 
-## 14. Unrun gate
+## 14. P9 scalable mixed-precision certificate
+
+P9 replaces P8's fixed-`2 x 2`, one-term-BF16 result with an exact,
+shape-parameterized certificate for a proposed proof-reference kernel. For
+each audited shape `(r,c)` and every real input with
+`max_ij |s_ij| <= 2^116`, it proves
+
+\[
+\lVert\widehat R_{r,c}(s)-R_{r,c}(s)\rVert_F
+\le A_{r,c}\lVert s\rVert_F+B_{r,c}.
+\]
+
+The target is the repaired max-floor (`c=1`, no epsilon), five-step Jordan
+operator with coefficients `(6889/2000,-191/40,4063/2000)` and
+`rho=210177835339081/260261360000`. Inputs are finite 2-D matrices with at
+most `2^52` entries. The specified arithmetic uses a scale-free balanced-FP32
+normalizer, deterministic balanced FP32 dots, and two-term BF16 stage states
+with an exact upward-`2^-40` recurrence.
+
+All seven locked Transformer shapes
+`768 x 768`, `768 x 3072`, `768 x 50257`, `3072 x 12288`,
+`4096 x 4096`, `4096 x 11008`, and `4096 x 14336` certify with
+
+\[
+A_{r,c}=\frac{102465557}{549755813888},\qquad
+q_{r,c}=\frac{137425214491}{137438953472}<1.
+\]
+
+The largest intercept is
+`2179083213031/1099511627776 = 1.981864636974...`; after closing the P7
+post-operator port at `eta=1/32000`, the largest certified objective-gap
+neighborhood is `798350562999/1099511627776 = 0.726095607205...`.
+
+The negative evidence is deliberately narrower. Serial FP32 normalization on
+the `4096 x 11008` all-ones matrix returns a rank-one output with squared
+singular value `43/16`, outside the proof tube. The generic one-term-BF16
+boundary estimate closes only through short rank `71`; that is an obstruction
+to this proof, not an executable impossibility theorem. In the full recurrence,
+`4608 x 18432` is a qualified 4:1 out-of-envelope point failing only the
+fifth-stage-input tube; `4608` is not a universal rank frontier.
+
+The generator and independent standard-library reconstruction are the exact
+evidence. The optional CPU native-matmul diagnostic uses modest shapes by
+default and a float64, non-exact comparator; realistic shapes require
+`--include-realistic-shapes`. It is falsification only. P9 is not literal
+upstream Muon, a GPU/BLAS/tensor-core parity result, native BF16 matmul, a
+whole-FP32-loop theorem, or a neural-training result. See `P9_RESULTS.md` and
+`../../theory/scalable_mixed_precision_certificate.md`.
+
+## 15. Unrun gate
 
 No NanoGPT result is reported. This machine exposes neither CUDA nor an
 available MPS device. The `rho` used in the existing quadratic study is only a
@@ -528,7 +577,10 @@ finite-grid sampled repair; those results do not retroactively test the new
 floored architecture or its global certificate. A matched language-model
 sweep remains gated on suitable compute, a predeclared comparison, and
 implementation-level parity for the chosen floored design. P8's fixed-`2 x 2`
-operator certificate does not by itself clear that training gate.
+and P9's shape-parameterized operator certificates do not by themselves clear
+that training gate. Remaining implementation work includes FP32
+EMA/Nesterov disturbance ports, compensated or higher-precision master
+weights, aspect-ratio scaling, weight decay, and optimized-kernel parity.
 
 ## Reproduce
 
@@ -559,6 +611,10 @@ uv run --locked python scripts/reconstruct_robust_dissipativity.py
 uv run --locked python scripts/certify_mixed_precision.py \
   --output results/summaries/mixed_precision_certificate.json
 uv run --locked python scripts/reconstruct_mixed_precision.py
+uv run --locked python scripts/certify_scalable_mixed_precision.py \
+  --output results/summaries/scalable_mixed_precision_certificate.json
+uv run --locked python scripts/reconstruct_scalable_mixed_precision.py \
+  --require-canonical
 uv run --locked python experiments/matrices/run_deficit_audit.py
 uv run --locked python experiments/quadratics/run_lr_sweep.py
 uv run --locked python experiments/quadratics/run_horizon_check.py
@@ -575,6 +631,9 @@ uv run --locked python \
 uv run --locked python \
   experiments/mixed_precision/run_mixed_precision_falsification.py \
   --output results/summaries/mixed_precision_falsification.json
+uv run --locked python \
+  experiments/mixed_precision/run_scalable_mixed_precision_diagnostic.py \
+  --output results/summaries/scalable_mixed_precision_diagnostic.json
 uv run --locked python scripts/make_figures.py
 uv run --locked pytest -q
 ```
