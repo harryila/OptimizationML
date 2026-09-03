@@ -132,6 +132,16 @@ Current outputs:
   passivation, magnitude/stiffness tradeoff, scalar negative controls, and
   exact-real/BF16 exclusions; the human proof audit remains pending and
   unsigned;
+- `summaries/yosida_stability_certificate.json`: canonical P14 exact-real
+  implicit-operator certificate, including the full-matrix resolvent/Yosida
+  identities, epsilon-independent `[500,1000]` incremental sector, exact
+  smooth-PL value--momentum LMI at `eta=1/32000`, and scalar failure/pass
+  controls; generate it with `scripts/certify_yosida_stability.py` and
+  independently check it with the standard-library-only
+  `scripts/reconstruct_yosida_stability.py`;
+- `summaries/P14_YOSIDA_STABILITY_RESULTS.md`: scoped P14 existence, sector,
+  exact convergence, boundary-control, and implicit exact-real exclusions;
+  the human proof audit remains pending and unsigned;
 - `summaries/deficit_audit.{json,csv}`: 24-prefix spectral audit;
 - `summaries/quadratic_lr_sweep.json` plus CSV tables: gain-matched quadratic
   sweep and sensitivity classifications;

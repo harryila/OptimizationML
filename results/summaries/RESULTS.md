@@ -860,6 +860,88 @@ pending and unsigned. See `P13_RADIAL_PASSIVATION_RESULTS.md`,
 `radial_passivation_tradeoff_certificate.json`, and
 `../../theory/radial_passivation_tradeoff.md`.
 
+## 20. P14 Yosida stability
+
+P14 retains P13's exact-real full-matrix monotone map
+`A_epsilon=E_(h,epsilon)+G_epsilon`, for every `epsilon>0`, and changes the
+architecture rather than tightening its explicit stiffness estimate. Define
+
+\[
+B_{\epsilon,\mu}=A_\epsilon+\mu I,\qquad
+J_{\lambda B}=(I+\lambda B)^{-1},\qquad
+Y_{\lambda,\mu}=\lambda^{-1}(I-J_{\lambda B}).
+\]
+
+The inherited `E_(h,epsilon)` normalizes by
+`M/(||M||_F+epsilon)` and applies exactly five Jordan stages with coefficients
+`6889/2000`, `-191/40`, and `4063/2000`; `G_epsilon` is P13's locked radial
+correction.
+
+Continuity, full domain, and monotonicity of `A_epsilon` make `B` maximal and
+`mu`-strongly monotone on every fixed finite Frobenius matrix space. Thus the
+resolvent is globally defined and single-valued. For increments
+`u=Delta J`, `v=Delta Y`, and `x=Delta input=u+lambda*v`, strong monotonicity
+pulls back to the exact graph inequality
+
+\[
+\langle v-mx,\,Mx-v\rangle_F\ge0,
+\qquad m=\frac{\mu}{1+\lambda\mu},\quad M=\frac1\lambda.
+\]
+
+It also gives zero preservation, `lambda`-cocoercivity,
+`mu/(1+lambda*mu)`-strong monotonicity, and `1/lambda`-Lipschitzness. These are
+incremental nonsymmetric statements, not a Loewner order on `Y`.
+
+At `lambda=1/1000`, `mu=1000`, the sector is exactly `[500,1000]` and
+
+\[
+Y=750I+\mathcal E,\qquad \operatorname{Lip}(\mathcal E)\le250,
+\]
+
+independently of `epsilon`. An exact rational `4 x 4` value--momentum LMI uses
+the pinned EMA/Nesterov ordering, `beta=19/20`, `eta=1/32000`, global
+smoothness `L=10`, and global PL constant `1`. Its storage is
+
+\[
+P=10^{-6}\begin{bmatrix}674389&-73827\\-73827&12368\end{bmatrix},
+\qquad c_F=\frac{313243}{10^6},
+\]
+
+with exact nonnegative interpolation and residual multipliers. Sylvester's
+criterion verifies `P` positive definite and the complete LMI strictly
+negative definite. Exact function-value coefficients cancel, yielding
+
+\[
+V_{t+1}\le q_{14}V_t,
+\qquad q_{14}=\left(\frac{499}{500}\right)^2
+=\frac{249001}{250000}<1,
+\qquad D_{14}=0.
+\]
+
+In artifact notation, this is exactly `D14=0`; no solve-error term is hidden.
+
+Consequently, the objective gap, gradient, and momentum converge
+geometrically for every differentiable globally `10`-smooth objective with
+finite infimum satisfying the global PL inequality with constant `1`, even
+when the objective is nonconvex and its minimizer is nonunique. Summability of
+the exact updates gives convergence to some trajectory-dependent global
+minimizer; no unique-minimizer or arbitrary-pair contraction claim is made.
+
+The controls distinguish regularization from relabeling. The direct
+`lambda=0` P13 limit fails its exact scalar Jury test. A finite
+`lambda=1/100000` resolvent also fails at scalar curvature `10`, whereas the
+selected `lambda=1/1000` point passes that exact local control and the stronger
+global LMI. Exact lower, skew-circle, and limiting-upper examples show the
+Yosida sector constants cannot be uniformly improved over the stated monotone
+operator class.
+
+P14 specifies an exact implicit map only. It provides no finite-iteration
+resolvent algorithm, tolerance, cost bound, mixed-precision implementation,
+or literal BF16/upstream-Muon theorem; those are separate P15 questions. The
+human proof audit is pending and unsigned. See
+`P14_YOSIDA_STABILITY_RESULTS.md`, `yosida_stability_certificate.json`, and
+`../../theory/yosida_stability_certificate.md`.
+
 ## Reproduce
 
 ```bash
@@ -904,6 +986,10 @@ uv run --locked python scripts/reconstruct_additive_epsilon_deficit.py \
 uv run --locked python scripts/certify_radial_passivation_tradeoff.py \
   --output results/summaries/radial_passivation_tradeoff_certificate.json
 uv run --locked python scripts/reconstruct_radial_passivation_tradeoff.py \
+  --require-canonical
+uv run --locked python scripts/certify_yosida_stability.py \
+  --output results/summaries/yosida_stability_certificate.json
+uv run --locked python scripts/reconstruct_yosida_stability.py \
   --require-canonical
 uv run --locked python experiments/matrices/run_deficit_audit.py
 uv run --locked python experiments/quadratics/run_lr_sweep.py

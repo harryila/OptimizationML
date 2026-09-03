@@ -195,6 +195,29 @@
       rational-log enclosures, universal stiffness lower bound, Jury algebra,
       and exact-real/BF16 separation; the unsigned packet is
       `theory/audits/P13_RADIAL_PASSIVATION_HUMAN_PROOF_AUDIT.md`.
+- [x] Prove existence and uniqueness of the P13 resolvent after adding a
+      positive shunt, together with zero preservation, firm resolvent bounds,
+      Yosida cocoercivity, strong monotonicity, Lipschitzness, and the exact
+      full-matrix incremental sector IQC.
+- [x] At `lambda=1/1000` and `mu=1000`, derive the epsilon-independent sector
+      `[500,1000]` and centered decomposition `Y=750*I+E` with
+      `Lip(E)<=250`, explicitly without assuming a symmetric Jacobian.
+- [x] Certify the pinned `beta=19/20`, `eta=1/32000` EMA/Nesterov loop on the
+      full globally `10`-smooth, PL-`1` objective class with the exact rate
+      `q14=249001/250000<1` and `D14=0`.
+- [x] Add exact scalar controls showing that direct P13 evaluation and a
+      finite under-regularized Yosida point fail the Jury test while the
+      selected regularized point passes, plus sector-boundary witnesses.
+- [x] Add an exact P14 generator, a standard-library-only independent
+      reconstruction, exact LMI and source-manifest tests, and dedicated CI.
+- [ ] Obtain an independent human proof audit of C20, including maximality and
+      resolvent existence, the pulled-back sector identity, nonsymmetric
+      centered residual bound, nonconvex interpolation/value flow, exact LMI,
+      and negative controls; the unsigned packet is
+      `theory/audits/P14_YOSIDA_STABILITY_HUMAN_PROOF_AUDIT.md`.
+- [ ] Design and certify an efficient equivariant approximate-resolvent solve;
+      P14 proves existence and exact-real stability but does not bound finite
+      solve error or computational cost.
 - [ ] Bound the complete error of a pinned deployed BF16 backend by the C12
       disturbance model and certify its ultimate neighborhood; P8--P10 are
       proposed proof-reference designs, not literal upstream parity.

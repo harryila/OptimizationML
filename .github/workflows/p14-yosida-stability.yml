@@ -1,0 +1,62 @@
+name: P14 Yosida-stability replay
+
+on:
+  push:
+    branches:
+      - main
+      - p14-yosida-stability
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  yosida-stability:
+    name: Exact resolvent theorem and nonlinear PL replay (Python 3.12)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository with certificate history
+        uses: actions/checkout@v7
+        with:
+          # Frozen source snapshots are checked at their recorded commits.
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          enable-cache: true
+
+      - name: Install the locked environment
+        run: uv sync --locked
+
+      - name: Generate the exact Yosida-stability certificate
+        run: >-
+          uv run --locked python scripts/certify_yosida_stability.py
+          --output "$RUNNER_TEMP/yosida_stability_certificate.json"
+
+      - name: Independently reconstruct the fresh certificate
+        run: >-
+          uv run --locked python scripts/reconstruct_yosida_stability.py
+          --canonical "$RUNNER_TEMP/yosida_stability_certificate.json"
+          --require-canonical
+
+      - name: Compare the committed canonical certificate
+        run: >-
+          uv run --locked python scripts/reconstruct_yosida_stability.py
+          --require-canonical
+
+      - name: Run P14 theorem, controls, provenance, and replay tests
+        run: >-
+          uv run --locked pytest -q
+          tests/test_yosida_stability.py
+          tests/test_yosida_stability_cli.py
+          tests/test_yosida_stability_reconstruction.py
+          tests/test_yosida_stability_result_manifest.py
+          tests/test_current_research_index.py

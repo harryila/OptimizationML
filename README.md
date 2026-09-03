@@ -420,6 +420,52 @@ not reuse the max-floor stability claims. See
 and
 [`results/summaries/P13_RADIAL_PASSIVATION_RESULTS.md`](results/summaries/P13_RADIAL_PASSIVATION_RESULTS.md).
 
+Branch `p14-yosida-stability` pivots from direct evaluation of that stiff
+operator to an exact implicit construction. Write
+`A_epsilon=E_(h,epsilon)+G_epsilon`, add the shunt
+`B_(epsilon,mu)=A_epsilon+mu*I`, and define
+
+\[
+J_{\lambda B}=(I+\lambda B)^{-1},\qquad
+Y_{\lambda,\mu}=\lambda^{-1}(I-J_{\lambda B}).
+\]
+
+Here `E_(h,epsilon)` retains the normalization
+`M/(||M||_F+epsilon)`, five Jordan stages, and exact stage coefficients
+`6889/2000`, `-191/40`, and `4063/2000`; `G_epsilon` is exactly P13's radial
+repair.
+
+For every `epsilon>0` and every fixed finite rectangular matrix space, the
+P13 map is continuous, full-domain, monotone, and zero-preserving. Hence the
+resolvent exists uniquely. At the exact choice `lambda=1/1000`, `mu=1000`,
+its Yosida approximation is zero-preserving, `1/1000`-cocoercive,
+`500`-strongly monotone, and `1000`-Lipschitz. The authoritative nonsymmetric
+statement is the incremental sector IQC
+
+\[
+\langle\Delta Y-500\Delta X,\,1000\Delta X-\Delta Y\rangle_F\ge0,
+\]
+
+not a Loewner ordering. Equivalently, `Y=750*I+E` with `Lip(E)<=250`.
+
+An exact dimension-independent value--momentum LMI then certifies the pinned
+EMA/Nesterov loop at `beta=19/20`, the unchanged `eta=1/32000`, and every
+differentiable globally `10`-smooth objective with finite infimum satisfying
+the global PL inequality with constant `1`:
+
+\[
+V_{t+1}\le \frac{249001}{250000}V_t.
+\]
+
+Thus P14 has `D14=0` for the exact resolvent. Exact scalar controls show that
+the direct P13 limit and a finite under-regularized resolvent fail, while the
+selected point passes. This is an exact-real implicit optimizer theorem; it
+does not provide a resolvent algorithm, finite solve tolerance, BF16 kernel,
+or literal upstream-Muon guarantee. See
+[`theory/yosida_stability_certificate.md`](theory/yosida_stability_certificate.md)
+and
+[`results/summaries/P14_YOSIDA_STABILITY_RESULTS.md`](results/summaries/P14_YOSIDA_STABILITY_RESULTS.md).
+
 The repair claim is intentionally scoped. A constant `rho` is the exact minimal
 linear shift for a **specified point, pair, sample set, or domain with a finite
 certified deficit**. For exact scale-invariant normalization on every nonzero
@@ -461,6 +507,9 @@ uv run --locked python scripts/reconstruct_additive_epsilon_deficit.py \
 uv run --locked python scripts/certify_radial_passivation_tradeoff.py
 uv run --locked python scripts/reconstruct_radial_passivation_tradeoff.py \
   --require-canonical
+uv run --locked python scripts/certify_yosida_stability.py
+uv run --locked python scripts/reconstruct_yosida_stability.py \
+  --require-canonical
 uv run --locked pytest
 ```
 
@@ -492,7 +541,7 @@ not support a universal claim across BF16 backends.
 
 ## Scope
 
-This repository stays focused on sixteen technical goals:
+This repository stays focused on seventeen technical goals:
 
 1. a theorem for current-input Frobenius normalization;
 2. exact local and finite-pair controls for the five-step Jordan map;
@@ -523,7 +572,9 @@ This repository stays focused on sixteen technical goals:
 15. a full-matrix nonlinear radial passivator with logarithmic output growth,
     together with a universal near-matching `1/epsilon` stiffness lower bound
     and explicit-step negative control;
-16. qualified matrix, quadratic, nonlinear, and precision diagnostics.
+16. an epsilon-independent Yosida sector theorem and exact full-step
+    smooth-PL certificate for the pinned implicit EMA/Nesterov loop;
+17. qualified matrix, quadratic, nonlinear, and precision diagnostics.
 
 P7 is the submission cutoff and broadest robustness theorem; P6 is its
 zero-disturbance smooth-PL corollary. P8 and P9 instantiate one P7 disturbance
@@ -538,8 +589,11 @@ exact-real additive-epsilon alternative has a finite but catastrophically
 large global repair at the pinned `1e-7` scale; it does not certify the BF16
 backend. P13 reduces that repair's output magnitude through an exact radial
 construction but proves that the worst-case `1/epsilon` differential
-stiffness is unavoidable; it does not inherit P7--P11 stability. Production-
-gradient measurement, model-forward use of the logical
+stiffness is unavoidable; it does not inherit P7--P11 stability. P14 removes
+that stiffness from the outer-loop interface through an exact resolvent and
+recovers a full-step smooth-PL theorem, but leaves efficient and inexact
+resolvent evaluation open. Production-gradient measurement, model-forward use
+of the logical
 master, weight decay, aspect-ratio scaling, complete stochastic neural-network
 training, production-kernel parity, and formal circuit ports remain open.
 

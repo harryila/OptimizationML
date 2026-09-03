@@ -210,6 +210,39 @@ def test_current_indexes_record_scoped_p13_radial_passivation_tradeoff() -> None
     assert "scalar" in results and "Jury" in results
 
 
+def test_current_indexes_record_scoped_p14_yosida_stability() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    tasks = (ROOT / "TASKS.md").read_text(encoding="utf-8")
+    results_index = (ROOT / "results/README.md").read_text(encoding="utf-8")
+    experiments = (ROOT / "experiments/README.md").read_text(encoding="utf-8")
+    results = (ROOT / "results/summaries/RESULTS.md").read_text(encoding="utf-8")
+    claims = (ROOT / "theory/claims.md").read_text(encoding="utf-8")
+
+    for artifact in (
+        "yosida_stability_certificate.json",
+        "P14_YOSIDA_STABILITY_RESULTS.md",
+    ):
+        assert artifact in results_index
+    for command in (
+        "certify_yosida_stability.py",
+        "reconstruct_yosida_stability.py",
+    ):
+        assert command in readme
+        assert command in experiments
+        assert command in results
+    for text in (readme, results, claims):
+        assert "249001" in text
+        assert "250000" in text
+        assert "1/32000" in text
+        assert "Yosida" in text
+        assert "exact-real" in text
+        assert "BF16" in text
+    assert "## 20. P14 Yosida stability" in results
+    assert "## C20. Yosida regularization and full-step PL stability" in claims
+    assert "human proof audit of C20" in tasks
+    assert "D14=0" in " ".join(results.split())
+
+
 def test_double_blind_material_is_guarded_from_the_public_repository() -> None:
     ignore = (ROOT / ".gitignore").read_text(encoding="utf-8")
     for pattern in (

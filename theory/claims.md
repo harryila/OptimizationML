@@ -1208,3 +1208,102 @@ discontinuous, and neither C18 nor C19 certifies it. C19 also does not
 propagate the radial repair through the P7--P11 stack, prove strong
 monotonicity, or establish neural-network convergence. See
 `radial_passivation_tradeoff.md`; independent human review is pending.
+
+## C20. Yosida regularization and full-step PL stability — proved for an exact implicit map
+
+For every fixed finite real rectangular matrix space and every `epsilon>0`,
+let `A_epsilon=E_(h,epsilon)+G_epsilon` be C19's continuous, full-domain,
+zero-preserving monotone operator. For `lambda,mu>0`, define
+
+\[
+B_{\epsilon,\mu}=A_\epsilon+\mu I,\qquad
+J_{\lambda B}=(I+\lambda B)^{-1},\qquad
+Y_{\lambda,\mu}=\lambda^{-1}(I-J_{\lambda B}).
+\]
+
+Explicitly, `E_(h,epsilon)` uses the current additive normalization
+`M/(||M||_F+epsilon)` and five Jordan polynomial stages with exact
+coefficients `6889/2000`, `-191/40`, and `4063/2000`; `G_epsilon` is C19's
+exact radial correction. The stability artifact pins `epsilon=1e-7`, while
+the operator theorem and its sector constants hold for every `epsilon>0`.
+The practical formula is traced to KellerJordan/Muon revision
+`f98f1cacc0263b04290753e32be8d498c1efc806`; that upstream revision does not
+contain the radial passivator or the Yosida architecture.
+
+The full-domain continuous monotone map `A_epsilon` is maximal monotone in the
+finite-dimensional Frobenius space. Hence `B` is maximal and
+`mu`-strongly monotone, `I+lambda*B` is bijective, and the resolvent is
+globally single-valued. Since `B(0)=0`, both `J` and `Y` preserve zero.
+
+For arbitrary input increments `x`, put `u=Delta J` and `v=Delta Y`, so
+`x=u+lambda*v`. Pulling back strong monotonicity of `B` gives
+
+\[
+\langle v-mx,\,Mx-v\rangle_F
+=\frac{\langle v,u\rangle_F-\mu\lVert u\rVert_F^2}
+{\lambda(1+\lambda\mu)}\ge0,
+\qquad
+m=\frac{\mu}{1+\lambda\mu},\quad M=\frac1\lambda.
+\]
+
+This exact full-matrix incremental sector implies that `Y` is
+`m`-strongly monotone and `M`-Lipschitz and that
+
+\[
+\left\lVert\Delta Y-\frac{M+m}{2}\Delta X\right\rVert_F
+\le\frac{M-m}{2}\lVert\Delta X\rVert_F.
+\]
+
+The ordinary resolvent identity also gives
+`<Delta Y,Delta X>_F>=lambda*||Delta Y||_F^2`, so `Y` is
+`lambda`-cocoercive. These claims allow nonsymmetric increments; the shorthand
+sector `[m,M]` is not a Loewner ordering or a claim that `Y` is a gradient.
+
+At the locked exact choice `lambda=1/1000`, `mu=1000`, one has
+`m=500`, `M=1000`, and the centered decomposition
+`Y=750*I+mathcal E` with `Lip(mathcal E)<=250`, uniformly in `epsilon` and
+matrix shape. A two-dimensional exact skew example saturates the centered
+radius, `A=1000*S` with `S^T=-S` and `S^T*S=I`, for which
+`Y=600*I+200*S`. The choice `A=0` attains the lower endpoint, and positive
+linear gains tending to infinity approach the upper endpoint.
+
+Use this exact `Y` in the pinned real-arithmetic EMA/Nesterov ordering
+
+\[
+m_{t+1}=\frac{19}{20}m_t+\frac1{20}\nabla f(W_t),\qquad
+s_{t+1}=\frac{19}{20}m_{t+1}+\frac1{20}\nabla f(W_t),
+\qquad W_{t+1}=W_t-\frac1{32000}Y(s_{t+1}).
+\]
+
+For every differentiable globally `10`-smooth objective with finite infimum
+that satisfies the global PL inequality with constant `1`, the exact rational
+value--momentum certificate with
+
+\[
+P=10^{-6}\begin{bmatrix}674389&-73827\\-73827&12368\end{bmatrix},
+\quad c_F=\frac{313243}{10^6},\quad \tau=\frac{499}{500}
+\]
+
+has positive storage, a strictly negative `4 x 4` LMI, and exact objective-
+value cancellation. Therefore
+
+\[
+V_{t+1}\le\frac{249001}{250000}V_t,
+\]
+
+so C20 has `D14=0`: objective gap, gradient, and momentum converge
+geometrically, and the iterates converge to some trajectory-dependent global
+minimizer. Convexity and uniqueness are not assumed. This is not an
+arbitrary-pair incremental-stability claim.
+
+The regularization is essential. At the pinned `epsilon=1e-7`, direct
+evaluation (`lambda=0`) inherits C19's exact Jury failure. Even the finite
+under-regularized choice `lambda=1/100000` fails the scalar curvature-`10`
+Jury condition, while `lambda=1/1000` passes that local control and the global
+PL LMI above.
+
+C20 is an existence and stability theorem for an exact-real implicit
+resolvent optimizer. It does not supply a numerical resolvent algorithm,
+approximate-solve error bound, complexity guarantee, BF16 implementation,
+weight decay, aspect scaling, or literal upstream-Muon theorem. See
+`yosida_stability_certificate.md`; independent human review is pending.
