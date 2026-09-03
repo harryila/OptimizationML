@@ -55,5 +55,5 @@ jobs:
           tests/test_implementation_margin_certificate.py
           tests/test_implementation_margin_cli.py
           tests/test_implementation_margin_reconstruction.py
+          tests/test_p11_result_manifest.py
           tests/test_current_research_index.py
-
