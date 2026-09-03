@@ -351,6 +351,45 @@ The inherited P10 provenance roles remain distinct: theorem source
 `2d62b566...`, exact-artifact commit `6e7ea000...`, and diagnostic/checkpoint
 commit `3246972d...`.
 
+Branch `p12-additive-epsilon-deficit` closes the corresponding exact-real
+question for the additive denominator
+
+\[
+E_{h,\epsilon}(M)=\mathcal H_h
+\left(\frac{M}{\lVert M\rVert_F+\epsilon}\right),
+\qquad \epsilon>0.
+\]
+
+For each fixed finite matrix shape, the global pairwise deficit scales
+exactly by the `1/epsilon` law
+
+\[
+\delta_{m,n}(E_{h,\epsilon})
+=\frac{\delta_{m,n}(E_{h,1})}{\epsilon}.
+\]
+
+A four-band Arb certificate and full rectangular tangent reduction prove the
+dimension-uniform upper
+
+\[
+\delta_{m,n}(E_{h,1})
+\le\frac{6602082433275499863}{41641817600000000}
+=158.544530805386839\ldots.
+\]
+
+An exact rational swapped-diagonal pair proves the strict lower
+`98823281/625000 = 158.1172496` for `2 x 2` and every shape with
+`min(m,n)>=2` by zero-padding. At the pinned additive value
+`epsilon=1e-7`, any global constant repair in such a shape must exceed
+`1,581,172,496`, while the certified sufficient repair is approximately
+`1.585445308e9`. This makes the deployed-scale constant repair catastrophic
+at ordinary raw signal scale. The theorem is for the continuous exact-real
+surrogate only; the pinned cast-before-norm BF16 map is discontinuous and is
+not certified. Human proof review is pending and unsigned. See
+[`theory/additive_epsilon_deficit_certificate.md`](theory/additive_epsilon_deficit_certificate.md)
+and
+[`results/summaries/P12_ADDITIVE_EPSILON_RESULTS.md`](results/summaries/P12_ADDITIVE_EPSILON_RESULTS.md).
+
 The repair claim is intentionally scoped. A constant `rho` is the exact minimal
 linear shift for a **specified point, pair, sample set, or domain with a finite
 certified deficit**. For exact scale-invariant normalization on every nonzero
@@ -386,6 +425,9 @@ uv run --locked python scripts/certify_outer_loop_roundoff.py
 uv run --locked python scripts/reconstruct_outer_loop_roundoff.py
 uv run --locked python scripts/certify_implementation_margin.py
 uv run --locked python scripts/reconstruct_implementation_margin.py
+uv run --locked python scripts/certify_additive_epsilon_deficit.py
+uv run --locked python scripts/reconstruct_additive_epsilon_deficit.py \
+  --require-canonical
 uv run --locked pytest
 ```
 
@@ -417,7 +459,7 @@ not support a universal claim across BF16 backends.
 
 ## Scope
 
-This repository stays focused on fourteen technical goals:
+This repository stays focused on fifteen technical goals:
 
 1. a theorem for current-input Frobenius normalization;
 2. exact local and finite-pair controls for the five-step Jordan map;
@@ -442,7 +484,10 @@ This repository stays focused on fourteen technical goals:
     EMA/Nesterov arithmetic and a compensated three-word FP32 master;
 13. exact two-port implementation-acceptance margins above that locked shell,
     including coordinatewise boundary controls and Pareto slices;
-14. qualified matrix, quadratic, nonlinear, and precision diagnostics.
+14. an exact-real, shape-uniform additive-epsilon deficit upper certificate,
+    an exact rank-two lower witness, and the resulting deployed-epsilon
+    constant-repair obstruction;
+15. qualified matrix, quadratic, nonlinear, and precision diagnostics.
 
 P7 is the submission cutoff and broadest robustness theorem; P6 is its
 zero-disturbance smooth-PL corollary. P8 and P9 instantiate one P7 disturbance
@@ -452,10 +497,12 @@ and P3 is the conservative generic-IQC baseline. The generic one-step-memory
 IQC framework is prior art; the new ingredients are the certified full-matrix
 Muon operator and the structure-aware interconnection. P10 closes one proposed
 outer arithmetic shell, and P11 quantifies additional admissible discrepancies
-without asserting that any deployed system meets them. Production-gradient
-measurement, model-forward use of the logical master, weight decay,
-aspect-ratio scaling, complete stochastic neural-network training,
-production-kernel parity, and formal circuit ports remain open.
+without asserting that any deployed system meets them. P12 shows that the
+exact-real additive-epsilon alternative has a finite but catastrophically
+large global repair at the pinned `1e-7` scale; it does not certify the BF16
+backend. Production-gradient measurement, model-forward use of the logical
+master, weight decay, aspect-ratio scaling, complete stochastic neural-network
+training, production-kernel parity, and formal circuit ports remain open.
 
 ## Layout
 

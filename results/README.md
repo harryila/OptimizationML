@@ -107,6 +107,19 @@ Current outputs:
   the standard-library-only `scripts/reconstruct_implementation_margin.py`;
 - `summaries/P11_RESULTS.md`: scoped P11 margin table, guard closure, negative-
   control interpretation, P10 provenance roles, and deployment exclusions;
+- `summaries/additive_epsilon_deficit_certificate.json`: canonical P12
+  exact-real additive-Frobenius-epsilon certificate, including exact
+  fixed-shape `1/epsilon` scaling, the four-band dimension-uniform full-
+  rectangular upper, the exact rank-two lower witness, deployed-epsilon
+  repair obstruction, upstream formula provenance, and exact-real/BF16 scope
+  separation; generate it with
+  `scripts/certify_additive_epsilon_deficit.py` and independently check it
+  with the standard-library-only
+  `scripts/reconstruct_additive_epsilon_deficit.py`;
+- `summaries/P12_ADDITIVE_EPSILON_RESULTS.md`: scoped human-readable P12
+  upper/lower bracket, repair consequence, boundary controls, max-floor
+  comparison, and BF16 exclusions; the human proof audit remains pending and
+  unsigned;
 - `summaries/deficit_audit.{json,csv}`: 24-prefix spectral audit;
 - `summaries/quadratic_lr_sweep.json` plus CSV tables: gain-matched quadratic
   sweep and sensitivity classifications;

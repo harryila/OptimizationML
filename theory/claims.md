@@ -1000,3 +1000,122 @@ training learning-rate interval remain open. They require:
       outer-loop semantics not covered by the proposed C13--C16 certificates;
 3. implementation-level parity including weight decay and aspect scaling;
 4. only then, a controlled small neural-training sweep.
+
+## C18. Additive-epsilon full-matrix deficit — proved for the exact-real surrogate
+
+Fix any finite real matrix shape `m x n`. Let `h=q composed 5 times`, where
+
+\[
+q(s)=\frac{6889}{2000}s-\frac{191}{40}s^3
+     +\frac{4063}{2000}s^5,
+\]
+
+and define, for every real `epsilon>0`,
+
+\[
+E_{h,\epsilon}(M)=\mathcal H_h
+\left(\frac{M}{\lVert M\rVert_F+\epsilon}\right).
+\]
+
+The arithmetic model is exact real arithmetic. The normalizer is the current
+Frobenius norm plus additive epsilon, with no max floor. For the unrestricted
+pairwise deficit on each fixed shape, the exact change of variables
+`M=epsilon X` proves
+
+\[
+\delta_{m,n}(E_{h,\epsilon})
+=\frac{\delta_{m,n}(E_{h,1})}{\epsilon}.
+\]
+
+This exact `1/epsilon` equality is shape by shape. A restricted-domain
+statement would also have to scale its domain.
+
+At nonzero input, with
+`t=||M||_F/(epsilon+||M||_F)`, the normalizer derivative is
+
+\[
+DN_\epsilon(M)=\frac{1-t}{\epsilon}(I-tP_M)
+=\frac{1-t}{\epsilon}\bigl((1-t)I+tQ_M\bigr).
+\]
+
+At zero, the quotient is Frechet differentiable and
+
+\[
+DE_{h,\epsilon}(0)=\frac1\epsilon
+\left(\frac{6889}{2000}\right)^5I\succ0.
+\]
+
+The derivative of the outer rectangular spectral map is self-adjoint. Its
+active, difference, sum, repeated/zero-singular-value, and rectangular
+null-side modes are all secant averages of the even function `h'` on
+`[-t,t]`. Three prefix Arb covers plus the inherited global cover give four
+exact radius-band slope envelopes. Combining each with the dimension-free
+projection/anticommutator lemma and maximizing the resulting rational
+quadratic on that band proves
+
+\[
+\delta_{m,n}(E_{h,1})
+\le
+\bar\delta_1
+=\frac{6602082433275499863}{41641817600000000}
+=158.544530805386839\ldots
+\]
+
+for every finite positive `m,n`. Integration of the symmetric-Jacobian bound
+along line segments promotes the pointwise result to the authoritative global
+pairwise inequality. The proof covers the complete rectangular tangent space;
+it is not a diagonal certificate.
+
+For a lower witness, set
+
+\[
+\tau=\frac{8974467}{10^9},\qquad
+u_-=\frac{803760}{1136689},\qquad
+u_+=\frac{803761}{1136689},
+\]
+
+so `u_-^2+u_+^2=1`, and use the two matrices obtained by swapping the
+diagonal entries of
+`tau/(1-tau) * diag(u_-,u_+)`. Exact five-stage rational evaluation proves
+
+\[
+\delta_{2,2}(E_{h,1})>
+\frac{98823281}{625000}=158.1172496.
+\]
+
+The exact quotient has canonical SHA-256
+`de076057ce58ad174a52a8e0e492f7efffe0488bbca19c03cd1ce0fee75a7336`.
+Zero-padding transfers this strict lower bound only to shapes with
+`min(m,n)>=2`; it is not claimed for scalar-only shapes.
+
+Consequently,
+
+\[
+E_{h,\epsilon}(M)+\frac{\bar\delta_1}{\epsilon}M
+\]
+
+is globally monotone in every finite matrix shape. The upper endpoint is
+sufficient, not claimed minimal. At the pinned value `epsilon=10^-7`, the
+exact witness forces every globally valid constant repair in a shape
+containing it to exceed `1,581,172,496`, while the certified sufficient value
+is
+
+\[
+\frac{6602082433275499863}{4164181760}
+=1,585,445,308.053868\ldots.
+\]
+
+That correction is catastrophic at ordinary raw signal scale. It is also
+about `9.94` million times the prior max-floor `c=1` sufficient upper
+`41528474059081/260261360000 = 159.564501081071...`. This is a design
+obstruction for a global constant repair, not a claim that every trajectory
+attains the worst case.
+
+C18 certifies only the continuous exact-real surrogate. The pinned upstream
+implementation casts to BF16 before its norm, uses BF16 stage arithmetic, and
+is backend-specific and discontinuous. Formula provenance from pinned
+KellerJordan/Muon revision
+`f98f1cacc0263b04290753e32be8d498c1efc806` does not transfer C18's Jacobian,
+pairwise, or repair theorem to literal BF16 Muon. See
+`additive_epsilon_deficit_certificate.md`; the human audit packet is pending
+and unsigned.

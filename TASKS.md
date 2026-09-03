@@ -152,6 +152,28 @@
 - [ ] P10 human proof audit remains pending; P11 does not retroactively provide
       the external sign-off requested in
       `theory/audits/P10_HUMAN_PROOF_AUDIT.md`.
+- [x] Prove the exact fixed-shape scaling law
+      `delta(E_h,epsilon)=delta(E_h,1)/epsilon` for the exact-real
+      additive-Frobenius-epsilon normalizer, including its ordinary positive
+      Frechet derivative at zero.
+- [x] Derive a dimension-uniform full-rectangular additive-epsilon upper
+      certificate using four normalized-radius bands, outward-rounded Arb
+      prefix covers, and the projection/anticommutator envelope.
+- [x] Certify
+      `delta(E_h,1)<=6602082433275499863/41641817600000000` in every finite
+      shape and the exact rank-two strict lower
+      `delta(E_h,1)>98823281/625000` for shapes with `min(m,n)>=2`.
+- [x] Add an exact rational swapped-diagonal witness, two-precision primary
+      replay, standalone standard-library directed-interval reconstruction,
+      band-boundary checks, and under-repair negative control.
+- [x] Quantify the pinned `epsilon=1e-7` exact-real constant-repair
+      obstruction: necessary `rho>1,581,172,496` and certified sufficient
+      `rho=6602082433275499863/4164181760`.
+- [ ] Obtain an independent human proof audit of C18, including the origin,
+      full rectangular spectral reduction, four-band interval bounds,
+      pairwise promotion, exact witness, and exact-real/BF16 separation; the
+      unsigned packet is
+      `theory/audits/P12_ADDITIVE_EPSILON_HUMAN_PROOF_AUDIT.md`.
 - [ ] Bound the complete error of a pinned deployed BF16 backend by the C12
       disturbance model and certify its ultimate neighborhood; P8--P10 are
       proposed proof-reference designs, not literal upstream parity.

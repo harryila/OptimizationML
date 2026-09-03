@@ -1,0 +1,59 @@
+name: P12 additive-epsilon deficit replay
+
+on:
+  push:
+    branches:
+      - main
+      - p12-additive-epsilon-deficit
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  additive-epsilon-deficit:
+    name: Arb, exact pair, and independent interval replay (Python 3.12)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          enable-cache: true
+
+      - name: Install the locked environment
+        run: uv sync --locked
+
+      - name: Replay the Arb and exact rational certificate
+        run: >-
+          uv run --locked python scripts/certify_additive_epsilon_deficit.py
+          --output "$RUNNER_TEMP/additive_epsilon_deficit_certificate.json"
+
+      - name: Independently reconstruct the fresh certificate
+        run: >-
+          uv run --locked python scripts/reconstruct_additive_epsilon_deficit.py
+          --canonical "$RUNNER_TEMP/additive_epsilon_deficit_certificate.json"
+          --require-canonical
+
+      - name: Compare the committed canonical certificate
+        run: >-
+          uv run --locked python scripts/reconstruct_additive_epsilon_deficit.py
+          --require-canonical
+
+      - name: Run P12 theorem, controls, provenance, and replay tests
+        run: >-
+          uv run --locked pytest -q
+          tests/test_additive_epsilon_deficit.py
+          tests/test_additive_epsilon_deficit_cli.py
+          tests/test_additive_epsilon_deficit_reconstruction.py
+          tests/test_additive_epsilon_deficit_result_manifest.py
+          tests/test_current_research_index.py

@@ -24,7 +24,10 @@ Experiment order is gated:
     checks, raw-FP32 subtraction witness, and modest CPU diagnostic;
 14. the P11 exact two-port implementation-margin replay, grid boundaries,
     coordinatewise-maximal frontier slices, and adjacent rejection controls;
-15. only after model-forward use of the logical master, aspect scaling, weight
+15. the P12 exact-real additive-epsilon full-rectangular deficit certificate,
+    exact rank-two lower witness, boundary controls, and independent directed-
+    interval replay;
+16. only after model-forward use of the logical master, aspect scaling, weight
     decay, and implementation-parity gates, a small matched neural-training
     sweep.
 
@@ -46,9 +49,13 @@ EMA/Nesterov and compensated logical-master residuals for one guarded
 consumes the three-word master or establish native accelerator/upstream
 parity. P11 then computes exact additional gradient and deployed-operator
 acceptance margins without asserting that a production implementation meets
-them. Each run writes a self-contained JSON manifest and compact CSV tables
-under `results/summaries/`; the JSON records inputs, operator details, dtype,
-seed, software, hardware, and Git state.
+them. P12 separately proves exact `1/epsilon` deficit scaling and a
+dimension-uniform four-band upper for the continuous additive-epsilon
+surrogate. At the pinned `1e-7` scale its required constant repair is
+catastrophically large; this is not a certificate for the discontinuous BF16
+backend. Each run writes a self-contained JSON manifest and compact CSV
+tables under `results/summaries/`; the JSON records inputs, operator details,
+dtype, seed, software, hardware, and Git state.
 
 Replay the CPU-only momentum result with:
 
@@ -104,11 +111,17 @@ uv run --locked python scripts/certify_implementation_margin.py \
   --output results/summaries/implementation_margin_certificate.json
 uv run --locked python scripts/reconstruct_implementation_margin.py \
   --require-canonical
+uv run --locked python scripts/certify_additive_epsilon_deficit.py \
+  --output results/summaries/additive_epsilon_deficit_certificate.json
+uv run --locked python scripts/reconstruct_additive_epsilon_deficit.py \
+  --require-canonical
 ```
 
-The P9--P11 generators and standard-library-only reconstructions carry their
+The P9--P12 generators and standard-library-only reconstructions carry their
 exact claims. P11's adjacent controls establish rejection of the sufficient
-certificate, not actual closed-loop instability. P9's separate CPU diagnostic is a native-matmul
+certificate, not actual closed-loop instability. P12's older sampled epsilon
+grid is discovery evidence only; its exact/interval generator carries the
+global upper. P9's separate CPU diagnostic is a native-matmul
 falsification probe against a float64, non-exact target:
 
 ```bash

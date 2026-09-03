@@ -142,6 +142,42 @@ def test_current_indexes_record_scoped_p11_implementation_margin_result() -> Non
     assert "P10 human proof audit remains pending" in tasks
 
 
+def test_current_indexes_record_scoped_p12_additive_epsilon_result() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    tasks = (ROOT / "TASKS.md").read_text(encoding="utf-8")
+    results_index = (ROOT / "results/README.md").read_text(encoding="utf-8")
+    experiments = (ROOT / "experiments/README.md").read_text(encoding="utf-8")
+    results = (ROOT / "results/summaries/RESULTS.md").read_text(encoding="utf-8")
+    claims = (ROOT / "theory/claims.md").read_text(encoding="utf-8")
+
+    for artifact in (
+        "additive_epsilon_deficit_certificate.json",
+        "P12_ADDITIVE_EPSILON_RESULTS.md",
+    ):
+        assert artifact in results_index
+
+    for command in (
+        "certify_additive_epsilon_deficit.py",
+        "reconstruct_additive_epsilon_deficit.py",
+    ):
+        assert command in readme
+        assert command in experiments
+        assert command in results
+
+    for text in (readme, results, claims):
+        assert "6602082433275499863" in text
+        assert "41641817600000000" in text
+        assert "158.1172496" in text
+        assert "1/epsilon" in text
+        assert "exact-real" in text
+        assert "BF16" in text
+
+    assert "## 18. P12 additive-epsilon deficit" in results
+    assert "## C18. Additive-epsilon full-matrix deficit" in claims
+    assert "human proof audit" in tasks
+    assert "catastrophically large" in " ".join(results.split())
+
+
 def test_double_blind_material_is_guarded_from_the_public_repository() -> None:
     ignore = (ROOT / ".gitignore").read_text(encoding="utf-8")
     for pattern in (

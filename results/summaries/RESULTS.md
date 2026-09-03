@@ -710,6 +710,85 @@ decay, gradient-evaluation and represented-model error, and optimized-kernel
 parity. P11 supplies exact acceptance budgets for two aggregate discrepancy
 ports, but no production error has yet been measured against those budgets.
 
+## 18. P12 additive-epsilon deficit certificate
+
+For every fixed finite real matrix shape and every `epsilon>0`, P12 studies
+
+\[
+E_{h,\epsilon}(M)=\mathcal H_h
+\left(\frac{M}{\lVert M\rVert_F+\epsilon}\right),
+\]
+
+where `h` is exactly five compositions of the Jordan quintic with coefficients
+`(6889/2000,-191/40,4063/2000)`. The unrestricted pairwise deficit obeys the
+exact fixed-shape `1/epsilon` scaling law
+
+\[
+\delta_{m,n}(E_{h,\epsilon})
+=\frac{\delta_{m,n}(E_{h,1})}{\epsilon}.
+\]
+
+A two-precision Arb proof, four normalized-radius bands, the full rectangular
+spectral tangent decomposition, and the exact projection/anticommutator
+envelope prove
+
+\[
+\delta_{m,n}(E_{h,1})
+\le\frac{6602082433275499863}{41641817600000000}
+=158.544530805386839\ldots
+\]
+
+uniformly over every finite positive `m,n`. The origin is handled by its
+ordinary positive Frechet derivative; no sampled zero-radius surrogate is
+used. Integrating the symmetric-Jacobian lower bound along line segments
+promotes the complete tangent-space result to the authoritative global
+pairwise inequality.
+
+An exact rational swapped-diagonal `2 x 2` pair at normalized radius
+`8974467/10^9`, with Pythagorean direction
+`(803760/1136689,803761/1136689)`, proves
+
+\[
+\delta_{2,2}(E_{h,1})>
+\frac{98823281}{625000}=158.1172496.
+\]
+
+Its exact reduced quotient has SHA-256
+`de076057ce58ad174a52a8e0e492f7efffe0488bbca19c03cd1ce0fee75a7336`.
+The pair zero-pads only into shapes with `min(m,n)>=2`, so that qualification
+applies to the lower endpoint. The dimension-uniform upper remains valid for
+all finite rectangular shapes.
+
+The sufficient global repair is
+
+\[
+\rho_\epsilon=
+\frac1\epsilon
+\frac{6602082433275499863}{41641817600000000}.
+\]
+
+At the pinned `epsilon=1e-7`, any global constant repair in a shape containing
+the witness must exceed `1,581,172,496`; the certified sufficient repair is
+
+\[
+\frac{6602082433275499863}{4164181760}
+=1,585,445,308.053868\ldots.
+\]
+
+This is catastrophically large at ordinary raw signal scale. For comparison,
+the max-floor `c=1` sufficient upper is only
+`41528474059081/260261360000 = 159.564501081071...`. P12's conclusion is a
+global constant-repair obstruction, not evidence that every local trajectory
+attains the worst case.
+
+The theorem concerns the continuous exact-real surrogate. The pinned
+upstream map casts to BF16 before its norm and stages, is backend-specific and
+discontinuous, and is not covered by the Jacobian or repair certificate. The
+upstream revision establishes formula provenance only. The human proof audit
+is pending and unsigned. See `P12_ADDITIVE_EPSILON_RESULTS.md`,
+`additive_epsilon_deficit_certificate.json`, and
+`../../theory/additive_epsilon_deficit_certificate.md`.
+
 ## Reproduce
 
 ```bash
@@ -746,6 +825,10 @@ uv run --locked python scripts/reconstruct_scalable_mixed_precision.py \
 uv run --locked python scripts/certify_outer_loop_roundoff.py \
   --output results/summaries/outer_loop_roundoff_certificate.json
 uv run --locked python scripts/reconstruct_outer_loop_roundoff.py \
+  --require-canonical
+uv run --locked python scripts/certify_additive_epsilon_deficit.py \
+  --output results/summaries/additive_epsilon_deficit_certificate.json
+uv run --locked python scripts/reconstruct_additive_epsilon_deficit.py \
   --require-canonical
 uv run --locked python experiments/matrices/run_deficit_audit.py
 uv run --locked python experiments/quadratics/run_lr_sweep.py
