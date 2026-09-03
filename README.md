@@ -130,6 +130,14 @@ proof is dimension independent and allows changing local Hessian orientations
 where Hessians exist. See
 [`theory/pl_convergence_certificate.md`](theory/pl_convergence_certificate.md).
 
+The canonical P6 certificate was generated from source commit
+`a8f650f6c60dcbc5d2f83647fd367348f4c67548`. The completed, documented P6
+checkpoint is commit `ef88d8f5b26148af0ec1ca70b506048938bf9bef`, frozen by the
+annotated tag `p6-checkpoint`. These are deliberately distinct provenance
+roles. A standalone standard-library reconstruction rebuilds the interpolation
+supplies, storage, complete `4 x 4` LMI, and exact Sylvester minors before it
+reads and compares the canonical artifact.
+
 The repair claim is intentionally scoped. A constant `rho` is the exact minimal
 linear shift for a **specified point, pair, sample set, or domain with a finite
 certified deficit**. For exact scale-invariant normalization on every nonzero
@@ -154,6 +162,7 @@ uv run --locked python scripts/certify_nonquadratic_stability.py
 uv run --locked python scripts/certify_nonquadratic_convergence.py
 uv run --locked python scripts/reconstruct_nonquadratic_convergence.py
 uv run --locked python scripts/certify_pl_convergence.py
+uv run --locked python scripts/reconstruct_pl_convergence.py
 uv run --locked pytest
 ```
 

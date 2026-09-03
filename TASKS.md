@@ -58,6 +58,10 @@
       claiming a unique minimizer.
 - [x] Replay the P6 rational value--momentum LMI and run the 72-case nonconvex,
       changing-orientation, nonunique-minimizer falsification grid.
+- [x] Add a standalone standard-library reconstruction of the P6 `4 x 4` LMI,
+      exact value cancellation, and Sylvester-minor checks.
+- [ ] Obtain an independent human proof audit of C11, with particular attention
+      to the directed smooth nonconvex interpolation step.
 - [ ] Extend the P6 result to input-to-state or mean-square robustness under
       stochastic-gradient noise.
 - [ ] Treat BF16 and rounding as disturbances and certify an ultimate error

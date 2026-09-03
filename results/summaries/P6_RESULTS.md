@@ -93,10 +93,20 @@ negative definite by exact rational arithmetic. The argument is dimension
 independent and uses smooth nonconvex interpolation plus the PL supply; it does
 not infer the theorem from a numerical solver or sampled trajectories.
 
-The exact proof artifact records code commit
-`a8f650f6c60dcbc5d2f83647fd367348f4c67548`. P5 remains frozen at annotated tag
-`p5-checkpoint`, peeled commit
-`a549fb4c206335ef9ec264524e0f581216b250d4`.
+The exact proof artifact records generation/source commit
+`a8f650f6c60dcbc5d2f83647fd367348f4c67548`. The completed P6 result and
+documentation are frozen at checkpoint commit
+`ef88d8f5b26148af0ec1ca70b506048938bf9bef`, annotated tag `p6-checkpoint`.
+The source SHA inside the immutable artifact is not presented as the later
+checkpoint SHA. P5 remains frozen at annotated tag `p5-checkpoint`, peeled
+commit `a549fb4c206335ef9ec264524e0f581216b250d4`.
+
+`scripts/reconstruct_pl_convergence.py` supplies a separately committed,
+standard-library-only code path. It rebuilds both directed interpolation
+matrices, the dynamics, storage, function-value cancellation, complete `4 x
+4` LMI, and exact Sylvester minors before reading the canonical JSON, then
+cross-checks every published exact field. This is an exact replay with unit
+cross-checks, not a human proof audit.
 
 ## Sampled falsification
 
@@ -141,16 +151,18 @@ The result does not establish arbitrary-pair incremental contraction or cover
 local-only PL assumptions, stochastic gradients, time-varying objectives,
 BF16 arithmetic, weight decay, aspect-ratio scaling, additive-epsilon or
 exact-current normalization, unrepaired upstream Muon, or complete neural
-network training. An automated independent-agent algebra audit passed; an
-independent human proof audit remains pending.
+network training. The independent code-path reconstruction and unit
+cross-checks pass; an independent human proof audit remains pending.
 
 ## Replay
 
 ```bash
 uv run --locked python scripts/certify_pl_convergence.py
+uv run --locked python scripts/reconstruct_pl_convergence.py
 uv run --locked python experiments/nonconvex/run_pl_falsification.py
 uv run --locked pytest -q tests/test_pl_convergence.py \
   tests/test_pl_convergence_cli.py \
+  tests/test_pl_convergence_reconstruction.py \
   tests/test_pl_experiment.py \
   tests/test_pl_results.py
 ```

@@ -42,7 +42,9 @@ Current outputs:
   analytic nonconvex PL family, including negative curvature, changing Hessian
   orientations, and nonunique minimizers;
 - `summaries/P6_RESULTS.md`: scoped human-readable P6 theorem and diagnostic
-  readout;
+  readout, including the distinct certificate-source and final-checkpoint
+  revisions; the standalone reconstruction entry point is
+  `scripts/reconstruct_pl_convergence.py`;
 - `summaries/deficit_audit.{json,csv}`: 24-prefix spectral audit;
 - `summaries/quadratic_lr_sweep.json` plus CSV tables: gain-matched quadratic
   sweep and sensitivity classifications;

@@ -472,6 +472,13 @@ trajectory-dependent global minimizer. Local Hessian orientations may change
 where Hessians exist. See `pl_convergence_certificate.md` and the exact result
 manifest.
 
+The canonical artifact was generated at source commit
+`a8f650f6c60dcbc5d2f83647fd367348f4c67548`; the completed P6 checkpoint is
+`ef88d8f5b26148af0ec1ca70b506048938bf9bef`, tagged `p6-checkpoint`.
+`scripts/reconstruct_pl_convergence.py` independently rebuilds the complete
+exact algebra before comparing the canonical artifact. This code-path replay
+does not replace the still-pending human proof audit.
+
 The proof is deterministic and exact-real-arithmetic only. It does not cover
 stochastic or time-varying gradients, BF16, weight decay, aspect-ratio scaling,
 additive-epsilon or exact-current normalization, an unrepaired upstream Muon

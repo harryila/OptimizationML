@@ -37,6 +37,11 @@ jobs:
           uv run --locked python scripts/certify_pl_convergence.py
           --output "$RUNNER_TEMP/pl_convergence_certificate.json"
 
+      - name: Independently reconstruct the exact smooth-PL certificate
+        run: >-
+          uv run --locked python scripts/reconstruct_pl_convergence.py
+          --output "$RUNNER_TEMP/pl_convergence_reconstruction.json"
+
       - name: Replay the nonconvex PL falsification grid
         run: >-
           uv run --locked python experiments/nonconvex/run_pl_falsification.py
@@ -47,5 +52,6 @@ jobs:
           uv run --locked pytest -q
           tests/test_pl_convergence.py
           tests/test_pl_convergence_cli.py
+          tests/test_pl_convergence_reconstruction.py
           tests/test_pl_experiment.py
           tests/test_pl_results.py
