@@ -115,6 +115,7 @@ class WarpedRadialPLObjective:
     active_rank: int
     frame_variant: int = 0
     frame: np.ndarray = field(init=False, repr=False, compare=False)
+    active_frame: np.ndarray = field(init=False, repr=False, compare=False)
     projector: np.ndarray = field(init=False, repr=False, compare=False)
 
     def __post_init__(self) -> None:
@@ -128,11 +129,13 @@ class WarpedRadialPLObjective:
             raise ValueError("frame_variant must be nonnegative")
         frame = rational_givens_frame(self.dimension, variant=self.frame_variant)
         if self.active_rank == self.dimension:
+            active_frame = np.eye(self.dimension, dtype=np.float64)
             projector = np.eye(self.dimension, dtype=np.float64)
         else:
             active_frame = frame[:, : self.active_rank]
             projector = active_frame @ active_frame.T
         object.__setattr__(self, "frame", frame)
+        object.__setattr__(self, "active_frame", active_frame)
         object.__setattr__(self, "projector", projector)
 
     @property
@@ -168,15 +171,18 @@ class WarpedRadialPLObjective:
 
     def active_component(self, position: np.ndarray) -> np.ndarray:
         vector, shape = self._vector(position)
-        return (self.projector @ vector).reshape(shape)
+        coordinates = self.active_frame.T @ vector
+        return (self.active_frame @ coordinates).reshape(shape)
 
     def null_component(self, position: np.ndarray) -> np.ndarray:
         vector, shape = self._vector(position)
-        return (vector - self.projector @ vector).reshape(shape)
+        active = np.asarray(self.active_component(vector)).reshape(-1)
+        return (vector - active).reshape(shape)
 
     def scaled_radius(self, position: np.ndarray) -> float:
-        active = np.asarray(self.active_component(position)).reshape(-1)
-        return 0.5 * float(active @ active) / self.transition_scale**2
+        vector, _shape = self._vector(position)
+        coordinates = self.active_frame.T @ vector
+        return 0.5 * float(coordinates @ coordinates) / self.transition_scale**2
 
     def value(self, position: np.ndarray) -> float:
         q = self.scaled_radius(position)
@@ -185,16 +191,18 @@ class WarpedRadialPLObjective:
 
     def gradient(self, position: np.ndarray) -> np.ndarray:
         vector, shape = self._vector(position)
-        active = self.projector @ vector
-        q = 0.5 * float(active @ active) / self.transition_scale**2
+        coordinates = self.active_frame.T @ vector
+        active = self.active_frame @ coordinates
+        q = 0.5 * float(coordinates @ coordinates) / self.transition_scale**2
         derivative = 1.0 + WARP_STRENGTH / (1.0 + q) ** 2
         return (OBJECTIVE_SCALE * derivative * active).reshape(shape)
 
     def hessian(self, position: np.ndarray) -> np.ndarray:
         vector, _shape = self._vector(position)
-        active = self.projector @ vector
+        coordinates = self.active_frame.T @ vector
+        active = self.active_frame @ coordinates
         scale_squared = self.transition_scale**2
-        q = 0.5 * float(active @ active) / scale_squared
+        q = 0.5 * float(coordinates @ coordinates) / scale_squared
         derivative = 1.0 + WARP_STRENGTH / (1.0 + q) ** 2
         second_derivative = -2.0 * WARP_STRENGTH / (1.0 + q) ** 3
         return OBJECTIVE_SCALE * (
@@ -347,6 +355,7 @@ class PLProbeTrial:
     lyapunov_transition_count: int
     lyapunov_rate_violation_count: int
     nonpositive_lyapunov_count: int
+    unresolved_lyapunov_resurgence_count: int
     sampled_hessian_eigenvalue_minimum: float
     sampled_hessian_eigenvalue_maximum: float
     minimum_sampled_pl_ratio: float
@@ -384,6 +393,7 @@ class PLProbeSummary:
     objective_increasing_case_count: int
     lyapunov_rate_violating_case_count: int
     nonpositive_lyapunov_case_count: int
+    unresolved_lyapunov_resurgence_case_count: int
     objective_bound_violating_case_count: int
     candidate_violation_count: int
     divergence_count: int
@@ -511,7 +521,8 @@ class PLProbeSummary:
                 "candidate_rule": (
                     "nonfinite values, divergence threshold, or sampled violations of the "
                     "objective family's analytic Hessian/PL bounds, or a resolved violation "
-                    "of the exact P6 Lyapunov rate/nonpositive storage"
+                    "of the exact P6 Lyapunov rate, nonpositive storage, or resurgence from "
+                    "below the numerical resolution threshold"
                 ),
                 "objective_increase_rule": (
                     "individual objective-gap increases are recorded and allowed; the theorem "
@@ -540,6 +551,9 @@ class PLProbeSummary:
                 "objective_increasing_case_count": self.objective_increasing_case_count,
                 "lyapunov_rate_violating_case_count": (self.lyapunov_rate_violating_case_count),
                 "nonpositive_lyapunov_case_count": self.nonpositive_lyapunov_case_count,
+                "unresolved_lyapunov_resurgence_case_count": (
+                    self.unresolved_lyapunov_resurgence_case_count
+                ),
                 "objective_bound_violating_case_count": (self.objective_bound_violating_case_count),
                 "candidate_violation_count": self.candidate_violation_count,
                 "divergence_count": self.divergence_count,
@@ -720,6 +734,7 @@ def run_pl_trial(
     lyapunov_transition_count = 0
     lyapunov_rate_violation_count = 0
     nonpositive_lyapunov_count = 0
+    unresolved_lyapunov_resurgence_count = 0
     minimum_hessian = math.inf
     maximum_hessian = -math.inf
     minimum_pl_ratio = math.inf
@@ -817,10 +832,10 @@ def run_pl_trial(
         current_gap = next_gap
 
         next_lyapunov = pl_lyapunov_value(objective, position, momentum, certificate)
-        if current_lyapunov > lyapunov_resolution and math.isfinite(next_lyapunov):
+        if math.isfinite(next_lyapunov):
             if next_lyapunov <= 0:
                 nonpositive_lyapunov_count += 1
-            else:
+            elif current_lyapunov > lyapunov_resolution:
                 lyapunov_ratio = next_lyapunov / current_lyapunov
                 rate_excess = lyapunov_ratio - tau_squared
                 maximum_lyapunov_ratio = max(maximum_lyapunov_ratio, lyapunov_ratio)
@@ -830,6 +845,8 @@ def run_pl_trial(
                 )
                 lyapunov_transition_count += 1
                 lyapunov_rate_violation_count += rate_excess > config.storage_rate_tolerance
+            elif next_lyapunov > lyapunov_resolution:
+                unresolved_lyapunov_resurgence_count += 1
         current_lyapunov = next_lyapunov
 
         position_norm = float(np.linalg.norm(position))
@@ -874,6 +891,7 @@ def run_pl_trial(
         or exceeded
         or sampled_bound_violation
         or nonpositive_lyapunov_count > 0
+        or unresolved_lyapunov_resurgence_count > 0
         or lyapunov_rate_violation_count > 0
     )
     return PLProbeTrial(
@@ -924,6 +942,7 @@ def run_pl_trial(
         lyapunov_transition_count=lyapunov_transition_count,
         lyapunov_rate_violation_count=lyapunov_rate_violation_count,
         nonpositive_lyapunov_count=nonpositive_lyapunov_count,
+        unresolved_lyapunov_resurgence_count=unresolved_lyapunov_resurgence_count,
         sampled_hessian_eigenvalue_minimum=minimum_hessian,
         sampled_hessian_eigenvalue_maximum=maximum_hessian,
         minimum_sampled_pl_ratio=minimum_pl_ratio,
@@ -1017,6 +1036,9 @@ def run_pl_probe(config: PLProbeConfig | None = None) -> PLProbeSummary:
         ),
         nonpositive_lyapunov_case_count=sum(
             trial.nonpositive_lyapunov_count > 0 for trial in trials
+        ),
+        unresolved_lyapunov_resurgence_case_count=sum(
+            trial.unresolved_lyapunov_resurgence_count > 0 for trial in trials
         ),
         objective_bound_violating_case_count=sum(
             trial.sampled_objective_bound_violation for trial in trials

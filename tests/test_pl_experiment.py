@@ -71,6 +71,24 @@ def test_rank_deficient_objective_has_a_nonunique_minimizer_set() -> None:
     assert np.linalg.norm(objective.active_component(active + null)) == pytest.approx(1.25)
 
 
+def test_float_objective_gradient_is_derivative_consistent() -> None:
+    objective = WarpedRadialPLObjective(
+        dimension=9,
+        transition_scale=0.7,
+        active_rank=8,
+        frame_variant=5,
+    )
+    position = np.linspace(-0.8, 1.1, 9)
+    direction = np.linspace(1.2, -0.4, 9)
+    step = 1e-6
+    finite_difference = (
+        objective.value(position + step * direction) - objective.value(position - step * direction)
+    ) / (2.0 * step)
+    analytic = float(objective.gradient(position) @ direction)
+
+    assert finite_difference == pytest.approx(analytic, rel=3e-10, abs=3e-10)
+
+
 def test_pl_lyapunov_value_matches_the_certificate_formula() -> None:
     objective = WarpedRadialPLObjective(
         dimension=4,
@@ -127,6 +145,7 @@ def test_small_pl_probe_is_deterministic_and_replays_the_lyapunov_rate() -> None
     assert first.objective_increasing_case_count == 2
     assert first.lyapunov_rate_violating_case_count == 0
     assert first.nonpositive_lyapunov_case_count == 0
+    assert first.unresolved_lyapunov_resurgence_case_count == 0
     assert first.objective_bound_violating_case_count == 0
     assert first.maximum_normalized_lyapunov_rate_excess < 0.0
     assert first.maximum_lyapunov_ratio < float(LOCKED_PL_CONVERGENCE_TAU**2)
