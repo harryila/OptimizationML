@@ -1,0 +1,433 @@
+{
+  "arb_magnitude_certificate": {
+    "cross_precision_guard_match": true,
+    "method": "outward-rounded Arb evaluation of the exact rational/logarithmic form",
+    "passes": [
+      {
+        "evaluations": [
+          {
+            "arb_enclosure": "[2571.8578264702121453403581662801632566429877127 +/- 2.87e-44]",
+            "raw_radius_exact": "1",
+            "strictly_inside_locked_guard": true
+          },
+          {
+            "arb_enclosure": "[3086.9595802543014250403447615418376254347807598 +/- 6.08e-44]",
+            "raw_radius_exact": "13872266672489/549755813888",
+            "strictly_inside_locked_guard": true
+          }
+        ],
+        "precision_bits": 160
+      },
+      {
+        "evaluations": [
+          {
+            "arb_enclosure": "[2571.85782647021214534035816628016325664298771272180275008901453124 +/- 2.25e-63]",
+            "raw_radius_exact": "1",
+            "strictly_inside_locked_guard": true
+          },
+          {
+            "arb_enclosure": "[3086.95958025430142504034476154183762543478075975774403616156490031 +/- 1.23e-63]",
+            "raw_radius_exact": "13872266672489/549755813888",
+            "strictly_inside_locked_guard": true
+          }
+        ],
+        "precision_bits": 224
+      }
+    ]
+  },
+  "audit": {
+    "all_exact_and_interval_checks_passed": true,
+    "checks": {
+      "all_arb_magnitude_guards_pass": true,
+      "earlier_bands_are_dominated": true,
+      "full_repaired_explicit_step_jury_margin_negative": true,
+      "full_repaired_jury_control_fails": true,
+      "integral_matches_at_switch": true,
+      "locked_lipschitz_bracket_is_positive": true,
+      "one_step_objective_expansion_is_large": true,
+      "one_step_signal_is_locked": true,
+      "p12_constants_locked": true,
+      "repair_only_explicit_step_jury_margin_negative": true,
+      "repair_only_jury_control_fails": true,
+      "switch_is_exactly_continuous": true,
+      "switch_transform": true,
+      "tail_derivative_numerator_negative_for_all_z_nonnegative": true,
+      "tail_is_positive": true,
+      "tail_is_strictly_decreasing": true
+    },
+    "human_proof_audit": "pending; packet committed but unsigned"
+  },
+  "canonical_result_path": "results/summaries/radial_passivation_tradeoff_certificate.json",
+  "claim_scope": {
+    "arithmetic_model": "exact real arithmetic",
+    "epsilon_domain": "every real epsilon>0",
+    "evidence_kind": "exact full-matrix radial passivation theorem, two-precision Arb magnitude evaluation, and exact rank-two universal stiffness lower bound",
+    "guarantee": "E_h,epsilon+G_epsilon is globally pairwise monotone",
+    "lower_tradeoff_shape_condition": "min(m,n)>=2",
+    "matrix_domain": "R^(m x n) for every fixed finite positive m,n",
+    "normalization": "current Frobenius norm plus additive epsilon; no max floor",
+    "not_claimed": [
+      "strong monotonicity",
+      "stability of an explicit optimizer at the prior 1/32000 step",
+      "a theorem for the discontinuous BF16 implementation",
+      "a bounded radial correction or removal of 1/epsilon stiffness",
+      "minimal Lipschitz constant in a fixed matrix shape",
+      "propagation of this repair through P7--P11 or neural-network convergence"
+    ]
+  },
+  "explicit_step_interpretation": {
+    "conclusion": "the prior eta=1/32000 is locally unstable; this is an exact scalar negative control, not a global training claim",
+    "jury_condition": "theta=eta*kappa*(h'(0)+U)/eps must be below 2(1+beta)/((1-beta)(1+2beta))",
+    "loop": "scalar curvature-one quadratic with beta=19/20 and the pinned EMA state then Nesterov signal ordering",
+    "one_step_control": "m0=0,w0=1/389025000 gives s1=eps/399 inside the linear repair core; the repair alone multiplies the step by more than 4800 times w0",
+    "polynomial_sign_check": "the Jordan quintic preserves positive scalar sign because the quadratic factor has negative discriminant -2594691/500000 and positive leading term",
+    "repair_only_control": "the same failed Jury check with U alone isolates stiffness of G_eps"
+  },
+  "explicit_step_negative_control": {
+    "beta": {
+      "decimal": "0.95",
+      "exact": "19/20"
+    },
+    "combined_origin_gain_unit": {
+      "decimal": "643.420817905569759663592426858908291265364939305627235637284",
+      "exact": "66983030848166374889967883/104104544000000000000000"
+    },
+    "critical_theta": {
+      "decimal": "26.8965517241379310344827586206896551724137931034482758620690",
+      "exact": "780/29"
+    },
+    "epsilon": {
+      "decimal": "1E-7",
+      "exact": "1/10000000"
+    },
+    "eta": {
+      "decimal": "0.00003125",
+      "exact": "1/32000"
+    },
+    "full_repaired_eta_critical": {
+      "decimal": "4.18024269275125385450193550196838665780069965136448909360285E-9",
+      "exact": "8120154432000000000/1942507894596824871809068607"
+    },
+    "full_repaired_jury_margin": {
+      "decimal": "-29151.1058113461297347565318420442819479618488122862341148144",
+      "exact": "-1942248049655000871809068607/66626908160000000000000"
+    },
+    "one_step_normalized_signal": {
+      "decimal": "0.0025",
+      "exact": "1/400"
+    },
+    "one_step_objective_growth_strict_lower": {
+      "decimal": "23325554.6008966554512237570441521042252166718596071501559655",
+      "exact": "66269130582658544119256007587430509547649/2841052730215087734784000000000000"
+    },
+    "one_step_repair_ratio_lower": {
+      "decimal": "4830.65367297663026243074581835736199949158799446832983582350",
+      "exact": "257481214897744494657/53301526528000000"
+    },
+    "one_step_signal": {
+      "decimal": "2.50626566416040100250626566416040100250626566416040100250627E-10",
+      "exact": "1/3990000000"
+    },
+    "one_step_w0": {
+      "decimal": "2.57052888631836000257052888631836000257052888631836000257053E-9",
+      "exact": "1/389025000"
+    },
+    "origin_polynomial_gain_unit": {
+      "decimal": "484.87628710018292028125",
+      "exact": "15516041187205853449/32000000000000000"
+    },
+    "repair_only_eta_critical": {
+      "decimal": "1.69646670165831237052992072469381475108756954845300184897370E-8",
+      "exact": "1082687257600/63820130188329832009"
+    },
+    "repair_only_jury_margin": {
+      "decimal": "-7180.14905211909115951239121704428194796184881228623411481443",
+      "exact": "-191356452588259896027/26650763264000000"
+    }
+  },
+  "full_matrix_monotonicity": {
+    "average_inequality": "d_hat(z)<=p(z)/z<=U",
+    "dimension_uniform": true,
+    "jacobian_sum": "Sym D(E_h,eps+G_eps)>=0 everywhere",
+    "not_a_diagonal_certificate": true,
+    "p12_pointwise_bound": "Sym DE_h,eps(M) >= -d_hat(||M||_F/eps)/eps * I on the complete Frobenius tangent space",
+    "pairwise_promotion": "global C1 regularity and line-segment integration prove the authoritative pairwise monotonicity inequality",
+    "repair_derivative": "DG=(d_hat(z)/eps)P_M+(p(z)/(eps*z))(I-P_M), with the continuous origin value U/eps*I"
+  },
+  "git": {
+    "branch": "p13-radial-passivation-tradeoff",
+    "dirty": false,
+    "sha": "ef566f7d04a5c2ef1a69def69724e84c67702008"
+  },
+  "hardware": {
+    "byte_order": "little",
+    "logical_cpu_count": 10,
+    "machine_architecture": "arm64",
+    "operating_system": "Darwin",
+    "operating_system_release": "24.5.0",
+    "platform": "macOS-15.5-arm64-arm-64bit",
+    "processor": "arm"
+  },
+  "magnitude_evaluations": [
+    {
+      "closed_form_terms": {
+        "logarithm_argument": {
+          "decimal": "9937000.9937",
+          "exact": "99370009937/10000"
+        },
+        "logarithm_coefficient": {
+          "decimal": "159.564501081070966508435981430359082116530859594370827847822",
+          "exact": "41528474059081/260261360000"
+        },
+        "rational_part": {
+          "decimal": "0.990355868653796245313740111767790587416748119551149516845388",
+          "exact": "412402225655927849520137/416418217641817600000000"
+        }
+      },
+      "constant_over_radial_strict_lower": {
+        "decimal": "616459.157164934905935795282378375325755599348258562297102647",
+        "exact": "859646150166080711328125000000/1394490032591211276263497"
+      },
+      "constant_repair_output": {
+        "decimal": "1585445308.05386839382342426858908291265364939305627235637284",
+        "exact": "6602082433275499863/4164181760"
+      },
+      "independent_fraction_enclosure": {
+        "method": "96-term exact Fraction atanh series after binary range reduction",
+        "width_strict_upper_exact": "1/1000000000000000000000000000000"
+      },
+      "radial_output_guard": {
+        "lower_decimal": "2571.857826470212145",
+        "lower_exact": "514371565294042429/200000000000000",
+        "upper_decimal": "2571.857826470212146",
+        "upper_exact": "1285928913235106073/500000000000000"
+      },
+      "radial_over_polynomial_global_gain_strict_upper": {
+        "decimal": "5.30415247449754122030711750605257464635825673475894779761354",
+        "exact": "1285928913235106073/242438150000000000"
+      },
+      "raw_radius": {
+        "decimal": "1",
+        "exact": "1"
+      },
+      "z": {
+        "decimal": "10000000",
+        "exact": "10000000"
+      }
+    },
+    {
+      "closed_form_terms": {
+        "logarithm_argument": {
+          "decimal": "250745350.914831843075272627174854278564453125",
+          "exact": "10769430818032464473477/42949672960000"
+        },
+        "logarithm_coefficient": {
+          "decimal": "159.564501081070966508435981430359082116530859594370827847822",
+          "exact": "41528474059081/260261360000"
+        },
+        "rational_part": {
+          "decimal": "0.990355867222741044163142607820341343908047106788784923950325",
+          "exact": "44694946038570569235524531172267677/45130187559658516300997209600000000"
+        }
+      },
+      "constant_over_radial_strict_lower": {
+        "decimal": "12959788.6790777754941893072844838853475923977008170246182092",
+        "exact": "24304158911173360769124486606500244140625/1875351482421151319515318120873984"
+      },
+      "constant_repair_output": {
+        "decimal": "40006343820.9503773686250511284815107857684217356203403743536",
+        "exact": "91585848108152798853507185369007/2289283132646364282880"
+      },
+      "independent_fraction_enclosure": {
+        "method": "96-term exact Fraction atanh series after binary range reduction",
+        "width_strict_upper_exact": "1/1000000000000000000000000000000"
+      },
+      "radial_output_guard": {
+        "lower_decimal": "3086.959580254301425",
+        "lower_exact": "123478383210172057/40000000000000",
+        "upper_decimal": "3086.959580254301426",
+        "upper_exact": "1543479790127150713/500000000000000"
+      },
+      "radial_over_polynomial_global_gain_strict_upper": {
+        "decimal": "6.36648889676460042695425616801646110564694541680011994811873",
+        "exact": "1543479790127150713/242438150000000000"
+      },
+      "raw_radius": {
+        "decimal": "25.233506080419829231686890125274658203125",
+        "exact": "13872266672489/549755813888"
+      },
+      "z": {
+        "decimal": "252335060.80419829231686890125274658203125",
+        "exact": "1083770833788203125/4294967296"
+      }
+    }
+  ],
+  "operator": {
+    "base_formula": "E_h,eps(M)=H_h(M/(||M||_F+eps))",
+    "coefficients_exact": {
+      "a": "6889/2000",
+      "b": "-191/40",
+      "c": "4063/2000"
+    },
+    "domain": "every fixed finite real rectangular matrix space",
+    "orthogonalizer": "jordan_quintic",
+    "repair_formula": "G_eps(0)=0; G_eps(M)=p(||M||_F/eps)M/||M||_F",
+    "scalar_composition": "h=q composed with itself exactly 5 times",
+    "steps": 5
+  },
+  "p11_signal_benchmark": {
+    "decimal": "25.233506080419829231686890125274658203125",
+    "exact": "13872266672489/549755813888",
+    "meaning": "exact P11 V<=1 signal guard, not the rounded display 25.2335"
+  },
+  "prior_artifacts": {
+    "results/summaries/additive_epsilon_deficit_certificate.json": {
+      "matched": true,
+      "sha256": "e764a60723543fa0342d0c178886fe57a91b5f4511739cd69d8f2e07dc21df2c"
+    },
+    "results/summaries/implementation_margin_certificate.json": {
+      "matched": true,
+      "sha256": "ad74050d66f711d2bb8e3e37f80fc29f4d6162419a2f5224931e1ca7fd2e536f"
+    }
+  },
+  "proof_replay_provenance": {
+    "command": "uv run --locked python scripts/certify_radial_passivation_tradeoff.py --output results/summaries/radial_passivation_tradeoff_certificate.json",
+    "randomness": "none; exact rational and outward-rounded Arb arithmetic",
+    "seed": null,
+    "source_snapshot": {
+      ".github/workflows/ci.yml": "bd4e0add97636f55d573ed695017c14d4eef51104a8d38e8764265f1e169b5a6",
+      ".github/workflows/p12-additive-epsilon-deficit.yml": "eeecab041cb1f3860fc331af1d6df36f6e9eca1f433dbe8e4e62cebac068a7cc",
+      ".github/workflows/p13-radial-passivation-tradeoff.yml": "83b018a1c12dcab2661c209e98c4334ff402c20e20323f29403fdb1f3c2c3863",
+      "pyproject.toml": "7a9988bf528baef5145f779516d4315349d1c2a6bbb7394c9b93fbbee1d4f596",
+      "results/summaries/P13_RADIAL_PASSIVATION_RESULTS.md": "10c6aeff7af51453c9e8827f3571dc5e658b605bf784cf9ca344fae1c5e1b0a3",
+      "scripts/certify_radial_passivation_tradeoff.py": "72fe241eb0c29312c5484a636b5e49367054fbb2d8aa2639c9d0b30ae1241afb",
+      "scripts/reconstruct_additive_epsilon_deficit.py": "f5a13efcb6ad83f4cf0876d22d916c8c5b330b96d7329b42464a089b2f5d7ea4",
+      "scripts/reconstruct_outer_loop_roundoff.py": "bef793724fbd1fbb9feac1eb0588373d2cb65f3eaeab32843e6396ace46103fe",
+      "scripts/reconstruct_radial_passivation_tradeoff.py": "af4a6e275516b9c745ba84a6e672fbc6dcf1f15a3cd6e326ffb0201865db08ac",
+      "src/passive_muon/additive_epsilon_deficit.py": "24de25c79ddf37565db4833369993b3ad4950afe4b962fdb186c63777b4d1c71",
+      "src/passive_muon/floored_certificate.py": "385dee8576e574bebc72fe09478220cf2ec29928045ee6341472c2e9becb6a72",
+      "src/passive_muon/radial_passivation_tradeoff.py": "16ea7d0e2b9af1c2a46af1601ad9bd3d188fbc830f74b2229e9a9631baa28712",
+      "src/passive_muon/specs.py": "85fcee0f87485fc3cac2f426d62ec6e55da7896caade2f5df2a1c87f7d9c5d6c",
+      "src/passive_muon/upstream_momentum.py": "7479613bb307debbb2a02e04e6bbe53a428855c51e1e21210f9c2be2e68d3d7e",
+      "tests/test_additive_epsilon_deficit_result_manifest.py": "e8b86a39254f9be50627949c32bd7479a1bbc5ad244b344fbc0e4f81e0d10457",
+      "tests/test_current_research_index.py": "19dfbfca9b8fa2c84c2aabff20428e9a4d10cfda516ecd8290a96c96b0a66b6d",
+      "tests/test_outer_loop_roundoff_cli.py": "6c7d44bb99e4ab74c8f722f52e04aab18bb056af1065b81a25cfb426c3a4f880",
+      "tests/test_radial_passivation_tradeoff.py": "fa0f4912b889ff20ce863d9a7bbd7f0476a75590472b0e025ef3edc90ee2690a",
+      "tests/test_radial_passivation_tradeoff_cli.py": "8d6f3e57f000f577554c498909f50a5be95ab6522fc511a474281e843ebf9c86",
+      "tests/test_radial_passivation_tradeoff_reconstruction.py": "f7458bd4e8541a1e963b346a90b2a1b9d9c5f846c8eb57f36b0bcdef3d108fd5",
+      "tests/test_radial_passivation_tradeoff_result_manifest.py": "a9be0880f08ee7b40286e9d2d557b2793c93fe6ae21dd04029bc5867acfcbc3e",
+      "tests/test_result_manifests.py": "400304d19244721fcf272d8f076e3af9eab871c0af30450062ecb37e6d4574de",
+      "theory/audits/P13_RADIAL_PASSIVATION_HUMAN_PROOF_AUDIT.md": "4990e3ade528436c4f8ae9a5872e47f43fb4a0e1876cc2fa64294d9141df028d",
+      "theory/radial_passivation_tradeoff.md": "db98d272ec87e769f5d9e529ae0737e00438a6733ec3ff018b01b0abc606b6ef",
+      "third_party/UPSTREAM_COMMITS.md": "50394b43983d056631edada4e478c3ddfcc56528676f6a96eb8f4b42ac565008",
+      "uv.lock": "f097fd7895b5c1c551a0bd233d025c3f8ae97b7dedce6a8690569f1b1f7c5cf1"
+    }
+  },
+  "radial_majorant": {
+    "closed_form": {
+      "join_value": "6602082433275499863/41641817600000000",
+      "tail_derivative_constant": "-41520717707831/260261360000",
+      "tail_integral": "U*z0-Gamma*log((1+z)/(1+z0))+(a-Gamma)*(1/(1+z)-1/(1+z0))",
+      "tail_majorant": "-(a+Gamma*z)/(1+z)^2"
+    },
+    "exact_identities": {
+      "a_minus_Gamma": {
+        "decimal": "0.0149010810709665084359814303590821165308595943708278478218972",
+        "exact": "6205081/416418176"
+      },
+      "minus_Gamma": {
+        "decimal": "159.564501081070966508435981430359082116530859594370827847822",
+        "exact": "41528474059081/260261360000"
+      },
+      "t0_equals_z0_over_one_plus_z0": true,
+      "tail_value_at_z0_equals_U": true
+    },
+    "final_band_derivative_lower": {
+      "decimal": "-159.5496",
+      "exact": "-199437/1250"
+    },
+    "final_band_projection_lower": {
+      "decimal": "-159.564501081070966508435981430359082116530859594370827847822",
+      "exact": "-41528474059081/260261360000"
+    },
+    "formula": {
+      "inner": "d_hat(z)=U for 0<=z<=z0",
+      "integral": "p(z)=integral_0^z d_hat(u)du",
+      "tail": "d_hat(z)=-(a+Gamma*z)/(1+z)^2 for z>=z0"
+    },
+    "pair_strict_lower": {
+      "decimal": "158.1172496",
+      "exact": "98823281/625000"
+    },
+    "shape": "positive, continuous, nonincreasing; tail is strictly decreasing",
+    "t0": {
+      "decimal": "0.0063",
+      "exact": "63/10000"
+    },
+    "unit_deficit_upper": {
+      "decimal": "158.544530805386839382342426858908291265364939305627235637284",
+      "exact": "6602082433275499863/41641817600000000"
+    },
+    "z0": {
+      "decimal": "0.00633994163228338532756365100130824192412196840092583274630170",
+      "exact": "63/9937"
+    }
+  },
+  "real_arithmetic_vs_bf16": {
+    "deployed_map": "backend-specific and discontinuous because of BF16 casts",
+    "qualification": "the upstream pin supports formula provenance only; P13 does not certify literal upstream BF16, its rounded coefficients, or a BF16 radial repair",
+    "theorem": "continuous exact-real surrogate only"
+  },
+  "scaling_and_asymptotics": {
+    "fixed_raw_epsilon_limit": "p(||M||/eps)=-Gamma*log(||M||/eps)+O(1)",
+    "large_z_derivative": "d_hat(z)->0 and p(z)/z->0",
+    "output_growth": "logarithmic and unbounded",
+    "repair_scaling": "G_eps(eps*X)=G_1(X)"
+  },
+  "schema_version": "passive-muon-radial-passivation-tradeoff-certificate-v1",
+  "software": {
+    "flint": "3.6.0",
+    "python": "3.12.11",
+    "python_flint": "0.9.0",
+    "python_implementation": "CPython"
+  },
+  "stiffness_tradeoff": {
+    "constructed_lipschitz": {
+      "equality_reason": "the upper derivative bound is attained on 0<=z<=z0",
+      "formula": "Lip(G_eps)=U/eps",
+      "unit_constant": {
+        "decimal": "158.544530805386839382342426858908291265364939305627235637284",
+        "exact": "6602082433275499863/41641817600000000"
+      }
+    },
+    "interpretation": "output magnitude becomes logarithmic, but differential stiffness remains order 1/epsilon and the construction is near the universal pair lower bound",
+    "relative_gap": {
+      "decimal": "0.00270230608278199763438350915324985051703643664711984490074256",
+      "exact": "17792766018626903/6584289667256872960"
+    },
+    "relative_gap_percent": {
+      "decimal": "0.270230608278199763438350915324985051703643664711984490074256",
+      "exact": "88963830093134515/329214483362843648"
+    },
+    "universal_lower_bound": {
+      "correction_scope": "every globally Lipschitz correction, not only radial maps",
+      "exact_pair_deficit_sha256": "de076057ce58ad174a52a8e0e492f7efffe0488bbca19c03cd1ce0fee75a7336",
+      "formula": "Lip(C_eps)>pair_strict_lower/eps",
+      "proof": "locked P12 pair, monotonicity, then Cauchy--Schwarz",
+      "shape_condition": "min(m,n)>=2",
+      "unit_strict_lower": {
+        "decimal": "158.1172496",
+        "exact": "98823281/625000"
+      }
+    }
+  },
+  "upstream_formula_provenance": {
+    "audited_file": "muon.py",
+    "audited_file_sha256": "2479665a90124f62e4df557816665851ca317e42fcfda2af1da02c1f44ab5f3d",
+    "epsilon_placement": "added to the BF16 Frobenius norm before division",
+    "formula": "X/(X.norm(dim=(-2,-1),keepdim=True)+1e-7)",
+    "operation_order": "cast input to BF16; orient once; norm; add Python-float epsilon; divide; run five BF16 Jordan stages; orient back",
+    "repository": "https://github.com/KellerJordan/Muon",
+    "revision": "f98f1cacc0263b04290753e32be8d498c1efc806"
+  }
+}
