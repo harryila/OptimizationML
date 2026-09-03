@@ -82,6 +82,22 @@ Current outputs:
 - `summaries/P9_RESULTS.md`: scoped P9 theorem, exact recurrence/replay,
   serial-normalizer and one-term-proof obstructions, qualified frontier
   evidence, and deployment exclusions;
+- `summaries/outer_loop_roundoff_certificate.json`: canonical P10
+  exact replay for the proposed `4096 x 11008` FP32 EMA/Nesterov shell,
+  concrete momentum/signal/master residual envelopes, three-word compensated
+  master guards, port-augmented P7 closure, ordinary-FP32 stalling witness,
+  and the strict rate `549700907325/549755813888`; generate it with
+  `scripts/certify_outer_loop_roundoff.py` and independently check it
+  with the standard-library-only
+  `scripts/reconstruct_outer_loop_roundoff.py`;
+- `summaries/finite_precision_outer_loop_diagnostic.json`: deterministic P10
+  CPU operation-graph diagnostic over three modest shapes, including exact
+  finite-entry residual, `TwoSum`, and logical-update identities plus the
+  actual-P9 raw-subtraction stalling witness; it is falsification/parity
+  evidence, not the global certificate;
+- `summaries/P10_RESULTS.md`: scoped P10 rounding-envelope, compensated-master,
+  port-closure, objective-neighborhood, stalling-obstruction, and deployment-
+  exclusion summary;
 - `summaries/deficit_audit.{json,csv}`: 24-prefix spectral audit;
 - `summaries/quadratic_lr_sweep.json` plus CSV tables: gain-matched quadratic
   sweep and sensitivity classifications;

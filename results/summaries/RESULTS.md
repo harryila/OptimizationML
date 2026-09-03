@@ -569,18 +569,79 @@ upstream Muon, a GPU/BLAS/tensor-core parity result, native BF16 matmul, a
 whole-FP32-loop theorem, or a neural-training result. See `P9_RESULTS.md` and
 `../../theory/scalable_mixed_precision_certificate.md`.
 
-## 15. Unrun gate
+## 15. P10 finite-precision outer-loop certificate
+
+P10 closes the outer FP32 arithmetic ports for one proposed proof-reference
+shell around the P9 operator at `4096 x 11008`. The exact-real reference still
+uses max-floor normalization `c=1`, no additive epsilon, five Jordan stages
+with coefficients `(6889/2000,-191/40,4063/2000)`, and repair
+`rho=210177835339081/260261360000`. The executable shell locks separately
+rounded CPU FP32 EMA/Nesterov operations at `beta=19/20`, the full
+`eta=1/32000` step, and a three-word FP32 master updated by two `TwoSum`
+cascades.
+
+The locked deterministic theorem evaluates the exact gradient at the logical
+real master `high+middle+low`, casts it once entrywise to FP32, and absorbs
+that boundary cast plus the state and master rounding residuals through P7.
+For every differentiable globally `10`-smooth objective satisfying the global
+PL inequality with constant `1`, it proves on the guarded set `V_t<=1`
+
+\[
+V_{t+1}\le
+\frac{549700907325}{549755813888}V_t
++\frac{2162331}{1099511627776}.
+\]
+
+The exact rate is `0.9999001255437179...<1`; the forcing is at most the
+one-step storage margin, so `V<=1` is invariant apart from the separately
+conditional high-word bound. The storage-to-function result is
+
+\[
+\limsup_t(f(W_t)-f_\star)
+\le\frac{399957341889}{549755813888}
+=0.727518166766\ldots<1.
+\]
+
+At `V<=1`, exact range propagation keeps the signal norm below
+`25.233459`, the P9 output norm below `32614.736<2^15`, and the rounded
+parameter-step max-absolute entry below `1.019211<2`. The middle and low
+master-word guards are
+forward invariant. The high word must still be checked against `2^30` after
+every update: global PL storage is not coercive along a flat nonunique
+minimizer set.
+
+The negative control uses the actual P9 repaired operator at a `2 x 2` signal.
+At `W_(1,1)=2^30`, its positive rounded step
+`13548867/8388608` is lost by ordinary FP32 subtraction for all 64 repeated
+updates. The compensated logical master moves immediately and its high word
+first moves on update 20. A separate CPU diagnostic covers `1 x 1`, `2 x 3`,
+and `8 x 16`: 810 exact EMA residual-entry checks, 270 exact master-residual
+checks, 544 `TwoSum` identities, and 270 logical-update identities have zero
+candidate violations. These finite checks validate/falsify the operation
+graph; the exact rational generator and standalone standard-library
+reconstruction carry the theorem.
+
+P10 is a storage/function-value, true-gradient, and momentum result under
+conditional arithmetic guards. It is not full-state ISS or parameter
+convergence, literal upstream `torch.lerp_` parity, a gradient-computation or
+model-forward theorem, native accelerator parity, or a neural-training
+result. See `P10_RESULTS.md`, `outer_loop_roundoff_certificate.json`,
+`finite_precision_outer_loop_diagnostic.json`, and
+`../../theory/finite_precision_outer_loop_certificate.md`.
+
+## 16. Unrun gate
 
 No NanoGPT result is reported. This machine exposes neither CUDA nor an
 available MPS device. The `rho` used in the existing quadratic study is only a
 finite-grid sampled repair; those results do not retroactively test the new
 floored architecture or its global certificate. A matched language-model
 sweep remains gated on suitable compute, a predeclared comparison, and
-implementation-level parity for the chosen floored design. P8's fixed-`2 x 2`
-and P9's shape-parameterized operator certificates do not by themselves clear
-that training gate. Remaining implementation work includes FP32
-EMA/Nesterov disturbance ports, compensated or higher-precision master
-weights, aspect-ratio scaling, weight decay, and optimized-kernel parity.
+implementation-level parity for the chosen floored design. P10 closes one
+proposed outer shell but does not specify how a model forward/backward pass
+consumes the logical three-word master, so it does not clear that training
+gate. Remaining implementation work includes aspect-ratio scaling, weight
+decay, gradient-evaluation and represented-model error, and optimized-kernel
+parity.
 
 ## Reproduce
 
@@ -615,6 +676,10 @@ uv run --locked python scripts/certify_scalable_mixed_precision.py \
   --output results/summaries/scalable_mixed_precision_certificate.json
 uv run --locked python scripts/reconstruct_scalable_mixed_precision.py \
   --require-canonical
+uv run --locked python scripts/certify_outer_loop_roundoff.py \
+  --output results/summaries/outer_loop_roundoff_certificate.json
+uv run --locked python scripts/reconstruct_outer_loop_roundoff.py \
+  --require-canonical
 uv run --locked python experiments/matrices/run_deficit_audit.py
 uv run --locked python experiments/quadratics/run_lr_sweep.py
 uv run --locked python experiments/quadratics/run_horizon_check.py
@@ -634,6 +699,9 @@ uv run --locked python \
 uv run --locked python \
   experiments/mixed_precision/run_scalable_mixed_precision_diagnostic.py \
   --output results/summaries/scalable_mixed_precision_diagnostic.json
+uv run --locked python \
+  experiments/mixed_precision/run_finite_precision_outer_loop_diagnostic.py \
+  --output results/summaries/finite_precision_outer_loop_diagnostic.json
 uv run --locked python scripts/make_figures.py
 uv run --locked pytest -q
 ```

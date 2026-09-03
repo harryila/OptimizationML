@@ -66,9 +66,46 @@ def test_current_indexes_record_scoped_p7_p8_and_p9_results() -> None:
     assert "137425214491" in results
     assert "137438953472" in results
     assert "4608` is not a universal rank frontier" in results
-    assert "## 15. Unrun gate" in results
-    assert "FP32 EMA/Nesterov disturbance ports" in results_flat
-    assert "master weights" in results_flat
+    assert "## 16. Unrun gate" in results
+    assert "model forward/backward" in results_flat
+    assert "three-word master" in results_flat
+
+
+def test_current_indexes_record_scoped_p10_outer_loop_result() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    tasks = (ROOT / "TASKS.md").read_text(encoding="utf-8")
+    results_index = (ROOT / "results/README.md").read_text(encoding="utf-8")
+    experiments = (ROOT / "experiments/README.md").read_text(encoding="utf-8")
+    results = (ROOT / "results/summaries/RESULTS.md").read_text(encoding="utf-8")
+    claims = (ROOT / "theory/claims.md").read_text(encoding="utf-8")
+
+    for artifact in (
+        "outer_loop_roundoff_certificate.json",
+        "finite_precision_outer_loop_diagnostic.json",
+        "P10_RESULTS.md",
+    ):
+        assert artifact in results_index
+
+    for command in (
+        "certify_outer_loop_roundoff.py",
+        "reconstruct_outer_loop_roundoff.py",
+        "run_finite_precision_outer_loop_diagnostic.py",
+    ):
+        assert command in experiments
+        assert command in results
+
+    for text in (readme, results, claims):
+        assert "549700907325" in text
+        assert "549755813888" in text
+        assert "three-word" in text
+
+    assert "three-word" in tasks
+
+    assert "## 15. P10 finite-precision outer-loop certificate" in results
+    assert "## C15. Finite-precision outer-loop storage certificate" in claims
+    assert "## C16. Circuit and broader optimization consequences" in claims
+    assert "standard-library-only" in results_index
+    assert "human proof audit of C15" in tasks
 
 
 def test_double_blind_material_is_guarded_from_the_public_repository() -> None:

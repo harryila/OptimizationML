@@ -269,6 +269,55 @@ one FP32 buffer, so it does not claim compression. See
 [`theory/scalable_mixed_precision_certificate.md`](theory/scalable_mixed_precision_certificate.md)
 and [`results/summaries/P9_RESULTS.md`](results/summaries/P9_RESULTS.md).
 
+Branch `p10-finite-precision-outer-loop` instantiates the outer arithmetic
+ports left open by P9 for one proposed CPU proof-reference optimizer shell at
+shape `4096 x 11008`. The shell uses separately rounded FP32 EMA/Nesterov
+updates at `beta=19/20`, the full `eta=1/32000` step, the P9 repaired operator,
+and a three-word FP32 master whose logical value is `high+middle+low`. Two
+error-free `TwoSum` cascades accumulate updates that ordinary FP32 parameter
+subtraction can lose at large binades. Exact rational envelopes are derived
+for the momentum, signal, and logical parameter-update residuals and are
+closed through P7 into a storage/function-value certificate.
+
+At the locked shape and full step, exact rational absorption proves on the
+guarded set `V<=1`
+
+\[
+V_{t+1}\le
+\frac{549700907325}{549755813888}V_t
++\frac{2162331}{1099511627776},
+\qquad q_{10}<1.
+\]
+
+The exact forcing fits within the one-step storage margin, so this set is
+forward invariant apart from the separately conditional high-word guard. The
+resulting certified objective-gap neighborhood is
+
+\[
+\limsup_t(f(W_t)-f_\star)
+\le\frac{399957341889}{549755813888}
+=0.727518166766\ldots<1.
+\]
+
+An exact executable witness also isolates the reason for the compensated
+master: at `W=2^30`, the actual P9 repaired output generates a positive FP32
+step that ordinary subtraction loses for all 64 tested repeats, while the
+compensated logical master moves immediately and its high word moves on
+repeat 20.
+
+The P10 high-word magnitude guard is conditional, not a consequence of PL
+storage: an objective with a flat, nonunique minimizer set can permit
+parameter drift without changing function value, gradient, momentum, or the
+certified storage. The result therefore controls storage/function value,
+true-gradient norm, and momentum while all arithmetic guards hold; it is not
+full-state ISS or parameter convergence. Its locked result casts an exact
+gradient oracle once to FP32 and absorbs that final boundary cast; it does not
+cover earlier gradient-computation error, model-forward consumption of the
+three-word master, literal upstream `torch.lerp_` bit semantics, weight decay,
+aspect scaling, or native accelerator kernels. See
+[`theory/finite_precision_outer_loop_certificate.md`](theory/finite_precision_outer_loop_certificate.md)
+and [`results/summaries/P10_RESULTS.md`](results/summaries/P10_RESULTS.md).
+
 The repair claim is intentionally scoped. A constant `rho` is the exact minimal
 linear shift for a **specified point, pair, sample set, or domain with a finite
 certified deficit**. For exact scale-invariant normalization on every nonzero
@@ -300,6 +349,8 @@ uv run --locked python scripts/certify_mixed_precision.py
 uv run --locked python scripts/reconstruct_mixed_precision.py
 uv run --locked python scripts/certify_scalable_mixed_precision.py
 uv run --locked python scripts/reconstruct_scalable_mixed_precision.py
+uv run --locked python scripts/certify_outer_loop_roundoff.py
+uv run --locked python scripts/reconstruct_outer_loop_roundoff.py
 uv run --locked pytest
 ```
 
@@ -315,6 +366,7 @@ uv run --locked python experiments/nonconvex/run_pl_falsification.py
 uv run --locked python experiments/nonconvex/run_robust_dissipativity_falsification.py
 uv run --locked python experiments/mixed_precision/run_mixed_precision_falsification.py
 uv run --locked python experiments/mixed_precision/run_scalable_mixed_precision_diagnostic.py
+uv run --locked python experiments/mixed_precision/run_finite_precision_outer_loop_diagnostic.py
 uv run --locked python scripts/make_figures.py
 ```
 
@@ -330,7 +382,7 @@ not support a universal claim across BF16 backends.
 
 ## Scope
 
-This repository stays focused on twelve technical goals:
+This repository stays focused on thirteen technical goals:
 
 1. a theorem for current-input Frobenius normalization;
 2. exact local and finite-pair controls for the five-step Jordan map;
@@ -351,7 +403,9 @@ This repository stays focused on twelve technical goals:
     instantiates the repaired-operator-output port for one proposed kernel;
 11. a shape-parameterized compensated-BF16 certificate for representative
     Transformer matrix shapes, with balanced reductions and overflow guards;
-12. qualified matrix, quadratic, nonlinear, and precision diagnostics.
+12. a port-augmented finite-precision outer-shell certificate using FP32
+    EMA/Nesterov arithmetic and a compensated three-word FP32 master;
+13. qualified matrix, quadratic, nonlinear, and precision diagnostics.
 
 P7 is the submission cutoff and broadest robustness theorem; P6 is its
 zero-disturbance smooth-PL corollary. P8 and P9 instantiate one P7 disturbance
@@ -359,10 +413,10 @@ port for proposed fixed-shape kernels and do not replace that headline. P5
 supplies the stronger strongly-convex conclusions, P4 is the quadratic bridge,
 and P3 is the conservative generic-IQC baseline. The generic one-step-memory
 IQC framework is prior art; the new ingredients are the certified full-matrix
-Muon operator and the structure-aware interconnection. FP32 EMA/Nesterov
-disturbance ports, a compensated or higher-precision master-weight theorem,
-weight decay, aspect-ratio scaling, complete stochastic neural-network
-training, production-kernel parity, and formal circuit ports remain open.
+Muon operator and the structure-aware interconnection. Gradient-evaluation
+rounding, model-forward use of the logical master, weight decay, aspect-ratio
+scaling, complete stochastic neural-network training, production-kernel
+parity, and formal circuit ports remain open.
 
 ## Layout
 

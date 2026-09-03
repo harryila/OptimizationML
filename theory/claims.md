@@ -791,7 +791,114 @@ rounding, weight decay, aspect scaling, and the additive-epsilon upstream
 normalizer remain outside its scope. See
 `scalable_mixed_precision_certificate.md`.
 
-## C15. Circuit and broader optimization consequences — open
+## C15. Finite-precision outer-loop storage certificate — proved for a proposed shell
+
+Retain the C14 P9 repaired max-floor operator at the audited
+`4096 x 11008` shape, with exact floor `c=1`, no additive epsilon, exactly
+five Jordan stages, coefficients `(6889/2000,-191/40,4063/2000)`, and
+constant repair `rho=210177835339081/260261360000`. P10 surrounds it with a
+locked, separately rounded CPU FP32 arithmetic graph. For
+`beta=19/20`, `a=1/20`, and `eta=1/32000`, it casts the exact gradient at the
+logical master once to FP32, reuses the rounded `a32*g32` product in both
+outer additions, and defines total residuals so that
+
+\[
+\begin{aligned}
+m_{t+1}&=\beta m_t+a\nabla f(W_t)+r_t^m,\\
+s_{t+1}&=\beta m_{t+1}+a\nabla f(W_t)+r_t^s,\\
+W_{t+1}&=W_t-\eta\widehat R(s_{t+1})+r_t^W.
+\end{aligned}
+\]
+
+Here `W=H+M+L` is the exact real sum of three finite FP32 master words. The
+update forms a rounded FP32 operator step and `L-step`, then uses
+`TwoSum(M,pending)` followed by `TwoSum(H,middle_candidate)`. Under the locked
+IEEE round-to-nearest, ties-to-even, gradual-underflow, no-FTZ/DAZ,
+no-overflow, non-fused operation graph, both `TwoSum` calls are error free.
+Thus the logical sum changes by the pending term exactly, and the
+parameter-update envelope has no term proportional to the high word.
+
+At `4096 x 11008`, exact rational propagation gives the executable-graph
+envelopes
+
+\[
+\begin{aligned}
+\lVert\epsilon_t^m\rVert_F
+&\le C_m\lVert m_t\rVert_F+C_g\lVert\widehat g_t\rVert_F+b_{\rm ema},\\
+\lVert\epsilon_t^s\rVert_F
+&\le C_m\lVert m_{t+1}\rVert_F+C_g\lVert\widehat g_t\rVert_F+b_{\rm ema},\\
+\lVert r_t^W\rVert_F
+&\le C_U\lVert\widehat R(s_{t+1})\rVert_F
+ +2^{-24}\lVert L_t\rVert_F+b_W,
+\end{aligned}
+\]
+
+where `epsilon^m,epsilon^s` are relative to the represented gradient and the
+last gradient cast is additionally included in `r^m,r^s`. Their approximate
+magnitudes are
+
+\[
+C_m=1.251697559823128\ldots\times10^{-7},\quad
+C_g=6.705522803684974\ldots\times10^{-9},\quad
+C_U=5.209585939719435\ldots\times10^{-12}.
+\]
+
+These are the displayed approximate magnitudes; their exact rational values
+and positive gradual-underflow crumbs are recorded in the theorem note and
+canonical artifact. Substitution of P7's storage supplies sharpens the
+compensated master envelope to
+
+\[
+\lVert r_t^W\rVert_F
+\le\frac{93403}{549755813888}\sqrt{V_t}
++\frac{6727}{1099511627776}.
+\]
+
+For every differentiable globally `10`-smooth objective satisfying the global
+PL inequality with constant `1`, with zero gradient error before the locked
+final cast, the exact port-augmented P7 certificate proves on the guarded set
+`V_t<=1`
+
+\[
+V_{t+1}\le
+\frac{549700907325}{549755813888}V_t
++\frac{2162331}{1099511627776}.
+\]
+
+The rate is strictly below one and the exact forcing is at most the one-step
+storage margin, so `V<=1` is forward invariant subject to the high-word
+premise. The storage-to-function consequence is
+
+\[
+\limsup_t(f(W_t)-f_\star)
+\le\frac{399957341889}{549755813888}
+=0.727518166766\ldots<1.
+\]
+
+The arithmetic domain requires the P9 `2^116` signal guard, high/middle/low
+word bounds `2^30`, `2^7`, and `2^-16`, and the displayed operator-output and
+step guards. Storage closes every named guard except the high-word bound,
+which is checked after each step as a conditional premise. A global PL
+objective can have flat nonunique minimizer directions, so C15 is a
+storage/function-value, true-gradient, and momentum result, not full-state ISS
+or parameter convergence.
+
+An exact executable `2 x 2` witness uses the actual P9 repaired output at
+`m=g=s=diag(64,0)`. At `W_(1,1)=2^30`, ordinary FP32 subtraction loses the
+positive rounded step on all 64 repeats. The compensated logical master moves
+immediately, and its high word first moves on update 20. This proves a failure
+of the specified raw subtraction graph, not a universal impossibility for
+every finite-precision update.
+
+C15 does not cover noisy or inexact gradient evaluation before the final
+cast, model-forward consumption of the three-word master, literal upstream
+`torch.lerp_` bit parity, native BLAS/GPU/tensor-core execution, stochastic
+rounding, FTZ/DAZ, weight decay, aspect scaling, additive-epsilon/current
+normalization, or neural-network convergence. See
+`finite_precision_outer_loop_certificate.md`. Independent human review is
+still pending.
+
+## C16. Circuit and broader optimization consequences — open
 
 Boyd's framework models `y in partial f(x)` as a grounded multi-terminal
 device and its energy argument uses
@@ -805,7 +912,7 @@ The formal port mapping and the claim that lower deficit predicts a wider
 training learning-rate interval remain open. They require:
 
 1. a circuit sign convention and explicit interconnection model;
-2. shape-scalable backend-parity quantization bounds, including the
-      finite-precision outer-loop errors excluded by C13--C14;
+2. shape-scalable backend-parity quantization bounds, including production
+      outer-loop semantics not covered by the proposed C13--C15 kernels;
 3. implementation-level parity including weight decay and aspect scaling;
 4. only then, a controlled small neural-training sweep.

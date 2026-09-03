@@ -17,6 +17,8 @@ BF16_WITNESS_PATH = ROOT / "results/summaries/bf16_witness.json"
 FLOORED_CERTIFICATE_PATH = ROOT / "results/summaries/floored_repair_certificate.json"
 MOMENTUM_CERTIFICATE_PATH = ROOT / "results/summaries/momentum_iqc_certificate.json"
 EMA_NESTEROV_CERTIFICATE_PATH = ROOT / "results/summaries/ema_nesterov_iqc_certificate.json"
+OUTER_LOOP_CERTIFICATE_PATH = ROOT / "results/summaries/outer_loop_roundoff_certificate.json"
+OUTER_LOOP_DIAGNOSTIC_PATH = ROOT / "results/summaries/finite_precision_outer_loop_diagnostic.json"
 MUTABLE_OVERVIEW_PATHS = {
     "README.md",
     "TASKS.md",
@@ -52,11 +54,15 @@ def test_result_source_snapshots_match_immutable_workspace_files() -> None:
     floored = _load(FLOORED_CERTIFICATE_PATH)
     momentum = _load(MOMENTUM_CERTIFICATE_PATH)
     ema_nesterov = _load(EMA_NESTEROV_CERTIFICATE_PATH)
+    outer_loop = _load(OUTER_LOOP_CERTIFICATE_PATH)
+    outer_diagnostic = _load(OUTER_LOOP_DIAGNOSTIC_PATH)
     snapshots = [manifest["source_snapshot"] for manifest in manifests]
     snapshots.append(witness["experiment_provenance"]["source_snapshot"])
     snapshots.append(floored["experiment_provenance"]["source_snapshot"])
     snapshots.append(momentum["experiment_provenance"]["source_snapshot"])
     snapshots.append(ema_nesterov["experiment_provenance"]["source_snapshot"])
+    snapshots.append(outer_loop["proof_replay_provenance"]["source_snapshot"])
+    snapshots.append(outer_diagnostic["experiment_provenance"]["source_snapshot"])
     for snapshot in snapshots:
         assert snapshot
         for relative_path, expected_hash in snapshot.items():
@@ -80,10 +86,61 @@ def test_result_manifests_record_clean_git_revisions() -> None:
         FLOORED_CERTIFICATE_PATH,
         MOMENTUM_CERTIFICATE_PATH,
         EMA_NESTEROV_CERTIFICATE_PATH,
+        OUTER_LOOP_CERTIFICATE_PATH,
     ):
         git = _load(path)["git"]
         assert len(git["sha"]) == 40
         assert git["dirty"] is False
+
+    diagnostic_git = _load(OUTER_LOOP_DIAGNOSTIC_PATH)["experiment_provenance"]["git"]
+    assert len(diagnostic_git["sha"]) == 40
+    assert diagnostic_git["dirty"] is False
+
+
+def test_p10_manifests_record_locked_outer_shell_certificate_and_diagnostic() -> None:
+    certificate = _load(OUTER_LOOP_CERTIFICATE_PATH)
+    assert certificate["schema_version"] == ("passive-muon-outer-loop-roundoff-certificate-v1")
+    assert certificate["git"]["branch"] == "p10-finite-precision-outer-loop"
+    assert certificate["git"]["dirty"] is False
+    assert certificate["port_reduction"]["shape"] == [4_096, 11_008]
+    assert certificate["operator"]["normalization_rule"] == (
+        "M/max(c,||M||_F), exact fixed Frobenius max floor"
+    )
+    assert certificate["operator"]["epsilon"].startswith("none")
+    assert certificate["operator"]["polynomial_coefficients_exact"] == {
+        "a": "6889/2000",
+        "b": "-191/40",
+        "c": "4063/2000",
+    }
+    assert certificate["operator"]["newton_schulz_iteration_count"] == 5
+    locked = certificate["locked_certificate"]
+    assert Fraction(locked["rate_q10"]["exact"]) == Fraction(549_700_907_325, 549_755_813_888) < 1
+    assert Fraction(locked["constant_forcing_D10"]["exact"]) == Fraction(
+        2_162_331, 1_099_511_627_776
+    )
+    assert (
+        Fraction(locked["function_gap_ultimate"]["exact"])
+        == Fraction(399_957_341_889, 549_755_813_888)
+        < 1
+    )
+    guard = certificate["guard_closure"]
+    assert guard["rounded_step_quantity"] == "entrywise maxabs"
+    assert guard["rounded_step_at_radius"]["exact"] == "70039619545/68719476736"
+    assert guard["high_word_guard"].startswith("conditional")
+    assert all(guard["middle_low_invariant_checks"].values())
+    assert certificate["actual_p9_fp32_stalling_witness"]["certified"] is True
+    assert certificate["audit"]["all_exact_checks_passed"] is True
+
+    diagnostic = _load(OUTER_LOOP_DIAGNOSTIC_PATH)
+    assert diagnostic["schema_version"] == (
+        "passive-muon-finite-precision-outer-loop-diagnostic-v1"
+    )
+    assert diagnostic["experiment_provenance"]["git"]["branch"] == (
+        "p10-finite-precision-outer-loop"
+    )
+    assert diagnostic["experiment_provenance"]["git"]["dirty"] is False
+    assert diagnostic["config"]["seed"] == 20_260_903
+    assert diagnostic["summary"]["all_selected_falsification_checks_pass"] is True
 
 
 def test_floored_certificate_manifest_records_the_locked_rigorous_bracket() -> None:

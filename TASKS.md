@@ -109,11 +109,33 @@
 - [ ] Obtain an independent human proof audit of C14 and a parity audit of any
       optimized BLAS/GPU implementation against the slow balanced reference;
       the current theorem does not transfer automatically to native kernels.
-- [ ] Bound FP32 EMA/Nesterov and parameter-update rounding through appropriate
-      internal ports or a compensated/higher-precision master-weight design.
+- [x] Specify the P10 CPU FP32 EMA/Nesterov operation graph, including exact
+      binary32 scalar encodings, a single reused rounded gradient product, and
+      exact algebraic momentum/signal residual ports.
+- [x] Derive exact full-matrix rounding envelopes for the FP32 momentum,
+      Nesterov-signal, and logical master-update residuals at
+      `4096 x 11008`, retaining subnormal crumbs and overflow guards.
+- [x] Implement the three-word FP32 compensated master and prove its two
+      `TwoSum` cascades preserve the logical update up to the displayed
+      step/low rounding port without a high-word-sized error term.
+- [x] Close the concrete P10 rounding envelopes through P7 at the full
+      `eta=1/32000` step, certifying `q_10<1`, the guarded `V<=1` invariant,
+      and a finite subunit objective-gap neighborhood.
+- [x] Add the exact actual-P9 witness showing ordinary FP32 parameter
+      subtraction stalls at `W=2^30` while the compensated logical master
+      moves, plus a deterministic outer-shell falsification diagnostic.
+- [x] Add a standalone standard-library reconstruction of the P10 arithmetic
+      envelopes, internal-port reduction, exact rate, and range comparisons.
+- [ ] Obtain an independent human proof audit of C15, including the final
+      gradient cast, residual placement, three-word master identity, range
+      guards, and physical-units conversion; the unsigned review packet is
+      `theory/audits/P10_HUMAN_PROOF_AUDIT.md`.
 - [ ] Bound the complete error of a pinned deployed BF16 backend by the C12
-      disturbance model and certify its ultimate neighborhood; P8's proposed
-      stage-boundary design is not literal upstream parity.
+      disturbance model and certify its ultimate neighborhood; P8--P10 are
+      proposed proof-reference designs, not literal upstream parity.
+- [ ] Specify how model forward/backward evaluation consumes the three-word
+      logical master, or derive a separate reconstruction/error port for the
+      represented model weights.
 - [ ] Run a small matched NanoGPT sweep only after the preceding gates pass.
 - [ ] Run an accelerator throughput benchmark only for a certified design.
 

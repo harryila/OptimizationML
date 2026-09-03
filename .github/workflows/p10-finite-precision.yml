@@ -1,0 +1,66 @@
+name: P10 finite-precision outer-loop replay
+
+on:
+  push:
+    branches:
+      - main
+      - p10-finite-precision-outer-loop
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-and-shell:
+    name: Exact port replay and CPU shell (Python 3.12)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          enable-cache: true
+
+      - name: Install the locked environment
+        run: uv sync --locked
+
+      - name: Replay the exact finite-precision outer-loop certificate
+        run: >-
+          uv run --locked python scripts/certify_outer_loop_roundoff.py
+          --output "$RUNNER_TEMP/outer_loop_roundoff_certificate.json"
+
+      - name: Independently reconstruct the fresh certificate
+        run: >-
+          uv run --locked python scripts/reconstruct_outer_loop_roundoff.py
+          --canonical "$RUNNER_TEMP/outer_loop_roundoff_certificate.json"
+          --require-canonical
+
+      - name: Compare the committed canonical certificate
+        run: >-
+          uv run --locked python scripts/reconstruct_outer_loop_roundoff.py
+          --require-canonical
+
+      - name: Replay the modest CPU outer-shell diagnostic
+        run: >-
+          uv run --locked python
+          experiments/mixed_precision/run_finite_precision_outer_loop_diagnostic.py
+          --output "$RUNNER_TEMP/finite_precision_outer_loop_diagnostic.json"
+
+      - name: Run P10 integrity, reconstruction, and shell tests
+        run: >-
+          uv run --locked pytest -q
+          tests/test_finite_precision_outer_loop.py
+          tests/test_outer_loop_roundoff_certificate.py
+          tests/test_outer_loop_roundoff_cli.py
+          tests/test_outer_loop_roundoff_reconstruction.py
+          tests/test_finite_precision_outer_loop_diagnostic.py
+          tests/test_current_research_index.py
