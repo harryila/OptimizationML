@@ -1,0 +1,519 @@
+{
+  "actual_p9_fp32_stalling_witness": {
+    "accumulated_master_residual_exact": "-11/3276800",
+    "certified": true,
+    "checks": {
+      "compensated_high_eventually_moves": true,
+      "compensated_logical_value_decreases": true,
+      "compensated_middle_records_first_lost_step": true,
+      "ema_signal_is_exact_control": true,
+      "exact_telescoping_identity": true,
+      "operator_output_is_nonzero": true,
+      "r_m_is_exactly_zero": true,
+      "r_s_is_exactly_zero": true,
+      "raw_fp32_stalls_for_every_repetition": true,
+      "rounded_step_is_below_downward_half_ulp": true,
+      "uses_actual_p9_operator": true
+    },
+    "compensated_final": {
+      "high_exact": "1073741696",
+      "logical_exact": "140737474806461/131072",
+      "low_exact": "0",
+      "middle_exact": "3228349/131072"
+    },
+    "compensated_first_high_bits_hex": "0x4e800000",
+    "compensated_first_high_move_iteration": 20,
+    "compensated_first_middle_exact": "-13548867/8388608",
+    "initial_exact": "1073741824",
+    "initial_fp32_bits_hex": "0x4e800000",
+    "learning_rate_runtime_exact": "8589935/274877906944",
+    "learning_rate_source_exact": "1/32000",
+    "matrix_shape": [
+      2,
+      2
+    ],
+    "momentum_00_exact": "64",
+    "operator_interface_id": "passive-muon-scalable-mixed-precision-design-v1",
+    "operator_output_00_bits_hex": "0x4749e4d3",
+    "operator_output_00_exact": "13231315/256",
+    "r_m_00_exact": "0",
+    "r_s_00_exact": "0",
+    "raw_final_bits_hex": "0x4e800000",
+    "repetitions": 64,
+    "represented_gradient_00_exact": "64",
+    "rounded_step_exact": "13548867/8388608",
+    "scope": "actual P9 repaired-operator parameter-stalling witness",
+    "signal_00_exact": "64",
+    "source_step_exact": "2646263/1638400",
+    "step_rounding_residual_exact": "11/209715200",
+    "synthetic_arithmetic_control": {
+      "certified": true,
+      "checks": {
+        "compensated_high_moves_by_second_step": true,
+        "first_logical_step_accumulates_exactly": true,
+        "raw_stalls_twice": true,
+        "second_logical_step_accumulates_exactly": true
+      },
+      "operator_output_exact": "16384",
+      "rounded_step_exact": "8589935/16777216",
+      "scope": "synthetic arithmetic control; not an operator witness"
+    }
+  },
+  "arithmetic_contract": {
+    "fma_allowed": false,
+    "ftz_daz_allowed": false,
+    "gradual_underflow_required": true,
+    "outer_backend": "torch-cpu-eager-ieee-rne-fp32-three-word-master-v1",
+    "outer_schema": "passive-muon-finite-precision-outer-loop-v1",
+    "raw_port_formulas": {
+      "gradient_boundary": "||g_hat-grad f(W)||_F<=u||grad f(W)||_F+ceil(sqrt(n))*tau",
+      "r_W": "||r_W||_F<=C_eta||operator_output||_F+u||low||_F+b_master",
+      "r_tilde_m": "||r_tilde_m||_F<=C_beta||m||_F+C_g||g_hat||_F+b_ema",
+      "r_tilde_s": "||r_tilde_s||_F<=C_beta||m_next||_F+C_g||g_hat||_F+b_ema"
+    },
+    "reassociation_allowed": false,
+    "rounding": "IEEE-754 roundTiesToEven at every named FP32 operation",
+    "seed": "none; deterministic exact certificate and executable witness"
+  },
+  "audit": {
+    "all_exact_checks_passed": true,
+    "checks": {
+      "bounded_update_port_does_not_imply_full_state_iss": true,
+      "certificate_output_is_in_runtime_domain": true,
+      "complete_certificate_accepts": true,
+      "effective_gradient_scale_uses_one_minus_beta": true,
+      "gradient_boundary_cast_is_absorbed": true,
+      "gradient_cast_and_ema_intermediates_are_finite": true,
+      "high_guard_is_explicitly_conditional": true,
+      "locked_shape_is_4096x11008": true,
+      "middle_low_guards_are_preserved": true,
+      "objective_neighborhood_is_below_one": true,
+      "operator_output_is_below_2^15": true,
+      "p7_exact_lmi_replays": true,
+      "p9_shape_certificate_replays": true,
+      "p9_signal_guard_closes": true,
+      "rate_is_strict": true,
+      "rounded_step_is_below_two": true,
+      "square_summable_update_port_does_not_imply_iterate_convergence": true,
+      "unit_storage_is_forward_invariant": true
+    },
+    "p7_exact_lmi_replayed": true,
+    "p9_shape_certificate_replayed": true
+  },
+  "claim_scope": {
+    "evidence_kind": "exact rational compositional P7/P9/P10 certificate with upward rounding",
+    "gradient_boundary": "the exact objective gradient at logical W=high+middle+low is rounded once entrywise to FP32 before the locked EMA/Nesterov graph",
+    "guarantee": "at shape 4096x11008, V_(t+1)<=q10*V_t+D10; if V_0<=1 and the conditional high-word guard is rechecked, V_t<=1 and the objective-gap limsup is bounded by the displayed value below one",
+    "matrix_domain": "one fixed 4096x11008 CPU FP32 shell and P9 operator instance under every displayed finite-range guard",
+    "normalization": "exact target s/max(1,||s||_F), no additive epsilon",
+    "not_claimed": [
+      "literal upstream Muon, current-plus-epsilon normalization, or an unrepaired map",
+      "native BLAS, GPU, tensor-core, fused, or compiler-reassociated arithmetic",
+      "rounding incurred while computing the real objective gradient before its final cast",
+      "model-forward parity when a model consumes only the high master word",
+      "an unconditional invariant for the high master word",
+      "full-parameter ISS or iterate convergence on nonunique PL minimizer sets",
+      "a unique minimizer, arbitrary-pair contraction, or tightness of the gains"
+    ],
+    "objective_domain": "differentiable globally 10-smooth objectives satisfying the global PL inequality with constant 1; nonconvex and nonunique minimizers are included"
+  },
+  "flat_direction_obstruction": {
+    "bounded_error_causes_unbounded_parameter": true,
+    "gradient_norm": "0",
+    "momentum_norm": "0",
+    "objective": "f(x,y)=x^2/2",
+    "objective_gap": "0",
+    "pl_constant": "1",
+    "smoothness_upper": "10",
+    "square_summable_error_causes_parameter_drift": true,
+    "witness": "at zero state, any sufficiently small fixed r_W,t=(0,epsilon) gives linear flat-direction drift; r_W,t=(0,epsilon/(t+1)) is square summable but gives harmonic drift for every epsilon>0"
+  },
+  "git": {
+    "branch": "p10-finite-precision-outer-loop",
+    "dirty": false,
+    "sha": "2d62b566e5a34895470d4eeb4b76789add826cbe"
+  },
+  "guard_closure": {
+    "certificate_operator_output_max_abs": {
+      "decimal": "32768",
+      "exact": "32768"
+    },
+    "ema_intermediate_frobenius_bounds": {
+      "beta_momentum": {
+        "decimal": "13.1607369615312563837505877017974853515625",
+        "exact": "14470383319305/1099511627776"
+      },
+      "beta_momentum_next": {
+        "decimal": "20.43089523499293136410415172576904296875",
+        "exact": "5616001719187/274877906944"
+      },
+      "momentum_next": {
+        "decimal": "21.5062044985161264776252210140228271484375",
+        "exact": "23646321915447/1099511627776"
+      },
+      "represented_gradient": {
+        "decimal": "166.909312666581172379665076732635498046875",
+        "exact": "91759365030503/549755813888"
+      },
+      "signal": {
+        "decimal": "25.233458472985148546285927295684814453125",
+        "exact": "13872240500025/549755813888"
+      },
+      "true_gradient": {
+        "decimal": "166.9093027180106219020672142505645751953125",
+        "exact": "183518719122437/1099511627776"
+      },
+      "weighted_gradient": {
+        "decimal": "8.3454662551148430793546140193939208984375",
+        "exact": "9175937186711/1099511627776"
+      }
+    },
+    "ema_intermediates_are_finite": true,
+    "forcing_capacity_at_locked_radius": {
+      "decimal": "0.000099874456282122991979122161865234375",
+      "exact": "54906563/549755813888"
+    },
+    "fp32_max_finite": {
+      "decimal": "340282346638528859811704183484516925440",
+      "exact": "340282346638528859811704183484516925440"
+    },
+    "high_word_guard": "conditional and rechecked after every update; not implied by PL storage",
+    "master_word_max_abs": {
+      "high": {
+        "decimal": "1073741824",
+        "exact": "1073741824"
+      },
+      "low": {
+        "decimal": "0.0000152587890625",
+        "exact": "1/65536"
+      },
+      "middle": {
+        "decimal": "128",
+        "exact": "128"
+      }
+    },
+    "middle_low_invariant_checks": {
+      "certificate_output_profile_implies_step_guard": true,
+      "high_two_sum_cannot_overflow": true,
+      "middle_candidate_below_2^8": true,
+      "new_low_within_guard": true,
+      "new_middle_within_guard": true,
+      "pending_below_three": true
+    },
+    "operator_capacity_radius": {
+      "decimal": "1.0094211133737189811654388904571533203125",
+      "exact": "1109870251477/1099511627776"
+    },
+    "operator_output_at_radius": {
+      "decimal": "32614.73590674313527415506541728973388671875",
+      "exact": "8965070341576875/274877906944"
+    },
+    "p9_signal_max_abs": {
+      "decimal": "83076749736557242056487941267521536",
+      "exact": "83076749736557242056487941267521536"
+    },
+    "rounded_step_at_radius": {
+      "decimal": "1.019210606245906092226505279541015625",
+      "exact": "70039619545/68719476736"
+    },
+    "rounded_step_max_abs": {
+      "decimal": "2",
+      "exact": "2"
+    },
+    "rounded_step_quantity": "entrywise maxabs",
+    "runtime_operator_output_max_abs": {
+      "decimal": "65536",
+      "exact": "65536"
+    },
+    "signal_at_radius": {
+      "decimal": "25.233458472985148546285927295684814453125",
+      "exact": "13872240500025/549755813888"
+    },
+    "signal_capacity_radius": {
+      "decimal": "1.0839404837080311817701846546957003286169722262835E+67",
+      "exact": "11918051656541221729923006668285659502659452473415540416833185768960164914723741/1099511627776"
+    },
+    "storage_radius": {
+      "decimal": "1",
+      "exact": "1"
+    }
+  },
+  "locked_certificate": {
+    "constant_forcing_D10": {
+      "decimal": "0.0000019666285879793576896190643310546875",
+      "exact": "2162331/1099511627776"
+    },
+    "function_gap_ultimate": {
+      "decimal": "0.727518166766458307392895221710205078125",
+      "exact": "399957341889/549755813888"
+    },
+    "gradient_young": 1,
+    "one_minus_q10": {
+      "decimal": "0.000099874456282122991979122161865234375",
+      "exact": "54906563/549755813888"
+    },
+    "operator_young": 837,
+    "p7_gradient_gain": {
+      "decimal": "0.5",
+      "exact": "1/2"
+    },
+    "p7_operator_gain": {
+      "decimal": "5E-7",
+      "exact": "1/2000000"
+    },
+    "p7_rate": {
+      "decimal": "0.9999000025",
+      "exact": "399960001/400000000"
+    },
+    "rate_q10": {
+      "decimal": "0.999900125543717877008020877838134765625",
+      "exact": "549700907325/549755813888"
+    },
+    "storage_inequality": "V_next<=q10*V+D10"
+  },
+  "locked_runtime_scalars": {
+    "beta_fp32": {
+      "decimal": "0.949999988079071044921875",
+      "exact": "15938355/16777216"
+    },
+    "beta_fp32_bits_hex": "0x3f733333",
+    "beta_source": {
+      "decimal": "0.95",
+      "exact": "19/20"
+    },
+    "learning_rate_fp32": {
+      "decimal": "0.00003125000148429535329341888427734375",
+      "exact": "8589935/274877906944"
+    },
+    "learning_rate_fp32_bits_hex": "0x3803126f",
+    "learning_rate_source": {
+      "decimal": "0.00003125",
+      "exact": "1/32000"
+    },
+    "one_minus_beta_fp32": {
+      "decimal": "0.0500000007450580596923828125",
+      "exact": "13421773/268435456"
+    },
+    "one_minus_beta_fp32_bits_hex": "0x3d4ccccd",
+    "one_minus_beta_source": {
+      "decimal": "0.05",
+      "exact": "1/20"
+    }
+  },
+  "operator": {
+    "constant_repair_rho": {
+      "decimal": "807.56450108107096650843598143035908211653085959437",
+      "exact": "210177835339081/260261360000"
+    },
+    "domain": "fixed finite real 4096x11008 matrices under the P9/P10 guards",
+    "epsilon": "none; this is a max-floor normalizer, not additive epsilon",
+    "floor_c": {
+      "decimal": "1",
+      "exact": "1"
+    },
+    "formula": "R(M)=H_(q composed 5 times)(M/max(1,||M||_F))+rho*M",
+    "newton_schulz_iteration_count": 5,
+    "normalization_rule": "M/max(c,||M||_F), exact fixed Frobenius max floor",
+    "orthogonalizer": "jordan_quintic",
+    "polynomial_coefficients_exact": {
+      "a": "6889/2000",
+      "b": "-191/40",
+      "c": "4063/2000"
+    },
+    "polynomial_formula": "q(x)=a*x+b*x^3+c*x^5",
+    "upstream_muon_sha256": "2479665a90124f62e4df557816665851ca317e42fcfda2af1da02c1f44ab5f3d",
+    "upstream_revision": "f98f1cacc0263b04290753e32be8d498c1efc806"
+  },
+  "outer_update": {
+    "effective_gradient_error": "xi_eff=r_m/(1-beta)",
+    "effective_operator_error": "e_eff=R(s_next)-R(s0)+(Rhat(s_next)-R(s_next))-r_W/eta",
+    "gradient_boundary": "g_hat=C32(grad f(W)); W=high+middle+low over the reals",
+    "master_update": "W_next=W-eta*Rhat(s_next)+r_W",
+    "momentum": "m_next=beta*m+(1-beta)*grad f(W)+r_m",
+    "nesterov_signal": "s_next=beta*m_next+(1-beta)*grad f(W)+r_s",
+    "nominal_p7_signal": "s0=beta^2*m+(1-beta^2)*grad f(W)+(1+beta)*r_m",
+    "raw_shell_ports": "r_tilde_m and r_tilde_s are defined relative to represented g_hat",
+    "signal_difference": "s_next-s0=r_s-r_m",
+    "total_theorem_ports": "r_m=r_tilde_m+(1-beta)*(g_hat-grad f(W)); r_s=r_tilde_s+(1-beta)*(g_hat-grad f(W))"
+  },
+  "port_reduction": {
+    "affine_storage_envelopes": {
+      "actual_fp32_signal": {
+        "intercept": {
+          "decimal": "9.094947017729282379150390625E-13",
+          "exact": "1/1099511627776"
+        },
+        "slope": {
+          "decimal": "25.2334584729842390515841543674468994140625",
+          "exact": "27744481000049/1099511627776"
+        }
+      },
+      "effective_p7_gradient_error": {
+        "intercept": {
+          "decimal": "1.818989403545856475830078125E-11",
+          "exact": "5/274877906944"
+        },
+        "slope": {
+          "decimal": "0.00005861938916496001183986663818359375",
+          "exact": "16113175/274877906944"
+        }
+      },
+      "effective_p7_operator_error": {
+        "intercept": {
+          "decimal": "1.9820604207916403538547456264495849609375",
+          "exact": "2179298479615/1099511627776"
+        },
+        "slope": {
+          "decimal": "0.016895525846848613582551479339599609375",
+          "exact": "9288413563/549755813888"
+        }
+      },
+      "master_update_port_r_W": {
+        "intercept": {
+          "decimal": "6.1181708588264882564544677734375E-9",
+          "exact": "6727/1099511627776"
+        },
+        "slope": {
+          "decimal": "1.69899067259393632411956787109375E-7",
+          "exact": "93403/549755813888"
+        }
+      },
+      "momentum_port_r_m": {
+        "intercept": {
+          "decimal": "9.094947017729282379150390625E-13",
+          "exact": "1/1099511627776"
+        },
+        "slope": {
+          "decimal": "0.0000029309694582480005919933319091796875",
+          "exact": "3222635/1099511627776"
+        }
+      },
+      "p9_operator_output": {
+        "intercept": {
+          "decimal": "1.9818646381490907515399158000946044921875",
+          "exact": "2179083214323/1099511627776"
+        },
+        "slope": {
+          "decimal": "32612.7540421049861834035255014896392822265625",
+          "exact": "35858102283093177/1099511627776"
+        }
+      },
+      "signal_port_r_s": {
+        "intercept": {
+          "decimal": "9.094947017729282379150390625E-13",
+          "exact": "1/1099511627776"
+        },
+        "slope": {
+          "decimal": "0.0000038001089706085622310638427734375",
+          "exact": "522283/137438953472"
+        }
+      }
+    },
+    "form": "every envelope is norm<=slope*sqrt(V)+intercept",
+    "ideal_repaired_lipschitz": {
+      "decimal": "1292.4408010810709665084359814303590821165308595944",
+      "exact": "336372400608849/260261360000"
+    },
+    "p9_binary32_operator_error": {
+      "intercept": {
+        "decimal": "1.981864636973114102147519588470458984375",
+        "exact": "1089541606515/549755813888"
+      },
+      "slope": {
+        "decimal": "0.000109348280602716840803623199462890625",
+        "exact": "60114853/549755813888"
+      }
+    },
+    "raw_ema_crumb": {
+      "decimal": "1.4114579342774689580288446347490879511139213917178E-41",
+      "exact": "168988514875/11972621413014756705924586149611790497021399392059392"
+    },
+    "raw_ema_gradient_coefficient": {
+      "decimal": "6.7055228036849738695155298713601599303046896238811E-9",
+      "exact": "2533274891059201/377789318629571617095680"
+    },
+    "raw_ema_momentum_coefficient": {
+      "decimal": "1.2516975598231279348862814843057478242371871601790E-7",
+      "exact": "2955487301599231/23611832414348226068480"
+    },
+    "raw_master_absolute_bound_under_certificate_guards": {
+      "decimal": "0.0011463083938252805417337568203578479497744830004827",
+      "exact": "686215821091555326528019070148118101046615043379139/598631070650737835296229307480589524851069969602969600"
+    },
+    "raw_master_absolute_bound_under_output_and_low_guards": {
+      "decimal": "0.0022926106803936386782543960412283912120395562814970",
+      "exact": "1372427986189360454493186689799453955169933253054403/598631070650737835296229307480589524851069969602969600"
+    },
+    "raw_master_absolute_part_under_low_guard": {
+      "decimal": "6.1072569224052131175994873046875094097194683726314E-9",
+      "exact": "146239750007942514058019871289876931873348155/23945242826029513411849172299223580994042798784118784"
+    },
+    "raw_master_crumb": {
+      "decimal": "9.4097194683726314479574342116933864609563466935140E-42",
+      "exact": "225318017595/23945242826029513411849172299223580994042798784118784"
+    },
+    "raw_master_low_word_coefficient": {
+      "decimal": "5.9604644775390625E-8",
+      "exact": "1/16777216"
+    },
+    "raw_master_output_coefficient": {
+      "decimal": "5.2095859397194352322037264479308912162869305007007E-12",
+      "exact": "50384023616225331/9671406556917033397649408000"
+    },
+    "represented_gradient_coefficient": {
+      "decimal": "0.050000006705522803684973869515529871360159930304690",
+      "exact": "3777893692950694382797/75557863725914323419136"
+    },
+    "represented_momentum_coefficient": {
+      "decimal": "0.95000010132789807215654348862814843057478242371872",
+      "exact": "4486248637233632588595/4722366482869645213696"
+    },
+    "shape": [
+      4096,
+      11008
+    ],
+    "sqrt_entries_upper": 6715,
+    "upper_grid_denominator": "1099511627776"
+  },
+  "proof_replay_provenance": {
+    "arithmetic": "fractions.Fraction exact arithmetic, integer square-root ceilings, and explicit upward/downward 2^-40 rationalization",
+    "hardware": {
+      "machine": "arm64",
+      "platform": "macOS-15.5-arm64-arm-64bit",
+      "processor": "arm"
+    },
+    "numeric_solver_role": "none",
+    "software": {
+      "python": "3.12.11 (main, Jul  8 2025, 20:41:49) [Clang 20.1.4 ]",
+      "torch": "2.13.0"
+    },
+    "source_snapshot": {
+      ".github/workflows/p10-finite-precision.yml": "c04efdceafaa967de07790655a37eefc620015bb4859b90c85c10ad4df3b2ab9",
+      "pyproject.toml": "7a9988bf528baef5145f779516d4315349d1c2a6bbb7394c9b93fbbee1d4f596",
+      "results/summaries/P10_RESULTS.md": "da8773236dcebe93cadf8e16af3a7eedc82e0b8971a9c774e1d1bba253e0845e",
+      "scripts/certify_outer_loop_roundoff.py": "c3e0cfe8d516cae9e77117d1109e9b022a2bf9734f1ef890131ccce60ee86eba",
+      "scripts/reconstruct_outer_loop_roundoff.py": "bb3193b4c04f7eacefbb09d5707fe9a37d94ccdc1fd5040b5151dbe773f38a9f",
+      "src/passive_muon/finite_precision_outer_loop.py": "f347e0dc2e573592327eb12bb31536d0a0807153cf5866b2a34bb0c4b2901a32",
+      "src/passive_muon/floored_certificate.py": "385dee8576e574bebc72fe09478220cf2ec29928045ee6341472c2e9becb6a72",
+      "src/passive_muon/mixed_precision_certificate.py": "f260b4e83905b38aab5cfc6af29a4a59ce0275f01b9214792d8854528cea7dfc",
+      "src/passive_muon/outer_loop_roundoff_certificate.py": "20ea0e3b79c3a16ea78ed620fa52e7baf0bd86c1bf4c87dfa90ca85cf4942aa5",
+      "src/passive_muon/pl_convergence.py": "d59d56d6e2ba808aaa519770f3b4442ccfb54aa5144755b760bcb2c7cea8b446",
+      "src/passive_muon/robust_dissipativity.py": "4be3e2716bb968bdebada22d8bcb9bf81eef27852f624f8af53b0b6710da23d2",
+      "src/passive_muon/scalable_mixed_precision.py": "4e18c2f4629846f6b7155d49b734ddc84c446557727419dc9d6a95e7cb2a2453",
+      "src/passive_muon/scalable_mixed_precision_certificate.py": "c73e9bcba24b09f4948105e978cbab9f3723d2d1359b1b231912bc1cc165f93a",
+      "src/passive_muon/specs.py": "85fcee0f87485fc3cac2f426d62ec6e55da7896caade2f5df2a1c87f7d9c5d6c",
+      "src/passive_muon/structure_aware_stability.py": "fbbbfa314b26c8c549dcc915bcbe590fadc55fb712288c1757ff24881ababc4a",
+      "src/passive_muon/upstream_momentum.py": "7479613bb307debbb2a02e04e6bbe53a428855c51e1e21210f9c2be2e68d3d7e",
+      "tests/test_finite_precision_outer_loop.py": "80ad46cad073957584bcd9ba59c4229eb38a516e98ccd95a51596d4e01f2acd4",
+      "tests/test_finite_precision_outer_loop_diagnostic.py": "02b4084e2a7f2d4a2a482081438d10cefffe6865ff4ddc168522b29803cb9542",
+      "tests/test_outer_loop_roundoff_certificate.py": "3a6ed86d7e65b3d337e9349a7b6e9241bfa23a7557351c08197d657efcee2579",
+      "tests/test_outer_loop_roundoff_cli.py": "cfb7d0fad1635dc8857069637535c37c38854712f9c7bb6c2c1ca1e0f655894e",
+      "tests/test_outer_loop_roundoff_reconstruction.py": "8b09b6cbfb030543136be5009ffc2976ba5a0ada9d15ecfc4bff931a6f8eae69",
+      "tests/test_result_manifests.py": "3340b978b38ba313cd2804f3daced2d0994e90b9476654db2065de1439b56496",
+      "theory/audits/P10_HUMAN_PROOF_AUDIT.md": "5c96e23be5f611b692649a21beaa2728f4588675cd5b23f9f83a018487c42cd7",
+      "theory/finite_precision_outer_loop_certificate.md": "f3cc9923f293652bd2a458c5d0c20d986e4c5455a8075dfbfe0375fd0d2c1024",
+      "uv.lock": "f097fd7895b5c1c551a0bd233d025c3f8ae97b7dedce6a8690569f1b1f7c5cf1"
+    }
+  },
+  "schema_version": "passive-muon-outer-loop-roundoff-certificate-v1"
+}
