@@ -138,6 +138,31 @@ roles. A standalone standard-library reconstruction rebuilds the interpolation
 supplies, storage, complete `4 x 4` LMI, and exact Sylvester minors before it
 reads and compares the canonical artifact.
 
+Branch `p7-robust-dissipativity` keeps the same global smooth-PL class,
+max-floor operator, full step, and storage while adding gradient error `xi_t`
+and post-operator implementation error `e_t`. For the exact max floor `c=1`,
+no additive epsilon, five Jordan steps with coefficients
+`(6889/2000,-191/40,4063/2000)`, constant repair
+`rho=210177835339081/260261360000`, `beta=19/20`, and `eta=1/32000`, an exact
+dimension-independent `6 x 6` certificate proves the pathwise inequality
+
+\[
+V_{t+1}\le
+\frac{399960001}{400000000}V_t
++\frac12\lVert\xi_t\rVert_F^2
++\frac1{2000000}\lVert e_t\rVert_F^2.
+\]
+
+This gives deterministic input-to-storage/output bounds and a rigorous
+bounded-second-moment stochastic corollary for the objective gap, momentum,
+and true gradient. It is not full-state ISS: a square-summable harmonic error
+can drift forever along a flat nonunique minimizer set while `V_t=0`. The
+certificate and 144-case, 17,280-update falsification snapshot are sourced at
+commit `c55d3e65fa2220f6a9e91c1a3d29b0cff04e3b8a`; all sampled cases had zero
+candidate violations. See
+[`theory/robust_dissipativity_certificate.md`](theory/robust_dissipativity_certificate.md)
+and [`results/summaries/P7_RESULTS.md`](results/summaries/P7_RESULTS.md).
+
 The repair claim is intentionally scoped. A constant `rho` is the exact minimal
 linear shift for a **specified point, pair, sample set, or domain with a finite
 certified deficit**. For exact scale-invariant normalization on every nonzero
@@ -163,6 +188,8 @@ uv run --locked python scripts/certify_nonquadratic_convergence.py
 uv run --locked python scripts/reconstruct_nonquadratic_convergence.py
 uv run --locked python scripts/certify_pl_convergence.py
 uv run --locked python scripts/reconstruct_pl_convergence.py
+uv run --locked python scripts/certify_robust_dissipativity.py
+uv run --locked python scripts/reconstruct_robust_dissipativity.py
 uv run --locked pytest
 ```
 
@@ -175,6 +202,7 @@ uv run --locked python experiments/quadratics/run_horizon_check.py
 uv run --locked python experiments/quadratics/run_nonquadratic_falsification.py
 uv run --locked python experiments/quadratics/run_nonquadratic_convergence_falsification.py
 uv run --locked python experiments/nonconvex/run_pl_falsification.py
+uv run --locked python experiments/nonconvex/run_robust_dissipativity_falsification.py
 uv run --locked python scripts/make_figures.py
 ```
 
@@ -190,7 +218,7 @@ not support a universal claim across BF16 backends.
 
 ## Scope
 
-This repository stays focused on nine technical goals:
+This repository stays focused on ten technical goals:
 
 1. a theorem for current-input Frobenius normalization;
 2. exact local and finite-pair controls for the five-step Jordan map;
@@ -205,14 +233,17 @@ This repository stays focused on nine technical goals:
    strongly-convex/smooth nonlinear objectives;
 8. full-step function-value convergence for globally smooth PL objectives,
    including nonconvex objectives with nonunique minimizers;
-9. qualified matrix, quadratic, and nonlinear falsification studies.
+9. exact robust dissipativity and bounded-second-moment guarantees under
+   additive gradient and repaired-operator-output errors;
+10. qualified matrix, quadratic, and nonlinear falsification studies.
 
-P6 is the broadest constructive optimizer result; P5 supplies the stronger
-strongly-convex conclusions, P4 is the quadratic bridge, and P3 is the
-conservative generic-IQC baseline. The generic one-step-memory IQC framework
-is prior art; the new ingredients are the certified full-matrix Muon operator
-and the structure-aware interconnection. Stochastic gradients,
-BF16/quantized execution, weight decay, aspect-ratio scaling, complete
+P7 is the broadest robustness result, while P6 is the underlying deterministic
+smooth-PL convergence theorem. P5 supplies the stronger strongly-convex
+conclusions, P4 is the quadratic bridge, and P3 is the conservative generic-IQC
+baseline. The generic one-step-memory IQC framework is prior art; the new
+ingredients are the certified full-matrix Muon operator and the
+structure-aware interconnection. A concrete BF16 error bound, quantized
+execution theorem, weight decay, aspect-ratio scaling, complete stochastic
 neural-network training, and formal circuit ports remain open.
 
 ## Layout

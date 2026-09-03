@@ -45,6 +45,19 @@ Current outputs:
   readout, including the distinct certificate-source and final-checkpoint
   revisions; the standalone reconstruction entry point is
   `scripts/reconstruct_pl_convergence.py`;
+- `summaries/robust_dissipativity_certificate.json`: exact
+  dimension-independent P7 `6 x 6` pathwise certificate at `beta=19/20` and
+  `eta=1/32000`, proving
+  `V_next <= (399960001/400000000)*V + ||xi||_F^2/2 + ||e||_F^2/2000000`
+  for the repaired exact-real max-floor five-step Jordan operator; its source
+  revision is `c55d3e65fa2220f6a9e91c1a3d29b0cff04e3b8a`;
+- `summaries/robust_dissipativity_falsification.json`: 144-case,
+  17,280-update CPU/float64 disturbed nonconvex-PL diagnostic with zero
+  candidate violations, plus the flat-minimizer harmonic-drift construction
+  showing that square-summable errors alone do not imply iterate convergence;
+- `summaries/P7_RESULTS.md`: scoped human-readable P7 theorem, deterministic
+  and bounded-second-moment stochastic consequences, diagnostic readout, and
+  strict exclusion of full-state ISS and a BF16 deployment claim;
 - `summaries/deficit_audit.{json,csv}`: 24-prefix spectral audit;
 - `summaries/quadratic_lr_sweep.json` plus CSV tables: gain-matched quadratic
   sweep and sensitivity classifications;

@@ -1,0 +1,59 @@
+name: P7 robust dissipativity replay
+
+on:
+  push:
+    branches:
+      - p7-robust-dissipativity
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-and-falsification:
+    name: Exact robust LMI and disturbed probe (Python 3.12)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          enable-cache: true
+
+      - name: Install the locked environment
+        run: uv sync --locked
+
+      - name: Replay the exact robust-dissipativity certificate
+        run: >-
+          uv run --locked python scripts/certify_robust_dissipativity.py
+          --output "$RUNNER_TEMP/robust_dissipativity_certificate.json"
+
+      - name: Independently reconstruct the exact robust certificate
+        run: >-
+          uv run --locked python scripts/reconstruct_robust_dissipativity.py
+          --require-canonical
+          --output "$RUNNER_TEMP/robust_dissipativity_reconstruction.json"
+
+      - name: Replay the disturbed nonconvex-PL falsification grid
+        run: >-
+          uv run --locked python
+          experiments/nonconvex/run_robust_dissipativity_falsification.py
+          --output "$RUNNER_TEMP/robust_dissipativity_falsification.json"
+
+      - name: Run P7 integrity tests
+        run: >-
+          uv run --locked pytest -q
+          tests/test_robust_dissipativity.py
+          tests/test_robust_dissipativity_cli.py
+          tests/test_robust_dissipativity_reconstruction.py
+          tests/test_robust_dissipativity_experiment.py
+          tests/test_robust_dissipativity_results.py

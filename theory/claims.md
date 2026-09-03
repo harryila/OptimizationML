@@ -296,7 +296,7 @@ about `2.599e-8`, whereas the linked curvature-10 zero-linearization loses
 local stability at about `4.726e-4`. The roughly `18,183x` gap is explicit:
 this is a rigorous but extremely conservative stylized-loop result. It does
 not establish nonquadratic, stochastic, BF16, or neural-network convergence.
-See `momentum_iqc_certificate.md`. C9--C11 below record the later
+See `momentum_iqc_certificate.md`. C9--C12 below record the later
 structure-aware quadratic and nonlinear extensions.
 
 Prior-art references for the generic IQC framework are Lessard, Recht, and
@@ -377,7 +377,7 @@ design, the corresponding local threshold is `0.002081027708...`, about
 `9,923.44x` its complex-skew necessary boundary. The predeclared hard rule therefore classifies C8 as
 an appendix/proof-of-principle result, not a headline practical-stability
 claim. No nonquadratic, stochastic, BF16, or neural-network theorem follows
-from C8 alone. See `ema_nesterov_iqc_certificate.md`. C9--C11 use additional
+from C8 alone. See `ema_nesterov_iqc_certificate.md`. C9--C12 use additional
 operator and objective structure.
 
 ## C9. Structure-aware pinned-loop quadratic stability — proved
@@ -484,7 +484,120 @@ stochastic or time-varying gradients, BF16, weight decay, aspect-ratio scaling,
 additive-epsilon or exact-current normalization, an unrepaired upstream Muon
 implementation, or complete neural-network training.
 
-## C12. Circuit and broader optimization consequences — open
+## C12. Robust dissipativity for disturbed smooth-PL dynamics — proved
+
+Keep exactly the C11 repaired exact-real operator on every fixed finite real
+matrix shape:
+
+\[
+R(M)=\mathcal H_{q^{\circ5}}
+\!\left(\frac{M}{\max\{1,\lVert M\rVert_F\}}\right)+\rho M,
+\]
+
+where the normalizer is the exact max floor `c=1`, there is no additive
+epsilon, the Jordan quintic is composed for exactly five steps with
+
+\[
+q(s)=\frac{6889}{2000}s-\frac{191}{40}s^3+\frac{4063}{2000}s^5,
+\qquad
+\rho=\frac{210177835339081}{260261360000}.
+\]
+
+Let `f` satisfy the C11 assumptions: it is a fixed differentiable scalar
+objective with finite infimum on an arbitrary finite matrix shape, its gradient
+is globally `10`-Lipschitz, and it satisfies the global PL inequality with
+constant `1`. Reuse one noisy gradient in both occurrences of the pinned
+EMA/Nesterov update:
+
+\[
+\begin{aligned}
+g_t&=\nabla f(W_t), & \widetilde g_t&=g_t+\xi_t,\\
+m_{t+1}&=\beta m_t+(1-\beta)\widetilde g_t,
+&s_{t+1}&=\beta m_{t+1}+(1-\beta)\widetilde g_t,\\
+W_{t+1}&=W_t-\eta\bigl(R(s_{t+1})+e_t\bigr),
+&\beta&=\frac{19}{20},\quad \eta=\frac1{32000}.
+\end{aligned}
+\]
+
+Here `xi_t` is additive gradient error, while `e_t` is additive error after
+the repaired operator and before multiplication by `eta`. For every sequence
+of finite same-shaped disturbance matrices and every finite initialization,
+the exact rational `6 x 6` certificate proves, pathwise,
+
+\[
+V_{t+1}\le
+\frac{399960001}{400000000}V_t
++\frac12\lVert\xi_t\rVert_F^2
++\frac1{2000000}\lVert e_t\rVert_F^2,
+\]
+
+where `V` is the C11 value--momentum storage. The proof is dimension
+independent and uses true gradients in the smooth nonconvex interpolation
+supplies; the noisy gradient appears only in the disturbed dynamics. The
+certificate therefore gives input-to-storage and input-to-output stability for
+the function gap, momentum, and true gradient. It is not full-state ISS in
+`W`, because a PL objective may have an unbounded non-singleton minimizer set.
+
+The pathwise inequality gives the exact deterministic convolution bound. If
+`||xi_t||_F <= X` and `||e_t||_F <= E`, then
+
+\[
+\limsup_t V_t\le
+\frac{200000000}{39999}X^2+
+\frac{200}{39999}E^2.
+\]
+
+Square summability of both disturbance sequences implies `V_t -> 0`,
+`f(W_t)-f_star -> 0`, `m_t -> 0`, and `grad f(W_t) -> 0`. It does not by itself
+imply convergence of `W_t`: for `f(x,y)=x^2/2`, the output errors
+`e_t=(0,1/(t+1))` have finite squared energy but drive harmonic motion along
+the flat minimizer direction while `V_t=0`. Absolute summability is a
+sufficient stronger condition for iterate convergence to some
+trajectory-dependent global minimizer.
+
+For a filtration with `E[V_0]<infinity`, an `F_t`-measurable current state,
+and `F_(t+1)`-measurable disturbances satisfying conditional second-moment
+bounds
+
+\[
+\mathbb E[\lVert\xi_t\rVert_F^2\mid\mathcal F_t]\le\sigma_g^2,
+\qquad
+\mathbb E[\lVert e_t\rVert_F^2\mid\mathcal F_t]\le\sigma_R^2,
+\]
+
+taking expectations yields
+
+\[
+\mathbb E V_t\le
+\bar q^t\mathbb E V_0+
+\frac{1-\bar q^t}{1-\bar q}
+\left(\frac{\sigma_g^2}{2}+
+\frac{\sigma_R^2}{2000000}\right),
+\qquad
+\bar q=\frac{399960001}{400000000}.
+\]
+
+Conditional unbiasedness can be added for the standard stochastic-gradient
+interpretation, but is not required for this expected energy bound because the
+underlying inequality is pathwise. This is a bounded-second-moment
+storage/function-gap result, not almost-sure convergence of the iterates under
+persistent noise.
+
+The authoritative certificate and diagnostic source revision is
+`c55d3e65fa2220f6a9e91c1a3d29b0cff04e3b8a`. A 144-case, 17,280-update
+CPU/float64 falsification grid covering deterministic bounded, seeded
+stochastic, and implementation-only disturbances found zero candidate
+violations. These sampled passes are not the proof. See
+`robust_dissipativity_certificate.md` and the exact machine-readable artifact.
+
+C12 does not establish full-state ISS, a BF16 error bound, or a theorem for
+unrepaired upstream Muon, additive-epsilon or exact-current normalization,
+weight decay, aspect-ratio scaling, time-varying objectives, complete
+stochastic neural-network training, or errors injected at unspecified internal
+locations. The two disturbance gains are sufficient and are not claimed
+minimal.
+
+## C13. Circuit and broader optimization consequences — open
 
 Boyd's framework models `y in partial f(x)` as a grounded multi-terminal
 device and its energy argument uses
@@ -498,6 +611,6 @@ The formal port mapping and the claim that lower deficit predicts a wider
 training learning-rate interval remain open. They require:
 
 1. a circuit sign convention and explicit interconnection model;
-2. stochastic and quantized robustness extensions beyond C11;
+2. backend-specific quantization bounds that instantiate the C12 error input;
 3. implementation-level parity including weight decay and aspect scaling;
 4. only then, a controlled small neural-training sweep.

@@ -46,7 +46,7 @@
 - [x] Add a standalone independent exact reconstruction of the P5 full-step
       matrix and determinant checks.
 - [ ] Obtain independent human review of C7 and C8.
-- [ ] Obtain independent human review of C9, C10, and C11.
+- [ ] Obtain independent human review of C9, C10, C11, and C12.
 - [ ] Obtain an independent parity audit against the pinned upstream EMA/Nesterov
       update (the automated local two-`lerp` regression exists; external sign-off
       is still pending).
@@ -62,10 +62,20 @@
       exact value cancellation, and Sylvester-minor checks.
 - [ ] Obtain an independent human proof audit of C11, with particular attention
       to the directed smooth nonconvex interpolation step.
-- [ ] Extend the P6 result to input-to-state or mean-square robustness under
-      stochastic-gradient noise.
-- [ ] Treat BF16 and rounding as disturbances and certify an ultimate error
-      neighborhood.
+- [x] Extend P6 at the full step to an exact pathwise input-to-storage/output
+      inequality under additive gradient and post-operator implementation
+      errors, without claiming full-state ISS on nonunique minimizer sets.
+- [x] Derive the bounded-input, square-summable-input, and conditional
+      bounded-second-moment stochastic consequences of the P7 inequality.
+- [x] Add an independent exact reconstruction of the P7 `6 x 6` LMI and its
+      rational Sylvester-minor and function-cancellation checks.
+- [x] Run the 144-case, 17,280-update disturbed nonconvex-PL falsification grid
+      and record the flat-minimizer harmonic-drift counterexample to iterate
+      convergence under merely square-summable errors.
+- [ ] Obtain an independent human proof audit of C12, including disturbance
+      placement, physical-unit gain conversion, and the stochastic corollary.
+- [ ] Bound the complete error of a pinned BF16/rounding backend by the C12
+      post-operator disturbance model and certify its ultimate neighborhood.
 - [ ] Run a small matched NanoGPT sweep only after the preceding gates pass.
 - [ ] Run an accelerator throughput benchmark only for a certified design.
 
