@@ -1,0 +1,703 @@
+{
+  "abstract_sector_sharpness": {
+    "lower_endpoint": {
+      "attains_lower_endpoint": true,
+      "base_A_slope": {
+        "decimal": "0",
+        "exact": "0"
+      },
+      "base_operator": "A=0",
+      "shifted_operator": "B=mu*I",
+      "yosida": "Y=500*I",
+      "yosida_slope": {
+        "decimal": "500",
+        "exact": "500"
+      }
+    },
+    "scope": "sharpness over the abstract full-domain monotone A class; these examples are not asserted to be values of the locked P13 map",
+    "skew_boundary": {
+      "base_operator": "A=1000*S on R^2, S^T=-S and S^T*S=I",
+      "centered_circle_residual": {
+        "decimal": "0",
+        "exact": "0"
+      },
+      "imaginary_part": {
+        "decimal": "200",
+        "exact": "200"
+      },
+      "real_part": {
+        "decimal": "600",
+        "exact": "600"
+      },
+      "sector_residual": {
+        "decimal": "0",
+        "exact": "0"
+      },
+      "yosida": "Y=600*I+200*S"
+    },
+    "upper_endpoint_approach": {
+      "endpoint_status": "strict supremum over finite scalar slopes",
+      "gaps_strictly_decrease_to_zero": true,
+      "sequence": [
+        {
+          "base_A_slope": {
+            "decimal": "0",
+            "exact": "0"
+          },
+          "gap_to_upper": {
+            "decimal": "500",
+            "exact": "500"
+          },
+          "shifted_B_slope": {
+            "decimal": "1000",
+            "exact": "1000"
+          },
+          "yosida_slope": {
+            "decimal": "500",
+            "exact": "500"
+          }
+        },
+        {
+          "base_A_slope": {
+            "decimal": "999000",
+            "exact": "999000"
+          },
+          "gap_to_upper": {
+            "decimal": "0.999000999000999000999000999000999000999000999000999000999001",
+            "exact": "1000/1001"
+          },
+          "shifted_B_slope": {
+            "decimal": "1000000",
+            "exact": "1000000"
+          },
+          "yosida_slope": {
+            "decimal": "999.000999000999000999000999000999000999000999000999000999001",
+            "exact": "1000000/1001"
+          }
+        },
+        {
+          "base_A_slope": {
+            "decimal": "999999000",
+            "exact": "999999000"
+          },
+          "gap_to_upper": {
+            "decimal": "0.000999999000000999999000000999999000000999999000000999999000001",
+            "exact": "1000/1000001"
+          },
+          "shifted_B_slope": {
+            "decimal": "1000000000",
+            "exact": "1000000000"
+          },
+          "yosida_slope": {
+            "decimal": "999.999000000999999000000999999000000999999000000999999000001",
+            "exact": "1000000000/1000001"
+          }
+        }
+      ],
+      "upper_endpoint": {
+        "decimal": "1000",
+        "exact": "1000"
+      }
+    }
+  },
+  "audit": {
+    "all_exact_checks_passed": true,
+    "checks": {
+      "abstract_sector_sharpness_replays": true,
+      "bad_and_selected_straddle_boundary": true,
+      "base_shift_is_strongly_monotone": true,
+      "centered_residual_is_exact": true,
+      "core_certificate_matches_literal_replay": true,
+      "core_exact_checks_pass": true,
+      "core_sector_matches_literal_replay": true,
+      "deterministic_additive_term_is_zero": true,
+      "dimensionless_step_is_15_over_64": true,
+      "finite_bad_endpoint_fails": true,
+      "finite_bad_lambda_fails": true,
+      "function_value_flow_cancels": true,
+      "joint_sector_is_500_to_1000": true,
+      "joint_sector_surplus_factor_is_500": true,
+      "lmi_is_strictly_negative_definite": true,
+      "p13_artifact_hash_matches": true,
+      "p13_base_was_globally_monotone": true,
+      "p13_checkpoint_tag_matches": true,
+      "p13_direct_control_fails": true,
+      "p13_historical_artifact_blob_matches": true,
+      "p13_source_commit_matches": true,
+      "p13_source_was_clean": true,
+      "rate_is_strict": true,
+      "residual_ratio_is_one_third": true,
+      "resolvent_map_is_two_strong": true,
+      "selected_actual_point_passes": true,
+      "selected_sector_endpoint_passes": true,
+      "shifted_lambda_zero_control_fails": true,
+      "storage_is_positive_definite": true
+    },
+    "human_proof_audit": "pending and unsigned: theory/audits/P14_YOSIDA_STABILITY_HUMAN_PROOF_AUDIT.md"
+  },
+  "boundary_controls": {
+    "exact_lambda_boundary": {
+      "decimal": "0.0000116184343243342964482540978226996132383484787336087003827380",
+      "exact": "647494070668606690603022869/55729890327172484708453278656000"
+    },
+    "finite_insufficient_regularization": {
+      "actual_curvature_10_jury_margin": {
+        "decimal": "-0.631179576744388509342734653409930977605625269846676563853811",
+        "exact": "-6764637554766138263886756183/10717453168649723982394861280"
+      },
+      "classification": "real eigenvalue below -1; locally unstable",
+      "lambda": {
+        "decimal": "0.00001",
+        "exact": "1/100000"
+      },
+      "operator_origin_slope": {
+        "decimal": "99998.4458316002981372189716614605457126758680242025172712565",
+        "exact": "6698304125862077488996788300000/66984082304060774889967883"
+      },
+      "sector_endpoint_curvature_10_jury_margin": {
+        "decimal": "-0.63125",
+        "exact": "-101/160"
+      }
+    },
+    "p13_direct_lambda_zero_baseline": {
+      "jury_margin_curvature_1": {
+        "decimal": "-29151.1058113461297347565318420442819479618488122862341148144",
+        "exact": "-1942248049655000871809068607/66626908160000000000000"
+      },
+      "qualification": "direct P13 A_epsilon baseline without the P14 strong shift; inherited negative control, not the definition of Y at lambda=0"
+    },
+    "reconstruction_fields": {
+      "bad_actual_jury_margin_curvature_10": "-6764637554766138263886756183/10717453168649723982394861280",
+      "bad_actual_origin_slope": "6698304125862077488996788300000/66984082304060774889967883",
+      "bad_lambda": "1/100000",
+      "bad_sector_endpoint_jury_margin_curvature_10": "-101/160",
+      "base_origin_slope": "66983041258620774889967883/10410454400000000",
+      "critical_lambda_curvature_10": "647494070668606690603022869/55729890327172484708453278656000",
+      "critical_theta": "780/29",
+      "p13_direct_jury_margin_curvature_1": "-1942248049655000871809068607/66626908160000000000000",
+      "selected_actual_jury_margin_curvature_10": "165247188769511634053550767361/42869153068208111929579445120",
+      "selected_actual_origin_slope": "66983041258620774889967883000/66983051669075174889967883",
+      "selected_lambda": "1/1000",
+      "selected_sector_endpoint_jury_margin_curvature_10": "2467/640",
+      "shifted_lambda_zero_actual_jury_margin_curvature_10": "-1942482212005820071809068607/6662690816000000000000",
+      "shifted_lambda_zero_actual_origin_slope": "66983041258620774889967883/10410454400000000"
+    },
+    "selected_point": {
+      "actual_curvature_10_jury_margin": {
+        "decimal": "3.85468750704243391791876268397302676252359892837657859067596",
+        "exact": "165247188769511634053550767361/42869153068208111929579445120"
+      },
+      "classification": "strict local pass; the global LMI is authoritative",
+      "operator_origin_slope": {
+        "decimal": "999.999844580768707999720077836650758099885718585851791978777",
+        "exact": "66983041258620774889967883000/66983051669075174889967883"
+      },
+      "sector_endpoint_curvature_10_jury_margin": {
+        "decimal": "3.8546875",
+        "exact": "2467/640"
+      }
+    },
+    "shifted_lambda_zero": {
+      "actual_curvature_10_jury_margin": {
+        "decimal": "-291546.203425961297347565318420442819479618488122862341148144",
+        "exact": "-1942482212005820071809068607/6662690816000000000000"
+      },
+      "classification": "real eigenvalue below -1; locally unstable",
+      "operator_origin_slope": {
+        "decimal": "6434209179.05569759663592426858908291265364939305627235637284",
+        "exact": "66983041258620774889967883/10410454400000000"
+      }
+    }
+  },
+  "canonical_result_path": "results/summaries/yosida_stability_certificate.json",
+  "claim_scope": {
+    "arithmetic_model": "exact real arithmetic",
+    "evidence_kind": "exact full-matrix Yosida sector and dimension-independent nonlinear PL LMI",
+    "guarantee": "global function-value, gradient, and momentum convergence; each trajectory converges to some global minimizer",
+    "matrix_domain": "R^(m x n) for every fixed finite positive m,n",
+    "not_claimed": [
+      "a finite-iteration or finite-tolerance resolvent algorithm",
+      "BF16, FP32, stochastic, weight-decayed, or neural-network convergence",
+      "a unique minimizer or arbitrary-pair trajectory contraction",
+      "literal upstream Muon parity"
+    ],
+    "objective_class": "differentiable globally 10-smooth with finite infimum, global PL constant 1"
+  },
+  "consequences": {
+    "function_value": "f(W_t)-f_star <= (L/c_F)*V_0*q^t",
+    "gradient_and_momentum": "converge geometrically to zero",
+    "iterates": "absolute summability gives convergence to some global minimizer",
+    "minimizer_uniqueness": "not claimed"
+  },
+  "core_boundary_cross_checks": {
+    "all_match_literal_controls": true,
+    "direct_p13_jury_margin": "-1942248049655000871809068607/66626908160000000000000",
+    "finite_bad_actual_jury_margin": "-6764637554766138263886756183/10717453168649723982394861280",
+    "selected_actual_jury_margin": "165247188769511634053550767361/42869153068208111929579445120",
+    "shifted_lambda_zero_jury_margin": "-1942482212005820071809068607/6662690816000000000000",
+    "skew_sector_boundary_residual": "0"
+  },
+  "exact_pl_certificate": {
+    "D14": {
+      "decimal": "0",
+      "exact": "0"
+    },
+    "certified": true,
+    "expected_function_coefficients": [
+      {
+        "decimal": "0.311991280972",
+        "exact": "77997820243/250000000000"
+      },
+      {
+        "decimal": "-0.313243",
+        "exact": "-313243/1000000"
+      }
+    ],
+    "function_coefficients": [
+      {
+        "decimal": "0.311991280972",
+        "exact": "77997820243/250000000000"
+      },
+      {
+        "decimal": "-0.313243",
+        "exact": "-313243/1000000"
+      }
+    ],
+    "function_storage": {
+      "decimal": "0.313243",
+      "exact": "313243/1000000"
+    },
+    "inequality": "V_next<=(249001/250000)*V+D14 with D14=0",
+    "multipliers": {
+      "interpolation_12": {
+        "decimal": "0.934405280972",
+        "exact": "233601320243/250000000000"
+      },
+      "interpolation_21": {
+        "decimal": "0.622414",
+        "exact": "311207/500000"
+      },
+      "pl_next": {
+        "decimal": "0.00625859514",
+        "exact": "312929757/50000000000"
+      },
+      "residual": {
+        "decimal": "0.02753",
+        "exact": "2753/100000"
+      }
+    },
+    "negative_lmi_leading_minors": [
+      {
+        "decimal": "0.02322084585847527973175048828125",
+        "exact": "608720541672414373/26214400000000000000"
+      },
+      {
+        "decimal": "0.0006384289682075546166826370267486572265625",
+        "exact": "8368016172090059871782660037/13107200000000000000000000000000"
+      },
+      {
+        "decimal": "0.000005198524196096762290027476276785205078125",
+        "exact": "106465775536061691699762714148561/20480000000000000000000000000000000000"
+      },
+      {
+        "decimal": "5.3563564518826146130836563615847128159697265625E-10",
+        "exact": "5484909006727797363797664114262745923553/10240000000000000000000000000000000000000000000000"
+      }
+    ],
+    "q": {
+      "decimal": "0.996004",
+      "exact": "249001/250000"
+    },
+    "reconstruction_fields": {
+      "expected_function_coefficients": [
+        "77997820243/250000000000",
+        "-313243/1000000"
+      ],
+      "function_coefficients": [
+        "77997820243/250000000000",
+        "-313243/1000000"
+      ],
+      "function_storage": "313243/1000000",
+      "interpolation_12": [
+        [
+          "1172889/104857600",
+          "-5418249/104857600",
+          "1083/262144",
+          "-1083/20480"
+        ],
+        [
+          "-5418249/104857600",
+          "-27398791/104857600",
+          "-5003/262144",
+          "5003/20480"
+        ],
+        [
+          "1083/262144",
+          "-5003/262144",
+          "25/16384",
+          "-5/256"
+        ],
+        [
+          "-1083/20480",
+          "5003/20480",
+          "-5/256",
+          "-1/4"
+        ]
+      ],
+      "interpolation_21": [
+        [
+          "1172889/104857600",
+          "5671671/104857600",
+          "1083/262144",
+          "1083/20480"
+        ],
+        [
+          "5671671/104857600",
+          "-25002631/104857600",
+          "5237/262144",
+          "5237/20480"
+        ],
+        [
+          "1083/262144",
+          "5237/262144",
+          "25/16384",
+          "5/256"
+        ],
+        [
+          "1083/20480",
+          "5237/20480",
+          "5/256",
+          "-1/4"
+        ]
+      ],
+      "interpolation_reverse": "311207/500000",
+      "lambda_12": "233601320243/250000000000",
+      "lambda_21": "311207/500000",
+      "lambda_pl_next": "312929757/50000000000",
+      "lambda_residual": "2753/100000",
+      "lmi_matrix": [
+        [
+          "-608720541672414373/26214400000000000000",
+          "2447660602806820693/26214400000000000000",
+          "421508820323169/65536000000000000",
+          "-443566167323169/5120000000000000"
+        ],
+        [
+          "2447660602806820693/26214400000000000000",
+          "-10562757509629323013/26214400000000000000",
+          "-353811875675729/65536000000000000",
+          "1964703222675729/5120000000000000"
+        ],
+        [
+          "421508820323169/65536000000000000",
+          "-353811875675729/65536000000000000",
+          "-4121310379757/163840000000000",
+          "-77997820243/12800000000000"
+        ],
+        [
+          "-443566167323169/5120000000000000",
+          "1964703222675729/5120000000000000",
+          "-77997820243/12800000000000",
+          "-370578225103/1000000000000"
+        ]
+      ],
+      "negative_lmi_leading_minors": [
+        "608720541672414373/26214400000000000000",
+        "8368016172090059871782660037/13107200000000000000000000000000",
+        "106465775536061691699762714148561/20480000000000000000000000000000000000",
+        "5484909006727797363797664114262745923553/10240000000000000000000000000000000000000000000000"
+      ],
+      "pl_next": [
+        [
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0",
+          "1"
+        ]
+      ],
+      "residual_norm": [
+        [
+          "130321/160000",
+          "14079/160000",
+          "0",
+          "0"
+        ],
+        [
+          "14079/160000",
+          "1521/160000",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "-1",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      "selection": [
+        [
+          "1",
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "1",
+          "0",
+          "0"
+        ]
+      ],
+      "signal_selector": [
+        "361/400",
+        "39/400",
+        "0",
+        "0"
+      ],
+      "step_selector": [
+        "-1083/5120",
+        "-117/5120",
+        "-5/64",
+        "0"
+      ],
+      "storage": [
+        [
+          "674389/1000000",
+          "-73827/1000000"
+        ],
+        [
+          "-73827/1000000",
+          "773/62500"
+        ]
+      ],
+      "storage_leading_minors": [
+        "674389/1000000",
+        "2890417223/1000000000000"
+      ],
+      "transition": [
+        [
+          "19/20",
+          "1/20",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0",
+          "1"
+        ]
+      ]
+    },
+    "storage": [
+      [
+        "674389/1000000",
+        "-73827/1000000"
+      ],
+      [
+        "-73827/1000000",
+        "773/62500"
+      ]
+    ],
+    "storage_leading_minors": [
+      {
+        "decimal": "0.674389",
+        "exact": "674389/1000000"
+      },
+      {
+        "decimal": "0.002890417223",
+        "exact": "2890417223/1000000000000"
+      }
+    ],
+    "tau": {
+      "decimal": "0.998",
+      "exact": "499/500"
+    }
+  },
+  "git": {
+    "branch": "p14-yosida-stability",
+    "dirty": false,
+    "sha": "ea18aa856e3af6d025e325a6db27a681f09c0e7a"
+  },
+  "hardware": {
+    "byte_order": "little",
+    "logical_cpu_count": 10,
+    "machine_architecture": "arm64",
+    "operating_system": "Darwin",
+    "operating_system_release": "24.5.0",
+    "platform": "macOS-15.5-arm64-arm-64bit",
+    "processor": "arm"
+  },
+  "implementation_boundary": {
+    "bf16": "not certified",
+    "finite_precision": "not modeled",
+    "resolvent_evaluation": "mathematical exact oracle",
+    "solve_error": "none; D14=0; a solve-error port is deferred",
+    "upstream": "not literal upstream Muon"
+  },
+  "normalized_dynamics": {
+    "dimensionless_step": {
+      "decimal": "0.234375",
+      "exact": "15/64"
+    },
+    "momentum": "z_next=beta*z+(1-beta)*u",
+    "residual_ratio": {
+      "decimal": "0.333333333333333333333333333333333333333333333333333333333333",
+      "exact": "1/3"
+    },
+    "residual_supply": "||p||_F^2-||v||_F^2>=0",
+    "signal": "p=beta^2*z+(1-beta^2)*u",
+    "step": "W_next-W=-alpha*(p+r*v)"
+  },
+  "operator": {
+    "additive_normalization": "M/(||M||_F+epsilon); no max floor",
+    "base": "A_eps=E_h,eps+G_eps from P13",
+    "coefficients_exact": {
+      "a": "6889/2000",
+      "b": "-191/40",
+      "c": "4063/2000"
+    },
+    "domain": "R^(m x n) for every fixed finite positive m,n",
+    "epsilon_domain": "every real epsilon>0; 1e-7 is pinned only for controls",
+    "newton_schulz_stages": 5,
+    "orthogonalizer": "jordan_quintic",
+    "resolvent": "J_lambdaB=(I+lambda*B)^(-1)",
+    "shift": "B=A_eps+mu*I",
+    "upstream_formula_provenance": {
+      "audited_file": "muon.py",
+      "audited_file_sha256": "2479665a90124f62e4df557816665851ca317e42fcfda2af1da02c1f44ab5f3d",
+      "epsilon_placement": "added to the BF16 Frobenius norm before division",
+      "formula": "X/(X.norm(dim=(-2,-1),keepdim=True)+1e-7)",
+      "qualification": "formula provenance only; the P14 theorem is the exact-real surrogate with arbitrary positive epsilon",
+      "repository": "https://github.com/KellerJordan/Muon",
+      "revision": "f98f1cacc0263b04290753e32be8d498c1efc806"
+    },
+    "well_posedness": "I+lambda*B is continuous, coercive, and (1+lambda*mu)-strongly monotone",
+    "yosida": "Y_lambdaB=(I-J_lambdaB)/lambda=B composed with J_lambdaB",
+    "zero_preserving": true
+  },
+  "parameters": {
+    "beta": {
+      "decimal": "0.95",
+      "exact": "19/20"
+    },
+    "epsilon": {
+      "decimal": "1E-7",
+      "exact": "1/10000000"
+    },
+    "eta": {
+      "decimal": "0.00003125",
+      "exact": "1/32000"
+    },
+    "lambda": {
+      "decimal": "0.001",
+      "exact": "1/1000"
+    },
+    "mu": {
+      "decimal": "1000",
+      "exact": "1000"
+    },
+    "pl_constant": {
+      "decimal": "1",
+      "exact": "1"
+    },
+    "smoothness": {
+      "decimal": "10",
+      "exact": "10"
+    }
+  },
+  "prior_p13": {
+    "artifact_commit": "31710a9a47ecd134fecfc6fea93deba27b5f40b8",
+    "artifact_path": "results/summaries/radial_passivation_tradeoff_certificate.json",
+    "artifact_sha256": "3541bf2478178bc7487d23dbad36b6b7cb05bfb00c82e64ca7c5386b054caed9",
+    "checkpoint_tag": "p13-radial-passivation-checkpoint",
+    "checkpoint_tag_object": "9d42f5d18bef47de26dded7809214dfdc685c5dd",
+    "source_commit": "ef566f7d04a5c2ef1a69def69724e84c67702008"
+  },
+  "proof_replay_provenance": {
+    "command": "uv run --locked python scripts/certify_yosida_stability.py --output results/summaries/yosida_stability_certificate.json",
+    "independent_command": "uv run --locked python scripts/reconstruct_yosida_stability.py --require-canonical",
+    "randomness": "none; exact rational arithmetic",
+    "seed": null,
+    "source_snapshot": {
+      ".github/workflows/ci.yml": "bd4e0add97636f55d573ed695017c14d4eef51104a8d38e8764265f1e169b5a6",
+      ".github/workflows/p14-yosida-stability.yml": "916a1defa3557b286c0676ba31a400c942e992cc94ae0521b8e073eed373275d",
+      "pyproject.toml": "7a9988bf528baef5145f779516d4315349d1c2a6bbb7394c9b93fbbee1d4f596",
+      "results/summaries/P14_YOSIDA_STABILITY_RESULTS.md": "a70b4b18e946beca3dd8f2230f35d4cd446cc5a5db2b2a1b229f4bbaade64dea",
+      "scripts/certify_yosida_stability.py": "b6f33f436e813107d481bd0d7eea63ba1d16a4e583fb61df180308ea39ba341f",
+      "scripts/reconstruct_yosida_stability.py": "7d78eecfd59639b2b10c2e5c4d46b326d22885433b26d2d2624fd3a26da0dedf",
+      "src/passive_muon/additive_epsilon_deficit.py": "24de25c79ddf37565db4833369993b3ad4950afe4b962fdb186c63777b4d1c71",
+      "src/passive_muon/momentum_iqc.py": "c1e7346473d2d8e96ad2e378ac7d47b98f35786752c31c50109375cec3ab415d",
+      "src/passive_muon/pl_convergence.py": "d59d56d6e2ba808aaa519770f3b4442ccfb54aa5144755b760bcb2c7cea8b446",
+      "src/passive_muon/radial_passivation_tradeoff.py": "16ea7d0e2b9af1c2a46af1601ad9bd3d188fbc830f74b2229e9a9631baa28712",
+      "src/passive_muon/specs.py": "85fcee0f87485fc3cac2f426d62ec6e55da7896caade2f5df2a1c87f7d9c5d6c",
+      "src/passive_muon/structure_aware_stability.py": "fbbbfa314b26c8c549dcc915bcbe590fadc55fb712288c1757ff24881ababc4a",
+      "src/passive_muon/upstream_momentum.py": "7479613bb307debbb2a02e04e6bbe53a428855c51e1e21210f9c2be2e68d3d7e",
+      "src/passive_muon/yosida_stability.py": "35a00901dcd7939506ac6d5b32de3e069982eb22d0192a6b5214267399350996",
+      "tests/test_current_research_index.py": "48e8b4643a1029815abb167ce3166f2c07f597be34c2b3cff10b5e83f98ad46f",
+      "tests/test_yosida_stability.py": "59c3b9cc4c56d9a163916ad9fe5a9d3242bd3e87aa97630dd16c8be087f6b412",
+      "tests/test_yosida_stability_cli.py": "6f3b5b5c1276626aa7dd91a8f242ba998a910da1e7920693a46ca19de3409e4a",
+      "tests/test_yosida_stability_reconstruction.py": "67f5307881816d83e2ed2a9f337e4dc80348261231fb6796fbfa6b74fd7c0b53",
+      "tests/test_yosida_stability_result_manifest.py": "6765bd34bb700aa924402bda1a722b209024ec8da7f77e1e8660890587418fb7",
+      "theory/audits/P14_YOSIDA_STABILITY_HUMAN_PROOF_AUDIT.md": "7079a6ddb917f8cb668c54fc8ee7686e1fd1f22e9d34d24ac9b71ab71af2af02",
+      "theory/yosida_stability_certificate.md": "2b0c3f9c69d52b5cd6ed41deb7f77c14ed27055a5c9519f003bca1b2289c24ab",
+      "third_party/UPSTREAM_COMMITS.md": "50394b43983d056631edada4e478c3ddfcc56528676f6a96eb8f4b42ac565008",
+      "uv.lock": "f097fd7895b5c1c551a0bd233d025c3f8ae97b7dedce6a8690569f1b1f7c5cf1"
+    }
+  },
+  "schema_version": "passive-muon-yosida-stability-certificate-v1",
+  "software": {
+    "python": "3.12.11",
+    "python_implementation": "CPython"
+  },
+  "yosida_sector": {
+    "center": {
+      "decimal": "750",
+      "exact": "750"
+    },
+    "centered_equivalent": "||dy-center*ds||^2<=residual_radius^2*||ds||^2",
+    "joint_incremental_iqc": "<dy-m*ds,M*ds-dy>=(<dJ,dy>-mu*||dJ||^2)/(lambda*(1+lambda*mu))>=0",
+    "lower": {
+      "decimal": "500",
+      "exact": "500"
+    },
+    "qualification": "joint sector inequality for a possibly nonsymmetric map; not a derivative Loewner-order assertion",
+    "residual_radius": {
+      "decimal": "250",
+      "exact": "250"
+    },
+    "surplus_factor": {
+      "decimal": "500",
+      "exact": "500"
+    },
+    "upper": {
+      "decimal": "1000",
+      "exact": "1000"
+    }
+  }
+}
