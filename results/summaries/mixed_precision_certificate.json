@@ -1,0 +1,700 @@
+{
+  "audit": {
+    "all_exact_checks_passed": true,
+    "checks": {
+      "c_error_bound": true,
+      "d_error_bound": true,
+      "d_frobenius_identity": true,
+      "d_spectral_identity": true,
+      "e_error_bound": true,
+      "e_frobenius_identity": true,
+      "e_spectral_identity": true,
+      "five_stages_are_locked": true,
+      "fp32_a_encoding": true,
+      "fp32_b_encoding": true,
+      "fp32_c_encoding": true,
+      "frobenius_invariant_closes": true,
+      "gamma4_identity": true,
+      "gram_error_bound": true,
+      "gram_frobenius_identity": true,
+      "gram_spectral_identity": true,
+      "ideal_repaired_lipschitz_identity": true,
+      "initial_boundary_error_bound": true,
+      "initial_frobenius_enters_invariant": true,
+      "initial_spectral_enters_invariant": true,
+      "normalization_output_bound": true,
+      "normalization_relative_bound": true,
+      "normalizer_range_excludes_overflow": true,
+      "p7_kappa_reconstruction": true,
+      "p7_kappa_scaling": true,
+      "p8_forcing_identity": true,
+      "p8_function_gap_identity": true,
+      "p8_rate_identity": true,
+      "p8_rate_is_strict": true,
+      "p8_safe_forcing_capacity_identity": true,
+      "p8_safe_range_is_invariant": true,
+      "p8_safe_storage_radius_identity": true,
+      "polynomial_error_identity": true,
+      "polynomial_factor_at_zero_positive": true,
+      "polynomial_factor_is_positive": true,
+      "polynomial_leading_coefficient_positive": true,
+      "polynomial_upper_closes_scalar_iteration": true,
+      "pre_bf16_frobenius_exact": true,
+      "pre_bf16_spectral_exact": true,
+      "real_adapter_intercept_bound": true,
+      "real_adapter_slope_bound": true,
+      "repair_intercept_bound": true,
+      "repair_range_excludes_overflow": true,
+      "repair_slope_bound": true,
+      "selected_affine_intercept_is_locked": true,
+      "selected_affine_slope_is_locked": true,
+      "selected_frobenius_bound_is_locked": true,
+      "selected_spectral_bound_is_locked": true,
+      "selected_young_theta_is_locked": true,
+      "shape_is_locked_2_by_2": true,
+      "spectral_invariant_closes": true,
+      "sqrt_two_bound_is_strict": true,
+      "sturm_chain_rebuilds_exactly": true,
+      "sturm_left_signs": true,
+      "sturm_right_signs": true,
+      "sturm_variations_match": true,
+      "t_envelope_sign_on_invariant": true,
+      "t_error_bound": true,
+      "t_frobenius_identity": true,
+      "t_spectral_identity": true,
+      "upper_polynomial_left_positive": true,
+      "upper_polynomial_right_positive": true,
+      "y_error_bound": true,
+      "zelt_identity": true,
+      "zmm_identity": true
+    }
+  },
+  "claim_scope": {
+    "evidence_kind": "exact rational shape-locked forward-error certificate",
+    "guarantee": "||R_hat(s)-R(s)||_F <= (11/100000)||s||_F+347/100 for every locked 2x2 FP32 input with max_abs<=2^116",
+    "matrix_domain": "primary bound: finite FP32 2x2 inputs; adapter bound: finite real 2x2 inputs; both require max_abs<=2^116",
+    "not_claimed": [
+      "upstream Muon or its additive-epsilon/current-normalized operator",
+      "the older all-intermediate-BF16 evaluation DAG",
+      "arbitrary matrix shape or dimension-independent mixed-precision error",
+      "an accelerator-native BF16 matmul backend",
+      "end-to-end FP32 EMA/Nesterov or FP32 parameter-update convergence",
+      "exact convergence rather than an ultimate objective neighborhood",
+      "tightness or minimality of the 347/100 intercept"
+    ],
+    "overflow_scope": "the explicit max_abs<=2^116 guard and stage invariant exclude overflow; NaN, infinity, FTZ, and DAZ execution are excluded",
+    "p7_consequence": "exact-real outer-loop storage dissipation for the real-boundary adapter R_hat_real(s)=kernel(RN32(s)), with zero gradient noise, a strict modified rate, and constant forcing"
+  },
+  "formats": {
+    "bf16_half_min_subnormal": {
+      "decimal": "4.5917748078995605780028770985243971789791623311410E-41",
+      "exact": "1/21778071482940061661655974875633165533184"
+    },
+    "bf16_unit_roundoff": {
+      "decimal": "0.00390625",
+      "exact": "1/256"
+    },
+    "fp32_half_min_subnormal": {
+      "decimal": "7.0064923216240853546186479164495806564013097093826E-46",
+      "exact": "1/1427247692705959881058285969449495136382746624"
+    },
+    "fp32_unit_roundoff": {
+      "decimal": "5.9604644775390625E-8",
+      "exact": "1/16777216"
+    },
+    "sqrt_two_strict_upper": {
+      "decimal": "1.4142857142857142857142857142857142857142857142857",
+      "exact": "99/70"
+    }
+  },
+  "git": {
+    "branch": "p8-certified-mixed-precision",
+    "dirty": false,
+    "sha": "98da387020038ba2f6a0f85a54b4debce15f41b4"
+  },
+  "implementation_contract": {
+    "accepted_execution": "every intermediate and returned value must be finite",
+    "fma_policy": "FMA contraction is not assumed and is excluded from this contract",
+    "matrix_product": "row-major 2x2 product with each length-2 dot evaluated as two separately rounded FP32 multiplies followed by one separately rounded FP32 addition",
+    "maximum_input_absolute_value": {
+      "decimal": "83076749736557242056487941267521536",
+      "exact": "83076749736557242056487941267521536"
+    },
+    "normalization_rule_target": "N(s)=s/max(1,||s||_F); no additive epsilon",
+    "normalizer": "scaled serial FP32 Frobenius max-floor; for max_abs<=1/2 return s exactly, otherwise use the certified active-branch norm routine",
+    "real_boundary_adapter": "R_hat_real(s)=kernel(RN32(s)), with entrywise FP32 RNE before the guarded kernel",
+    "repair_and_return": "rho32*s and polynomial-plus-repair addition in FP32",
+    "rounding": "IEEE-754 round-to-nearest, ties-to-even",
+    "shape": [
+      2,
+      2
+    ],
+    "stage_compute": "FP32 fixed-order Horner evaluation",
+    "stage_count": 5,
+    "stage_dag": [
+      "A=FP32(X@X^T)",
+      "C=FP32(c32*A); T=FP32(b32*I+C)",
+      "D=FP32(T@A)",
+      "E=FP32(a32*I+D)",
+      "Y=FP32(E@X)",
+      "X_next=BF16_RNE(Y)"
+    ],
+    "stage_storage": "BF16 normalized input plus five BF16 stage outputs",
+    "subnormals": "gradual underflow; FTZ and DAZ disabled"
+  },
+  "negative_control": {
+    "interpretation": "failure of that upper-bound strategy is not an executable instability proof",
+    "older_dag_status": "the all-intermediate-BF16 DAG is not certified; cancellation-aware normwise bounds leave the useful spectral tube after its first stage"
+  },
+  "normalization_certificate": {
+    "branch_qualification": "relative norm-error analysis is used only for max_abs>1/2; below that threshold the exact 2x2 Frobenius norm is at most one and the input is returned",
+    "normalized_output_error_upper": {
+      "decimal": "0.000002",
+      "exact": "1/500000"
+    },
+    "values": {
+      "derived_norm_relative_error": {
+        "decimal": "9.5367533603618966528657566061072382821626147630857E-7",
+        "exact": "4074071937491869642771988677194906681783472435533048604434215739095188208150439889458954241/4271969488510782349590216975891772892774170993902043086616990771492718291660357362943513723928575"
+      },
+      "gamma4": {
+        "decimal": "2.3841863594499491333840211353352392519090776226706E-7",
+        "exact": "1/4194303"
+      },
+      "initial_bf16_cast_error": {
+        "decimal": "0.0039062576834258955495749465464526108792477176806673",
+        "exact": "374144441457456345590766458711086725689076313751551/95780788616413387284531913736290234440793738144907264"
+      },
+      "initial_frobenius_bound": {
+        "decimal": "1.0039082246404551562407612624383209959431535569151",
+        "exact": "96155121454566280816826979888749288499840817115430655/95780788616413387284531913736290234440793738144907264"
+      },
+      "initial_spectral_bound": {
+        "decimal": "1.0039082246404551562407612624383209959431535569151",
+        "exact": "96155121454566280816826979888749288499840817115430655/95780788616413387284531913736290234440793738144907264"
+      },
+      "initial_total_error": {
+        "decimal": "0.0039082246404551562407612624383209959431535569150610",
+        "exact": "374332838152893532295066152459054059047078970523391/95780788616413387284531913736290234440793738144907264"
+      },
+      "locked_norm_relative_error": {
+        "decimal": "0.0000019073486328125",
+        "exact": "1/524288"
+      },
+      "normalized_output_error": {
+        "decimal": "0.0000019669570292606911863158918683850639058392343936965",
+        "exact": "735924591551510563670678702997395929697878015/374143705532864794080202788032383728284350539628544"
+      },
+      "pre_sum_error": {
+        "decimal": "7.1525577993725249263895840656779512302401366562159E-7",
+        "exact": "1527777073313470697033778798722363996467622361247865338136978754053523078843586651478818817/2135987035920910082395021706169552114602704522356652769947041607822219725780640550022962086936576"
+      },
+      "ratio_component_error": {
+        "decimal": "5.9604644775390625000000000000000000001401298464325E-8",
+        "exact": "42535295865117307932921825928971026433/713623846352979940529142984724747568191373312"
+      },
+      "sqrt_sensitivity": {
+        "decimal": "8.3446594345659949808387897603743562768853654756140E-7",
+        "exact": "3564813049647956783302224487131742157525077065620308967126081496482710273855434057358245889/4271969488510782349590216975891772892774170993902043086616990771492718291660357362943513723928575"
+      },
+      "square_exact_error_per_entry": {
+        "decimal": "1.1920929310349492880050092935562133789342759709570E-7",
+        "exact": "60708404691305427799298738081531606594751021705499422051045852756158656030630215681/509258994083621521567111422102344540262867098416484062659035112338595324940834176545849344"
+      },
+      "square_rounding_error_per_entry": {
+        "decimal": "5.9604651880818194359238672286327442862575819309701E-8",
+        "exact": "509259054792026212872539221401082621800460003874013146511419456459253976348000906872094721/8543948143683640329580086824678208458410818089426611079788166431288878903122562200091848347746304"
+      },
+      "squared_norm_relative_error": {
+        "decimal": "0.0000016689304942475395504057655826250343276801574796288",
+        "exact": "3564813049647956783302224487131742157525077065620308967126081496482710273855434057358245889/2135986526661915998773500139058130012258164259489554353462978948787107387185315609188785541087232"
+      },
+      "sum_rounding_error": {
+        "decimal": "9.5367471431028705776680717605723920465614381400721E-7",
+        "exact": "8543949671460713643050783858457007180799922963990519050708847725960463622310050465456355964616705/8958976832724180921319686727252070942934467386234075782947186456813559662500918000882959950124341526528"
+      }
+    }
+  },
+  "operator": {
+    "epsilon": "none; exact max-floor target",
+    "ideal_formula": "R(s)=H_(q composed 5)(s/max(1,||s||_F))+rho*s",
+    "polynomial_coefficients": {
+      "exact": {
+        "a": "6889/2000",
+        "b": "-191/40",
+        "c": "4063/2000"
+      },
+      "fp32": {
+        "a": {
+          "bits_hex": "0x405c72b0",
+          "exact": "902955/262144"
+        },
+        "b": {
+          "bits_hex": "0xc098cccd",
+          "exact": "-10013901/2097152"
+        },
+        "c": {
+          "bits_hex": "0x40020419",
+          "exact": "8520729/4194304"
+        }
+      }
+    },
+    "polynomial_formula": "q(x)=a*x+b*x^3+c*x^5",
+    "repair": {
+      "rho_exact": {
+        "decimal": "807.56450108107096650843598143035908211653085959437",
+        "exact": "210177835339081/260261360000"
+      },
+      "rho_fp32": {
+        "bits_hex": "0x4449e421",
+        "decimal": "807.56451416015625",
+        "exact": "13231137/16384"
+      }
+    }
+  },
+  "operator_error_certificate": {
+    "binary32_input_bound": {
+      "A32": {
+        "decimal": "0.00011",
+        "exact": "11/100000"
+      },
+      "B32": {
+        "decimal": "3.47",
+        "exact": "347/100"
+      },
+      "formula": "||kernel(s)-R(s)||_F <= A32*||s||_F+B32"
+    },
+    "polynomial_error_upper": {
+      "decimal": "3.4612857142857142857142857142857142857142857142857",
+      "exact": "24229/7000"
+    },
+    "real_boundary_adapter_bound": {
+      "A_real": {
+        "decimal": "0.0002",
+        "exact": "1/5000"
+      },
+      "B_real": {
+        "decimal": "3.47",
+        "exact": "347/100"
+      },
+      "cast_error": "||RN32(s)-s||_F<=u32*||s||_F+2*t32",
+      "formula": "||kernel(RN32(s))-R(s)||_F <= A_real*||s||_F+B_real",
+      "ideal_repaired_map_lipschitz": {
+        "decimal": "1292.4408010810709665084359814303590821165308595944",
+        "exact": "336372400608849/260261360000"
+      }
+    },
+    "repair_rounding": {
+      "coefficient_difference": {
+        "decimal": "0.000013079085283491564018569640917883469140405629172152",
+        "exact": "435709507/33313454080000"
+      },
+      "complete_intercept": {
+        "decimal": "3.4612858185938426426478794642857142857142857170883",
+        "exact": "36260581619728332256481383662618204353811149556176388971/10476043736387912117684012880910316684893724468051968000"
+      },
+      "complete_slope": {
+        "decimal": "0.00010934828015199111124541738658020937500918922234995",
+        "exact": "1025348293983610756598467/9376903711319508102676480000"
+      },
+      "first_rounding_slope": {
+        "decimal": "0.000061213681283218589646659545703039719140405629172152",
+        "exact": "34212755871304387/558907014806241280000"
+      },
+      "ideal_polynomial_lipschitz": {
+        "decimal": "484.8763",
+        "exact": "4848763/10000"
+      },
+      "ideal_repaired_lipschitz": {
+        "decimal": "1292.4408010810709665084359814303590821165308595944",
+        "exact": "336372400608849/260261360000"
+      },
+      "intercept_upper": {
+        "decimal": "3.47",
+        "exact": "347/100"
+      },
+      "real_adapter_cast_intercept": {
+        "decimal": "1.4012984643248170709237295832899161312802619418765E-45",
+        "exact": "1/713623846352979940529142984724747568191373312"
+      },
+      "real_adapter_cast_slope": {
+        "decimal": "5.9604644775390625E-8",
+        "exact": "1/16777216"
+      },
+      "real_adapter_intercept": {
+        "decimal": "3.4612858185938426426478794642857142857142875281838",
+        "exact": "49836163901015006542787016596407643338836410173712685423988549726199/14398164876560552868855980347376816918598938824293823804300328960000"
+      },
+      "real_adapter_intercept_upper": {
+        "decimal": "3.47",
+        "exact": "347/100"
+      },
+      "real_adapter_slope": {
+        "decimal": "0.00018638376151131503712796829531546948385715934258823",
+        "exact": "29321583773060684572869055679171/157318338976009032452353483079680000"
+      },
+      "real_adapter_slope_upper": {
+        "decimal": "0.0002",
+        "exact": "1/5000"
+      },
+      "slope_upper": {
+        "decimal": "0.00011",
+        "exact": "11/100000"
+      }
+    }
+  },
+  "p7_closure": {
+    "constant_forcing": {
+      "decimal": "0.0000060216249512099921935987509758001561280249804839969",
+      "exact": "4936769/819840000000"
+    },
+    "derivation": "for the real-boundary adapter, ||s||_F^2<=C_s V and (A_real||s||+B_real)^2<=(1+theta)A_real^2||s||^2+(1+1/theta)B_real^2",
+    "modified_rate_q8": {
+      "decimal": "0.99990006776453090073243787508403574653741956029113",
+      "exact": "41597186684695561/41601344000000000"
+    },
+    "outer_loop_scope": "P7 exact-real EMA/Nesterov and parameter shell with the real-boundary adapter instantiating only the additive post-operator error port and with gradient noise set to zero; the direct operator bound requires max_abs<=2^116, while V_0<=H is a sufficient condition that preserves this guard for every future signal",
+    "safe_range_invariant": {
+      "forcing_capacity": {
+        "decimal": "1.0832064596888464187222298026185022482493380769277E+63",
+        "exact": "3502531215193892671207491571097638186598160866137902216815893781810044240658432/3233484423828125"
+      },
+      "induction": "when gradient noise is zero, V_0<=H and B_V<=(1-q8)H imply V_t<=H and max_abs(s_(t+1))<=2^116 for every t",
+      "initial_storage_upper": {
+        "decimal": "1.0839409872140728033305251282225912081384177760417E+67",
+        "exact": "17945120248348596254688509761412697446510889220796667355893196633912968740864/1655544025"
+      },
+      "signal_selector": "||s_(t+1)||_F^2<=C_s*V_t"
+    },
+    "values": {
+      "base_rate": {
+        "decimal": "0.9999000025",
+        "exact": "399960001/400000000"
+      },
+      "derived_signal_kappa": {
+        "decimal": "6.3672713073885305243984425118573092253942564932518",
+        "exact": "66221761/10400336"
+      },
+      "forcing": {
+        "decimal": "0.0000060216249512099921935987509758001561280249804839969",
+        "exact": "4936769/819840000000"
+      },
+      "function_gap_ultimate": {
+        "decimal": "2.2263017232450591479792030916431642958861041447942",
+        "exact": "462392438350000000/207695315294468001"
+      },
+      "function_storage_lower": {
+        "decimal": "0.27066",
+        "exact": "13533/50000"
+      },
+      "implementation_error_gain": {
+        "decimal": "5E-7",
+        "exact": "1/2000000"
+      },
+      "one_minus_rate": {
+        "decimal": "0.000099932235469099267562124915964253462580439708870944",
+        "exact": "4157315304439/41601344000000000"
+      },
+      "rate": {
+        "decimal": "0.99990006776453090073243787508403574653741956029113",
+        "exact": "41597186684695561/41601344000000000"
+      },
+      "safe_forcing_capacity": {
+        "decimal": "1.0832064596888464187222298026185022482493380769277E+63",
+        "exact": "3502531215193892671207491571097638186598160866137902216815893781810044240658432/3233484423828125"
+      },
+      "safe_storage_radius": {
+        "decimal": "1.0839409872140728033305251282225912081384177760417E+67",
+        "exact": "17945120248348596254688509761412697446510889220796667355893196633912968740864/1655544025"
+      },
+      "signal_kappa": {
+        "decimal": "6.3672713073885305243984425118573092253942564932518",
+        "exact": "66221761/10400336"
+      },
+      "signal_storage_gain": {
+        "decimal": "636.72713073885305243984425118573092253942564932518",
+        "exact": "1655544025/2600084"
+      },
+      "smoothness": {
+        "decimal": "10",
+        "exact": "10"
+      },
+      "young_theta": {
+        "decimal": "5124",
+        "exact": "5124"
+      }
+    },
+    "zero_gradient_noise_function_gap_limsup": {
+      "decimal": "2.2263017232450591479792030916431642958861041447942",
+      "exact": "462392438350000000/207695315294468001"
+    }
+  },
+  "polynomial_range_certificate": {
+    "claim": "0<=q(s)<121/100 for every 0<=s<=5/4",
+    "endpoint_signs": [
+      [
+        1,
+        -1,
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      [
+        1,
+        -1,
+        -1,
+        -1,
+        1,
+        -1
+      ]
+    ],
+    "endpoint_values": [
+      [
+        "121/100",
+        "-6889/2000",
+        "-121/100",
+        "6889/2000",
+        "-7698138961078973/19798218602450",
+        "-788576461383197655151760980462539/8071598492151363617077571240989202000"
+      ],
+      [
+        "12657/409600",
+        "-3000459/512000",
+        "-47871/32000",
+        "-24963231/6112000",
+        "390881788953215769/791928744098000",
+        "-788576461383197655151760980462539/8071598492151363617077571240989202000"
+      ]
+    ],
+    "endpoint_variations": [
+      3,
+      3
+    ],
+    "nonnegative_factor_discriminant": {
+      "decimal": "-5.189382",
+      "exact": "-2594691/500000"
+    },
+    "polynomial_upper": {
+      "decimal": "1.21",
+      "exact": "121/100"
+    },
+    "same_variation_proves_no_roots": true,
+    "sturm_chain_coefficients_ascending": [
+      [
+        "121/100",
+        "-6889/2000",
+        "0",
+        "191/40",
+        "0",
+        "-4063/2000"
+      ],
+      [
+        "-6889/2000",
+        "0",
+        "573/40",
+        "0",
+        "-4063/400"
+      ],
+      [
+        "-121/100",
+        "6889/2500",
+        "0",
+        "-191/100"
+      ],
+      [
+        "6889/2000",
+        "-491623/76400",
+        "629257/1910000"
+      ],
+      [
+        "-7698138961078973/19798218602450",
+        "698807347396374689/989910930122500"
+      ],
+      [
+        "-788576461383197655151760980462539/8071598492151363617077571240989202000"
+      ]
+    ],
+    "upper_polynomial": "g(s)=121/100-q(s)"
+  },
+  "proof_replay_provenance": {
+    "arithmetic": "fractions.Fraction exact rational arithmetic",
+    "hardware": {
+      "machine": "arm64",
+      "platform": "macOS-15.5-arm64-arm-64bit",
+      "processor": "arm"
+    },
+    "numeric_solver_role": "none",
+    "software": {
+      "python": "3.12.11 (main, Jul  8 2025, 20:41:49) [Clang 20.1.4 ]"
+    },
+    "source_snapshot": {
+      ".github/workflows/p8-mixed-precision.yml": "bb96fa6f4a90dbb0d4f5bc90c4da8c152394e52c52d629acf9a8d7ffa13ba18e",
+      "pyproject.toml": "7a9988bf528baef5145f779516d4315349d1c2a6bbb7394c9b93fbbee1d4f596",
+      "scripts/certify_mixed_precision.py": "e52418ea80707fa6675a794836267bcfd550143e684be09e328562076ab15dc7",
+      "scripts/reconstruct_mixed_precision.py": "4c124a699e649241efd46aeae49feecd4e7efa4ce9cd9c3a722e5cb9b5d5fb0b",
+      "src/passive_muon/floored_certificate.py": "385dee8576e574bebc72fe09478220cf2ec29928045ee6341472c2e9becb6a72",
+      "src/passive_muon/mixed_precision.py": "e4296896aa6e6de1c0b1130cf099dd5b0c45fe9e75e4616f2648f2fd34e32331",
+      "src/passive_muon/mixed_precision_certificate.py": "f260b4e83905b38aab5cfc6af29a4a59ce0275f01b9214792d8854528cea7dfc",
+      "src/passive_muon/pl_convergence.py": "d59d56d6e2ba808aaa519770f3b4442ccfb54aa5144755b760bcb2c7cea8b446",
+      "src/passive_muon/robust_dissipativity.py": "4be3e2716bb968bdebada22d8bcb9bf81eef27852f624f8af53b0b6710da23d2",
+      "src/passive_muon/specs.py": "85fcee0f87485fc3cac2f426d62ec6e55da7896caade2f5df2a1c87f7d9c5d6c",
+      "src/passive_muon/structure_aware_stability.py": "fbbbfa314b26c8c549dcc915bcbe590fadc55fb712288c1757ff24881ababc4a",
+      "tests/test_mixed_precision.py": "73a80de961ca7f9aa3d96ed9bb0d8064378c1ac37bce635c8a6b7d9a63f20919",
+      "tests/test_mixed_precision_certificate.py": "5511678bdef710cedbe739ba6fc1955a80970f7f77fb7c96bbb2ec870c9a09c2",
+      "tests/test_mixed_precision_cli.py": "14467771c8ea341f67eb06895d53fedb1047646271e277c34f2939399f46809e",
+      "tests/test_mixed_precision_reconstruction.py": "6b002505f77f412872f6c9777c640ed5c1eeb88934d96c783683431e0f514922",
+      "theory/audits/P7_HUMAN_PROOF_AUDIT.md": "16aa290d30ed66843ede12005e780791a34d27ccec36d4f98ba5593d982a52ef",
+      "theory/mixed_precision_certificate.md": "f82448036379e91bb6cb28cc51328ea0398c5ea0bade0871bd7bb61c7797b924",
+      "theory/robust_dissipativity_certificate.md": "96e412ddc1e2b0fb7d49c77b0316e0387b1e054f0b3ad7a5bb04d382208fb2d6",
+      "uv.lock": "f097fd7895b5c1c551a0bd233d025c3f8ae97b7dedce6a8690569f1b1f7c5cf1"
+    }
+  },
+  "schema_version": "passive-muon-mixed-precision-certificate-v1",
+  "stage_invariant_certificate": {
+    "frobenius_invariant": {
+      "decimal": "1.75",
+      "exact": "7/4"
+    },
+    "important_qualification": "the 1/20000 bound is pre-BF16 FP32-Horner error; boundary rounding is recorded separately and is not included in that number",
+    "induction": "the initial cast enters the invariant and the identical one-stage bound closes it strictly, so it holds after each of exactly five stages",
+    "local_fp32_horner_error_upper": {
+      "decimal": "0.00005",
+      "exact": "1/20000"
+    },
+    "one_stage_recurrence": {
+      "boundary_rounding_error": {
+        "decimal": "0.0066849051339285714285714285714285714286632640675866",
+        "exact": "318465747826120639241404422151386915934487/47639531368931384884872445040447549603840000"
+      },
+      "c_computed_frobenius": {
+        "decimal": "4.4439082193249539166787727631717067188229280993059",
+        "exact": "18596571563179976375710964406912786140710626361639638357683/4184733492539336091327467455089598476419028877859407003648"
+      },
+      "c_exact_frobenius": {
+        "decimal": "4.44390625",
+        "exact": "28441/6400"
+      },
+      "c_pre_round_frobenius": {
+        "decimal": "4.4439079544473988773087797137420687060519948243511",
+        "exact": "1108441975995183013709065359702552940735679007774387/249429553302486901958433834021663574958981804720128"
+      },
+      "d_computed_frobenius": {
+        "decimal": "3.9683350180536843729152862876861390117746454824064",
+        "exact": "785375850393957572133093542917743253387123248405521315109708637136917500036843664622458758837627945836545470099183/197910672062953547187167203267075118760394318152305709326835697924575487445021584935734894895471336602327339499520"
+      },
+      "d_exact_frobenius": {
+        "decimal": "3.9683236788439225062409901198973313174642241833972",
+        "exact": "3611619/910112"
+      },
+      "d_exact_spectral": {
+        "decimal": "2.8058854294856017720895889736647797194191484125031",
+        "exact": "182405/65008"
+      },
+      "e_computed_frobenius": {
+        "decimal": "4.8715190521231287996434505674818541091878792803494",
+        "exact": "288845421481084914087944848493265409510076874826054172946928246795660404876134940172799578911047491003608665341308585000181/59292680248309593912951724952279017065514066443106317560884591081988476092328843841592329471403929214034854955156766720000"
+      },
+      "e_exact_frobenius": {
+        "decimal": "4.8715071428571428571428571428571428571428571428571",
+        "exact": "682011/140000"
+      },
+      "e_exact_spectral": {
+        "decimal": "3.4445",
+        "exact": "6889/2000"
+      },
+      "e_pre_round_frobenius": {
+        "decimal": "8.8398421177502524532724291448289961546317883395492",
+        "exact": "1749499094454355009083693629706256413665928207466969819680592242784904913025017397779971080310542055934904376487663/197910672062953547187167203267075118760394318152305709326835697924575487445021584935734894895471336602327339499520"
+      },
+      "epsilon_c": {
+        "decimal": "0.0000019693249539166787727631717067188229280993059492215",
+        "exact": "206027502308715256524664213129034040657809743323821947/104618337313483402283186686377239961910475721946485175091200"
+      },
+      "epsilon_d": {
+        "decimal": "0.000011339209761866674296167788807694310421299009164714",
+        "exact": "78905475357189865376342420242243691831244717572183446570417859852340243390197778720543958284624876074823/6958639712490895087625864184349183177820551955005299016449340667507312944165872681541960370432521240544542720"
+      },
+      "epsilon_e": {
+        "decimal": "0.000011909265985942500593424624711252045022137492290417",
+        "exact": "4942926100675907307995131419631177122425335910073327674685148720705722680225347185741621249178665604384248089013627571/415048761738167157390662074665953119458598465101744222926192137573919332646301906891146306299827504498243984686097367040000"
+      },
+      "epsilon_gram": {
+        "decimal": "7.3015707258154692209885647269641702090276021713654E-7",
+        "exact": "43421447862307251848191030635824589483/59468639684316373338325937753120321025605632"
+      },
+      "epsilon_t": {
+        "decimal": "0.0000027716022675528135561242908181733263539011712025359",
+        "exact": "34053100293244521988599757508683972743577244309960127085036637/12286431098684195267639413439726486273626766948964855563120174694400"
+      },
+      "epsilon_y": {
+        "decimal": "0.000016919139105355814895229169928458072159238432830280",
+        "exact": "58907037258394730519269408034968265278316283141298608495380839238063267331274463286012599072890037716709200131746296434764467/3481680533009359445490252223515262333609115835943282198903992922405405157352764053958511251904570803198996479401704489735946240000"
+      },
+      "gamma4": {
+        "decimal": "2.3841863594499491333840211353352392519090776226706E-7",
+        "exact": "1/4194303"
+      },
+      "gram_computed_frobenius": {
+        "decimal": "2.1875007301570725815469220988564726964170209027602",
+        "exact": "130087692730889928984839837025981338068101803/59468639684316373338325937753120321025605632"
+      },
+      "gram_computed_spectral": {
+        "decimal": "1.5625007301570725815469220988564726964170209027602",
+        "exact": "92919792928192195648386125930281137427098283/59468639684316373338325937753120321025605632"
+      },
+      "gram_exact_frobenius": {
+        "decimal": "2.1875",
+        "exact": "35/16"
+      },
+      "gram_exact_spectral": {
+        "decimal": "1.5625",
+        "exact": "25/16"
+      },
+      "next_frobenius": {
+        "decimal": "1.7180206194196428571428571428571428571429489783533",
+        "exact": "81845697191313004285040936492906437394043159/47639531368931384884872445040447549603840000"
+      },
+      "next_spectral": {
+        "decimal": "1.2167349051339285714285714285714285714286632640676",
+        "exact": "57964680680801542919181306543344944314061079/47639531368931384884872445040447549603840000"
+      },
+      "pre_bf16_frobenius": {
+        "decimal": "1.7113357142857142857142857142857142857142857142857",
+        "exact": "239587/140000"
+      },
+      "pre_bf16_spectral": {
+        "decimal": "1.21005",
+        "exact": "24201/20000"
+      },
+      "t_computed_frobenius": {
+        "decimal": "6.7532170573165532670992704100051038876120681868855",
+        "exact": "82972936069178667643019727432538983308261506519378757761212579071069/12286431098684195267639413439726486273626766948964855563120174694400"
+      },
+      "t_exact_frobenius": {
+        "decimal": "6.7532142857142857142857142857142857142857142857143",
+        "exact": "18909/2800"
+      },
+      "t_exact_spectral": {
+        "decimal": "4.775",
+        "exact": "191/40"
+      },
+      "t_pre_round_frobenius": {
+        "decimal": "11.197122639916035808419844191743135290251499527877",
+        "exact": "1639994094596448621593234915703522389323219772551790364252793/146465672238876763196461360928135946674666010725079245127680"
+      },
+      "zelt": {
+        "decimal": "1.4012984643248170709237295832899161312802619418765E-45",
+        "exact": "1/713623846352979940529142984724747568191373312"
+      },
+      "zmm": {
+        "decimal": "5.6051951936819419482509324539607447426600584496260E-45",
+        "exact": "1/178405919052949120014977813259360963076816896"
+      }
+    },
+    "spectral_invariant": {
+      "decimal": "1.25",
+      "exact": "5/4"
+    }
+  }
+}
