@@ -52,7 +52,7 @@ def test_scope_separates_theorem_sampling_and_literal_backend(
     scope = small_payload["claim_scope"]
     assert "independent P20 exact" in scope["proof_boundary"]
     assert "any finite" in scope["candidate_independence"]
-    assert "only canonical 2x2" in scope["literal_upstream_boundary"]
+    assert "canonical and annulus 2x2" in scope["literal_upstream_boundary"]
     assert "without backend parity" in scope["literal_upstream_boundary"]
     assert "not global" in scope["sampled_boundary"]
 
@@ -283,6 +283,9 @@ def test_cross_platform_strategy_hashes_decisions_not_metric_extrema(
     assert replay["this_run_uses_locked_default_grid"] is False
     assert replay["locked_default_digest_matches"] is None
     assert len(small_payload["decision_digest"]) == 64
+    hardware = small_payload["experiment_provenance"]["hardware"]
+    assert hardware["system"]
+    assert hardware["machine"]
 
 
 def test_full_default_discrete_decisions_are_locked_across_platforms(

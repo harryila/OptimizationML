@@ -61,8 +61,10 @@ on P18. Its guarantee is stored-output containment for every successful call.
 
 ## Frozen arithmetic contract
 
-- Inputs are contiguous CPU `torch.float32` or `torch.bfloat16`; BF16 is
-  widened exactly once to FP32. The output remains FP32.
+- The signal is finite; the candidate may also be nonfinite, in which case it
+  takes the guarded fallback. Inputs are contiguous CPU `torch.float32` or
+  `torch.bfloat16`; every finite BF16 value is widened exactly once to FP32.
+  The output remains FP32.
 - Arithmetic is IEEE-754 round-to-nearest, ties-to-even, with gradual
   underflow. FTZ, DAZ, stochastic rounding, FMA contraction, and reassociation
   are excluded.
@@ -72,6 +74,8 @@ on P18. Its guarantee is stored-output containment for every successful call.
 - Reductions use aligned blocks of `2^20` entries followed by the same
   zero-padded adjacent tree. No BLAS, tensor-core, or unspecified reduction is
   part of the proof graph.
+- The exceptional exact-halving bit guard uses bounded-size int32 blocks and
+  is not evaluated for normal-anchored signals.
 - The pass-through threshold and radial-clip scalar use the exact operation
   order above. There is no final BF16 cast and no runtime `Fraction` or
   big-integer postcheck.
@@ -119,8 +123,9 @@ using only `Fraction` and integer square roots.
 ## Conditional P19 rate inheritance
 
 The stored output satisfies the same full-matrix origin-centred pointwise
-sector used by P18/P19. Hence, subject to exact identification of stored `S`
-with the abstract operator-port signal, P19's otherwise-real-arithmetic
+sector used by P18/P19. Hence, subject to every call along the trajectory
+successfully emitting an output and exact identification of stored `S` with
+the abstract operator-port signal, P19's otherwise-real-arithmetic
 EMA/Nesterov theorem with `beta=19/20` retains both exact rates:
 
 | Role | `eta` | Exact rate `q` | Certified Lyapunov-rate half-life |
@@ -149,10 +154,11 @@ passive divisor `1024`.
 The upstream comparator pins KellerJordan/Muon revision
 `f98f1cacc0263b04290753e32be8d498c1efc806` and audited `muon.py` SHA-256
 `2479665a90124f62e4df557816665851ca317e42fcfda2af1da02c1f44ab5f3d`.
-Only the canonical `2 x 2` case executes the literal clean-room BF16 matrix
-graph: one optional transpose, additive-`1e-7` Frobenius normalization, and
-exactly five pinned Jordan stages. Large-shape upstream records are packed
-singular-coordinate formula diagnostics, not literal backend parity.
+The canonical and annulus `2 x 2` cases execute the literal clean-room BF16
+matrix graph: one optional transpose, additive-`1e-7` Frobenius
+normalization, and exactly five pinned Jordan stages. Large-shape upstream
+records are packed singular-coordinate formula diagnostics, not literal
+backend parity.
 
 The frozen deterministic study produced:
 

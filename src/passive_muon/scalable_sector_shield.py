@@ -21,9 +21,9 @@ GPU, compiler, or tensor-core implementation.  Inputs may be FP32 or BF16;
 both are widened once to FP32 before any arithmetic and the output is FP32.
 Norm squares use materialized FP32 products and fixed adjacent balanced FP32
 additions.  FP32 norm parts widen into one exact FP64 scalar product; the
-acceptance threshold is the only other FP64 operation.  FMA contraction,
-reassociation, FTZ/DAZ, and stochastic rounding are excluded.  An exact
-generator supplies a frozen shape table, and no runtime ``Fraction`` or
+acceptance and directed clip scalars then use the locked FP64 graph.  FMA
+contraction, reassociation, FTZ/DAZ, and stochastic rounding are excluded.  An
+exact generator supplies a frozen shape table, and no runtime ``Fraction`` or
 big-integer calculation is used.
 """
 
@@ -467,18 +467,29 @@ def _directed_clip_alpha_fp32(
 
 
 def _all_entries_halved_exactly_fp32(signal: Tensor) -> bool:
-    """Bit-level exactness test for ``fl32(signal/2)==signal/2`` entrywise."""
+    """Bit-level exactness test for ``fl32(signal/2)==signal/2`` entrywise.
 
-    bits = signal.reshape(-1).view(torch.int32).to(torch.int64)
-    magnitudes = torch.bitwise_and(bits, 0x7FFF_FFFF)
-    exponents = torch.bitwise_and(torch.bitwise_right_shift(magnitudes, 23), 0xFF)
-    fractions = torch.bitwise_and(magnitudes, 0x007F_FFFF)
-    # Exponents >=2 halve by decrementing the exponent.  At exponent 0 or 1,
-    # the represented integer significand must be even.  For exponent 1 the
-    # hidden leading bit is even, so the stored fraction LSB is decisive too.
-    small = exponents <= 1
-    small_even = torch.bitwise_and(fractions, 1) == 0
-    return bool(torch.logical_or(~small, small_even).all())
+    The guard is evaluated in the same bounded-size blocks as the norm graph.
+    Keeping the bit operations in int32 avoids materializing full-size int64
+    copies of Transformer matrices.
+    """
+
+    flat_bits = signal.reshape(-1).view(torch.int32)
+    for start in range(0, flat_bits.numel(), LOCKED_REDUCTION_BLOCK_SIZE):
+        stop = min(start + LOCKED_REDUCTION_BLOCK_SIZE, flat_bits.numel())
+        bits = flat_bits[start:stop]
+        magnitudes = torch.bitwise_and(bits, 0x7FFF_FFFF)
+        exponents = torch.bitwise_and(torch.bitwise_right_shift(magnitudes, 23), 0xFF)
+        fractions = torch.bitwise_and(magnitudes, 0x007F_FFFF)
+        # Exponents >=2 halve by decrementing the exponent. At exponent 0 or
+        # 1, the represented integer significand must be even. For exponent 1
+        # the hidden leading bit is even, so the stored fraction LSB remains
+        # decisive.
+        small = exponents <= 1
+        small_even = torch.bitwise_and(fractions, 1) == 0
+        if not bool(torch.logical_or(~small, small_even).all()):
+            return False
+    return True
 
 
 def _signal_guard_class(
@@ -486,11 +497,13 @@ def _signal_guard_class(
     config: ScalableSectorShieldConfig,
 ) -> tuple[SignalGuardClass, bool, bool]:
     maximum = float(torch.amax(torch.abs(signal)))
-    exact_halving = _all_entries_halved_exactly_fp32(signal)
     if maximum == 0.0:
-        return SignalGuardClass.ZERO, False, exact_halving
+        return SignalGuardClass.ZERO, False, True
     if maximum >= FP32_MIN_NORMAL:
-        return SignalGuardClass.NORMAL_ANCHORED, True, exact_halving
+        # The exact-halving bit scan is unnecessary in the normal-anchor
+        # branch: its shape-specific absolute crumb covers rounded halving.
+        return SignalGuardClass.NORMAL_ANCHORED, True, False
+    exact_halving = _all_entries_halved_exactly_fp32(signal)
     if exact_halving:
         return SignalGuardClass.SUBNORMAL_EXACT_HALVING, False, True
     raise NearZeroUnrepresentable(

@@ -61,7 +61,12 @@ SOURCE_PATHS = (
     "scripts/reconstruct_scalable_sector_shield.py",
     "src/passive_muon/scalable_sector_shield_certificate.py",
     "src/passive_muon/scalable_sector_shield.py",
+    "theory/scalable_mixed_precision_sector_shield.md",
     "experiments/mixed_precision/run_p20_scalable_sector_shield_study.py",
+    "tests/test_scalable_sector_shield_certificate.py",
+    "tests/test_scalable_sector_shield_reconstruction.py",
+    "tests/test_scalable_sector_shield.py",
+    "tests/test_p20_scalable_sector_shield_study.py",
     "src/passive_muon/scalable_mixed_precision_certificate.py",
     P10_ARTIFACT_PATH,
     P11_ARTIFACT_PATH,
@@ -279,6 +284,10 @@ def reconstruction_fields() -> dict[str, object]:
             _shape_exact_fields(audit) for audit in diagnostic_sector_shield_audits()
         ],
         "operating_points": {
+            "trajectory_premises": (
+                "every shield call succeeds; stored S is the abstract operator-port signal; "
+                "the remaining EMA/Nesterov interconnection uses exact real arithmetic"
+            ),
             "maximum_step": {
                 "learning_rate": str(LOCKED_MAXIMUM_STEP),
                 "rate": str(LOCKED_MAXIMUM_STEP_RATE),
@@ -303,7 +312,10 @@ def build_payload() -> dict[str, object]:
             "classification": (
                 "shape-parameterized static binary32 inward-sector containment certificate"
             ),
-            "candidate_scope": "arbitrary finite stored BF16/FP32 candidates after exact widening",
+            "candidate_scope": (
+                "arbitrary stored BF16/FP32 candidates; finite values widen exactly and use "
+                "the screen/clip graph, while nonfinite candidates take the guarded fallback"
+            ),
             "signal_scope": (
                 "finite stored BF16/FP32 signals; normal-anchor theorem or exact-halving fallback"
             ),
@@ -359,6 +371,11 @@ def build_payload() -> dict[str, object]:
             ),
             "original_p19_disk": ("therefore ||U-(1143/2048)S||_F <= (893/2048)||S||_F"),
             "runtime_exact_postcheck": "not used",
+            "conditional_rate_inheritance": (
+                "requires every shield call along the trajectory to succeed, stored S to equal "
+                "the abstract operator-port signal, and the remaining outer loop to use exact "
+                "real arithmetic"
+            ),
             "subnormal_dead_zone": (
                 "an all-subnormal FP32 signal has norm at most h*(2^-126-2^-149); "
                 "the recorded half-distance is an input/output bound only"

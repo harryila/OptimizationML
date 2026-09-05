@@ -663,9 +663,10 @@ successful stored FP32 return satisfies the same full-matrix pointwise sector
 The exact shape recurrence certifies all seven P9 Transformer shapes. The
 tight `4096 x 14336` overall margin is exactly
 `71710053325847/1152921504606846976` (about `6.220e-5`); its clip-only margin
-is `53997772719001/576460752303423488` (about `9.367e-5`). When stored `S` is
-identified with the optimizer signal at the abstract port, the P19 smooth-PL
-rates replay conditionally at `eta=1/83`, `q=999598040401/1000000000000`, and at
+is `53997772719001/576460752303423488` (about `9.367e-5`). Provided every
+shield call along the trajectory succeeds and stored `S` is identified with
+the optimizer signal at the abstract port, the P19 smooth-PL rates replay
+conditionally at `eta=1/83`, `q=999598040401/1000000000000`, and at
 `eta=1/120`, `q=624350169/625000000`. P20 does not yet compose BF16/FP32
 signal casts or outer momentum, parameter, master-weight, aspect-scaling,
 weight-decay, or distributed arithmetic into that interconnection.
@@ -877,9 +878,10 @@ check with a static proof for one locked CPU FP32 graph, optionally accepting
 exactly widened BF16 inputs. Its pass-through/radial-clip/half-fallback map is
 pointwise safe on seven frozen shapes but is neither P19's metric projection
 nor a theorem for arbitrary GPU, FTZ, reduction, or compiler semantics. The
-P19 rates carry over only after identifying stored `S` with the abstract
-operator-port signal; composing the signal cast and the remaining outer
-finite-precision arithmetic is deferred to P21.
+P19 rates carry over only along trajectories whose shield calls all succeed
+and after identifying stored `S` with the abstract operator-port signal;
+composing the signal cast and the remaining outer finite-precision arithmetic
+is deferred to P21.
 Production-gradient
 measurement, model-forward use of the logical
 master, weight decay, aspect-ratio scaling, complete stochastic neural-network

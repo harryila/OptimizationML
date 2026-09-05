@@ -422,6 +422,8 @@ def exact_contract_checks() -> dict[str, bool]:
         "maximum_step_rate_is_strict": LOCKED_MAXIMUM_STEP_RATE < 1,
         "faster_rate_is_strict": LOCKED_FASTER_RATE < 1,
         "faster_operating_point_has_better_rate": (LOCKED_FASTER_RATE < LOCKED_MAXIMUM_STEP_RATE),
+        "rate_inheritance_requires_every_call_to_succeed": True,
+        "rate_inheritance_requires_stored_signal_port_identification": True,
         "output_dtype_remains_fp32": True,
         "clip_scalar_order_is_sequentially_downward": True,
         "clip_is_not_claimed_as_metric_projection": True,

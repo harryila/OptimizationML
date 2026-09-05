@@ -181,6 +181,9 @@ def test_both_p19_operating_point_rates_survive_sector_containment() -> None:
     assert Fraction(1, 120) == LOCKED_FASTER_RATE_STEP
     assert LOCKED_FASTER_RATE == Fraction(624_350_169, 625_000_000) < 1
     assert LOCKED_FASTER_RATE < LOCKED_MAXIMUM_STEP_RATE
+    checks = exact_contract_checks()
+    assert checks["rate_inheritance_requires_every_call_to_succeed"]
+    assert checks["rate_inheritance_requires_stored_signal_port_identification"]
 
 
 def test_all_cross_shape_contract_checks_pass() -> None:

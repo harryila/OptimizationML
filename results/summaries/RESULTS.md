@@ -1352,9 +1352,10 @@ the tight clip-only margin is
 `53997772719001/576460752303423488`, approximately
 `9.36712039861e-5`.
 
-When the stored `S` is identified with the abstract operator-port signal and
-the rest of the EMA/Nesterov interconnection remains exact real arithmetic,
-the P19 smooth-PL certificates replay conditionally:
+When every shield call along the trajectory succeeds, the stored `S` is
+identified with the abstract operator-port signal, and the rest of the
+EMA/Nesterov interconnection remains exact real arithmetic, the P19 smooth-PL
+certificates replay conditionally:
 
 \[
 \mathcal V_{t+1}\le

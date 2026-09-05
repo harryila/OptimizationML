@@ -251,6 +251,10 @@ def reconstruction_fields() -> dict[str, object]:
         "shapes": [_shape_fields(shape) for shape in SHAPES],
         "diagnostic_shapes": [_shape_fields(shape) for shape in DIAGNOSTIC_SHAPES],
         "operating_points": {
+            "trajectory_premises": (
+                "every shield call succeeds; stored S is the abstract operator-port signal; "
+                "the remaining EMA/Nesterov interconnection uses exact real arithmetic"
+            ),
             "maximum_step": {
                 "learning_rate": str(MAXIMUM_STEP),
                 "rate": str(MAXIMUM_RATE),

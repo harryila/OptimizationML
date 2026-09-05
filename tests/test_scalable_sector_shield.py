@@ -29,6 +29,7 @@ from passive_muon.scalable_sector_shield import (
     ScalableSectorShieldFailure,
     ShieldAction,
     SignalGuardClass,
+    _all_entries_halved_exactly_fp32,
     _balanced_sum_fp32,
     _balanced_sum_one_block,
     locked_scalable_shield_backend_self_check,
@@ -293,6 +294,20 @@ def test_all_subnormal_signal_uses_only_exact_half_or_fails_closed() -> None:
     assert raised.value.matrix_shape == (768, 768)
     assert raised.value.signal_max_abs < FP32_MIN_NORMAL
     assert raised.value.signal_frobenius_strict_upper == config.near_zero_frobenius_upper
+
+
+def test_exact_halving_bit_guard_is_blocked_and_checks_the_final_partial_block() -> None:
+    even = _from_bits(0x0000_0002)
+    odd = _from_bits(0x0000_0001)
+    signal = torch.full(
+        (LOCKED_REDUCTION_BLOCK_SIZE + 1,),
+        even,
+        dtype=torch.float32,
+    )
+
+    assert _all_entries_halved_exactly_fp32(signal)
+    signal[-1] = odd
+    assert not _all_entries_halved_exactly_fp32(signal)
 
 
 def test_widened_bf16_subnormal_has_an_exact_fp32_half() -> None:

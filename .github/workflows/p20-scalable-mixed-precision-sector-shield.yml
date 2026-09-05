@@ -82,7 +82,7 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-          - macos-14
+          - macos-15
 
     steps:
       - name: Check out repository
@@ -144,4 +144,9 @@ jobs:
           digests={record['decision_digest'] for record in records};
           assert digests=={expected}, (paths,digests);
           assert all(record['cross_platform_replay']['locked_default_digest_matches'] for record in records);
-          print({'records':paths,'decision_digest':expected})"
+          hardware=[record['experiment_provenance']['hardware'] for record in records];
+          assert {item['machine'].lower() for item in hardware}=={'arm64','x86_64'}, hardware;
+          assert {item['system'] for item in hardware}=={'Darwin','Linux'}, hardware;
+          probes=[record['locked_runtime_contract']['backend_self_check'] for record in records];
+          assert all(item['gradual_underflow'] and not item['ftz_daz'] for item in probes), probes;
+          print({'records':paths,'decision_digest':expected,'hardware':hardware})"

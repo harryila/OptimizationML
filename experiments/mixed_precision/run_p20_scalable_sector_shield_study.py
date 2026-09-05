@@ -688,8 +688,8 @@ def _run_transformer_spectra(config: P20StudyConfig) -> dict[str, object]:
             "or claim of literal large-matrix backend output"
         ),
         "upstream_scope": (
-            "pinned-formula BF16 diagonal-coordinate diagnostic; only the canonical 2x2 "
-            "case executes the literal clean-room matrix graph"
+            "pinned-formula BF16 diagonal-coordinate diagnostic; these large-shape cases "
+            "do not execute the literal clean-room matrix graph"
         ),
         "declared_shapes": [list(shape) for shape in shapes],
         "exact_shape_margin_references": [
@@ -896,6 +896,7 @@ def _provenance(config: P20StudyConfig) -> dict[str, object]:
         "seed": config.seed,
         "hardware": {
             "device": "cpu",
+            "system": platform.system(),
             "machine": platform.machine(),
             "processor": platform.processor() or "unreported",
             "platform": platform.platform(),
@@ -1005,8 +1006,9 @@ def run_study(config: P20StudyConfig | None = None) -> dict[str, object]:
                     "candidate; candidate comparisons below concern fidelity and activation"
                 ),
                 "literal_upstream_boundary": (
-                    "only canonical 2x2 runs the literal pinned BF16 matrix graph; large shapes "
-                    "use a reduced diagonal-coordinate formula diagnostic without backend parity"
+                    "canonical and annulus 2x2 cases run the literal pinned BF16 matrix graph; "
+                    "large shapes use a reduced diagonal-coordinate formula diagnostic without "
+                    "backend parity"
                 ),
                 "sampled_boundary": (
                     "annulus and Transformer spectra are finite sampled diagnostics, not global "

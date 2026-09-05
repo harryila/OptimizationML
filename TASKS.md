@@ -344,8 +344,9 @@
       pointwise sector `[125/1024,509/512]` without a runtime rational or
       big-integer postcheck, including the zero, normal-anchor, exactly
       halvable subnormal, and fail-closed all-subnormal cases.
-- [x] Replay the P19 rates conditionally when stored `S` is the abstract
-      operator-port signal: `eta=1/83` has rate
+- [x] Replay the P19 rates conditionally when every call along the trajectory
+      succeeds and stored `S` is the abstract operator-port signal:
+      `eta=1/83` has rate
       `999598040401/1000000000000`, and `eta=1/120` has rate
       `624350169/625000000`. Do not treat this as composition of the outer
       BF16/FP32 signal cast, momentum, parameter, or master-weight arithmetic.

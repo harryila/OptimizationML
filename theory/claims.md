@@ -1877,10 +1877,11 @@ region `||S||_F < ceil(sqrt(ab))*2^-126`. This is a representability dead zone,
 not an objective or Lyapunov neighborhood: a small Nesterov signal can result
 from cancellation while the state remains large.
 
-Conditionally, when stored `S` is identified with the signal at C24's abstract
-operator port and the rest of the loop remains exact real arithmetic, every
-successful shielded step supplies the same pointwise sector. The exact C24--
-C25 smooth-PL implications therefore remain
+Conditionally, when every shield call along the trajectory succeeds, stored
+`S` is identified with the signal at C24's abstract operator port, and the
+rest of the loop remains exact real arithmetic, every shielded step supplies
+the same pointwise sector. The exact C24--C25 smooth-PL implications therefore
+remain
 
 \[
 \mathcal V_{t+1}\le

@@ -17,10 +17,12 @@ canonical artifacts are
 
 ## Locked claim
 
-For each of the seven separately certified matrix shapes, consider finite
-stored FP32 or BF16 signal/candidate inputs. BF16 inputs are widened exactly
-to FP32. Under the locked CPU, round-to-nearest-ties-to-even, gradual-underflow
-operation graph, every successful stored FP32 return `U` satisfies
+For each of the seven separately certified matrix shapes, consider a finite
+stored FP32 or BF16 signal and an arbitrary stored FP32 or BF16 candidate.
+Every finite BF16 value is widened exactly to FP32; a nonfinite candidate
+takes the guarded fallback. Under the locked CPU,
+round-to-nearest-ties-to-even, gradual-underflow operation graph, every
+successful stored FP32 return `U` satisfies
 
 \[
  \left\|U-\frac{1143}{2048}S\right\|_F
@@ -34,10 +36,10 @@ and guarded subnormal handling. It performs no runtime exact-rational
 postcheck. A nonfinite signal or an all-subnormal signal without an exactly
 representable half fails closed without an update.
 
-The corresponding P19 smooth-PL rates are inherited only when the stored
-signal is identified with the abstract sector port in the otherwise-real
-outer loop. P20 does not yet compose the cast into that port or the outer
-momentum/parameter arithmetic.
+The corresponding P19 smooth-PL rates are inherited only when every call
+along the trajectory succeeds and the stored signal is identified with the
+abstract sector port in the otherwise-real outer loop. P20 does not yet
+compose the cast into that port or the outer momentum/parameter arithmetic.
 
 ## Reviewer checklist
 
@@ -147,6 +149,8 @@ Reviewer notes:
       at least one normal anchor; entrywise exact halving is not assumed there.
 - [ ] Verify zero signal returns zero, the only member of the zero disk.
 - [ ] Audit the bit-level exact-halving rule for nonzero all-subnormal signals.
+- [ ] Confirm the exact-halving scan uses bounded-size int32 blocks and is
+      skipped for normal-anchored signals.
 - [ ] Reproduce successful even-subnormal halving and failure of the least
       positive and maximum odd FP32 subnormals.
 - [ ] Confirm the all-subnormal failure set is contained in
@@ -207,9 +211,10 @@ Reviewer notes:
       bounded below, and global-PL-`1`, without convexity or minimizer
       uniqueness.
 - [ ] Confirm the displayed half-lives are Lyapunov-bound half-lives.
-- [ ] Audit the explicit qualification that stored-signal/abstract-port
-      identification is required and that P20 does not compose FP32/BF16
-      input casts, EMA/Nesterov rounding, master weights, or parameter updates.
+- [ ] Audit the explicit qualification that every call along the trajectory
+      must succeed, stored-signal/abstract-port identification is required,
+      and P20 does not compose FP32/BF16 input casts, EMA/Nesterov rounding,
+      master weights, or parameter updates.
 
 Reviewer notes:
 
@@ -224,9 +229,9 @@ Reviewer notes:
 - [ ] Verify KellerJordan/Muon revision
       `f98f1cacc0263b04290753e32be8d498c1efc806` and audited `muon.py` hash
       `2479665a90124f62e4df557816665851ca317e42fcfda2af1da02c1f44ab5f3d`.
-- [ ] Check the canonical `2 x 2` comparator follows the pinned BF16 cast,
-      transpose, additive-`1e-7` norm placement, coefficient order, and exactly
-      five Jordan stages.
+- [ ] Check the canonical and annulus `2 x 2` comparators follow the pinned
+      BF16 cast, transpose, additive-`1e-7` norm placement, coefficient order,
+      and exactly five Jordan stages.
 - [ ] Confirm large-shape upstream comparisons are labelled packed
       singular-coordinate formula diagnostics, not literal backend runs.
 - [ ] Confirm the shield theorem is candidate-independent but does not certify

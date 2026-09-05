@@ -103,8 +103,9 @@ useful-rate sector, and P19 makes arbitrary candidates safe with an exact-
 checked binary64 projection. P20 replaces that runtime exact check for seven
 fixed shapes with a static rounding certificate around a locked CPU
 BF16/FP32-to-FP32 pass-through/radial-clip/half-fallback graph. Its conditional
-rate inheritance treats stored `S` as the abstract port signal; it does not
-yet compose the outer signal cast or optimizer arithmetic. Each run
+rate inheritance requires every call along a trajectory to succeed and treats
+stored `S` as the abstract port signal; it does not yet compose the outer
+signal cast or optimizer arithmetic. Each run
 writes a self-contained JSON manifest and compact CSV
 tables under `results/summaries/`; the JSON records inputs, operator details,
 dtype, seed, software, hardware, and Git state.
@@ -225,8 +226,8 @@ P20's exact shape recurrence instead pays statically for the locked scaled
 balanced norm, inward comparison, radial clip, and half fallback. It proves
 pointwise containment for successful stored results on seven fixed shapes,
 not incremental passivity or correctness of an arbitrary CPU/GPU graph. Its
-outer-loop rate statement is conditional on identifying stored `S` with the
-abstract operator-port signal.
+outer-loop rate statement is conditional on every call succeeding and on
+identifying stored `S` with the abstract operator-port signal.
 
 Replay the P16 guarded reference solver and fidelity diagnostic separately:
 
