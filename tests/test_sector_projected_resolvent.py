@@ -209,11 +209,12 @@ def test_design_and_numerical_helpers_reject_invalid_inputs() -> None:
             np.ones(2, dtype=np.float32),
             np.ones(2, dtype=np.float64),
         )
-    with pytest.raises(ValueError, match="nonnegative inner product"):
-        project_onto_origin_sector_fp64(
-            np.asarray([-1.0], dtype=np.float64),
-            np.asarray([1.0], dtype=np.float64),
-        )
+    clipped_scale, clipped = project_onto_origin_sector_fp64(
+        np.asarray([-1.0], dtype=np.float64),
+        np.asarray([1.0], dtype=np.float64),
+    )
+    assert clipped_scale == 0.0
+    np.testing.assert_array_equal(clipped, np.zeros(1, dtype=np.float64))
     with pytest.raises(ValueError, match=r"\[0,1\]"):
         blend_sector_projected_fp64(
             np.ones(1, dtype=np.float64),

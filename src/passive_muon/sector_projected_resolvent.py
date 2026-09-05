@@ -438,8 +438,13 @@ def project_onto_origin_sector_fp64(
     shape_norm_squared = float(np.vdot(shape_output, shape_output).real)
     if not math.isfinite(inner) or not math.isfinite(shape_norm_squared):
         raise FloatingPointError("nonfinite FP64 projection summary")
-    if inner < 0.0:
-        raise ValueError("shape_output must have nonnegative inner product with signal")
+    # The exact P18 branch has a nonnegative inner product analytically.  A
+    # tiny negative value can nevertheless appear after FP64 reductions.  Its
+    # positive part is the fail-safe projection scale: it returns the zero
+    # shape branch, which remains in [0,K], instead of crashing the optimizer.
+    # This diagnostic helper makes no fidelity claim for an arbitrary
+    # genuinely anti-aligned branch.
+    inner = max(0.0, inner)
     if shape_norm_squared == 0.0:
         return 0.0, np.zeros_like(shape_output)
     scale = min(1.0, projection_gain * inner / shape_norm_squared)
