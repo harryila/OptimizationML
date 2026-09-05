@@ -1405,6 +1405,68 @@ neural training remain outside P20. See
 `p20_scalable_sector_shield_study.json`, and
 `../../theory/scalable_mixed_precision_sector_shield.md`.
 
+## 27. P21 certified stored-signal outer-loop composition
+
+P21 places the P20 pointwise sector directly at the actual stored FP32
+Nesterov signal and composes the proof-reference chain
+
+`stored gradient -> FP32 EMA/Nesterov -> BF16 Muon -> aspect scale ->`
+`P20 shield -> compensated three-word FP32 update`.
+
+The candidate retains additive `epsilon=1e-7`, five Jordan stages with
+coefficients `6889/2000`, `-191/40`, and `4063/2000`, and pinned
+Keller--Jordan/Muon revision
+`f98f1cacc0263b04290753e32be8d498c1efc806`. Aspect scaling precedes P20.
+Candidate quality is not a stability premise after shielding.
+
+In exact lifted order `(z,u,v,u_next,a_m,a_s,h)`, the two strict `7 x 7`
+certificates give
+
+\[
+\mathcal V_{t+1}\le q\mathcal V_t
++G_m\|a_t^m\|_F^2+G_s\|a_t^s\|_F^2+G_h\|h_t\|_F^2.
+\]
+
+| role | `eta` | exact base rate | exact gains |
+| --- | ---: | ---: | ---: |
+| primary, faster rate | `1/120` | `624350169/625000000` | `(16384,1024,512)` |
+| secondary, maximum step | `1/83` | `999598040401/1000000000000` | `(32768,2048,512)` |
+
+The zero-port blocks recover P18/P19 exactly. No comparison between shield
+calls at rounded and ideal signals is used, and no incremental sector is
+claimed.
+
+Under the explicit pathwise pre-cast source premise
+`||zeta||_F <= (sqrt(V)+1)/4096`, exact FP32 envelopes certify all seven P20
+shapes at both rates on `V<=1`. The tight `4096 x 14336` reports are:
+
+| role | `q_bar` upper | `D` upper | objective-gap upper |
+| --- | ---: | ---: | ---: |
+| primary | `1098368546995/1099511627776` | `14267/274877906944` | `274464109/549755813888` |
+| secondary | `549534922135/549755813888` | `57049/549755813888` | `2839673189/1099511627776` |
+
+Both have `q_bar<1` and `D<=1-q_bar`. The all-subnormal failure is closed by
+returning zero and adding the strict parameter-error bound
+`eta*ceil(sqrt(m*n))*2^-127` relative to the conceptual `S/2` sector point.
+
+The main smooth-PL theorem has zero weight decay. A separately bounded
+nonzero decay port gives finite neighborhoods; it is not automatic for an
+arbitrary configured coefficient. A centered strongly-convex corollary and a
+nonzero-minimizer ordinary-decay negative control record the exact scope.
+
+The frozen shadow protocol predeclares 24 early/middle/late capture steps and
+all intervention gates. Its supplied synthetic CPU runner is infrastructure
+only. The 144-observation fixture has 126 pass-throughs, 18 shield
+activations, 144 successful P20 calls, and no nonfinite or dead-zone events;
+all synthetic protocol checks pass. The real-gradient trace has not run
+because there is no pinned trainer,
+dataset, tokenizer, checkpoint, accelerator, or fully P20-covered vanilla
+GPT-2 shape inventory; fused `768 x 2304` QKV is currently unsupported. See
+`P21_CERTIFIED_OUTER_LOOP_COMPOSITION_RESULTS.md`,
+`certified_outer_loop_composition_certificate.json`,
+`../../theory/certified_outer_loop_composition.md`, and
+`../../theory/p21_shadow_trace_protocol.md`.
+
 ## Reproduce
 
 ```bash
@@ -1489,6 +1551,13 @@ uv run --locked python scripts/reconstruct_scalable_sector_shield.py \
 uv run --locked python \
   experiments/mixed_precision/run_p20_scalable_sector_shield_study.py \
   --output results/summaries/p20_scalable_sector_shield_study.json
+uv run --locked python scripts/certify_outer_loop_composition.py \
+  --output results/summaries/certified_outer_loop_composition_certificate.json
+uv run --locked python scripts/reconstruct_outer_loop_composition.py \
+  --canonical results/summaries/certified_outer_loop_composition_certificate.json \
+  --require-canonical
+uv run --locked python experiments/training/run_p21_synthetic_shadow_trace.py \
+  --output results/summaries/p21_synthetic_shadow_trace.json
 uv run --locked python experiments/matrices/run_deficit_audit.py
 uv run --locked python experiments/quadratics/run_lr_sweep.py
 uv run --locked python experiments/quadratics/run_horizon_check.py

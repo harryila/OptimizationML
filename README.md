@@ -686,6 +686,38 @@ the positive result. See
 and
 [`results/summaries/P20_SCALABLE_MIXED_PRECISION_SECTOR_SHIELD_RESULTS.md`](results/summaries/P20_SCALABLE_MIXED_PRECISION_SECTOR_SHIELD_RESULTS.md).
 
+Branch `p21-certified-outer-loop-composition` closes that stored-signal
+boundary around a concrete CPU proof-reference optimizer step. The actual
+order is stored BF16/FP32 gradient, FP32 EMA/Nesterov with reused `bg`, pinned
+five-stage BF16 Muon candidate, aspect scaling, P20 shield, and compensated
+three-word FP32 master update. The exact `7 x 7` LMI is written at the stored
+FP32 Nesterov signal; it never assumes incremental Lipschitzness of P20 or
+compares shield calls at rounded and ideal signals.
+
+For differentiable globally `10`-smooth, global-PL-`1` objectives, its exact
+pathwise port inequality has gains `(16384,1024,512)` at the primary
+`eta=1/120`, `q=624350169/625000000`, and `(32768,2048,512)` at the secondary
+`eta=1/83`, `q=999598040401/1000000000000`. Zero ports recover P18/P19 entry
+for entry. Exact FP32 roundoff envelopes close all seven P20 shapes on
+`V<=1` under the explicit source premise
+`||zeta||_F <= (sqrt(V)+1)/4096`. On the tight `4096 x 14336` shape, the
+outward objective-neighborhood bounds are about `4.993e-4` and `2.583e-3` at
+the two rates. These are invariant-domain finite-precision bounds, not global
+neural-training claims.
+
+P21 also converts P20's unrepresentable all-subnormal case into a rigorously
+bounded absolute update port by returning zero relative to the conceptual
+sector point `S/2`. The main smooth-PL result sets weight decay to zero;
+nonzero decay is a separately bounded conditional port, with a centered
+strong-convexity corollary. A frozen shadow-mode protocol predeclares the real-
+gradient intervention gates, but no real trace was run: this checkout lacks a
+pinned trainer, data/tokenizer/checkpoint, accelerator, and a P20 certificate
+for vanilla GPT-2's fused `768 x 2304` QKV shape. See
+[`theory/certified_outer_loop_composition.md`](theory/certified_outer_loop_composition.md),
+[`theory/p21_shadow_trace_protocol.md`](theory/p21_shadow_trace_protocol.md),
+and
+[`results/summaries/P21_CERTIFIED_OUTER_LOOP_COMPOSITION_RESULTS.md`](results/summaries/P21_CERTIFIED_OUTER_LOOP_COMPOSITION_RESULTS.md).
+
 The repair claim is intentionally scoped. A constant `rho` is the exact minimal
 linear shift for a **specified point, pair, sample set, or domain with a finite
 certified deficit**. For exact scale-invariant normalization on every nonzero
@@ -748,6 +780,11 @@ uv run --locked python scripts/reconstruct_sector_shielded_inexact_resolvent.py 
 uv run --locked python scripts/certify_scalable_sector_shield.py
 uv run --locked python scripts/reconstruct_scalable_sector_shield.py \
   --require-canonical
+uv run --locked python scripts/certify_outer_loop_composition.py \
+  --output results/summaries/certified_outer_loop_composition_certificate.json
+uv run --locked python scripts/reconstruct_outer_loop_composition.py \
+  --canonical results/summaries/certified_outer_loop_composition_certificate.json \
+  --require-canonical
 uv run --locked pytest
 ```
 
@@ -770,6 +807,8 @@ uv run --locked python experiments/resolvent/run_p18_sector_projected_study.py
 uv run --locked python experiments/resolvent/run_p19_sector_shielded_study.py
 uv run --locked python \
   experiments/mixed_precision/run_p20_scalable_sector_shield_study.py
+uv run --locked python experiments/training/run_p21_synthetic_shadow_trace.py \
+  --output results/summaries/p21_synthetic_shadow_trace.json
 uv run --locked python scripts/make_figures.py
 ```
 
@@ -785,7 +824,8 @@ not support a universal claim across BF16 backends.
 
 ## Scope
 
-This repository stays focused on twenty-three technical goals:
+This repository stays focused on twenty-four technical goals (P20 completed
+the preceding twenty-three-goal ledger):
 
 1. a theorem for current-input Frobenius normalization;
 2. exact local and finite-pair controls for the five-step Jordan map;
@@ -836,7 +876,12 @@ This repository stays focused on twenty-three technical goals:
     balanced reductions, positive inward margins on seven Transformer shapes,
     radial clipping, fail-closed near-zero guards, and no runtime big-integer
     postcheck;
-23. qualified matrix, quadratic, nonlinear, and precision diagnostics.
+23. an exact stored-signal `7 x 7` port certificate composed with FP32
+    EMA/Nesterov, the aspect-scaled BF16 candidate, P20, compensated
+    three-word parameters, all-subnormal and represented-model ports, and
+    seven-shape invariant-domain roundoff bounds;
+24. qualified matrix, quadratic, nonlinear, precision, and predeclared
+    shadow-mode diagnostics.
 
 P7 is the submission cutoff and broadest robustness theorem; P6 is its
 zero-disturbance smooth-PL corollary. P8 and P9 instantiate one P7 disturbance
@@ -880,12 +925,15 @@ pointwise safe on seven frozen shapes but is neither P19's metric projection
 nor a theorem for arbitrary GPU, FTZ, reduction, or compiler semantics. The
 P19 rates carry over only along trajectories whose shield calls all succeed
 and after identifying stored `S` with the abstract operator-port signal;
-composing the signal cast and the remaining outer finite-precision arithmetic
-is deferred to P21.
-Production-gradient
-measurement, model-forward use of the logical
-master, weight decay, aspect-ratio scaling, complete stochastic neural-network
-training, production-kernel parity, and formal circuit ports remain open.
+P21 removes that port-identification qualification by writing its LMI directly
+at the actual stored signal and composing the proof-reference FP32
+EMA/Nesterov and compensated master. Its pathwise affine source budget and
+nonzero-decay bounds remain explicit premises; they are not derived from an
+arbitrary training run. The predeclared shadow observer exists, but the real
+gradient trace is externally blocked. Production-gradient evidence, native
+accelerator/distributed parity, a complete supported training shape inventory,
+generic stochastic-gradient guarantees, throughput, and formal circuit ports
+remain open.
 
 ## Layout
 

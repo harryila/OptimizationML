@@ -51,7 +51,11 @@ Experiment order is gated:
 23. the P20 static seven-shape mixed-precision shield certificate, locked CPU
     BF16/FP32 arithmetic graph, radial-clip and near-zero controls, P18 and
     pinned-upstream candidate diagnostics, and cross-platform decision replay;
-24. only after model-forward use of the logical master, aspect scaling, weight
+24. the P21 stored-signal `7 x 7` port certificate, exact seven-shape FP32
+    EMA/Nesterov/master roundoff absorption, all-subnormal wrapper, conditional
+    decay treatment, and frozen synthetic shadow-observer diagnostic;
+25. only after a fully supported model shape inventory, real-gradient shadow
+    gates, model-forward use of the logical master, aspect scaling, weight
     decay, and implementation-parity gates, a small matched neural-training
     sweep.
 
@@ -227,7 +231,12 @@ balanced norm, inward comparison, radial clip, and half fallback. It proves
 pointwise containment for successful stored results on seven fixed shapes,
 not incremental passivity or correctness of an arbitrary CPU/GPU graph. Its
 outer-loop rate statement is conditional on every call succeeding and on
-identifying stored `S` with the abstract operator-port signal.
+identifying stored `S` with the abstract operator-port signal. P21 closes that
+identification gap for the locked CPU proof-reference outer loop by placing
+the LMI at the actual stored signal and absorbing gradient cast, reused `bg`,
+EMA/Nesterov, step, compensated-master, and all-subnormal errors through exact
+ports. Its `1/4096` source envelope and nonzero-decay bounds are explicit
+premises, not measurements of a production training run.
 
 Replay the P16 guarded reference solver and fidelity diagnostic separately:
 
@@ -314,6 +323,39 @@ records are packed singular-coordinate diagnostics. The annulus records
 study output but are not part of the runtime. Sampled activation/fidelity and
 a matching cross-platform decision digest do not prove global fidelity or
 extend the static certificate to another backend.
+
+Replay the P21 exact stored-signal composition and its independent
+standard-library reconstruction with:
+
+```bash
+uv run --locked python scripts/certify_outer_loop_composition.py \
+  --output results/summaries/certified_outer_loop_composition_certificate.json
+uv run --locked python scripts/reconstruct_outer_loop_composition.py \
+  --canonical results/summaries/certified_outer_loop_composition_certificate.json \
+  --require-canonical
+```
+
+The core `7 x 7` LMI is dimension independent. The concrete FP32 port
+absorption is an invariant-domain result for the seven P20 shapes, the locked
+CPU arithmetic graph, and explicitly bounded pre-cast source and decay ports.
+It is not an incremental P20 theorem, a generic stochastic-gradient result,
+or accelerator parity.
+
+The frozen shadow observer can be exercised without a model using:
+
+```bash
+uv run --locked python experiments/training/run_p21_synthetic_shadow_trace.py \
+  --output results/summaries/p21_synthetic_shadow_trace.json
+```
+
+That command is an infrastructure diagnostic only. No real-gradient trace is
+present: a pinned trainer/instrumentation patch, dataset, tokenizer,
+checkpoint, accelerator, and complete P20-covered matrix inventory are
+missing. In particular, vanilla GPT-2's fused `768 x 2304` QKV shape is not
+in P20's table. The synthetic output cannot satisfy or predict the real-
+gradient empirical gate. The frozen fixture's 144 observations, 126
+pass-throughs, and 18 activations all pass its synthetic checks; those counts
+only validate acquisition and aggregation logic.
 
 The P9 separate CPU diagnostic is a native-matmul
 falsification probe against a float64, non-exact target:

@@ -1931,3 +1931,144 @@ P18. It is a correctness-first, memory-scalable CPU proof reference, not a
 native GPU, throughput, stochastic-training, or complete-optimizer theorem.
 See `scalable_mixed_precision_sector_shield.md`; independent human review is
 pending.
+
+## C27. Stored-signal finite-precision outer-loop composition — proved under explicit port and invariant-domain premises
+
+Retain C26's seven fixed Transformer shapes, stored CPU P20 arithmetic graph,
+and full-matrix pointwise sector `[125/1024,509/512]`. P21 composes the stored
+computation in the order
+
+`g_hat -> m_hat_next -> s_hat_next -> five-stage BF16 Muon ->`
+`aspect scale -> P20 shield -> compensated FP32 master update`.
+
+The candidate uses additive normalization `U/(||U||_F+epsilon)` with
+`epsilon=1/10000000`, coefficients `6889/2000`, `-191/40`, and `4063/2000`,
+and five stages from pinned Keller--Jordan/Muon revision
+`f98f1cacc0263b04290753e32be8d498c1efc806`. Aspect scaling is materialized in
+the candidate dtype before the shield. The P20 theorem is candidate-
+independent; neither the BF16 candidate nor its closeness to P18 is a safety
+premise. Scaling after the shield is excluded.
+
+For the differentiable globally `10`-smooth, global-PL-`1` class, normalize
+`z=m/L`, `u=grad f(W)/L`, and `p=s_hat/L`. Define
+
+\[
+a^m=\frac{\widehat m_+-\beta m-(1-\beta)\nabla f(W)}L,
+\qquad
+a^s=\frac{\widehat s-\beta\widehat m_+-(1-\beta)\nabla f(W)}L.
+\]
+
+Then, exactly,
+
+\[
+z_+=\beta z+(1-\beta)u+a^m,
+\qquad
+p=\beta^2z+(1-\beta^2)u+\beta a^m+a^s.
+\]
+
+Write the stored P20 output as `T/L=gamma*p+K_T*v`, where
+`gamma=1143/2048`, `K_T=893/2048`, and `||v||_F<=||p||_F`. Define the
+output-equivalent port by
+
+\[
+W_+-W=-\eta\gamma L
+\left(p+\frac{K_T}{\gamma}v+h\right).
+\]
+
+In lifted order `(z,u,v,u_next,a_m,a_s,h)`, exact rational `7 x 7` LMIs prove
+
+\[
+\mathcal V_+\le q\mathcal V
++G_m\lVert a^m\rVert_F^2
++G_s\lVert a^s\rVert_F^2
++G_h\lVert h\rVert_F^2.
+\]
+
+The primary point `eta=1/120`, `q=624350169/625000000` has exact gains
+`(G_m,G_s,G_h)=(16384,1024,512)`. The secondary maximum-step point
+`eta=1/83`, `q=999598040401/1000000000000` has gains
+`(32768,2048,512)`. Exact Sylvester checks prove both storage matrices
+positive definite and both dissipation matrices strictly negative definite.
+Setting `a_m=a_s=h=0` recovers the frozen C24--C26 `4 x 4` matrices entry for
+entry, including exact function-value cancellation.
+
+The sector is imposed at the actual stored FP32 signal. C27 does not compare
+`T(s_hat)` with `T(s)` and does not claim P20 is incrementally Lipschitz. The
+core port inequality is dimension independent. Concrete roundoff closure uses
+the seven fixed shapes and the storage/range invariant below.
+
+The locked runtime stores a BF16/FP32 gradient in FP32, reuses the same
+rounded `bg`, executes the P10 FP32 EMA/Nesterov graph, orients both signal and
+candidate when needed, invokes P20, and accumulates the rounded step into an
+exact three-word logical master. Its mathematical rates are stored as FP32
+values `8947849/1073741824` and `1617081/134217728`. Model evaluation uses the
+pre-update high word, while the exact reconstruction port is
+`-(middle+low)`. This port is assigned to the pre-cast gradient source; static
+word range guards do not themselves certify that it is small.
+
+Let `zeta` collect all error before final FP32 gradient storage, including
+stochastic/model-gradient error. Exact P10 relative-plus-underflow-crumb
+recurrences reduce the full outer rounding graph to affine bounds on
+`(a_m,a_s,h)`. Under the explicit pathwise premise
+
+\[
+\lVert\zeta_t\rVert_F\le
+\frac1{4096}\sqrt{\mathcal V_t}+\frac1{4096},
+\]
+
+Young absorption with exact parameters one gives, on `V<=1`,
+
+\[
+\mathcal V_{t+1}\le\bar q\mathcal V_t+D.
+\]
+
+The combined `1/4096` premise is obtained by separately assuming an
+external/stochastic gradient budget `(sqrt(V)+1)/8192` and a represented-
+master distance budget `(sqrt(V)+1)/81920`; `L=10` converts the latter into a
+second `(sqrt(V)+1)/8192` gradient contribution. The exact runtime
+reconstruction port makes this condition observable, but the static master
+word guards do not prove it.
+
+All seven shapes pass both rates and satisfy `D<=1-q_bar`. On the tight
+`4096 x 14336` shape the primary outward values are
+
+`q_bar=1098368546995/1099511627776`,
+`D=14267/274877906944`, and objective-gap bound
+`274464109/549755813888`. The secondary values are
+
+`q_bar=549534922135/549755813888`,
+`D=57049/549755813888`, and objective-gap bound
+`2839673189/1099511627776`.
+
+These yield finite invariant-domain neighborhoods, not exact finite-precision
+convergence. The zero-combined-pre-cast-source profile retains a still smaller nonzero
+rounding neighborhood. The output maximum `64`, combined-step maximum `1`,
+P10 lower-word guards, and conditional high-word maximum `2^30` close on the
+unit storage ball.
+
+For an unrepresentable nonzero all-subnormal signal, the outer wrapper returns
+zero and compares it with the conceptual exact sector point `S/2`. If
+`h_n=ceil(sqrt(mn))`, the added parameter displacement is strictly less than
+`eta*h_n*2^-127`. Zero is not misclassified as a successful P20 sector output
+for nonzero `S`; the discrepancy is carried by `h`. Nonfinite signals abort.
+
+The main smooth-PL result sets weight decay to zero. Nonzero decoupled decay
+is a conditional bounded-update result: the logical decay displacement and
+stored rounded decay-step norm must each be at most `1/131072`. The former
+enters the LMI forcing; the latter closes the stored range guard without being
+double-counted in `D`. Under this profile, the robust tight-shape objective
+bounds are about `0.26604` and `0.33128`. An exact-real corollary covers decay
+centered at the true minimizer for a strongly convex objective. Ordinary
+zero-centered decay inherits that conclusion only when the relevant minimizer
+is zero; the exact scalar nonzero-minimizer control moves away from its
+unregularized optimum.
+
+The shadow-mode protocol was frozen before any real-gradient observation. Its
+synthetic runner tests observer and gate logic only. No real-gradient evidence
+exists: this checkout lacks a pinned NanoGPT trainer/instrumentation patch,
+data, tokenizer, checkpoint, accelerator, and a P20 certificate for vanilla
+GPT-2's fused `768 x 2304` QKV matrix. C27 does not establish global PL for a
+neural loss, generic bounded-variance stochastic convergence, global
+candidate fidelity, unmodified-upstream stability, native GPU/FTZ/distributed
+semantics, throughput, or training quality. See
+`certified_outer_loop_composition.md`; independent human review is pending.

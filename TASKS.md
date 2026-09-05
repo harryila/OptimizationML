@@ -365,16 +365,53 @@
       identification, and distinction from P19 projection; the unsigned
       packet is
       `theory/audits/P20_SCALABLE_MIXED_PRECISION_SECTOR_SHIELD_HUMAN_PROOF_AUDIT.md`.
-- [ ] Compose the P20 stored-signal boundary with FP32 EMA/Nesterov,
-      parameter/master-weight rounding, aspect scaling, weight decay, and
-      distributed semantics. This is the P21 integration gate.
+- [x] Build the P21 dissipation LMI directly around the actual stored FP32
+      Nesterov signal, with normalized momentum, stored-signal, and aggregate
+      output-equivalent ports. Do not compare P20 at rounded and ideal signals
+      or claim an incremental Lipschitz property.
+- [x] Prove exact strict `7 x 7` certificates at primary `eta=1/120`,
+      `q=624350169/625000000`, gains `(16384,1024,512)`, and secondary
+      `eta=1/83`, `q=999598040401/1000000000000`, gains
+      `(32768,2048,512)`. Verify the zero-port blocks recover P18/P19 exactly.
+- [x] Compose stored gradient casting, reused `bg`, FP32 EMA/Nesterov,
+      aspect-before-shield ordering, the arbitrary BF16 candidate, P20, stored
+      step rounding, and the compensated three-word FP32 master update.
+- [x] Expose model evaluation at the pre-update high word through an exact
+      reconstruction port. Retain the pathwise pre-cast gradient/model error
+      budget as an explicit premise because the static word guards alone do
+      not make it small.
+- [x] Close the nonrepresentable all-subnormal case by returning zero and
+      absorbing its distance to the exact `S/2` sector point through the
+      strict absolute parameter-error bound `eta*ceil(sqrt(m*n))*2^-127`.
+- [x] Derive exact roundoff envelopes for all seven P20 shapes at both rates.
+      Under `||zeta||_F <= (sqrt(V)+1)/4096`, every profile has `q_bar<1`,
+      `D<=1-q_bar`, and finite objective neighborhood on `V<=1`.
+- [x] Keep `weight_decay=0` in the primary smooth-PL theorem. Treat nonzero
+      decay only through separately predeclared logical and stored-step bounds,
+      and add a centered strong-convexity corollary plus a nonzero-minimizer
+      ordinary-decay negative control.
+- [x] Add exact generation, a standard-library-only independent
+      reconstruction, focused tests, dedicated CI, a theorem note, scoped
+      results, and an unsigned P21 human-audit packet.
+- [x] Freeze the real-gradient shadow-trace schedule, provenance, metric,
+      zero-handling, P16/P18, and mild-intervention gates before observation;
+      provide a synthetic CPU observer diagnostic that cannot be cited as
+      training evidence.
+- [ ] Run the frozen real-gradient shadow trace. It is blocked on a pinned
+      trainer/instrumentation patch, dataset, tokenizer, checkpoint,
+      accelerator, and complete P20-covered model shape inventory; vanilla
+      GPT-2's fused `768 x 2304` QKV matrix is not currently certified.
+- [ ] Obtain an independent human proof audit of C27, especially stored-signal
+      placement, port normalization/signs, seven-shape roundoff absorption,
+      all-subnormal completion, and weight-decay scope; the unsigned packet is
+      `theory/audits/P21_CERTIFIED_OUTER_LOOP_COMPOSITION_HUMAN_PROOF_AUDIT.md`.
+- [ ] Add native accelerator and distributed-reduction semantics only after
+      their operation graphs, shape inventory, and parity evidence are pinned.
 - [ ] Bound the complete error of a pinned deployed BF16 backend by the C12
       disturbance model and certify its ultimate neighborhood; P8--P10 are
       proposed proof-reference designs, not literal upstream parity.
-- [ ] Specify how model forward/backward evaluation consumes the three-word
-      logical master, or derive a separate reconstruction/error port for the
-      represented model weights.
-- [ ] Run a small matched NanoGPT sweep only after the preceding gates pass.
+- [ ] Run a matched shielded-versus-upstream NanoGPT sweep only after the
+      shadow trace passes or motivates and freezes a revised candidate/shield.
 - [ ] Run an accelerator throughput benchmark only for a certified design.
 
 ## Explicitly deferred

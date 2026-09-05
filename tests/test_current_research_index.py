@@ -481,7 +481,7 @@ def test_current_indexes_record_scoped_p19_sector_shield() -> None:
     assert "## 25. P19 sector-shielded inexact resolvent" in results
     assert "## C25. Sector shield makes arbitrary finite candidates" in claims
     assert "human proof audit of C25" in tasks
-    assert "twenty-three technical goals" in readme
+    assert "technical goals" in readme
 
 
 def test_current_indexes_record_scoped_p20_scalable_sector_shield() -> None:
@@ -536,7 +536,66 @@ def test_current_indexes_record_scoped_p20_scalable_sector_shield() -> None:
     assert "## 26. P20 scalable mixed-precision sector shield" in results
     assert "## C26. Shape-locked mixed-precision sector containment" in claims
     assert "human proof audit of C26" in tasks
-    assert "twenty-three technical goals" in readme
+    assert "technical goals" in readme
+
+
+def test_current_indexes_record_scoped_p21_outer_loop_composition() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    tasks = (ROOT / "TASKS.md").read_text(encoding="utf-8")
+    results_index = (ROOT / "results/README.md").read_text(encoding="utf-8")
+    experiments = (ROOT / "experiments/README.md").read_text(encoding="utf-8")
+    results = (ROOT / "results/summaries/RESULTS.md").read_text(encoding="utf-8")
+    claims = (ROOT / "theory/claims.md").read_text(encoding="utf-8")
+    theorem = (ROOT / "theory/certified_outer_loop_composition.md").read_text(encoding="utf-8")
+    summary = (
+        ROOT / "results/summaries/P21_CERTIFIED_OUTER_LOOP_COMPOSITION_RESULTS.md"
+    ).read_text(encoding="utf-8")
+    protocol = (ROOT / "theory/p21_shadow_trace_protocol.md").read_text(encoding="utf-8")
+
+    for artifact in (
+        "certified_outer_loop_composition_certificate.json",
+        "p21_synthetic_shadow_trace.json",
+        "P21_CERTIFIED_OUTER_LOOP_COMPOSITION_RESULTS.md",
+        "p21_shadow_trace_protocol.json",
+    ):
+        assert artifact in results_index
+    for command in (
+        "certify_outer_loop_composition.py",
+        "reconstruct_outer_loop_composition.py",
+        "run_p21_synthetic_shadow_trace.py",
+    ):
+        assert command in readme
+        assert command in experiments
+        assert command in results
+    for text in (readme, results, claims, theorem, summary):
+        assert "624350169" in text
+        assert "999598040401" in text
+        assert "16384" in text
+        assert "32768" in text
+        assert "125/1024" in text or r"\frac{125}{1024}" in text
+        assert "509/512" in text or r"\frac{509}{512}" in text
+        assert "1e-7" in text or "1/10000000" in text or "10^{-7}" in text
+        assert "6889/2000" in text
+        assert "-191/40" in text
+        assert "4063/2000" in text
+        assert "five" in text.lower()
+        assert "stored" in text.lower()
+        assert "pointwise" in text.lower()
+        assert "incremental" in text.lower()
+    combined = " ".join((readme, results, claims, theorem, summary, protocol))
+    assert "1098368546995" in combined
+    assert "549534922135" in combined
+    assert "14267/274877906944" in combined
+    assert "57049/549755813888" in combined
+    assert "1/4096" in combined
+    assert "2^-127" in combined
+    assert "weight_decay=0" in combined or "weight decay to zero" in combined
+    assert "768 x 2304" in combined
+    assert "no real-gradient" in combined.lower() or "no real gradient" in combined.lower()
+    assert "## 27. P21 certified stored-signal outer-loop composition" in results
+    assert "## C27. Stored-signal finite-precision outer-loop composition" in claims
+    assert "human proof audit of C27" in tasks
+    assert "twenty-four technical goals" in readme
 
 
 def test_double_blind_material_is_guarded_from_the_public_repository() -> None:

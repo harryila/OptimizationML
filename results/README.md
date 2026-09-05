@@ -240,6 +240,27 @@ Current outputs:
   abstract-port rate consequence, candidate diagnostics, near-zero
   fail-closed boundary, and explicit outer-arithmetic/GPU exclusions; the
   human proof audit remains pending and unsigned;
+- `summaries/certified_outer_loop_composition_certificate.json`: canonical
+  P21 exact artifact for the stored-signal `7 x 7` LMIs, zero-port P18/P19
+  recovery, FP32 EMA/Nesterov/master roundoff envelopes, all-subnormal
+  absolute port, seven-shape invariant-domain results, weight-decay scope
+  controls, and frozen operator provenance; generate it with
+  `scripts/certify_outer_loop_composition.py` and independently check its
+  exact fields with the standard-library-only
+  `scripts/reconstruct_outer_loop_composition.py`;
+- `summaries/P21_CERTIFIED_OUTER_LOOP_COMPOSITION_RESULTS.md`: scoped P21
+  stored-computation theorem, exact primary/secondary port gains, concrete
+  roundoff neighborhoods, all-subnormal completion, conditional nonzero-
+  decay result, and explicit neural-training/GPU/distributed exclusions; the
+  human proof audit remains pending and unsigned;
+- `summaries/p21_synthetic_shadow_trace.json`: deterministic 144-observation
+  CPU diagnostic for the frozen P21 shadow observer, schedule, metrics, zero
+  handling, and empirical gate implementation; its 126 pass-throughs and 18
+  activations pass the synthetic checks, but it contains no model, dataset,
+  backward pass, accelerator, or real gradient and is not training evidence;
+- `../experiments/training/p21_shadow_trace_protocol.json`: predeclared P21
+  real-gradient shadow schedule, metrics, zero handling, intervention gates,
+  and provenance requirements; no real-gradient result is present;
 - `summaries/deficit_audit.{json,csv}`: 24-prefix spectral audit;
 - `summaries/quadratic_lr_sweep.json` plus CSV tables: gain-matched quadratic
   sweep and sensitivity classifications;

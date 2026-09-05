@@ -1,0 +1,150 @@
+{
+  "capture_schedule": {
+    "early": [0, 1, 2, 3, 4, 5, 6, 7],
+    "late": [248, 249, 250, 251, 252, 253, 254, 255],
+    "middle": [124, 125, 126, 127, 128, 129, 130, 131],
+    "phase_definition": "optimizer-step index in a predeclared 256-step, step-scheduled run; never wall-clock progress",
+    "steps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      124,
+      125,
+      126,
+      127,
+      128,
+      129,
+      130,
+      131,
+      248,
+      249,
+      250,
+      251,
+      252,
+      253,
+      254,
+      255
+    ],
+    "total_optimizer_steps": 256
+  },
+  "claim_scope": {
+    "future_real_trace": "Shadow-mode empirical diagnostic. Training parameters must be updated by the unchanged pinned baseline, never by the P20 output.",
+    "global_claim_boundary": "Sampled gradients cannot prove global fidelity, passivity, stability, or neural-network convergence.",
+    "synthetic_runner": "Deterministic CPU infrastructure diagnostic only; it contains no model, dataset, backward pass, accelerator, or real gradient.",
+    "theorem_gate": "No external GPU trace may run until the P21 analytic generator, independent reconstruction, and boundary/negative witnesses pass."
+  },
+  "external_execution_blockers": [
+    "no NanoGPT or Modded-NanoGPT source tree is present",
+    "no trainer revision or instrumentation patch is pinned",
+    "no dataset, tokenizer, checkpoint, or real-gradient trace is present",
+    "the local host has no CUDA or MPS device",
+    "vanilla GPT-2 fused-QKV shape 768x2304 is not in P20's certified shape table"
+  ],
+  "frozen_gates": {
+    "hard": {
+      "all_primary_eta_effective_gains_in_1_over_1000_to_1_over_80": true,
+      "all_returned_output_to_signal_amplitudes_in_1_over_10_to_1": true,
+      "all_supported_events_are_successful_p20_sector_calls": true,
+      "capture_schedule_complete": true,
+      "intended_muon_matrix_coverage_count_and_numel": "100%; otherwise the trace is explicitly partial",
+      "nonfinite_candidate_count": 0,
+      "nonfinite_signal_count": 0,
+      "unexpected_shield_failure_count": 0,
+      "unrepresentable_all_subnormal_dead_zone_count": 0
+    },
+    "mild_intervention": {
+      "candidate_output_cosine_minimum": "4/5",
+      "candidate_output_cosine_p05_nearest_rank": "19/20",
+      "maximum_activation_rate_each_phase_role_cell_with_n_at_least_20": "1/2",
+      "maximum_overall_activation_rate": "1/4",
+      "output_to_candidate_amplitude_p05_nearest_rank": "3/4",
+      "output_to_candidate_amplitude_p95_nearest_rank": "5/4",
+      "relative_correction_maximum": "1",
+      "relative_correction_p50_nearest_rank": "1/20",
+      "relative_correction_p95_nearest_rank": "1/4"
+    },
+    "p16_p18_reused": {
+      "annulus": "3/4 <= ||S||_F <= 25",
+      "annulus_output_to_aspect_scaled_upstream_candidate": "1/4 <= ||T||_F/||C||_F <= 8, with at least one observation in every phase",
+      "informative_candidate_best_scalar_departure": ">= 1/100",
+      "output_best_scalar_departure": ">= 1/1000 on every informative event",
+      "shaping_retention": ">= 1/10 on every informative event"
+    }
+  },
+  "metric_semantics": {
+    "activation": "Any P20 action other than bitwise pass-through, including radial clip, half fallback, zero singleton handling when changed, or the proposed P21 dead-zone-zero wrapper.",
+    "aspect_order": "C = fl_candidate_dtype(sqrt(max(1,rows/columns))*raw_candidate) is formed before orientation and before P20.",
+    "best_scalar_departure": "sqrt(max(0,||T||^2-<S,T>^2/||S||^2))/||T||; zero target gives 0 and zero signal with nonzero target gives 1.",
+    "candidate_output_cosine": "<C,T>/(||C|| ||T||); undefined if either norm is zero.",
+    "effective_gain": "eta*||T||_F/||S||_F, reported for eta=1/120 and eta=1/83.",
+    "missing_values": "Only mathematically undefined zero-denominator ratios are None. Nonfinite values are failures and are never silently removed.",
+    "nearest_rank_quantile": "Sort finite nonmissing values and return x[ceil(p*n)-1].",
+    "output_to_candidate_amplitude": "||T||_F/||C||_F after aspect scaling.",
+    "output_to_signal_amplitude": "||T||_F/||S||_F.",
+    "relative_correction": "||T-C||_F/||C||_F; undefined for C=0 and explicitly classified as both-zero or nonzero-over-zero.",
+    "shaping_retention": "departure(T;S)/departure(C;S), evaluated only when departure(C;S)>=1/100.",
+    "zero_ratio_policy": "A zero denominator yields no numeric ratio. Both-zero and nonzero-over-zero are recorded separately; neither is inserted into a quantile."
+  },
+  "observer_contract": {
+    "candidate_source": "The real study must copy the actual stored backend candidate before aspect scaling; CPU recomputation is permitted only in tests and the synthetic diagnostic.",
+    "input": "contiguous stored CPU copy of S and the actual pre-aspect candidate, each FP32 or BF16",
+    "noninterference": "The observer clones inputs and never returns an update to the baseline optimizer. A trace-on/off bitwise model, optimizer-state, loss, and RNG regression is required before real acquisition.",
+    "orientation": "If only the reversed shape is P20-certified, transpose S and C together, make a bit-preserving contiguous copy, shield, then transpose the output back.",
+    "output": "P20 FP32 result and diagnostic record; the output is never applied during shadow tracing.",
+    "subnormal_policy": "If P20 cannot represent a positive-sector output for an all-subnormal S, the proposed P21 wrapper records zero plus the absolute disturbance bound ||S||_F/2. This is not a successful P20 sector call."
+  },
+  "predeclared_real_run": {
+    "capture_selection": "all intended Muon hidden-matrix parameters at every capture step; no post-hoc layer or shape selection",
+    "distributed_scope": "single device only for the first trace; distributed reductions are deferred",
+    "initialization": "from scratch unless a checkpoint and its SHA-256 are frozen before the run",
+    "seed_count": 1,
+    "weight_decay_primary": 0
+  },
+  "provenance_required": {
+    "artifacts": [
+      "raw trace file SHA-256 values",
+      "aggregate manifest SHA-256",
+      "P20 certificate and checkpoint identifiers"
+    ],
+    "data": [
+      "dataset repository/name/config/revision/split",
+      "raw shard SHA-256 values",
+      "preprocessing source SHA-256",
+      "train and validation binary SHA-256 values",
+      "tokenizer name/revision/vocabulary and merges SHA-256 values"
+    ],
+    "hardware": [
+      "GPU names, UUIDs, count, compute capabilities, and VRAM",
+      "CPU, OS, kernel, and architecture"
+    ],
+    "optimizer": [
+      "all parameter groups and named parameter-to-group map",
+      "beta, learning-rate schedule, weight decay, aspect formula, epsilon, Jordan coefficients and iteration count",
+      "gradient accumulation and candidate/signal/output cast order"
+    ],
+    "repository": [
+      "OptimizationML SHA, branch, dirty state, source snapshot, protocol SHA-256, and lockfile SHA-256",
+      "trainer repository URL, exact revision, dirty state, and instrumentation patch SHA-256",
+      "KellerJordan/Muon revision, audited muon.py SHA-256, and license"
+    ],
+    "run": [
+      "full model config and named parameter/shape/numel inventory",
+      "Python, NumPy, Torch CPU/CUDA seeds and dataloader seed",
+      "batch size, sequence length, gradient accumulation, token count, and exact capture steps",
+      "checkpoint initialization method and SHA-256 when applicable"
+    ],
+    "software": [
+      "Python and dependency lock versions",
+      "PyTorch version, build Git SHA, and torch.__config__",
+      "CUDA driver/runtime/toolkit, cuDNN, NCCL, and Triton versions",
+      "autocast dtype, TF32, matmul precision, deterministic and compile flags",
+      "CUDA_VISIBLE_DEVICES, CUBLAS_WORKSPACE_CONFIG, and NCCL environment"
+    ]
+  },
+  "schema_version": "passive-muon-p21-shadow-trace-v1"
+}
