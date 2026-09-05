@@ -279,6 +279,53 @@ def test_current_indexes_record_scoped_p15_inexact_yosida_robustness() -> None:
     assert "not an algorithm" in " ".join(claims.split())
 
 
+def test_current_indexes_record_scoped_p16_equivariant_resolvent_solver() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    tasks = (ROOT / "TASKS.md").read_text(encoding="utf-8")
+    results_index = (ROOT / "results/README.md").read_text(encoding="utf-8")
+    experiments = (ROOT / "experiments/README.md").read_text(encoding="utf-8")
+    results = (ROOT / "results/summaries/RESULTS.md").read_text(encoding="utf-8")
+    claims = (ROOT / "theory/claims.md").read_text(encoding="utf-8")
+    p16_summary = (
+        ROOT / "results/summaries/P16_EQUIVARIANT_RESOLVENT_SOLVER_RESULTS.md"
+    ).read_text(encoding="utf-8")
+
+    for artifact in (
+        "equivariant_resolvent_solver_certificate.json",
+        "p16_solver_study.json",
+        "P16_EQUIVARIANT_RESOLVENT_SOLVER_RESULTS.md",
+    ):
+        assert artifact in results_index
+    for command in (
+        "certify_equivariant_resolvent_solver.py",
+        "reconstruct_equivariant_resolvent_solver.py",
+        "run_p16_solver_study.py",
+    ):
+        assert command in readme
+        assert command in experiments
+        assert command in results
+    for text in (readme, results, claims, p16_summary):
+        assert "1e-7" in text or "1/10000000" in text
+        assert "6889/2000" in text
+        assert "-191/40" in text
+        assert "4063/2000" in text
+        assert "five" in text.lower()
+        assert "1/1000" in text
+        assert "mu=1000" in text
+        assert "1/250" in text
+        assert "5.879e-6" in text
+        assert "8.403e-5" in text
+        assert "effectively scalar" in text
+        assert "FP64" in text
+        assert "rounding" in text
+    assert "## 22. P16 equivariant resolvent solver" in results
+    assert "## C22. Equivariant structured resolvent solve" in claims
+    assert "human proof audit of C22" in tasks
+    assert "nineteen technical goals" in readme
+    assert "not a useful uniform" in " ".join(claims.split())
+    assert "fails its overall meaningful-Muon acceptance gate" in results
+
+
 def test_double_blind_material_is_guarded_from_the_public_repository() -> None:
     ignore = (ROOT / ".gitignore").read_text(encoding="utf-8")
     for pattern in (

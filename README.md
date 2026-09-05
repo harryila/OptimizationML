@@ -510,6 +510,44 @@ bound, rounded residual evaluation, or BF16/upstream implementation. See
 and
 [`results/summaries/P15_INEXACT_YOSIDA_ROBUSTNESS_RESULTS.md`](results/summaries/P15_INEXACT_YOSIDA_ROBUSTNESS_RESULTS.md).
 
+Branch `p16-equivariant-resolvent-solver` supplies a structured exact-real
+algorithm and a guarded FP64 reference implementation for that P15 oracle.
+For arbitrary fixed finite real rectangular matrix shapes, the P14 resolvent
+is bi-orthogonally equivariant and preserves singular subspaces, including
+repeated and zero singular values. Its graph equation reduces to a coupled
+singular-value system whose Jacobian is diagonal plus rank one, so each Newton
+step uses Sherman--Morrison algebra after one SVD rather than a dense solve in
+the number of singular values. The dense reference path uses a second SVD to
+reevaluate `B` on the stored reconstructed candidate for its literal P15
+graph-residual postcheck. Exact strong-monotonicity and Armijo arguments
+give global exact-real convergence and finite termination at every positive
+P15 residual threshold. This is not a useful uniform a priori iteration-count
+bound or a certificate for FP64 rounding.
+
+At the locked `epsilon=1e-7`, five Jordan stages with coefficients
+`6889/2000`, `-191/40`, and `4063/2000`, `lambda=1/1000`, `mu=1000`, and P15
+relative tolerance `1/250`, all 13 declared computed-residual cases pass. The
+polynomial and epsilon placement are traced to KellerJordan/Muon revision
+`f98f1cacc0263b04290753e32be8d498c1efc806`; upstream contains neither the
+repair nor this solver. The FP64 study reports at most 8 Newton iterations, no
+accepted-case backtracking, and a worst attained graph residual of about
+`5.880e-14`; the four large Transformer cases solve only the complete reduced
+spectra and are not dense runtime benchmarks.
+
+P16 does **not** pass its overall acceptance gate. An exact/Arb `2 x 2`
+enclosure proves unequal modal gains, but on the locked `diag(3,4)` comparator
+the best-scalar departure is only about `5.879e-6`, versus about `6.997e-2`
+for the five-step Jordan comparator, for retention about `8.403e-5`. Thus the
+operator is algebraically noncollapsed but effectively scalar at the declared
+meaningful-fidelity threshold. A frozen sampled six-point
+`(lambda,mu)` frontier finds no point that jointly passes the frozen P14
+certificate and the fidelity gates; this diagnostic is not a global
+impossibility theorem. P16 is therefore retained as an informative reference
+solver and fidelity obstruction, not a successful Muon-fidelity result. See
+[`theory/equivariant_resolvent_solver.md`](theory/equivariant_resolvent_solver.md)
+and
+[`results/summaries/P16_EQUIVARIANT_RESOLVENT_SOLVER_RESULTS.md`](results/summaries/P16_EQUIVARIANT_RESOLVENT_SOLVER_RESULTS.md).
+
 The repair claim is intentionally scoped. A constant `rho` is the exact minimal
 linear shift for a **specified point, pair, sample set, or domain with a finite
 certified deficit**. For exact scale-invariant normalization on every nonzero
@@ -557,6 +595,9 @@ uv run --locked python scripts/reconstruct_yosida_stability.py \
 uv run --locked python scripts/certify_inexact_yosida_robustness.py
 uv run --locked python scripts/reconstruct_inexact_yosida_robustness.py \
   --require-canonical
+uv run --locked python scripts/certify_equivariant_resolvent_solver.py
+uv run --locked python scripts/reconstruct_equivariant_resolvent_solver.py \
+  --require-canonical
 uv run --locked pytest
 ```
 
@@ -573,6 +614,7 @@ uv run --locked python experiments/nonconvex/run_robust_dissipativity_falsificat
 uv run --locked python experiments/mixed_precision/run_mixed_precision_falsification.py
 uv run --locked python experiments/mixed_precision/run_scalable_mixed_precision_diagnostic.py
 uv run --locked python experiments/mixed_precision/run_finite_precision_outer_loop_diagnostic.py
+uv run --locked python experiments/resolvent/run_p16_solver_study.py
 uv run --locked python scripts/make_figures.py
 ```
 
@@ -588,7 +630,7 @@ not support a universal claim across BF16 backends.
 
 ## Scope
 
-This repository stays focused on eighteen technical goals:
+This repository stays focused on nineteen technical goals:
 
 1. a theorem for current-input Frobenius normalization;
 2. exact local and finite-pair controls for the five-step Jordan map;
@@ -623,7 +665,9 @@ This repository stays focused on eighteen technical goals:
     smooth-PL certificate for the pinned implicit EMA/Nesterov loop;
 17. an exact inexact-resolvent residual-to-output theorem and robust
     smooth-PL ultimate-bound certificate at the full pinned step;
-18. qualified matrix, quadratic, nonlinear, and precision diagnostics.
+18. an equivariant singular-value resolvent reduction, guarded reference
+    solver, and an honestly failed meaningful-Muon-fidelity gate;
+19. qualified matrix, quadratic, nonlinear, and precision diagnostics.
 
 P7 is the submission cutoff and broadest robustness theorem; P6 is its
 zero-disturbance smooth-PL corollary. P8 and P9 instantiate one P7 disturbance
@@ -642,8 +686,12 @@ stiffness is unavoidable; it does not inherit P7--P11 stability. P14 removes
 that stiffness from the outer-loop interface through an exact resolvent and
 recovers a full-step smooth-PL theorem. P15 retains that rate for a verifiable
 relative graph-residual tolerance and gives an explicit neighborhood for an
-absolute residual floor, but it still leaves an actual solver, iteration
-complexity, and rounded residual evaluation open. Production-gradient
+absolute residual floor. P16 supplies an exact-real globally convergent
+structured solver and a checked FP64 reference implementation, but its locked
+operator fails the meaningful-fidelity gate and no sampled frontier point
+jointly passes that gate and the frozen P14 certificate. A useful uniform
+iteration bound, certified FP64 rounding, and a stable higher-fidelity design
+remain open. Production-gradient
 measurement, model-forward use of the logical
 master, weight decay, aspect-ratio scaling, complete stochastic neural-network
 training, production-kernel parity, and formal circuit ports remain open.
@@ -652,7 +700,7 @@ training, production-kernel parity, and formal circuit ports remain open.
 
 - `src/passive_muon/`: normalization, orthogonalizers, deficit metrics, repairs;
 - `theory/`: claim ledger, analytic proof, and exact/numerical certificates;
-- `experiments/`: matrix, qualified quadratic, and nonlinear falsification studies;
+- `experiments/`: matrix, qualified quadratic, nonlinear, and resolvent studies;
 - `scripts/`: reproducible entry points;
 - `results/`: committed manifests, summaries, and figures only;
 - `third_party/`: upstream revisions and license notices.

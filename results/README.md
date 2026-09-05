@@ -153,6 +153,21 @@ Current outputs:
   criterion theorem, retained full-step rate, absolute-residual objective
   neighborhood, controls, and solver/BF16 exclusions; the human proof audit
   remains pending and unsigned;
+- `summaries/equivariant_resolvent_solver_certificate.json`: canonical P16
+  exact/Arb artifact for the bi-orthogonal-equivariance and structured
+  singular-value solver theorem, exact Jacobian margins, unequal-mode witness,
+  canonical fidelity enclosure, and honest failed meaningful-fidelity gate;
+  generate it with `scripts/certify_equivariant_resolvent_solver.py` and
+  independently check it with the standard-library-only
+  `scripts/reconstruct_equivariant_resolvent_solver.py`;
+- `summaries/p16_solver_study.json`: deterministic guarded-FP64 solver,
+  computed-residual, cost-accounting, failure-control, realistic-spectrum,
+  and sampled six-point stability--fidelity-frontier diagnostic; it is not an
+  FP64 rounding certificate or global frontier theorem;
+- `summaries/P16_EQUIVARIANT_RESOLVENT_SOLVER_RESULTS.md`: scoped P16 exact-
+  real solver theorem and diagnostic readout, including algebraic noncollapse,
+  the failed meaningful-fidelity gate, and deployment exclusions; the human
+  proof audit remains pending and unsigned;
 - `summaries/deficit_audit.{json,csv}`: 24-prefix spectral audit;
 - `summaries/quadratic_lr_sweep.json` plus CSV tables: gain-matched quadratic
   sweep and sensitivity classifications;

@@ -1031,6 +1031,88 @@ human proof audit is pending and unsigned. See
 `inexact_yosida_robustness_certificate.json`, and
 `../../theory/inexact_yosida_robustness_certificate.md`.
 
+## 22. P16 equivariant resolvent solver and fidelity obstruction
+
+P16 fixes `epsilon=1/10000000`, the additive-epsilon normalization
+`M/(||M||_F+epsilon)`, five Jordan stages with coefficients `6889/2000`,
+`-191/40`, and `4063/2000`, P13's radial repair, `lambda=1/1000`,
+`mu=1000`, and P15's `kappa=1/250`. Its positive result is an exact-real
+solver theorem on every fixed finite real rectangular matrix shape. The
+practical polynomial and epsilon placement are traced to KellerJordan/Muon
+revision `f98f1cacc0263b04290753e32be8d498c1efc806`; upstream does not contain
+the repair or resolvent architecture.
+
+The resolvent is bi-orthogonally equivariant,
+
+\[
+J(QSR^\top)=QJ(S)R^\top,
+\]
+
+and a stabilizer argument proves singular-subspace preservation through
+repeated and zero singular values. In singular coordinates, the graph
+equation is a coupled scalar system whose only cross-mode dependence is the
+Frobenius radius. Its Jacobian is diagonal plus rank one. Exact radius-band
+margins keep the diagonal and Sherman--Morrison denominator positive, so each
+Newton direction avoids a dense solve in the number of singular values.
+
+The exact-real merit function has strict Newton descent. Armijo backtracking,
+strong monotonicity, bounded level sets, and uniqueness prove global
+convergence from every finite start. For each positive P15 residual threshold,
+the exact-real method therefore stops after finitely many iterations. This is
+not a useful uniform a priori iteration bound.
+
+The guarded FP64 implementation returns
+
+\[
+\widehat Y=1000(S-\widehat U),
+\]
+
+not `B(U_hat)`, and succeeds only after a full reconstructed candidate passes
+the computed rule
+
+\[
+\|S-\widehat U-B(\widehat U)/1000\|_F
+\le \|S\|_F/250+\bar r_{\rm fp64}.
+\]
+
+All 13 declared calls pass. The study reports a largest observed count of 8
+Newton iterations, no accepted-case backtracking, worst computed graph
+residual about `5.880e-14`, and worst residual-to-threshold ratio about
+`1.061e-12`. Four declared Transformer shapes through `4096 x 11008` use
+their complete reduced singular spectra, not dense allocations, SVD timing,
+or accelerator execution. Thus these are deterministic implementation
+diagnostics, not a certified FP64 rounding envelope.
+
+The fidelity gate changes the overall verdict. Exact rational cancellation
+and an outward-rounded Arb enclosure prove that the two gains on the
+canonical `diag(3,4)` input are unequal: approximately `760.207725` and
+`760.217036`. But the best-scalar departure is only about `5.879e-6`, while
+the exact-real five-stage Jordan comparator has departure about `6.997e-2`.
+The retained shaping fraction is about `8.403e-5`, far below the frozen
+`1/10` threshold and with absolute departure also below `1/1000`. The locked
+operator is therefore algebraically noncollapsed but effectively scalar.
+
+The triggered six-point `(lambda,mu)` study finds no candidate that jointly
+passes the unchanged frozen P14 certificate and both meaningful-fidelity
+gates. This sampled frontier is not a global impossibility theorem, and a
+frozen-certificate rejection is not instability. P16 consequently succeeds
+as an equivariant exact-real reference solver and fidelity obstruction but
+fails its overall meaningful-Muon acceptance gate.
+
+Cost is reported structurally: after one solve SVD, each Newton step performs
+five scalar quintic stages per singular value and `O(k)` diagonal/rank-one
+work, followed by reconstruction. The literal full-matrix residual postcheck
+then reevaluates `B(U_hat)` with a second SVD and reconstruction. The five
+implemented Jordan stages instead use 15 dense matrix multiplications. No
+speed advantage is claimed.
+
+P16 does not certify FP64 rounding, BF16, an accelerator kernel, literal
+upstream parity, a stable higher-fidelity point, weight decay, aspect scaling,
+stochastic-gradient behavior, or neural-network convergence. See
+`P16_EQUIVARIANT_RESOLVENT_SOLVER_RESULTS.md`,
+`equivariant_resolvent_solver_certificate.json`, `p16_solver_study.json`, and
+`../../theory/equivariant_resolvent_solver.md`.
+
 ## Reproduce
 
 ```bash
@@ -1084,6 +1166,12 @@ uv run --locked python scripts/certify_inexact_yosida_robustness.py \
   --output results/summaries/inexact_yosida_robustness_certificate.json
 uv run --locked python scripts/reconstruct_inexact_yosida_robustness.py \
   --require-canonical
+uv run --locked python scripts/certify_equivariant_resolvent_solver.py \
+  --output results/summaries/equivariant_resolvent_solver_certificate.json
+uv run --locked python scripts/reconstruct_equivariant_resolvent_solver.py \
+  --require-canonical
+uv run --locked python experiments/resolvent/run_p16_solver_study.py \
+  --output results/summaries/p16_solver_study.json
 uv run --locked python experiments/matrices/run_deficit_audit.py
 uv run --locked python experiments/quadratics/run_lr_sweep.py
 uv run --locked python experiments/quadratics/run_horizon_check.py

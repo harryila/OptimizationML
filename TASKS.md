@@ -238,10 +238,42 @@
       pointwise port split, exact `4 x 4` and `5 x 5` LMIs, ultimate bounds,
       controls, and solver/BF16 exclusions; the unsigned packet is
       `theory/audits/P15_INEXACT_YOSIDA_ROBUSTNESS_HUMAN_PROOF_AUDIT.md`.
-- [ ] Design and certify an efficient equivariant approximate-resolvent solve;
-      P15 certifies any exact-real oracle that meets its residual rule but
-      does not prove that a particular algorithm reaches the tolerance in a
-      bounded number of iterations or in finite precision.
+- [x] Prove bi-orthogonal equivariance of the P14 resolvent and singular-vector
+      preservation, including repeated and zero singular values, on every
+      fixed finite rectangular matrix shape.
+- [x] Reduce the resolvent graph equation to coupled singular values and prove
+      its Jacobian is diagonal plus rank one with positive exact band margins,
+      permitting a Sherman--Morrison Newton step.
+- [x] Prove global exact-real convergence of safeguarded Armijo Newton from
+      every finite start and finite termination for each positive P15
+      threshold, without claiming a useful uniform iteration-count bound.
+- [x] Implement a fail-closed FP64 reference solver that emits
+      `Y_hat=1000*(s-u_hat)` only after recomputing and passing the actual
+      candidate P15 residual rule at `kappa=1/250`. Dense calls reevaluate
+      `B(u_hat)` on the stored reconstructed matrix with a second SVD; all 13
+      declared calls pass the computed check.
+- [x] Add an exact rational unequal-mode witness and an outward-rounded Arb
+      enclosure proving algebraic noncollapse on the canonical `diag(3,4)`
+      input.
+- [x] Apply the frozen pre-certificate meaningful-fidelity gate. The locked operator has
+      best-scalar departure about `5.879e-6` and retains only about
+      `8.403e-5` of upstream Jordan shaping, so the overall P16 acceptance
+      gate fails.
+- [x] Run the required six-point sampled `(lambda,mu)` frontier. No declared
+      point jointly passes the frozen P14 certificate and fidelity gates;
+      this is diagnostic evidence, not a global impossibility theorem.
+- [ ] Obtain an independent human proof audit of C22, including the
+      stabilizer argument at repeated/zero singular values, exact radius-band
+      margins, Sherman--Morrison denominator, Armijo convergence, residual
+      convention, Arb enclosure, and fidelity classification; the unsigned
+      packet is
+      `theory/audits/P16_EQUIVARIANT_RESOLVENT_SOLVER_HUMAN_PROOF_AUDIT.md`.
+- [ ] Certify finite-precision evaluation of the P16 graph residual and solver
+      arithmetic. The current FP64 success statuses are checked diagnostics,
+      not exact rounding certificates.
+- [ ] Design and certify a stable resolvent interface that passes the locked
+      meaningful-fidelity gate; P16's six-point sampled frontier did not find
+      one and does not prove none exists.
 - [ ] Bound the complete error of a pinned deployed BF16 backend by the C12
       disturbance model and certify its ultimate neighborhood; P8--P10 are
       proposed proof-reference designs, not literal upstream parity.

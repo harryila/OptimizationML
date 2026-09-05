@@ -1409,3 +1409,93 @@ kernel, accelerator or literal upstream parity, weight decay, aspect scaling,
 stochastic gradients, or neural-network convergence. See
 `inexact_yosida_robustness_certificate.md`; independent human review is
 pending.
+
+## C22. Equivariant structured resolvent solve and fidelity obstruction — solver theorem proved; meaningful-fidelity gate fails
+
+Retain C19--C21's exact-real additive-epsilon architecture on an arbitrary
+fixed finite real `m x n` matrix space. The P16 artifact locks
+`epsilon=1/10000000`, five Jordan stages with exact coefficients `6889/2000`,
+`-191/40`, and `4063/2000`, the P13 radial repair, `mu=1000`,
+`lambda=1/1000`, and the P15 relative residual tolerance `kappa=1/250`.
+The practical polynomial and epsilon placement are traced to
+KellerJordan/Muon revision
+`f98f1cacc0263b04290753e32be8d498c1efc806`; upstream contains neither the
+radial repair nor the resolvent solver.
+
+Let `B=A_epsilon+mu*I`, `F=I+lambda*B`, and `J=F^(-1)`. For every pair of
+orthogonal matrices of compatible sizes,
+
+\[
+J(QSR^\top)=QJ(S)R^\top.
+\]
+
+This follows from bi-orthogonal equivariance of Frobenius normalization, every
+odd rectangular spectral-polynomial stage, the radial repair, and the shunt,
+together with uniqueness of the resolvent. A stabilizer argument then proves
+that `J(S)` preserves the singular subspaces and rank of `S`; repeated input
+singular values yield repeated output values, zero modes remain zero, and the
+claim is independent of basis choices inside repeated and null subspaces.
+
+For singular values `sigma_i` of `S`, write the unknown resolvent singular
+values as signed coordinates `x_i`, with `r=||x||_2`, `z=r/epsilon`, and
+`w_i=x_i/(r+epsilon)`. The equation `F(J(S))=S` is exactly
+
+\[
+\Phi_i(x)=\left[1+\lambda\left(\mu+\frac{p(z)}r\right)\right]x_i
+            +\lambda h(w_i)-\sigma_i=0.
+\]
+
+For `r>0`, its Jacobian is a diagonal matrix plus one rank-one update. The
+three exact P12/P13 radius-band margins are positive, the diagonal entries are
+at least `2`, and the Sherman--Morrison denominator is positive. Thus a Newton
+direction can be computed in linear work per singular value after the scalar
+five-stage evaluations, without a dense solve in the singular-value count.
+The origin and every band switch are handled separately.
+
+For the exact-real safeguarded method, the merit function
+`||Phi(x)||_2^2/2` has strict Newton descent, and Armijo backtracking terminates
+at every nonroot iterate. Strong monotonicity makes the level sets bounded,
+gives a unique root, and proves global convergence from every finite start.
+Consequently the exact-real loop terminates after finitely many iterations for
+each fixed input whenever its P15 residual threshold is positive. This is not
+a useful uniform a priori iteration-count bound.
+
+The guarded FP64 reference implementation performs one SVD for the reduced
+solve, reconstructs the matrix candidate, reevaluates `B` on that stored
+candidate with a second SVD, recomputes the literal graph residual, and
+returns success only when
+
+\[
+\|S-\widehat U-\lambda B(\widehat U)\|_F
+\le \frac1{250}\|S\|_F+\bar r_{\rm fp64}.
+\]
+
+Its deployed output is `Y_hat=1000*(S-U_hat)`, never `B(U_hat)`. All 13
+declared computed-residual cases pass, including complete reduced spectra for
+`768 x 768`, `768 x 3072`, `3072 x 12288`, and `4096 x 11008`. The default
+study attains at most 8 Newton iterations, no accepted-case backtracking, and
+a worst computed residual of approximately `5.880e-14`. These are
+deterministic FP64 diagnostics, not a proof that rounded residual evaluation
+upper-bounds the exact residual, and the large-shape cases do not execute a
+dense SVD or provide accelerator timing.
+
+P16 separately evaluates whether the locked stable operator remains
+meaningfully Muon-like. Exact rational algebra and outward-rounded Arb
+enclosures prove algebraic noncollapse: on the canonical `diag(3,4)` input,
+the two modal gains are distinct. Quantitatively, however, the exact-output
+enclosure gives best-scalar departure about `5.879e-6`, while the exact-real
+five-stage Jordan comparator has departure about `6.997e-2`. The retained
+shaping fraction is only about `8.403e-5`, far below the frozen `1/10`
+gate (and the absolute departure is below its `1/1000` gate). The selected
+Yosida map is therefore distinct but effectively scalar on the locked
+comparator.
+
+A frozen six-point `(lambda,mu)` diagnostic finds no candidate that both
+passes the unchanged frozen P14 certificate and the meaningful-fidelity
+gates. This sampled frontier is not a global impossibility theorem, and
+failure of a frozen certificate is not instability. Thus C22 is a positive
+equivariance, reduction, and exact-real solver theorem plus a locked-parameter
+fidelity obstruction; it does not satisfy the overall P16 acceptance gate.
+It is not an FP64 rounding theorem, a BF16 solver, a literal upstream-Muon
+implementation, or evidence for neural-network convergence. See
+`equivariant_resolvent_solver.md`; independent human review is pending.

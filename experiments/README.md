@@ -36,7 +36,10 @@ Experiment order is gated:
 18. the P15 exact-real inexact-resolvent theorem, sharp graph-residual error
     gains, relative-plus-absolute stopping rule, robust smooth-PL replay, and
     loose-tolerance controls;
-19. only after model-forward use of the logical master, aspect scaling, weight
+19. the P16 exact-real equivariant singular-value solver theorem, guarded
+    FP64 computed-residual study, exact/Arb noncollapse witness, and sampled
+    stability--fidelity frontier;
+20. only after model-forward use of the logical master, aspect scaling, weight
     decay, and implementation-parity gates, a small matched neural-training
     sweep.
 
@@ -69,8 +72,14 @@ direct evaluation by an exact resolvent: its epsilon-independent incremental
 sector restores the full `eta=1/32000` smooth-PL guarantee. P15 permits an
 oracle meeting the exact-real graph-residual rule at relative tolerance
 `1/250`, retains the P14 rate, and gives an explicit ultimate bound for an
-absolute residual floor. It does not provide a solver, iteration count, or
-rounded residual check. Each run
+absolute residual floor. P16 supplies the missing exact-real structured
+solver and a fail-closed FP64 reference implementation. Every declared case
+passes the computed residual check, but the locked operator retains only
+about `8.403e-5` of the upstream comparator's spectral shaping and therefore
+fails the frozen pre-certificate meaningful-fidelity gate. Its six-point sampled
+`(lambda,mu)` frontier finds no joint frozen-P14/fidelity pass; this is not a
+global impossibility theorem. P16 provides neither a useful uniform
+iteration-count bound nor certified FP64 rounding. Each run
 writes a self-contained JSON manifest and compact CSV
 tables under `results/summaries/`; the JSON records inputs, operator details,
 dtype, seed, software, hardware, and Git state.
@@ -145,15 +154,42 @@ uv run --locked python scripts/certify_inexact_yosida_robustness.py \
   --output results/summaries/inexact_yosida_robustness_certificate.json
 uv run --locked python scripts/reconstruct_inexact_yosida_robustness.py \
   --require-canonical
+uv run --locked python scripts/certify_equivariant_resolvent_solver.py \
+  --output results/summaries/equivariant_resolvent_solver_certificate.json
+uv run --locked python scripts/reconstruct_equivariant_resolvent_solver.py \
+  --require-canonical
 ```
 
-The P9--P15 generators and standard-library-only reconstructions carry their
+The P9--P16 generators and standard-library-only reconstructions carry their
 exact claims. P11's adjacent controls establish rejection of the sufficient
 certificate, not actual closed-loop instability. P12's older sampled epsilon
 grid is discovery evidence only; its exact/interval generator carries the
 global upper. P15's residual and base-operator evaluations are exact real;
-its stopping rule is not a finite-precision solver claim. P9's separate CPU
-diagnostic is a native-matmul
+its stopping rule is not a finite-precision solver claim. P16's exact/Arb
+artifact proves algebraic noncollapse, while its FP64 solver and sampled
+frontier are diagnostics and do not certify rounding error or a global
+fidelity impossibility.
+
+Replay the P16 guarded reference solver and fidelity diagnostic separately:
+
+```bash
+uv run --locked python experiments/resolvent/run_p16_solver_study.py \
+  --output results/summaries/p16_solver_study.json
+```
+
+The default study runs nine modest dense cases and complete singular-value
+vectors for four representative Transformer shapes through `4096 x 11008`.
+It locks additive `epsilon=1e-7`, the five Jordan stages with coefficients
+`6889/2000`, `-191/40`, and `4063/2000`, `lambda=1/1000`, `mu=1000`, and
+KellerJordan/Muon source revision
+`f98f1cacc0263b04290753e32be8d498c1efc806`.
+The large cases do not allocate dense matrices, perform the corresponding
+SVD, or benchmark an accelerator. A returned success proves only that the
+computed FP64 candidate passes the computed P15 residual test. The exact-real
+global convergence theorem and Arb fidelity enclosure are separate from this
+diagnostic.
+
+The P9 separate CPU diagnostic is a native-matmul
 falsification probe against a float64, non-exact target:
 
 ```bash
