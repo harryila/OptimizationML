@@ -1,0 +1,1029 @@
+{
+  "audit": {
+    "all_exact_checks_passed": true,
+    "checks": {
+      "absolute_forcing_gain_is_five_halves": true,
+      "core_double_relative_residual_is_unstable": true,
+      "core_five_by_five_lmi_is_strict": true,
+      "core_frozen_radius_252_passes": true,
+      "core_frozen_radius_253_is_rejected": true,
+      "core_locked_residual_gains": true,
+      "core_lower_endpoint_attains_both_locked_gains": true,
+      "core_relative_budget_gives_radius_252": true,
+      "core_selected_forcing_gain_is_5_over_2": true,
+      "core_selected_penalty_is_above_strict_threshold": true,
+      "core_selected_rate_is_p14_rate": true,
+      "core_unit_relative_residual_can_stall": true,
+      "critical_absolute_penalty_is_semidefinite_boundary": true,
+      "double_relative_residual_is_unstable": true,
+      "five_by_five_lmi_is_strict": true,
+      "full_p14_step_and_rate_retained": true,
+      "insufficient_absolute_penalty_fails": true,
+      "p14_artifact_hash_matches": true,
+      "p14_checkpoint_tag_matches": true,
+      "p14_historical_artifact_blob_matches": true,
+      "p14_source_commit_matches": true,
+      "p14_source_was_clean": true,
+      "p14_zero_error_rate_matches": true,
+      "radius_252_passes": true,
+      "radius_253_rejects_frozen_certificate": true,
+      "residual_gain_is_sharp_over_abstract_class": true,
+      "selected_absolute_penalty_passes": true,
+      "unit_relative_residual_stalls": true
+    },
+    "human_proof_audit": "pending and unsigned: theory/audits/P15_INEXACT_YOSIDA_ROBUSTNESS_HUMAN_PROOF_AUDIT.md"
+  },
+  "canonical_result_path": "results/summaries/inexact_yosida_robustness_certificate.json",
+  "claim_scope": {
+    "arithmetic_model": "exact real arithmetic",
+    "evidence_kind": "exact residual conversion and dimension-independent five-by-five smooth-PL dissipation certificate",
+    "guarantee": "V_(t+1)<=(249001/250000)*V_t+(5/2)*rbar^2 whenever every approximate solve passes the locked equation-residual stopping rule",
+    "matrix_domain": "R^(m x n) for every fixed finite positive m,n",
+    "not_claimed": [
+      "a concrete iterative solver, iteration count, or complexity guarantee",
+      "that an unverified approximate solution obeys the residual envelope",
+      "BF16, FP32, stochastic-gradient, or literal upstream Muon convergence",
+      "that radius 253 is impossible for every storage or multiplier choice",
+      "a unique minimizer or arbitrary-pair trajectory contraction"
+    ],
+    "objective_class": "differentiable globally 10-smooth, global PL constant 1"
+  },
+  "consequences": {
+    "iterate_qualification": "a persistent positive residual floor gives an objective/storage neighborhood, not parameter convergence; rbar=0 gives the P14 convergence conclusion",
+    "ultimate_objective": {
+      "bound": "limsup(f(W_t)-f_star)<=(6250000000000/312929757)*rbar^2",
+      "coefficient": {
+        "decimal": "19972.5333247870064335236741324028190773816374388454211467016",
+        "exact": "6250000000000/312929757"
+      }
+    },
+    "ultimate_storage": {
+      "bound": "limsup V_t<=(625000/999)*rbar^2",
+      "coefficient": {
+        "decimal": "625.625625625625625625625625625625625625625625625625625625626",
+        "exact": "625000/999"
+      }
+    },
+    "zero_floor": "rbar=0 recovers geometric convergence at the exact P14 rate"
+  },
+  "controls": {
+    "absolute_output_penalty": {
+      "critical": {
+        "decimal": "0.00000558271082027821101634361997029205110940402040933144125569663",
+        "exact": "7167838551819102967459883001403922668449707353/1283935131617993795632989901464334924254261960000000"
+      },
+      "critical_fifth_minor": {
+        "decimal": "0",
+        "exact": "0"
+      },
+      "insufficient": {
+        "decimal": "0.000001",
+        "exact": "1/1000000"
+      },
+      "insufficient_fifth_minor": {
+        "decimal": "-6.4642493630139138850637253295234728634959727218017578125E-9",
+        "exact": "-52955130781809982546442037899456289697759008537/8192000000000000000000000000000000000000000000000000000"
+      },
+      "qualification": "exact boundary for this frozen five-by-five certificate",
+      "selected": {
+        "decimal": "0.00001",
+        "exact": "1/100000"
+      },
+      "selected_fifth_minor": {
+        "decimal": "6.2309100194393939086706718895452684529829358182373046875E-9",
+        "exact": "51043614879247514899830144119154839166836210223/8192000000000000000000000000000000000000000000000000000"
+      }
+    },
+    "abstract_stopping_boundary": {
+      "kappa_one": {
+        "approximate_output_slope": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "conclusion": "the optimizer stalls and no strict uniform rate is possible",
+        "p_at_one": {
+          "decimal": "0",
+          "exact": "0"
+        },
+        "residual": "r=-s"
+      },
+      "kappa_two": {
+        "approximate_output_slope": {
+          "decimal": "-500",
+          "exact": "-500"
+        },
+        "conclusion": "negative operator gain violates the scalar Schur condition",
+        "p_at_one": {
+          "decimal": "-0.00078125",
+          "exact": "-1/1280"
+        },
+        "residual": "r=-2s"
+      },
+      "scope": "uniform abstract monotone-base class, not the locked P13 map"
+    },
+    "frozen_radius": {
+      "passing": true,
+      "passing_radius": {
+        "decimal": "252",
+        "exact": "252"
+      },
+      "qualification": "radius 253 rejects only the unchanged P14 storage and multipliers; it is not an instability or impossibility theorem",
+      "rejected_fourth_minor": {
+        "decimal": "-2.317281096001956180352597447554265760448760369140625E-10",
+        "exact": "-1186447921153001564340529893147784069349765309/5120000000000000000000000000000000000000000000000000000"
+      },
+      "rejected_radius": {
+        "decimal": "253",
+        "exact": "253"
+      },
+      "rejected_relative_kappa": {
+        "decimal": "0.006",
+        "exact": "3/500"
+      }
+    }
+  },
+  "exact_robust_certificate": {
+    "C15": {
+      "decimal": "2.5",
+      "exact": "5/2"
+    },
+    "absolute_error_norm_matrix": [
+      [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0",
+        "0",
+        "1"
+      ]
+    ],
+    "absolute_output_penalty": {
+      "decimal": "0.00001",
+      "exact": "1/100000"
+    },
+    "certified": true,
+    "coordinates": "chi=(m/L,grad(f)/L,v,grad(f_next)/L,e_abs/(gamma*L))",
+    "expected_function_coefficients": [
+      {
+        "decimal": "0.311991280972",
+        "exact": "77997820243/250000000000"
+      },
+      {
+        "decimal": "-0.313243",
+        "exact": "-313243/1000000"
+      }
+    ],
+    "function_coefficients": [
+      {
+        "decimal": "0.311991280972",
+        "exact": "77997820243/250000000000"
+      },
+      {
+        "decimal": "-0.313243",
+        "exact": "-313243/1000000"
+      }
+    ],
+    "function_storage": {
+      "decimal": "0.313243",
+      "exact": "313243/1000000"
+    },
+    "inequality": "V_next<=(249001/250000)*V+(5/2)*rbar^2",
+    "interpolation_matrices": {
+      "current_to_next": [
+        [
+          "1172889/104857600",
+          "-5418249/104857600",
+          "68229/16384000",
+          "-1083/20480",
+          "3249/262144"
+        ],
+        [
+          "-5418249/104857600",
+          "-27398791/104857600",
+          "-315189/16384000",
+          "5003/20480",
+          "-15009/262144"
+        ],
+        [
+          "68229/16384000",
+          "-315189/16384000",
+          "3969/2560000",
+          "-63/3200",
+          "189/40960"
+        ],
+        [
+          "-1083/20480",
+          "5003/20480",
+          "-63/3200",
+          "-1/4",
+          "-15/256"
+        ],
+        [
+          "3249/262144",
+          "-15009/262144",
+          "189/40960",
+          "-15/256",
+          "225/16384"
+        ]
+      ],
+      "next_to_current": [
+        [
+          "1172889/104857600",
+          "5671671/104857600",
+          "68229/16384000",
+          "1083/20480",
+          "3249/262144"
+        ],
+        [
+          "5671671/104857600",
+          "-25002631/104857600",
+          "329931/16384000",
+          "5237/20480",
+          "15711/262144"
+        ],
+        [
+          "68229/16384000",
+          "329931/16384000",
+          "3969/2560000",
+          "63/3200",
+          "189/40960"
+        ],
+        [
+          "1083/20480",
+          "5237/20480",
+          "63/3200",
+          "-1/4",
+          "15/256"
+        ],
+        [
+          "3249/262144",
+          "15711/262144",
+          "189/40960",
+          "15/256",
+          "225/16384"
+        ]
+      ]
+    },
+    "lmi_matrix": [
+      [
+        "-608720541672414373/26214400000000000000",
+        "2447660602806820693/26214400000000000000",
+        "26555055680359647/4096000000000000000",
+        "-443566167323169/5120000000000000",
+        "1264526460969507/65536000000000000"
+      ],
+      [
+        "2447660602806820693/26214400000000000000",
+        "-10562757509629323013/26214400000000000000",
+        "-22290148167570927/4096000000000000000",
+        "1964703222675729/5120000000000000",
+        "-1061435627027187/65536000000000000"
+      ],
+      [
+        "26555055680359647/4096000000000000000",
+        "-22290148167570927/4096000000000000000",
+        "-16074446068455533/640000000000000000",
+        "-4913862675309/800000000000000",
+        "73559711025927/10240000000000000"
+      ],
+      [
+        "-443566167323169/5120000000000000",
+        "1964703222675729/5120000000000000",
+        "-4913862675309/800000000000000",
+        "-370578225103/1000000000000",
+        "-233993460729/12800000000000"
+      ],
+      [
+        "1264526460969507/65536000000000000",
+        "-1061435627027187/65536000000000000",
+        "73559711025927/10240000000000000",
+        "-233993460729/12800000000000",
+        "-92156497156617813/163840000000000"
+      ]
+    ],
+    "multipliers": {
+      "interpolation_12": {
+        "decimal": "0.934405280972",
+        "exact": "233601320243/250000000000"
+      },
+      "interpolation_21": {
+        "decimal": "0.622414",
+        "exact": "311207/500000"
+      },
+      "pl_next": {
+        "decimal": "0.00625859514",
+        "exact": "312929757/50000000000"
+      },
+      "residual": {
+        "decimal": "0.02753",
+        "exact": "2753/100000"
+      }
+    },
+    "negative_lmi_leading_minors": [
+      {
+        "decimal": "0.02322084585847527973175048828125",
+        "exact": "608720541672414373/26214400000000000000"
+      },
+      {
+        "decimal": "0.0006384289682075546166826370267486572265625",
+        "exact": "8368016172090059871782660037/13107200000000000000000000000000"
+      },
+      {
+        "decimal": "0.000004999693236099132767267884226323065083203125",
+        "exact": "12799214684413779884205783619387046613/2560000000000000000000000000000000000000000"
+      },
+      {
+        "decimal": "2.507685803941394132095683401297529148934105390625E-11",
+        "exact": "32098378290449844890824747536608373106356549/1280000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "decimal": "6.2309100194393939086706718895452684529829358182373046875E-9",
+        "exact": "51043614879247514899830144119154839166836210223/8192000000000000000000000000000000000000000000000000000"
+      }
+    ],
+    "normalized_absolute_output_penalty": {
+      "decimal": "562.5",
+      "exact": "1125/2"
+    },
+    "pl_next_matrix": [
+      [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0",
+        "1",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    ],
+    "q": {
+      "decimal": "0.996004",
+      "exact": "249001/250000"
+    },
+    "residual_iqc_matrix": [
+      [
+        "130321/160000",
+        "14079/160000",
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "14079/160000",
+        "1521/160000",
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "-1",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    ],
+    "selection_matrix": [
+      [
+        "1",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "1",
+        "0",
+        "0",
+        "0"
+      ]
+    ],
+    "signal_selector": [
+      "361/400",
+      "39/400",
+      "0",
+      "0",
+      "0"
+    ],
+    "step_selector": [
+      "-1083/5120",
+      "-117/5120",
+      "-63/800",
+      "0",
+      "-15/64"
+    ],
+    "storage": [
+      [
+        "674389/1000000",
+        "-73827/1000000"
+      ],
+      [
+        "-73827/1000000",
+        "773/62500"
+      ]
+    ],
+    "storage_leading_minors": [
+      {
+        "decimal": "0.674389",
+        "exact": "674389/1000000"
+      },
+      {
+        "decimal": "0.002890417223",
+        "exact": "2890417223/1000000000000"
+      }
+    ],
+    "tau": {
+      "decimal": "0.998",
+      "exact": "499/500"
+    },
+    "transition_matrix": [
+      [
+        "19/20",
+        "1/20",
+        "0",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "0",
+        "1",
+        "0"
+      ]
+    ]
+  },
+  "git": {
+    "branch": "p15-inexact-yosida-robustness",
+    "dirty": false,
+    "sha": "287079ba0a22b4b79aef3a5f9d0ede27dfe4269a"
+  },
+  "hardware": {
+    "byte_order": "little",
+    "logical_cpu_count": 10,
+    "machine_architecture": "arm64",
+    "operating_system": "Darwin",
+    "operating_system_release": "24.5.0",
+    "platform": "macOS-15.5-arm64-arm-64bit",
+    "processor": "arm"
+  },
+  "implementation_boundary": {
+    "bf16": "not certified",
+    "finite_precision": "not modeled",
+    "output_convention": "resolvent form (s-u_hat)/lambda only",
+    "residual_verification": "required at every iteration",
+    "solver": "not specified",
+    "upstream": "not literal upstream Muon"
+  },
+  "inexact_resolvent": {
+    "approximate_output": "Y_hat=(s-u_hat)/lambda",
+    "equation_residual": "r=s-u_hat-lambda*B(u_hat)",
+    "forward_strong_monotonicity": {
+      "decimal": "2",
+      "exact": "2"
+    },
+    "graph_output_not_covered": "B(u_hat)=Y_hat-r/lambda is a different output convention with class-uniform residual gain 1000",
+    "output_error_gain": {
+      "decimal": "500",
+      "exact": "500"
+    },
+    "sharpness_witness": {
+      "abstract_base": "A=0, hence B=1000*I",
+      "input": {
+        "decimal": "1.4",
+        "exact": "7/5"
+      },
+      "output_error_ratio": {
+        "decimal": "500",
+        "exact": "500"
+      },
+      "qualification": "sharp over the abstract monotone base class; not asserted to be attained by the locked P13 map",
+      "residual": {
+        "decimal": "0.272727272727272727272727272727272727272727272727272727272727",
+        "exact": "3/11"
+      },
+      "solution_error_ratio": {
+        "decimal": "0.5",
+        "exact": "1/2"
+      }
+    },
+    "solution_error_gain": {
+      "decimal": "0.5",
+      "exact": "1/2"
+    }
+  },
+  "operator": {
+    "base": "A_epsilon=E_h,epsilon+G_epsilon from P13",
+    "coefficients_exact": {
+      "a": "6889/2000",
+      "b": "-191/40",
+      "c": "4063/2000"
+    },
+    "domain": "R^(m x n) for every fixed finite positive m,n",
+    "epsilon_domain": "every real epsilon>0; 1e-7 is pinned for provenance",
+    "forward_map": "F=I+(1/1000)*B",
+    "newton_schulz_stages": 5,
+    "normalization": "M/(||M||_F+epsilon); no max floor",
+    "shift": "B=A_epsilon+1000*I",
+    "upstream_formula_provenance": {
+      "audited_file": "muon.py",
+      "audited_file_sha256": "2479665a90124f62e4df557816665851ca317e42fcfda2af1da02c1f44ab5f3d",
+      "formula": "X/(X.norm(dim=(-2,-1),keepdim=True)+1e-7)",
+      "qualification": "formula provenance only; P15 is an exact-real design",
+      "repository": "https://github.com/KellerJordan/Muon",
+      "revision": "f98f1cacc0263b04290753e32be8d498c1efc806"
+    }
+  },
+  "prior_p14": {
+    "artifact_commit": "e323a4d1e73050fb6b6d8bcd09c515ea30de3553",
+    "artifact_path": "results/summaries/yosida_stability_certificate.json",
+    "artifact_sha256": "8f31416eb8e278bc8a3765f72b528f5f538e33f28d5baedc5888c5d849447c62",
+    "checkpoint_tag": "p14-yosida-stability-checkpoint",
+    "checkpoint_tag_object": "986fade33e4bd90bed091798d2415d1e0ab608a2",
+    "source_commit": "ea18aa856e3af6d025e325a6db27a681f09c0e7a"
+  },
+  "proof_replay_provenance": {
+    "command": "uv run --locked python scripts/certify_inexact_yosida_robustness.py --output results/summaries/inexact_yosida_robustness_certificate.json",
+    "independent_command": "uv run --locked python scripts/reconstruct_inexact_yosida_robustness.py --require-canonical",
+    "randomness": "none; exact rational arithmetic",
+    "seed": null,
+    "source_snapshot": {
+      ".github/workflows/ci.yml": "bd4e0add97636f55d573ed695017c14d4eef51104a8d38e8764265f1e169b5a6",
+      ".github/workflows/p15-inexact-yosida-robustness.yml": "30d24b861979b4b744545f1b38e2b6ad9c6df51de27ca5d6a7520ff9d9ecd035",
+      "pyproject.toml": "7a9988bf528baef5145f779516d4315349d1c2a6bbb7394c9b93fbbee1d4f596",
+      "results/summaries/P15_INEXACT_YOSIDA_ROBUSTNESS_RESULTS.md": "9496a3268bec544becb3bb6b18e4b159570faaf1041b8802fbf28017588cefd7",
+      "scripts/certify_inexact_yosida_robustness.py": "938b9fc56fc0f8f451369e3330cd5aa363500c02a2f90794c2998b2e388f87e4",
+      "scripts/reconstruct_inexact_yosida_robustness.py": "8f281ea816ac80c4c3f1ca022535c10a289244d8678f03c05f247e94451696e8",
+      "src/passive_muon/additive_epsilon_deficit.py": "24de25c79ddf37565db4833369993b3ad4950afe4b962fdb186c63777b4d1c71",
+      "src/passive_muon/inexact_yosida_robustness.py": "d4be1753a3c17ed6b4286f92b049f241e94cb0dcc643128d8386ffffdcb06713",
+      "src/passive_muon/momentum_iqc.py": "c1e7346473d2d8e96ad2e378ac7d47b98f35786752c31c50109375cec3ab415d",
+      "src/passive_muon/pl_convergence.py": "d59d56d6e2ba808aaa519770f3b4442ccfb54aa5144755b760bcb2c7cea8b446",
+      "src/passive_muon/radial_passivation_tradeoff.py": "16ea7d0e2b9af1c2a46af1601ad9bd3d188fbc830f74b2229e9a9631baa28712",
+      "src/passive_muon/specs.py": "85fcee0f87485fc3cac2f426d62ec6e55da7896caade2f5df2a1c87f7d9c5d6c",
+      "src/passive_muon/structure_aware_stability.py": "fbbbfa314b26c8c549dcc915bcbe590fadc55fb712288c1757ff24881ababc4a",
+      "src/passive_muon/upstream_momentum.py": "7479613bb307debbb2a02e04e6bbe53a428855c51e1e21210f9c2be2e68d3d7e",
+      "src/passive_muon/yosida_stability.py": "35a00901dcd7939506ac6d5b32de3e069982eb22d0192a6b5214267399350996",
+      "tests/test_current_research_index.py": "29bdec1598edc2eb0edbb3a86c2e0740f0f0dcc49fedefff72eae0c821ce09ad",
+      "tests/test_inexact_yosida_robustness.py": "ed053e6b6db201886bacbc36f82b5bc9b8ba1192fa0d10c05f920c950b4dba70",
+      "tests/test_inexact_yosida_robustness_cli.py": "ff18f6259a549939e2e276719d209f1874f3da428631082c8fdd2108cc37eb07",
+      "tests/test_inexact_yosida_robustness_reconstruction.py": "f0ae2de793be8f62165b1c863d2c45230807b28128965e5de794c923402735e1",
+      "tests/test_inexact_yosida_robustness_result_manifest.py": "7830739a9518caad6b83611341444f4a4edd65a0b313368d6803f266cb4974fa",
+      "theory/audits/P15_INEXACT_YOSIDA_ROBUSTNESS_HUMAN_PROOF_AUDIT.md": "c417f408e3fef509134bd1bb66a5825044ca4959e490a6971cdcfcc62923732c",
+      "theory/inexact_yosida_robustness_certificate.md": "9b9d57194bdc7afaa8129e63dc3e916da32d83a4e93e746a000fb7ec11d151fb",
+      "third_party/UPSTREAM_COMMITS.md": "50394b43983d056631edada4e478c3ddfcc56528676f6a96eb8f4b42ac565008",
+      "uv.lock": "f097fd7895b5c1c551a0bd233d025c3f8ae97b7dedce6a8690569f1b1f7c5cf1"
+    }
+  },
+  "reconstruction_fields": {
+    "certificate": {
+      "absolute_error_norm": [
+        [
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0",
+          "0",
+          "1"
+        ]
+      ],
+      "absolute_forcing_gain": "5/2",
+      "absolute_output_penalty": "1/100000",
+      "expected_function_coefficients": [
+        "77997820243/250000000000",
+        "-313243/1000000"
+      ],
+      "function_coefficients": [
+        "77997820243/250000000000",
+        "-313243/1000000"
+      ],
+      "function_storage": "313243/1000000",
+      "interpolation_12": [
+        [
+          "1172889/104857600",
+          "-5418249/104857600",
+          "68229/16384000",
+          "-1083/20480",
+          "3249/262144"
+        ],
+        [
+          "-5418249/104857600",
+          "-27398791/104857600",
+          "-315189/16384000",
+          "5003/20480",
+          "-15009/262144"
+        ],
+        [
+          "68229/16384000",
+          "-315189/16384000",
+          "3969/2560000",
+          "-63/3200",
+          "189/40960"
+        ],
+        [
+          "-1083/20480",
+          "5003/20480",
+          "-63/3200",
+          "-1/4",
+          "-15/256"
+        ],
+        [
+          "3249/262144",
+          "-15009/262144",
+          "189/40960",
+          "-15/256",
+          "225/16384"
+        ]
+      ],
+      "interpolation_21": [
+        [
+          "1172889/104857600",
+          "5671671/104857600",
+          "68229/16384000",
+          "1083/20480",
+          "3249/262144"
+        ],
+        [
+          "5671671/104857600",
+          "-25002631/104857600",
+          "329931/16384000",
+          "5237/20480",
+          "15711/262144"
+        ],
+        [
+          "68229/16384000",
+          "329931/16384000",
+          "3969/2560000",
+          "63/3200",
+          "189/40960"
+        ],
+        [
+          "1083/20480",
+          "5237/20480",
+          "63/3200",
+          "-1/4",
+          "15/256"
+        ],
+        [
+          "3249/262144",
+          "15711/262144",
+          "189/40960",
+          "15/256",
+          "225/16384"
+        ]
+      ],
+      "interpolation_reverse": "311207/500000",
+      "lambda_12": "233601320243/250000000000",
+      "lambda_21": "311207/500000",
+      "lambda_pl_next": "312929757/50000000000",
+      "lambda_residual": "2753/100000",
+      "lmi": [
+        [
+          "-608720541672414373/26214400000000000000",
+          "2447660602806820693/26214400000000000000",
+          "26555055680359647/4096000000000000000",
+          "-443566167323169/5120000000000000",
+          "1264526460969507/65536000000000000"
+        ],
+        [
+          "2447660602806820693/26214400000000000000",
+          "-10562757509629323013/26214400000000000000",
+          "-22290148167570927/4096000000000000000",
+          "1964703222675729/5120000000000000",
+          "-1061435627027187/65536000000000000"
+        ],
+        [
+          "26555055680359647/4096000000000000000",
+          "-22290148167570927/4096000000000000000",
+          "-16074446068455533/640000000000000000",
+          "-4913862675309/800000000000000",
+          "73559711025927/10240000000000000"
+        ],
+        [
+          "-443566167323169/5120000000000000",
+          "1964703222675729/5120000000000000",
+          "-4913862675309/800000000000000",
+          "-370578225103/1000000000000",
+          "-233993460729/12800000000000"
+        ],
+        [
+          "1264526460969507/65536000000000000",
+          "-1061435627027187/65536000000000000",
+          "73559711025927/10240000000000000",
+          "-233993460729/12800000000000",
+          "-92156497156617813/163840000000000"
+        ]
+      ],
+      "negative_lmi_minors": [
+        "608720541672414373/26214400000000000000",
+        "8368016172090059871782660037/13107200000000000000000000000000",
+        "12799214684413779884205783619387046613/2560000000000000000000000000000000000000000",
+        "32098378290449844890824747536608373106356549/1280000000000000000000000000000000000000000000000000000",
+        "51043614879247514899830144119154839166836210223/8192000000000000000000000000000000000000000000000000000"
+      ],
+      "normalized_absolute_output_penalty": "1125/2",
+      "pl_next": [
+        [
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0",
+          "1",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      "residual_supply": [
+        [
+          "130321/160000",
+          "14079/160000",
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "14079/160000",
+          "1521/160000",
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "-1",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      "selection": [
+        [
+          "1",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "1",
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      "signal": [
+        "361/400",
+        "39/400",
+        "0",
+        "0",
+        "0"
+      ],
+      "step": [
+        "-1083/5120",
+        "-117/5120",
+        "-63/800",
+        "0",
+        "-15/64"
+      ],
+      "storage": [
+        [
+          "674389/1000000",
+          "-73827/1000000"
+        ],
+        [
+          "-73827/1000000",
+          "773/62500"
+        ]
+      ],
+      "storage_minors": [
+        "674389/1000000",
+        "2890417223/1000000000000"
+      ],
+      "transition": [
+        [
+          "19/20",
+          "1/20",
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0",
+          "1",
+          "0"
+        ]
+      ],
+      "ultimate_objective_gain": "6250000000000/312929757",
+      "ultimate_storage_gain": "625000/999"
+    },
+    "controls": {
+      "abstract_ascent_kappa": "2",
+      "abstract_ascent_p_at_one": "-1/1280",
+      "abstract_ascent_yosida_slope": "-500",
+      "abstract_stall_kappa": "1",
+      "abstract_stall_yosida_slope": "0",
+      "critical_absolute_output_penalty": "7167838551819102967459883001403922668449707353/1283935131617993795632989901464334924254261960000000",
+      "critical_penalty_determinant": "0",
+      "insufficient_absolute_output_penalty": "1/1000000",
+      "insufficient_penalty_negative_minors": [
+        "608720541672414373/26214400000000000000",
+        "8368016172090059871782660037/13107200000000000000000000000000",
+        "12799214684413779884205783619387046613/2560000000000000000000000000000000000000000",
+        "32098378290449844890824747536608373106356549/1280000000000000000000000000000000000000000000000000000",
+        "-52955130781809982546442037899456289697759008537/8192000000000000000000000000000000000000000000000000000"
+      ],
+      "rejected_effective_radius": "253",
+      "rejected_radius_negative_minors": [
+        "608720541672414373/26214400000000000000",
+        "8368016172090059871782660037/13107200000000000000000000000000",
+        "50172760470384460385334685860665897267/10240000000000000000000000000000000000000000",
+        "-1186447921153001564340529893147784069349765309/5120000000000000000000000000000000000000000000000000000"
+      ],
+      "rejected_relative_residual": "3/500"
+    },
+    "parameters": {
+      "beta": "19/20",
+      "epsilon": "1/10000000",
+      "eta": "1/32000",
+      "lambda": "1/1000",
+      "mu": "1000",
+      "pl_constant": "1",
+      "q": "249001/250000",
+      "smoothness": "10",
+      "tau": "499/500"
+    },
+    "residual_envelope": {
+      "absolute_output_from_rbar": "500",
+      "base_centered_radius": "250",
+      "effective_centered_radius": "252",
+      "equation_to_output_gain": "500",
+      "forward_strong_monotonicity": "2",
+      "relative_output_radius": "2",
+      "relative_residual": "1/250"
+    }
+  },
+  "schema_version": "passive-muon-inexact-yosida-robustness-certificate-v1",
+  "software": {
+    "python": "3.12.11",
+    "python_implementation": "CPython"
+  },
+  "stopping_rule": {
+    "absolute_floor": "rbar>=0 is arbitrary and time-uniform",
+    "absolute_output_bound": "||e_abs||_F<=500*rbar",
+    "effective_centered_radius": {
+      "decimal": "252",
+      "exact": "252"
+    },
+    "p14_centered_radius": {
+      "decimal": "250",
+      "exact": "250"
+    },
+    "relative_kappa": {
+      "decimal": "0.004",
+      "exact": "1/250"
+    },
+    "relative_output_radius": {
+      "decimal": "2",
+      "exact": "2"
+    },
+    "rule": "||r||_F<=kappa*||s||_F+rbar at every oracle call",
+    "split": "write Y_hat-Y=d_rel+e_abs with ||d_rel||<=2||s|| and ||e_abs||<=500*rbar; such a collinear split exists whenever the summed residual envelope holds"
+  }
+}
