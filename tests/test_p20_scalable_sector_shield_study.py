@@ -20,6 +20,7 @@ SPEC.loader.exec_module(EXPERIMENT)
 
 CANDIDATE_P18 = EXPERIMENT.CANDIDATE_P18
 CANDIDATE_UPSTREAM = EXPERIMENT.CANDIDATE_UPSTREAM
+LOCKED_DEFAULT_DECISION_DIGEST = EXPERIMENT.LOCKED_DEFAULT_DECISION_DIGEST
 P20StudyConfig = EXPERIMENT.P20StudyConfig
 SCHEMA_VERSION = EXPERIMENT.SCHEMA_VERSION
 canonical_json = EXPERIMENT.canonical_json
@@ -33,6 +34,11 @@ def _small_config(**changes: object) -> object:
 @pytest.fixture(scope="module")
 def small_payload() -> dict[str, object]:
     return run_study(_small_config())
+
+
+@pytest.fixture(scope="module")
+def default_payload() -> dict[str, object]:
+    return run_study()
 
 
 def _without_provenance(payload: dict[str, object]) -> dict[str, object]:
@@ -96,7 +102,7 @@ def test_full_dense_fp32_and_bf16_reference_paths_execute(
         assert diagnostics["signal_norm"]["reduction_depth"] == 20
 
 
-def test_p18_annulus_is_inactive_and_upstream_candidate_is_safely_screened(
+def test_p18_annulus_is_normally_inactive_and_upstream_candidate_is_safely_screened(
     small_payload: dict[str, object],
 ) -> None:
     annulus = small_payload["operating_annulus"]
@@ -105,18 +111,26 @@ def test_p18_annulus_is_inactive_and_upstream_candidate_is_safely_screened(
     assert annulus["candidate_evaluation_count"] == 2 * annulus["case_count"]
 
     p18 = annulus["candidate_families"][CANDIDATE_P18]
-    assert p18["active"] == 0
-    assert p18["bitwise_identity"] == p18["evaluated"]
+    assert p18["inactive"] > p18["active"]
+    assert p18["bitwise_identity"] == p18["inactive"]
+    assert p18["clipped"] == p18["active"]
     assert p18["fallback"] == 0
+    assert p18["active_accounting_closes"]
     assert p18["all_outputs_pass_offline_exact_disk_check"]
     assert p18["all_informative_fidelity_pass"]
 
     upstream = annulus["candidate_families"][CANDIDATE_UPSTREAM]
     assert 0 < upstream["active"] < upstream["evaluated"]
-    assert upstream["fallback"] == upstream["active"]
+    assert upstream["clipped"] == upstream["active"]
+    assert upstream["fallback"] == 0
+    assert upstream["active_accounting_closes"]
     assert upstream["bitwise_identity"] == upstream["inactive"]
     assert upstream["all_outputs_pass_offline_exact_disk_check"]
-    assert upstream["minimum_cosine"] > 0.0
+    assert upstream["minimum_cosine"] > 0.7
+    interpretation = annulus["guarded_p18_inactivity_interpretation"]
+    assert interpretation["normally_inactive"]
+    assert interpretation["half_fallback_count"] == 0
+    assert "no entire-annulus" in interpretation["qualification"]
 
 
 def test_all_seven_transformer_shapes_and_both_candidates_are_exercised(
@@ -151,6 +165,8 @@ def test_all_seven_transformer_shapes_and_both_candidates_are_exercised(
     for family in (CANDIDATE_P18, CANDIDATE_UPSTREAM):
         assert summary[family]["evaluated"] == 21
         assert summary[family]["all_outputs_pass_offline_exact_disk_check"]
+        assert summary[family]["fallback"] == 0
+        assert summary[family]["clipped"] == summary[family]["active"]
     interpretation = summary["guarded_p18_inactivity_interpretation"]
     assert interpretation["operating_spectrum_case_count"] == 14
     assert interpretation["operating_spectrum_inactive_count"] == 14
@@ -185,11 +201,22 @@ def test_adversarial_and_one_ulp_candidates_are_fail_closed_or_shielded(
         assert record["returned"]
         assert record["offline_exact_p19_disk_check_passes"]
         assert record["shield_diagnostics"]["active"]
-        assert record["shield_diagnostics"]["used_fallback"]
     one_ulp = records["one_ulp_outward"]
     assert one_ulp["candidate_was_inside_original_disk"] is False
     assert one_ulp["candidate_offline_exact_p19_disk_margin"].startswith("-")
+    finite_names = {
+        "zero",
+        "outward",
+        "anti_aligned",
+        "orthogonal_corruption",
+        "one_ulp_outward",
+    }
+    for name in finite_names:
+        assert records[name]["shield_diagnostics"]["candidate_clipped"]
+        assert not records[name]["shield_diagnostics"]["used_fallback"]
     for name in ("nan_candidate", "infinite_candidate"):
+        assert not records[name]["shield_diagnostics"]["candidate_clipped"]
+        assert records[name]["shield_diagnostics"]["used_fallback"]
         assert records[name]["shield_diagnostics"]["fail_closed"]
 
     zero = controls["zero_signal_controls"]
@@ -252,7 +279,38 @@ def test_cross_platform_strategy_hashes_decisions_not_metric_extrema(
     assert "Ubuntu x86_64" in replay["strategy"]
     assert "archive raw bit hashes separately" in replay["strategy"]
     assert "does not by itself prove" in replay["cross_platform_status"]
+    assert replay["locked_default_decision_digest"] == LOCKED_DEFAULT_DECISION_DIGEST
+    assert replay["this_run_uses_locked_default_grid"] is False
+    assert replay["locked_default_digest_matches"] is None
     assert len(small_payload["decision_digest"]) == 64
+
+
+def test_full_default_discrete_decisions_are_locked_across_platforms(
+    default_payload: dict[str, object],
+) -> None:
+    assert default_payload["decision_digest"] == LOCKED_DEFAULT_DECISION_DIGEST
+    replay = default_payload["cross_platform_replay"]
+    assert replay["this_run_uses_locked_default_grid"] is True
+    assert replay["locked_default_digest_matches"] is True
+
+    annulus = default_payload["operating_annulus"]
+    p18 = annulus["candidate_families"][CANDIDATE_P18]
+    assert annulus["case_count"] == 2_688
+    assert p18["inactive"] == 2_671
+    assert p18["clipped"] == 17
+    assert p18["fallback"] == 0
+    assert p18["informative"] == p18["fidelity_passes"] == 2_176
+    upstream = annulus["candidate_families"][CANDIDATE_UPSTREAM]
+    assert upstream["inactive"] == 761
+    assert upstream["clipped"] == 1_927
+    assert upstream["fallback"] == 0
+
+    transformer = default_payload["transformer_spectrum_diagnostics"]["summary"]
+    assert transformer[CANDIDATE_P18]["bitwise_identity"] == 14
+    assert transformer[CANDIDATE_P18]["clipped"] == 7
+    assert transformer[CANDIDATE_P18]["fallback"] == 0
+    assert transformer[CANDIDATE_UPSTREAM]["clipped"] == 18
+    assert transformer[CANDIDATE_UPSTREAM]["fallback"] == 0
 
 
 def test_small_payload_is_deterministic_ignoring_provenance() -> None:

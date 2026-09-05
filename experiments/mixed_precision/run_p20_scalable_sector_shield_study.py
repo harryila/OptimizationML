@@ -71,6 +71,9 @@ SCHEMA_VERSION: Final = "passive-muon-p20-scalable-sector-shield-study-v1"
 SEED: Final = 20_260_906
 STAGES: Final = 5
 EPSILON: Final = 1.0e-7
+LOCKED_DEFAULT_DECISION_DIGEST: Final = (
+    "998ef020d1b642cf923a0789dfdd489b2b949a2aed0b3948cff67b88584a5c9c"
+)
 P11_SIGNAL_GUARD: Final = float(P11_SIGNAL_NORM_BOUND)
 
 MEANINGFUL_SCALAR_RESIDUAL_THRESHOLD: Final = 1.0e-3
@@ -424,6 +427,7 @@ def _empty_family_state() -> dict[str, object]:
     return {
         "evaluated": 0,
         "active": 0,
+        "clipped": 0,
         "bitwise_identity": 0,
         "fallback": 0,
         "fail_closed": 0,
@@ -444,6 +448,9 @@ def _observe_family(
     assert isinstance(diagnostics, dict)
     state["evaluated"] = int(state["evaluated"]) + 1
     state["active"] = int(state["active"]) + int(bool(diagnostics.get("active", False)))
+    state["clipped"] = int(state["clipped"]) + int(
+        bool(diagnostics.get("candidate_clipped", False))
+    )
     state["bitwise_identity"] = int(state["bitwise_identity"]) + int(
         bool(metrics["bitwise_identity"])
     )
@@ -523,6 +530,12 @@ def _run_annulus(config: P20StudyConfig) -> dict[str, object]:
         state["all_informative_fidelity_pass"] = (
             int(state["fidelity_passes"]) == informative if informative else None
         )
+        state["active_accounting_closes"] = int(state["active"]) == (
+            int(state["clipped"]) + int(state["fallback"])
+        )
+    p18_state = states[CANDIDATE_P18]
+    p18_evaluated = int(p18_state["evaluated"])
+    p18_inactive = int(p18_state["inactive"])
     return {
         "scope": (
             "frozen post-P17 two-mode operating-annulus grid on literal 2x2 CPU paths; "
@@ -533,6 +546,18 @@ def _run_annulus(config: P20StudyConfig) -> dict[str, object]:
         "case_count": int(radii.size * ratios.size),
         "candidate_evaluation_count": int(2 * radii.size * ratios.size),
         "candidate_families": states,
+        "guarded_p18_inactivity_interpretation": {
+            "inactive_count": p18_inactive,
+            "active_clip_count": int(p18_state["clipped"]),
+            "half_fallback_count": int(p18_state["fallback"]),
+            "inactive_fraction": p18_inactive / p18_evaluated,
+            "normally_inactive": p18_inactive > int(p18_state["active"]),
+            "qualification": (
+                "inactivity is reported by explicit sampled counts; the narrower static "
+                "screen can clip P18 outputs near its sector boundary and no entire-annulus "
+                "inactivity claim is made"
+            ),
+        },
         "worst_p18_residual_to_threshold_ratio": worst_p18_residual_ratio,
     }
 
@@ -612,6 +637,7 @@ def _run_transformer_spectra(config: P20StudyConfig) -> dict[str, object]:
         summary[family] = {
             "evaluated": len(records),
             "active": sum(bool(item.get("active", False)) for item in diagnostics),
+            "clipped": sum(bool(item.get("candidate_clipped", False)) for item in diagnostics),
             "bitwise_identity": sum(bool(item["bitwise_identity"]) for item in records),
             "fallback": sum(
                 bool(item.get("fallback", item.get("used_fallback", False))) for item in diagnostics
@@ -651,7 +677,7 @@ def _run_transformer_spectra(config: P20StudyConfig) -> dict[str, object]:
         "qualification": (
             "the narrower static P20 screen intentionally activates on the repeated-flat "
             "P18 boundary stress; normal inactivity is claimed only for the declared "
-            "operating spectra and the separate sampled annulus"
+            "operating spectra, while annulus activation is reported separately by counts"
         ),
     }
     audits = representative_sector_shield_audits()
@@ -1039,6 +1065,20 @@ def run_study(config: P20StudyConfig | None = None) -> dict[str, object]:
             "canonical_target": str(CANONICAL_TARGET.relative_to(ROOT)),
         }
         payload["decision_digest"] = _decision_digest(payload)
+        default_decision_grid = selected == P20StudyConfig()
+        payload["cross_platform_replay"]["locked_default_decision_digest"] = (
+            LOCKED_DEFAULT_DECISION_DIGEST
+        )
+        payload["cross_platform_replay"]["this_run_uses_locked_default_grid"] = (
+            default_decision_grid
+        )
+        payload["cross_platform_replay"]["locked_default_digest_matches"] = (
+            payload["decision_digest"] == LOCKED_DEFAULT_DECISION_DIGEST
+            if default_decision_grid
+            else None
+        )
+        if default_decision_grid and payload["decision_digest"] != LOCKED_DEFAULT_DECISION_DIGEST:
+            raise RuntimeError("P20 default discrete decision digest changed")
         payload["experiment_provenance"] = _provenance(selected)
         return payload
     finally:
