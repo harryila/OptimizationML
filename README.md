@@ -578,6 +578,37 @@ and does not propagate P16 solver error or FP64/BF16 rounding. See
 and
 [`results/summaries/P17_SHAPE_PRESERVING_RESOLVENT_RESULTS.md`](results/summaries/P17_SHAPE_PRESERVING_RESOLVENT_RESULTS.md).
 
+Branch `p18-sector-projected-useful-rate` controls P17's large pointwise
+sector without erasing its spectral direction. It projects
+`X(S)=E_(h,epsilon)(J(S))` along its own ray into the pointwise disk sector
+`[0,1]`, then blends it with `Y(S)/1024` under the same ceiling-`3/4` gate.
+For every finite real matrix shape, the exposed exact-real map has the global
+origin-centred pointwise sector
+
+\[
+\left[\frac{125}{1024},\frac{509}{512}\right].
+\]
+
+The initially proposed `eta=1/50` is impossible for a theorem using only
+this sector: an admissible complex-skew boundary map violates Schur--Cohn
+exactly. The mandated rational frontier nevertheless yields an acceptance-
+passing point at `eta=1/83`, with
+`q=999598040401/1000000000000`. Its certified objective half-life is about
+`1724.07`, or `9.959x` P14's, and the exact comparison `q^10<249001/250000`
+closes the predeclared rate gate. A smaller-step `eta=1/120` point certifies a
+faster `666.31`-iteration half-life.
+
+Outward-rounded canonical checks retain about `51.86%` of upstream shaping,
+and all 2,176 informative points in the sampled P17 operating annulus pass
+the unchanged fidelity gates. Only 192/327 informative broad-grid cases pass,
+so fidelity remains an operating-domain diagnostic, not a global theorem.
+The exact amplitude and effective-step guards prevent scale-invariant scores
+from being obtained by collapsing or exploding the output. P18 still assumes
+the exact resolvent and exact real arithmetic. See
+[`theory/sector_projected_useful_rate.md`](theory/sector_projected_useful_rate.md)
+and
+[`results/summaries/P18_SECTOR_PROJECTED_USEFUL_RATE_RESULTS.md`](results/summaries/P18_SECTOR_PROJECTED_USEFUL_RATE_RESULTS.md).
+
 The repair claim is intentionally scoped. A constant `rho` is the exact minimal
 linear shift for a **specified point, pair, sample set, or domain with a finite
 certified deficit**. For exact scale-invariant normalization on every nonzero
@@ -631,6 +662,9 @@ uv run --locked python scripts/reconstruct_equivariant_resolvent_solver.py \
 uv run --locked python scripts/certify_shape_preserving_resolvent.py
 uv run --locked python scripts/reconstruct_shape_preserving_resolvent.py \
   --require-canonical
+uv run --locked python scripts/certify_sector_projected_useful_rate.py
+uv run --locked python scripts/reconstruct_sector_projected_useful_rate.py \
+  --require-canonical
 uv run --locked pytest
 ```
 
@@ -649,6 +683,7 @@ uv run --locked python experiments/mixed_precision/run_scalable_mixed_precision_
 uv run --locked python experiments/mixed_precision/run_finite_precision_outer_loop_diagnostic.py
 uv run --locked python experiments/resolvent/run_p16_solver_study.py
 uv run --locked python experiments/resolvent/run_p17_shape_preserving_study.py
+uv run --locked python experiments/resolvent/run_p18_sector_projected_study.py
 uv run --locked python scripts/make_figures.py
 ```
 
@@ -664,7 +699,7 @@ not support a universal claim across BF16 backends.
 
 ## Scope
 
-This repository stays focused on twenty technical goals:
+This repository stays focused on twenty-one technical goals:
 
 1. a theorem for current-input Frobenius normalization;
 2. exact local and finite-pair controls for the five-step Jordan map;
@@ -704,7 +739,10 @@ This repository stays focused on twenty technical goals:
 19. a C2-gated shape-preserving resolvent interface with a global pointwise
     sector, two exact smooth-PL stability points, and a recovered canonical
     meaningful-fidelity pass;
-20. qualified matrix, quadratic, nonlinear, and precision diagnostics.
+20. a ray-sector-projected interface with a tight global pointwise sector,
+    an exact useful-rate smooth-PL certificate, nonvanishing amplitude and
+    effective-step guards, and a rational step--rate frontier;
+21. qualified matrix, quadratic, nonlinear, and precision diagnostics.
 
 P7 is the submission cutoff and broadest robustness theorem; P6 is its
 zero-disturbance smooth-PL corollary. P8 and P9 instantiate one P7 disturbance
@@ -731,8 +769,12 @@ exposed interface, proves global exact-real one-trajectory smooth-PL
 convergence for a primary `3/4` high-fidelity design at one-quarter step and a
 secondary `1/8` full-step design, and restores the canonical fidelity pass.
 Its pointwise sector is not incremental, and its theorem does not inherit
-P15's inexact-solver robustness. A useful uniform iteration bound, P17
-solver-error propagation, and certified FP64 rounding remain open for P18.
+P15's inexact-solver robustness. P18 projects the shape branch into `[0,1]`,
+reduces the global condition ratio to `1018/125`, and certifies the selected
+`eta=1/83` point within ten times P14's half-life. The initial `eta=1/50`
+sector target has an exact generic complex-skew obstruction; this does not
+prove instability of the more structured P18 operator. P18 solver-error
+propagation and certified FP64 rounding remain open for P19.
 Production-gradient
 measurement, model-forward use of the logical
 master, weight decay, aspect-ratio scaling, complete stochastic neural-network

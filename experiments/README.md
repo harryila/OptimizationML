@@ -42,7 +42,10 @@ Experiment order is gated:
 20. the P17 exact-real shape-preserving gated-resolvent pointwise-sector
     theorem, two smooth-PL certificates, exact/Arb unsafe-band and canonical
     fidelity controls, and separate FP64 spectrum diagnostic;
-21. only after model-forward use of the logical master, aspect scaling, weight
+21. the P18 exact-real ray-sector projection, useful-rate smooth-PL
+    certificate, rational step--rate frontier, canonical Arb gates, and
+    separate FP64 fidelity/amplitude diagnostic;
+22. only after model-forward use of the logical master, aspect scaling, weight
     decay, and implementation-parity gates, a small matched neural-training
     sweep.
 
@@ -172,9 +175,13 @@ uv run --locked python scripts/certify_shape_preserving_resolvent.py \
   --output results/summaries/shape_preserving_resolvent_certificate.json
 uv run --locked python scripts/reconstruct_shape_preserving_resolvent.py \
   --require-canonical
+uv run --locked python scripts/certify_sector_projected_useful_rate.py \
+  --output results/summaries/sector_projected_useful_rate_certificate.json
+uv run --locked python scripts/reconstruct_sector_projected_useful_rate.py \
+  --require-canonical
 ```
 
-The P9--P17 generators and standard-library-only reconstructions carry their
+The P9--P18 generators and standard-library-only reconstructions carry their
 exact claims. P11's adjacent controls establish rejection of the sufficient
 certificate, not actual closed-loop instability. P12's older sampled epsilon
 grid is discovery evidence only; its exact/interval generator carries the
@@ -185,6 +192,10 @@ frontier are diagnostics and do not certify rounding error or a global
 fidelity impossibility. P17's exact sector is pointwise and origin-centered,
 not incremental; its exact-real stability theorem assumes the exact
 resolvent, while its separate FP64 spectrum grid is diagnostic evidence only.
+P18's ray projection is likewise pointwise rather than incremental. Its
+selected useful-rate theorem assumes the exact resolvent, while the
+computed-residual-checked FP64 diagnostics do not propagate solver or
+rounding error through the nonlinear projection.
 
 Replay the P16 guarded reference solver and fidelity diagnostic separately:
 
@@ -219,6 +230,20 @@ rank accumulation. These deterministic FP64 results are not a proof of the
 dimension-uniform pointwise sector, a global fidelity extremum, or an exact
 rounding envelope. The exact P17 generator and independent reconstruction
 carry the smooth-PL theorem and canonical gate decisions.
+
+Replay the P18 sector-projected fidelity and amplitude diagnostic separately:
+
+```bash
+uv run --locked python experiments/resolvent/run_p18_sector_projected_study.py \
+  --output results/summaries/p18_sector_projected_study.json
+```
+
+The study retains the P17 broad grid, sampled operating annulus, realistic
+reduced spectra, frozen departure/retention thresholds, and actual computed
+P15 residual postcheck. It additionally records projection activity, raw
+amplitude, effective-update gates, the unprojected control, and the
+`K=1/100` control. These are deterministic FP64 diagnostics, not global
+fidelity, inexact-solver, or finite-precision certificates.
 
 The P9 separate CPU diagnostic is a native-matmul
 falsification probe against a float64, non-exact target:

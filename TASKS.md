@@ -287,10 +287,27 @@
       band, both exact LMIs, and exact-real/inexact-solver separation; the
       unsigned packet is
       `theory/audits/P17_SHAPE_PRESERVING_RESOLVENT_HUMAN_PROOF_AUDIT.md`.
-- [ ] In P18, propagate P16 approximate-solver error through the P17 shape
-      channel and gate, and certify finite-precision graph-residual and solver
-      arithmetic. Current FP64 success statuses remain checked diagnostics,
-      not exact rounding certificates or a P17 theorem premise.
+- [x] Define the P18 ray projection
+      `alpha=min(1,K*<X,S>/||X||^2)` with `K=1`, prove the full-matrix
+      pointwise `[0,1]` shape-channel sector, and combine it with `Y/1024`
+      under the ceiling-`3/4` gate to obtain the exact global sector
+      `[125/1024,509/512]`.
+- [x] Apply the predeclared `eta=1/50` test. An exact complex-skew boundary
+      map gives a negative Schur--Cohn margin for the generic sector class;
+      this is not claimed to be a counterexample to the structured P18 map.
+- [x] Replay the mandated exact rational frontier and lock `eta=1/83`,
+      `q=999598040401/1000000000000`. The exact comparison against P14 proves
+      a half-life ratio below ten; `eta=1/120` supplies a faster-rate
+      alternative.
+- [x] Add non-scale-invariant global amplitude and effective-update gates,
+      canonical Arb fidelity checks, operating-annulus and broad-spectrum
+      diagnostics, plus unprojected and small-`K` controls.
+- [ ] Obtain an independent human proof audit of C24; the unsigned packet is
+      `theory/audits/P18_SECTOR_PROJECTED_USEFUL_RATE_HUMAN_PROOF_AUDIT.md`.
+- [ ] In P19, propagate P16 approximate-solver error through the P18 shape
+      projection and gate, and certify FP64 graph-residual evaluation. Current
+      computed-residual success statuses remain diagnostics, not exact
+      rounding certificates or a P18 theorem premise.
 - [ ] Bound the complete error of a pinned deployed BF16 backend by the C12
       disturbance model and certify its ultimate neighborhood; P8--P10 are
       proposed proof-reference designs, not literal upstream parity.

@@ -321,7 +321,7 @@ def test_current_indexes_record_scoped_p16_equivariant_resolvent_solver() -> Non
     assert "## 22. P16 equivariant resolvent solver" in results
     assert "## C22. Equivariant structured resolvent solve" in claims
     assert "human proof audit of C22" in tasks
-    assert "twenty technical goals" in readme
+    assert "technical goals" in readme
     assert "not a useful uniform" in " ".join(claims.split())
     assert "fails its overall meaningful-Muon acceptance gate" in results
 
@@ -374,7 +374,59 @@ def test_current_indexes_record_scoped_p17_shape_preserving_resolvent() -> None:
     assert "## 23. P17 shape-preserving gated resolvent" in results
     assert "## C23. Shape-preserving gated resolvent" in claims
     assert "human proof audit of C23" in tasks
-    assert "twenty technical goals" in readme
+    assert "technical goals" in readme
+
+
+def test_current_indexes_record_scoped_p18_sector_projected_useful_rate() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    tasks = (ROOT / "TASKS.md").read_text(encoding="utf-8")
+    results_index = (ROOT / "results/README.md").read_text(encoding="utf-8")
+    experiments = (ROOT / "experiments/README.md").read_text(encoding="utf-8")
+    results = (ROOT / "results/summaries/RESULTS.md").read_text(encoding="utf-8")
+    claims = (ROOT / "theory/claims.md").read_text(encoding="utf-8")
+    p18_summary = (
+        ROOT / "results/summaries/P18_SECTOR_PROJECTED_USEFUL_RATE_RESULTS.md"
+    ).read_text(encoding="utf-8")
+
+    for artifact in (
+        "sector_projected_useful_rate_certificate.json",
+        "p18_sector_projected_study.json",
+        "P18_SECTOR_PROJECTED_USEFUL_RATE_RESULTS.md",
+    ):
+        assert artifact in results_index
+    for command in (
+        "certify_sector_projected_useful_rate.py",
+        "reconstruct_sector_projected_useful_rate.py",
+        "run_p18_sector_projected_study.py",
+    ):
+        assert command in readme
+        assert command in experiments
+        assert command in results
+    for text in (readme, results, claims, p18_summary):
+        assert "1e-7" in text or "1/10000000" in text
+        assert "6889/2000" in text
+        assert "-191/40" in text
+        assert "4063/2000" in text
+        assert "1/1000" in text
+        assert "mu=1000" in text
+        assert "3/4" in text
+        assert "1024" in text
+        assert "125/1024" in text or r"\frac{125}{1024}" in text
+        assert "509/512" in text or r"\frac{509}{512}" in text
+        assert "1/83" in text
+        assert "999598040401" in text
+        assert "pointwise" in text.lower()
+        assert "exact-real" in text
+    combined = " ".join((readme, results, claims, p18_summary))
+    assert "3768360579178620269" in combined
+    assert "not incremental" in combined or "not an incremental" in combined
+    assert "inexact-solver" in combined or "approximate-solver" in combined
+    assert "192/327" in combined
+    assert "2176" in combined
+    assert "## 24. P18 sector-projected useful-rate resolvent" in results
+    assert "## C24. Sector-projected shape interface" in claims
+    assert "human proof audit of C24" in tasks
+    assert "twenty-one technical goals" in readme
 
 
 def test_double_blind_material_is_guarded_from_the_public_repository() -> None:

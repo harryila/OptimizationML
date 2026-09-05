@@ -184,6 +184,24 @@ Current outputs:
   exact-real one-trajectory smooth-PL result, canonical fidelity pass, unsafe-
   band and gate controls, and explicit incremental/inexact-solver/deployment
   exclusions; the human proof audit remains pending and unsigned;
+- `summaries/sector_projected_useful_rate_certificate.json`: canonical P18
+  exact/Arb artifact for the ray-sector projection, global pointwise sector,
+  exact rational smooth-PL frontier, generic-sector `eta=1/50` obstruction,
+  selected useful-rate certificate, canonical fidelity and amplitude gates,
+  and negative controls; generate it with
+  `scripts/certify_sector_projected_useful_rate.py` and independently replay
+  its exact fields with the standard-library-only
+  `scripts/reconstruct_sector_projected_useful_rate.py`;
+- `summaries/p18_sector_projected_study.json`: deterministic computed-
+  residual-checked FP64 canonical, spectrum-grid, operating-annulus, and
+  realistic-rank diagnostic for the P18 interface; it is not a global
+  fidelity extremum, an approximate-resolvent theorem, or a rounding
+  certificate;
+- `summaries/P18_SECTOR_PROJECTED_USEFUL_RATE_RESULTS.md`: scoped P18 global
+  exact-real useful-rate smooth-PL result, exact amplitude/effective-step
+  gates, finite step--rate frontier, fidelity diagnostics, and explicit
+  incremental/inexact-solver/deployment exclusions; the human proof audit
+  remains pending and unsigned;
 - `summaries/deficit_audit.{json,csv}`: 24-prefix spectral audit;
 - `summaries/quadratic_lr_sweep.json` plus CSV tables: gain-matched quadratic
   sweep and sensitivity classifications;

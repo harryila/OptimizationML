@@ -1180,6 +1180,56 @@ model-state reconstruction, or neural-network convergence. See
 `p17_shape_preserving_study.json`, and
 `../../theory/shape_preserving_resolvent.md`.
 
+## 24. P18 sector-projected useful-rate resolvent
+
+P18 keeps P17's exact resolvent and shape branch, but ray-rescales
+`X(S)=E_(h,epsilon)(J(S))` into the origin-centered pointwise disk sector
+`[0,1]`. With passive divisor `1024` and gate ceiling `3/4`, the exposed map
+has the exact dimension-uniform pointwise sector
+
+\[
+\left[\frac{125}{1024},\frac{509}{512}\right].
+\]
+
+This ray projection preserves the spectral direction of nonzero `X`; it is
+not a modewise clip. The sector is pointwise rather than incremental, and the
+smooth-PL proof does not differentiate either the gate or the projection.
+
+At the selected `eta=1/83`, an exact rational `4 x 4` value--momentum LMI
+proves
+
+\[
+\mathcal V_{t+1}\le
+\frac{999598040401}{1000000000000}\mathcal V_t
+\]
+
+for the pinned `beta=19/20` loop and every differentiable globally
+`10`-smooth, global-PL-`1` objective. The exact comparison of the tenth power
+of this rate with P14's rate proves a certified objective half-life about
+`9.9592x` P14's, within the predeclared one-order-of-magnitude gate. A second
+exact point at `eta=1/120` has a faster `666.31`-iteration half-life.
+
+The requested `eta=1/50` fails for the full declared pointwise-sector class:
+an exact admissible complex-skew boundary example has a negative
+Schur--Cohn margin. This is not claimed to make the actual structured P18 map
+unstable. The exact finite frontier records the retained passing steps.
+
+On `diag(3,4)`, outward-rounded checks pass the unchanged P16 departure and
+retention thresholds. All `2176/2176` informative points in the sampled
+`3/4<=||S||_F<=25` annulus pass both fidelity gates; only `192/327`
+informative broad-grid cases do, so fidelity is not global. Exact amplitude
+and effective-step guards prevent a scale-invariant fidelity pass from being
+obtained by collapsing or exploding the output. Removing the projection
+restores P17's huge sector, while `K=1/100` fails the fidelity control.
+
+P18 remains an exact-resolvent, exact-real theorem. It does not yet absorb
+solver error through the nonlinear interface, certify FP64/BF16 arithmetic,
+or cover production additions, stochastic gradients, or neural training.
+See `P18_SECTOR_PROJECTED_USEFUL_RATE_RESULTS.md`,
+`sector_projected_useful_rate_certificate.json`,
+`p18_sector_projected_study.json`, and
+`../../theory/sector_projected_useful_rate.md`.
+
 ## Reproduce
 
 ```bash
@@ -1245,6 +1295,12 @@ uv run --locked python scripts/reconstruct_shape_preserving_resolvent.py \
   --require-canonical
 uv run --locked python experiments/resolvent/run_p17_shape_preserving_study.py \
   --output results/summaries/p17_shape_preserving_study.json
+uv run --locked python scripts/certify_sector_projected_useful_rate.py \
+  --output results/summaries/sector_projected_useful_rate_certificate.json
+uv run --locked python scripts/reconstruct_sector_projected_useful_rate.py \
+  --require-canonical
+uv run --locked python experiments/resolvent/run_p18_sector_projected_study.py \
+  --output results/summaries/p18_sector_projected_study.json
 uv run --locked python experiments/matrices/run_deficit_audit.py
 uv run --locked python experiments/quadratics/run_lr_sweep.py
 uv run --locked python experiments/quadratics/run_horizon_check.py

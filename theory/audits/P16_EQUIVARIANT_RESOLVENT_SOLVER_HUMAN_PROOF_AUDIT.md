@@ -199,7 +199,7 @@ Reviewer notes:
   optimizer output.
 - [ ] Verify successful output is exactly `1000*(S-U_hat)`.
 - [ ] Confirm `rbar_fp64` is not called rigorous until a rounding envelope is
-  supplied in P18.
+  supplied in a later solver-error result (now planned for P19).
 
 Reviewer notes:
 

@@ -1599,3 +1599,116 @@ or BF16 arithmetic or rounded residual evaluation; establish literal
 upstream parity; cover weight decay, aspect scaling, stochastic gradients, or
 model-state reconstruction; or prove neural-network convergence. See
 `shape_preserving_resolvent.md`; independent human review is pending.
+
+## C24. Sector-projected shape interface and useful-rate PL convergence — proved in exact real arithmetic
+
+Retain C23's matrix domain, additive `epsilon=1/10000000`, five Jordan
+stages with exact coefficients `6889/2000`, `-191/40`, and `4063/2000`, P13
+radial repair, `mu=1000`, `lambda=1/1000`, exact resolvent `J`, Yosida map
+`Y=1000(I-J)`, and C2 gate on `q=||S||_F^2`. Put
+`X(S)=E_(h,epsilon)(J(S))` and define
+
+\[
+\alpha_K(S)=\min\left\{1,
+ \frac{K\langle X(S),S\rangle_F}{\|X(S)\|_F^2}\right\},
+\qquad Z_K(S)=\alpha_K(S)X(S),
+\]
+
+with `Z_K=0` when `X=0`. P16's common singular-vector theorem and strict
+sign preservation of every locked Jordan stage give `<X(S),S>_F>=0`.
+Checking the active and inactive branches exactly proves
+
+\[
+\|Z_K(S)\|_F^2\le K\langle Z_K(S),S\rangle_F.
+\]
+
+Thus the ray scaling preserves the spectral direction of every nonzero `X`
+while putting it in the full-matrix pointwise disk sector `[0,K]`.
+
+Lock `K=1`, passive divisor `c=1024`, and gate ceiling `3/4`, and expose
+
+\[
+T(S)=(1-\theta)Y(S)/1024+\theta Z_1(S).
+\]
+
+Convexity of origin-centred sector disks, together with C20's `[500,1000]`
+Yosida sector, gives the exact dimension-uniform pointwise sector
+
+\[
+\boxed{\left[\frac{125}{1024},\frac{509}{512}\right]},
+\qquad
+\gamma=\frac{1143}{2048},\quad K_T=\frac{893}{2048}.
+\]
+
+This is not an incremental sector or derivative bound. The ray projection
+also has a kink at its active-set boundary. C24's P6 value--momentum argument
+uses only the origin-centred pointwise residual supply and therefore does not
+differentiate the projection or gate.
+
+For `beta=19/20`, every differentiable globally `10`-smooth, global-PL-`1`
+objective satisfies the exact one-trajectory certificate
+
+\[
+\mathcal V_{t+1}\le
+\frac{999598040401}{1000000000000}\mathcal V_t
+\]
+
+at `eta=1/83`. The locked storage is
+`P=((97/125,-151/500),(-151/500,17/100))`; the function storage is one,
+the reverse-interpolation multiplier is `3459/500`, and the residual
+multiplier is `9/250`. Exact rational Sylvester checks prove strict storage
+positivity and LMI negativity. Consequently objective gap, gradient, and
+momentum converge geometrically, and the iterates converge to some
+trajectory-dependent global minimizer. Neither uniqueness nor arbitrary-pair
+contraction is claimed.
+
+The exact comparison
+
+\[
+\left(\frac{999598040401}{10^{12}}\right)^{10}
+<\frac{249001}{250000}
+\]
+
+proves that the certified objective half-life is below ten times P14's. Its
+descriptive value is `1724.0734` iterations, about `9.9592x` P14. Exact
+amplitude and selected-step guards are
+
+\[
+\frac1{10}<\frac{\|T(S)\|_F}{\|S\|_F}<1,
+\qquad
+\frac1{1000}<\eta\frac{\|T(S)\|_F}{\|S\|_F}<\frac1{80},
+\]
+
+with the precise effective endpoints `125/84992` and `509/42496`.
+
+The predeclared `eta=1/50` sector-IQC route is obstructed exactly. The
+admissible boundary map `T_0=(1143/2048)I+(893/2048)Q`, with
+`Q^T=-Q` and `Q^TQ=I`, on the valid quadratic `f(W)=5||W||_F^2` has second
+Schur--Cohn margin
+
+\[
+-\frac{3768360579178620269}{1759218604441600000000000}<0.
+\]
+
+This excludes a global theorem over the entire sector class at that step; it
+does not prove the structured P18 map itself is unstable. A finite exact
+rational frontier records passing points from `eta=1/75` through `1/150`.
+The selected `1/83` point is the declared maximum-step rate-gate pass, while
+the `eta=1/120`, `q=624350169/625000000` point has a faster certified
+half-life of about `666.31` iterations. No global optimality over unsearched
+storages or stronger structural descriptions is claimed.
+
+Outward-rounded Arb arithmetic on `diag(3,4)` certifies the frozen P16
+departure and retention gates and the new amplitude gate. The separate FP64
+study records complete computed P15 graph-residual checks and passes all
+2,176 informative points on the sampled `3/4<=||S||_F<=25` annulus, but only
+192/327 informative broad-grid cases. Therefore meaningful fidelity is not
+global. Removing the projection restores a huge pointwise upper gain; using
+`K=1/100` fails the fidelity gate.
+
+C24 remains an exact-resolvent, exact-real theorem. It does not propagate
+solver error through the nonlinear projection, certify FP64/BF16 rounding,
+establish upstream learning-rate or update-magnitude parity, cover weight
+decay, aspect scaling, stochastic gradients, represented model state, or
+neural-network training. See `sector_projected_useful_rate.md`; independent
+human review is pending.
