@@ -466,6 +466,50 @@ or literal upstream-Muon guarantee. See
 and
 [`results/summaries/P14_YOSIDA_STABILITY_RESULTS.md`](results/summaries/P14_YOSIDA_STABILITY_RESULTS.md).
 
+Branch `p15-inexact-yosida-robustness` replaces the exact P14 solve by an
+exact-real residual oracle. For a returned candidate `u_hat`, define
+
+\[
+r=s-\widehat u-\lambda B(\widehat u),
+\qquad
+\widehat Y(s)=\frac{s-\widehat u}{\lambda}.
+\]
+
+The output convention matters: away from an exact solve, `Y_hat` is not
+`B(u_hat)`. Since `u_hat=J(s-r)` and `Lip(J)<=1/2`, P15 proves
+
+\[
+\|\widehat u-J(s)\|_F\le\frac12\|r\|_F,
+\qquad
+\|\widehat Y(s)-Y(s)\|_F\le500\|r\|_F.
+\]
+
+Under the computable stopping rule
+
+\[
+\|r\|_F\le\frac1{250}\|s\|_F+\bar r,
+\]
+
+that is, `kappa=1/250`,
+
+the relative error enlarges P14's centered radius only from `250` to `252`.
+An exact dimension-independent `5 x 5` value--momentum LMI retains
+`beta=19/20`, `eta=1/32000`, and the full globally `10`-smooth PL-`1` class:
+
+\[
+V_{t+1}\le\frac{249001}{250000}V_t+\frac52\bar r^2.
+\]
+
+Thus zero absolute tolerance retains P14's geometric convergence even with
+the locked nonzero relative tolerance. For persistent `rbar`, the exact
+objective neighborhood is
+`limsup(f-f*) <= (6250000000000/312929757)*rbar^2`; iterate convergence is
+not claimed. P15 certifies a stopping criterion, not a solver, complexity
+bound, rounded residual evaluation, or BF16/upstream implementation. See
+[`theory/inexact_yosida_robustness_certificate.md`](theory/inexact_yosida_robustness_certificate.md)
+and
+[`results/summaries/P15_INEXACT_YOSIDA_ROBUSTNESS_RESULTS.md`](results/summaries/P15_INEXACT_YOSIDA_ROBUSTNESS_RESULTS.md).
+
 The repair claim is intentionally scoped. A constant `rho` is the exact minimal
 linear shift for a **specified point, pair, sample set, or domain with a finite
 certified deficit**. For exact scale-invariant normalization on every nonzero
@@ -510,6 +554,9 @@ uv run --locked python scripts/reconstruct_radial_passivation_tradeoff.py \
 uv run --locked python scripts/certify_yosida_stability.py
 uv run --locked python scripts/reconstruct_yosida_stability.py \
   --require-canonical
+uv run --locked python scripts/certify_inexact_yosida_robustness.py
+uv run --locked python scripts/reconstruct_inexact_yosida_robustness.py \
+  --require-canonical
 uv run --locked pytest
 ```
 
@@ -541,7 +588,7 @@ not support a universal claim across BF16 backends.
 
 ## Scope
 
-This repository stays focused on seventeen technical goals:
+This repository stays focused on eighteen technical goals:
 
 1. a theorem for current-input Frobenius normalization;
 2. exact local and finite-pair controls for the five-step Jordan map;
@@ -574,7 +621,9 @@ This repository stays focused on seventeen technical goals:
     and explicit-step negative control;
 16. an epsilon-independent Yosida sector theorem and exact full-step
     smooth-PL certificate for the pinned implicit EMA/Nesterov loop;
-17. qualified matrix, quadratic, nonlinear, and precision diagnostics.
+17. an exact inexact-resolvent residual-to-output theorem and robust
+    smooth-PL ultimate-bound certificate at the full pinned step;
+18. qualified matrix, quadratic, nonlinear, and precision diagnostics.
 
 P7 is the submission cutoff and broadest robustness theorem; P6 is its
 zero-disturbance smooth-PL corollary. P8 and P9 instantiate one P7 disturbance
@@ -591,9 +640,11 @@ backend. P13 reduces that repair's output magnitude through an exact radial
 construction but proves that the worst-case `1/epsilon` differential
 stiffness is unavoidable; it does not inherit P7--P11 stability. P14 removes
 that stiffness from the outer-loop interface through an exact resolvent and
-recovers a full-step smooth-PL theorem, but leaves efficient and inexact
-resolvent evaluation open. Production-gradient measurement, model-forward use
-of the logical
+recovers a full-step smooth-PL theorem. P15 retains that rate for a verifiable
+relative graph-residual tolerance and gives an explicit neighborhood for an
+absolute residual floor, but it still leaves an actual solver, iteration
+complexity, and rounded residual evaluation open. Production-gradient
+measurement, model-forward use of the logical
 master, weight decay, aspect-ratio scaling, complete stochastic neural-network
 training, production-kernel parity, and formal circuit ports remain open.
 

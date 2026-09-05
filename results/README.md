@@ -142,6 +142,17 @@ Current outputs:
 - `summaries/P14_YOSIDA_STABILITY_RESULTS.md`: scoped P14 existence, sector,
   exact convergence, boundary-control, and implicit exact-real exclusions;
   the human proof audit remains pending and unsigned;
+- `summaries/inexact_yosida_robustness_certificate.json`: canonical P15
+  exact-real residual-oracle certificate, including the sharp resolvent- and
+  output-error gains, the locked relative-plus-absolute graph-residual rule,
+  exact robust smooth-PL LMI, and loose-tolerance controls; generate it with
+  `scripts/certify_inexact_yosida_robustness.py` and independently check it
+  with the standard-library-only
+  `scripts/reconstruct_inexact_yosida_robustness.py`;
+- `summaries/P15_INEXACT_YOSIDA_ROBUSTNESS_RESULTS.md`: scoped P15 stopping-
+  criterion theorem, retained full-step rate, absolute-residual objective
+  neighborhood, controls, and solver/BF16 exclusions; the human proof audit
+  remains pending and unsigned;
 - `summaries/deficit_audit.{json,csv}`: 24-prefix spectral audit;
 - `summaries/quadratic_lr_sweep.json` plus CSV tables: gain-matched quadratic
   sweep and sensitivity classifications;

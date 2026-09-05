@@ -942,6 +942,95 @@ human proof audit is pending and unsigned. See
 `P14_YOSIDA_STABILITY_RESULTS.md`, `yosida_stability_certificate.json`, and
 `../../theory/yosida_stability_certificate.md`.
 
+## 21. P15 inexact-Yosida robustness
+
+P15 retains P14's exact-real base operator for every `epsilon>0` and every
+fixed finite real rectangular matrix shape, but replaces its exact resolvent
+evaluation by a candidate `u_hat` with computable graph residual
+
+\[
+r=s-\widehat u-\lambda B(\widehat u),
+\qquad \lambda=\frac1{1000},
+\]
+
+and deployed approximate output
+
+\[
+\widehat Y(s)=\frac{s-\widehat u}{\lambda}.
+\]
+
+The output convention is part of the theorem: away from an exact solve it is
+not `B(u_hat)`. Since `u_hat=J(s-r)` and P14 proves `Lip(J)<=1/2`, exact
+full-matrix Hilbert-space inequalities give
+
+\[
+\|\widehat u-J(s)\|_F\le\frac12\|r\|_F,
+\qquad
+\|\widehat Y(s)-Y(s)\|_F\le500\|r\|_F.
+\]
+
+The factor `500` is sharp over the abstract admissible monotone-base class,
+as witnessed by `A=0`, `B=1000I`. It is not an assertion that the locked P13
+map equals zero.
+
+P15 locks the a posteriori stopping rule
+
+\[
+\|r\|_F\le\frac1{250}\|s\|_F+\bar r
+\]
+
+at every oracle call (equivalently on `(s_(t+1),r_(t+1))` in the pinned
+recurrence).
+
+Thus the locked relative tolerance is exactly `kappa=1/250`.
+
+The relative solve error contributes radius `2`, so the P14 centered Yosida
+radius grows from `250` to `252`; the remaining absolute output port is at
+most `500*rbar`. The same P14 storage, exact multipliers, and
+`tau=499/500` satisfy a strict exact `4 x 4` LMI at radius `252`. The
+port-augmented `5 x 5` LMI has exact physical output-error gain `1/100000`.
+For the pinned `beta=19/20`, `eta=1/32000` recurrence and every
+differentiable globally `10`-smooth, global-PL-`1` objective with finite
+infimum,
+
+\[
+\boxed{
+V_{t+1}\le\frac{249001}{250000}V_t+\frac52\bar r^2.}
+\]
+
+Thus `q15=249001/250000<1` and `C15=5/2`. Unrolling gives
+
+\[
+\limsup_tV_t\le\frac{625000}{999}\bar r^2,
+\qquad
+\limsup_t(f(W_t)-f^\star)
+\le\frac{6250000000000}{312929757}\bar r^2
+\approx19972.533324787\bar r^2.
+\]
+
+When `rbar=0`, the nonzero relative tolerance retains geometric convergence
+of objective gap, gradient, and momentum, and the iterates converge to some
+trajectory-dependent global minimizer. With persistent `rbar>0`, parameter
+convergence is not claimed.
+
+Exact controls distinguish theorem boundaries. Setting `kappa=rbar=0`
+recovers the appropriate P14 fractions exactly. Increasing to
+`kappa=3/500`, hence radius `253`, fails the unchanged frozen-storage
+`4 x 4` certificate; this is only certificate rejection. In the abstract
+boundary class, `kappa=1`, `r=-s`, `u_hat=s` yields `Y_hat=0` and can stall
+away from stationarity. At `kappa=2`, `r=-2s`, `u_hat=3s/2` yields
+`Y_hat=-500s`; on scalar curvature `1`, the pinned characteristic has
+`p(1)=-1/1280<0`, a genuine loose-tolerance instability control.
+
+P15 certifies a residual criterion, not a method for meeting it. It supplies
+no finite-step solver, complexity bound, rounded residual evaluation,
+BF16/FP32 implementation, accelerator or upstream parity, weight decay,
+aspect scaling, stochastic-gradient theorem, or neural-network result. The
+human proof audit is pending and unsigned. See
+`P15_INEXACT_YOSIDA_ROBUSTNESS_RESULTS.md`,
+`inexact_yosida_robustness_certificate.json`, and
+`../../theory/inexact_yosida_robustness_certificate.md`.
+
 ## Reproduce
 
 ```bash
@@ -990,6 +1079,10 @@ uv run --locked python scripts/reconstruct_radial_passivation_tradeoff.py \
 uv run --locked python scripts/certify_yosida_stability.py \
   --output results/summaries/yosida_stability_certificate.json
 uv run --locked python scripts/reconstruct_yosida_stability.py \
+  --require-canonical
+uv run --locked python scripts/certify_inexact_yosida_robustness.py \
+  --output results/summaries/inexact_yosida_robustness_certificate.json
+uv run --locked python scripts/reconstruct_inexact_yosida_robustness.py \
   --require-canonical
 uv run --locked python experiments/matrices/run_deficit_audit.py
 uv run --locked python experiments/quadratics/run_lr_sweep.py

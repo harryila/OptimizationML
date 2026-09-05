@@ -215,9 +215,33 @@
       centered residual bound, nonconvex interpolation/value flow, exact LMI,
       and negative controls; the unsigned packet is
       `theory/audits/P14_YOSIDA_STABILITY_HUMAN_PROOF_AUDIT.md`.
+- [x] Introduce the exact graph residual
+      `r=s-u_hat-lambda*B(u_hat)` with deployed output
+      `Y_hat=(s-u_hat)/lambda`, and prove the sharp uniform solution/output
+      bounds `||u_hat-J(s)||<=||r||/2` and `||Y_hat-Y||<=500||r||`.
+- [x] At the computable rule
+      `||r||<=||s||/250+rbar` at every oracle call, split relative and absolute output-error
+      ports and certify the effective centered radius `252` in every finite
+      matrix shape and for every `epsilon>0`.
+- [x] Replay the exact pinned smooth-PL value--momentum certificate at
+      `beta=19/20`, `eta=1/32000`, and
+      `q15=249001/250000`, with the exact robust term `C15=5/2`.
+- [x] Derive the exact ultimate bounds
+      `limsup V<=625000*rbar^2/999` and
+      `limsup(f-f*)<=6250000000000*rbar^2/312929757`, without claiming
+      iterate convergence for persistent absolute error.
+- [x] Add exact P14-recovery, adjacent frozen-certificate rejection, sharp
+      residual-gain, zero-output stalling, and negative-output instability
+      controls, together with independent reconstruction and dedicated CI.
+- [ ] Obtain an independent human proof audit of C21, including the output
+      convention, graph-residual identity, sharp solution/output gains,
+      pointwise port split, exact `4 x 4` and `5 x 5` LMIs, ultimate bounds,
+      controls, and solver/BF16 exclusions; the unsigned packet is
+      `theory/audits/P15_INEXACT_YOSIDA_ROBUSTNESS_HUMAN_PROOF_AUDIT.md`.
 - [ ] Design and certify an efficient equivariant approximate-resolvent solve;
-      P14 proves existence and exact-real stability but does not bound finite
-      solve error or computational cost.
+      P15 certifies any exact-real oracle that meets its residual rule but
+      does not prove that a particular algorithm reaches the tolerance in a
+      bounded number of iterations or in finite precision.
 - [ ] Bound the complete error of a pinned deployed BF16 backend by the C12
       disturbance model and certify its ultimate neighborhood; P8--P10 are
       proposed proof-reference designs, not literal upstream parity.

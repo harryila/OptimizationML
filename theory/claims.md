@@ -1307,3 +1307,105 @@ resolvent optimizer. It does not supply a numerical resolvent algorithm,
 approximate-solve error bound, complexity guarantee, BF16 implementation,
 weight decay, aspect scaling, or literal upstream-Muon theorem. See
 `yosida_stability_certificate.md`; independent human review is pending.
+
+## C21. Inexact-Yosida residual robustness — proved for an exact-real oracle criterion
+
+Retain C20's operator, for every `epsilon>0` and every fixed finite real
+rectangular matrix space,
+
+\[
+B=A_\epsilon+1000I,
+\qquad
+J=(I+B/1000)^{-1},
+\qquad
+Y=1000(I-J).
+\]
+
+Here `A_epsilon` is C19's continuous full-domain monotone radial repair of the
+five-stage additive-epsilon Jordan map. The stage coefficients are exactly
+`6889/2000`, `-191/40`, and `4063/2000`, and the normalization is
+`M/(||M||_F+epsilon)`. The formula is traced to KellerJordan/Muon revision
+`f98f1cacc0263b04290753e32be8d498c1efc806`, but upstream does not contain
+the radial correction or the P14--P15 resolvent architecture.
+
+At input `s`, let an exact-real oracle return `u_hat` and define
+
+\[
+r=s-\widehat u-\frac1{1000}B(\widehat u),
+\qquad
+\widehat Y(s)=1000(s-\widehat u).
+\]
+
+The approximate output is part of the claim and is not interchangeable with
+`B(u_hat)` away from an exact solve. From
+`u_hat=J(s-r)` and C20's `Lip(J)<=1/2`,
+
+\[
+\|\widehat u-J(s)\|_F\le\frac12\|r\|_F,
+\qquad
+\|\widehat Y(s)-Y(s)\|_F\le500\|r\|_F.
+\]
+
+The output gain is uniformly sharp over the abstract admissible monotone-base
+class: `A=0`, `B=1000I` attains it. This boundary statement does not identify
+the locked P13 map with the zero operator.
+
+Suppose the oracle passes the computable graph-residual rule
+
+\[
+\|r\|_F\le\frac1{250}\|s\|_F+\bar r
+\qquad \bar r\ge0.
+\]
+
+Equivalently, the locked relative tolerance is `kappa=1/250`.
+
+at every oracle call. The output error admits a pointwise split into a
+relative part bounded by `2*||s||_F` and an absolute part bounded by
+`500*rbar`. Combining only the
+relative part with C20's centered residual gives radius `252`. This is a
+pointwise one-trajectory supply: an arbitrary oracle meeting the rule is not
+claimed to define a monotone or incrementally Lipschitz approximate map.
+
+Use `Y_hat` in the pinned exact-real EMA/Nesterov recurrence with
+`beta=19/20` and `eta=1/32000`. For every differentiable globally
+`10`-smooth objective with finite infimum satisfying the global PL inequality
+with constant `1`, the same storage matrix and exact multipliers as C20
+certify a strict `4 x 4` relative-error LMI at radius `252`. A strict exact
+`5 x 5` port-augmented LMI has physical absolute-output-error gain
+`1/100000`. Consequently,
+
+\[
+V_{t+1}\le\frac{249001}{250000}V_t+\frac52\bar r^2.
+\]
+
+Thus C21 has `q15=249001/250000<1` and `C15=5/2`. In particular,
+
+\[
+\limsup_tV_t\le\frac{625000}{999}\bar r^2,
+\qquad
+\limsup_t(f(W_t)-f^\star)
+\le\frac{6250000000000}{312929757}\bar r^2.
+\]
+
+At `rbar=0`, objective gap, gradient, and momentum converge geometrically and
+the iterates converge to some trajectory-dependent global minimizer. No
+unique-minimizer or arbitrary-pair contraction claim is made. For persistent
+positive `rbar`, only storage and objective ultimate neighborhoods are
+claimed, not parameter convergence.
+
+The exact controls have different logical force. `kappa=rbar=0` recovers the
+appropriate C20 fractions. At `kappa=3/500`, centered radius `253` fails the
+unchanged frozen-storage `4 x 4` certificate; this is not a proof of
+instability. Loose rules do admit true abstract-class failures: with `A=0`
+and `B=1000I`, `kappa=1`, `r=-s`, `u_hat=s` gives `Y_hat=0` and permits
+stalling away from stationarity, while `kappa=2`, `r=-2s`, `u_hat=3s/2`
+gives `Y_hat=-500s`; for scalar curvature `1`, the pinned characteristic has
+`p(1)=-1/1280<0`.
+
+C21 certifies an a posteriori exact-real residual criterion, not an algorithm
+for satisfying it. It does not establish a finite iteration count,
+complexity, finite-precision evaluation of `B` or the residual, BF16/FP32
+kernel, accelerator or literal upstream parity, weight decay, aspect scaling,
+stochastic gradients, or neural-network convergence. See
+`inexact_yosida_robustness_certificate.md`; independent human review is
+pending.
