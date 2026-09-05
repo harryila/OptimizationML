@@ -1,0 +1,927 @@
+{
+  "all_exact_checks_passed": true,
+  "arithmetic_contract": {
+    "accumulator_dtype": "binary32 fixed adjacent balanced tree",
+    "block_schedule": "aligned blocks of 2^20 entries, followed by the same zero-padded adjacent tree; adding padding zeros is exact",
+    "candidate_inside_action": "return stored widened FP32 candidate bit-for-bit",
+    "candidate_outside_action": "apply the locked downward-scalar radial clip; use fl32(S/2) only on exceptional arithmetic or an unusable clip",
+    "clip_scalar_order": "downward binary64 Nhat(S)/Nhat(Dhat), then downward binary64 multiply by 890/2048, then downward binary32 conversion",
+    "clip_vector_order": "q=fl32(alpha32*Dhat), then U=fl32(fl32((1143/2048)*S)+q)",
+    "final_cast": "none; output remains binary32",
+    "forbidden": [
+      "FMA contraction",
+      "reassociation",
+      "FTZ",
+      "DAZ",
+      "stochastic rounding"
+    ],
+    "input_order": "validate dtype/shape, widen BF16 exactly to FP32, reject nonfinite signal, then evaluate candidate guard",
+    "nonfinite_candidate": "ignore candidate and attempt certified S/2 fallback",
+    "nonfinite_signal": "fail closed without an output",
+    "norm_scalar": "binary32 max scale and unit norm multiplied exactly in binary64",
+    "rounding": "IEEE-754 round-to-nearest ties-to-even",
+    "subnormal_signal": "below normal anchor, S/2 is returned only if every stored entry halves exactly; otherwise fail closed",
+    "threshold": "one binary64 product followed by nextafter toward -infinity",
+    "underflow": "gradual underflow required; FTZ/DAZ probe failure is fail-closed",
+    "vector_dtype": "binary32",
+    "zero_signal": "return +0 binary32"
+  },
+  "checks": {
+    "4096_by_11008_certifies": true,
+    "4096_by_14336_certifies": true,
+    "all_clip_branches_certify": true,
+    "all_shape_audits_certify": true,
+    "clip_is_not_claimed_as_metric_projection": true,
+    "clip_scalar_order_is_sequentially_downward": true,
+    "faster_operating_point_has_better_rate": true,
+    "faster_rate_is_strict": true,
+    "ftz_is_excluded_from_positive_theorem": true,
+    "global_identity_on_p18_is_not_claimed": true,
+    "largest_shape_margin_is_positive": true,
+    "maximum_step_rate_is_strict": true,
+    "metric_projection_nonexpansiveness_is_not_claimed": true,
+    "no_runtime_fraction_postcheck_is_required": true,
+    "output_dtype_remains_fp32": true,
+    "p10_outer_loop_artifact_hash_matches": true,
+    "p10_outer_loop_exact_checks_pass": true,
+    "p11_implementation_margin_artifact_hash_matches": true,
+    "p11_implementation_margin_exact_checks_pass": true,
+    "p19_artifact_hash_matches": true,
+    "p19_checkpoint_tag_matches": true,
+    "p19_historical_artifact_blob_matches": true,
+    "p19_sector_matches": true,
+    "p19_source_commit_matches": true,
+    "p19_source_was_clean": true,
+    "rate_inheritance_requires_every_call_to_succeed": true,
+    "rate_inheritance_requires_stored_signal_port_identification": true,
+    "seven_transformer_shapes_are_locked": true,
+    "subnormal_failure_is_not_an_objective_neighborhood": true,
+    "three_diagnostic_shapes_certify": true
+  },
+  "claim_scope": {
+    "candidate_scope": "arbitrary stored BF16/FP32 candidates; finite values widen exactly and use the screen/clip graph, while nonfinite candidates take the guarded fallback",
+    "classification": "shape-parameterized static binary32 inward-sector containment certificate",
+    "not_claimed": [
+      "literal unspecified tensor-core, BLAS, compiler-reassociated, or FTZ execution",
+      "a BF16 final-output theorem",
+      "P19 metric-projection nonexpansiveness",
+      "global identity on exact P18 outputs",
+      "an objective or Lyapunov neighborhood for rejected all-subnormal FP32 signals",
+      "literal unshielded upstream Muon stability"
+    ],
+    "returned_dtype": "binary32",
+    "signal_scope": "finite stored BF16/FP32 signals; normal-anchor theorem or exact-halving fallback"
+  },
+  "environment": {
+    "platform": "macOS-15.5-arm64-arm-64bit",
+    "python": "3.12.11"
+  },
+  "git": {
+    "branch": "p20-scalable-mixed-precision-sector-shield",
+    "dirty": false,
+    "sha": "d1354952e7415bfba000685ed58f19b46f628458"
+  },
+  "prior_p19": {
+    "artifact_commit": "154449ed7418ed7264a7442bfb7df92f1366a4b6",
+    "artifact_path": "results/summaries/sector_shielded_inexact_resolvent_certificate.json",
+    "artifact_sha256": "8ed26627d0ce1e5389aacc954834e408e8598348b8b011c76f0b61fe768360f8",
+    "checkpoint_tag": "p19-sector-shielded-inexact-resolvent-checkpoint",
+    "checkpoint_tag_object": "3842779cdb48eb798fb8b923f7ef64630636ea33",
+    "source_commit": "45fd279362792a0f5cae7559d6d70fe651586580"
+  },
+  "prior_rounding_ledgers": {
+    "p10_outer_loop": {
+      "artifact_path": "results/summaries/outer_loop_roundoff_certificate.json",
+      "artifact_sha256": "a36dcf8ab10c6c45b9a31d366cc2c67def0eaddb5be1e30214222e5eb83a84ea",
+      "source_commit": "2d62b566e5a34895470d4eeb4b76789add826cbe"
+    },
+    "p11_implementation_margin": {
+      "artifact_path": "results/summaries/implementation_margin_certificate.json",
+      "artifact_sha256": "ad74050d66f711d2bb8e3e37f80fc29f4d6162419a2f5224931e1ca7fd2e536f",
+      "source_commit": "d3ea1cc58153e52ac9e5d424d58ae8459296f645"
+    },
+    "reuse_scope": "P20 reuses the P10/P11 FP32 relative-plus-absolute-crumb ledger convention; it does not yet compose their outer-loop disturbance ports with P19/P20"
+  },
+  "reconstruction_fields": {
+    "arithmetic_constants": {
+      "bf16_min_subnormal": "1/10889035741470030830827987437816582766592",
+      "fp32_half_min_subnormal": "1/1427247692705959881058285969449495136382746624",
+      "fp32_max_subnormal": "8388607/713623846352979940529142984724747568191373312",
+      "fp32_min_normal": "1/85070591730234615865843651857942052864",
+      "fp32_min_subnormal": "1/713623846352979940529142984724747568191373312",
+      "fp32_unit_roundoff": "1/16777216",
+      "radius_grid_denominator": 1152921504606846976,
+      "reduction_block_entries": 1048576,
+      "sqrt_enclosure_denominator": 1208925819614629174706176
+    },
+    "diagnostic_shapes": [
+      {
+        "balanced_norm": {
+          "division_relative_error": "85070591730234615865843651857942052865/1427247692705959881058285969449495136382746624",
+          "lower_factor": "1427247480029487527550027490047969595867791359/1427247692705959881058285969449495136382746624",
+          "pairwise_crumb": "1/713623803817684075411835051802921639220346880",
+          "pairwise_gamma": "1/16777215",
+          "pairwise_path_length": 1,
+          "reduction_block_count": 1,
+          "reduction_block_entries": 1048576,
+          "sqrt_lower": "1208925711528237580943311/1208925819614629174706176",
+          "sqrt_upper": "1208925927701023989694641/1208925819614629174706176",
+          "squared_norm_lower": "5695964071098543844065058125685013000591427338764024446405161755351096755032698383800149592069461/5695965089616430830639043505044524237377518551039675108869402514835844376351491506171781201264640",
+          "squared_norm_upper": "2037036219168104851490156885604330487177894772670022902492645193068560592710657112820154369/2037035854917680322160378755943008984581536728515508809877420371116105691081818880857866240",
+          "upper_factor": "1427247905382451249326001219490301949570449409/1427247692705959881058285969449495136382746624"
+        },
+        "certified": true,
+        "checks": {
+          "acceptance_coefficient_is_exact_binary32": true,
+          "accepted_candidate_has_strict_inward_margin": true,
+          "accepted_candidate_rounding_is_absorbed": true,
+          "balanced_norm_envelope_certified": true,
+          "bf16_widened_minimum_can_be_halved_in_fp32": true,
+          "blocked_tree_has_global_path_depth": true,
+          "certified_radius_is_inside_original_disk": true,
+          "clip_coefficient_is_exact_binary32": true,
+          "clip_only_margin_is_positive": true,
+          "clipped_candidate_has_strict_inward_margin": true,
+          "clipped_candidate_rounding_is_absorbed": true,
+          "dead_zone_bound_is_finite": true,
+          "inward_margin_is_positive": true,
+          "normal_anchor_converts_crumbs": true,
+          "normal_fallback_rounding_is_absorbed": true,
+          "outward_radius_rounding_is_sound": true,
+          "returned_output_is_in_p19_disk": true,
+          "rounded_half_has_strict_inward_margin": true,
+          "sector_center_reconstructs": true,
+          "sector_radius_reconstructs": true,
+          "shape_is_within_p9_entry_domain": true
+        },
+        "entries": 1,
+        "margin": {
+          "acceptance_coefficient": "891/2048",
+          "accepted_candidate_radius": "10846837216540440170655841750546161842312192154846498966414953/24931882030942841537435473977494361078101946601466442295541760",
+          "certified_inward_radius": "250794381836051661/576460752303423488",
+          "certified_inward_radius_raw": "10846837216540440170655841750546161842312192154846498966414953/24931882030942841537435473977494361078101946601466442295541760",
+          "clip_only_inward_margin": "1688357952236727/1152921504606846976",
+          "clipped_candidate_radius": "357544012606707914438653034879017042512669621412794314218532611/822752156060963770935867012995450504833323321484397609004040192",
+          "displacement_crumb": "33554433/23945242826029513411849172299223580994042798784118784",
+          "displacement_crumb_relative": "33554433/281474976710656",
+          "displacement_signal_slope": "19176359031/576460752303423488",
+          "inward_margin": "562772366564147/576460752303423488",
+          "normal_anchor": "1/85070591730234615865843651857942052864",
+          "rounded_half_radius": "974849/16777216"
+        },
+        "root_entries_upper": 1,
+        "shape": [
+          1,
+          1
+        ],
+        "subnormal_guard": {
+          "all_subnormal_input_radius": "8388607/713623846352979940529142984724747568191373312",
+          "zero_instead_of_half_output_error": "8388607/1427247692705959881058285969449495136382746624"
+        }
+      },
+      {
+        "balanced_norm": {
+          "division_relative_error": "42535295865117307932921825928971026433/713623846352979940529142984724747568191373312",
+          "lower_factor": "1427247437494187225654882069220590658099609599/1427247692705959881058285969449495136382746624",
+          "pairwise_crumb": "1/356811880641194105147263559440547855124660224",
+          "pairwise_gamma": "1/8388607",
+          "pairwise_path_length": 2,
+          "reduction_block_count": 1,
+          "reduction_block_entries": 1048576,
+          "sqrt_lower": "1208925675499434656398335/1208925819614629174706176",
+          "sqrt_upper": "1208925963729827987981313/1208925819614629174706176",
+          "squared_norm_lower": "2135986272032487253914172414895735407865062583779186414820949808472729531734371968571013519638527/2135986781291413040584260922613841063430434390923103561705010278304663556482978079605873814011904",
+          "squared_norm_upper": "509259054792026212872539221401082621794473694594753460864417044442734050548985343558811649/509258933375218639513077955869159952027901265841270342279675073219457520600075263883083776",
+          "upper_factor": "1427247947917757889474903360230300103468908545/1427247692705959881058285969449495136382746624"
+        },
+        "certified": true,
+        "checks": {
+          "acceptance_coefficient_is_exact_binary32": true,
+          "accepted_candidate_has_strict_inward_margin": true,
+          "accepted_candidate_rounding_is_absorbed": true,
+          "balanced_norm_envelope_certified": true,
+          "bf16_widened_minimum_can_be_halved_in_fp32": true,
+          "blocked_tree_has_global_path_depth": true,
+          "certified_radius_is_inside_original_disk": true,
+          "clip_coefficient_is_exact_binary32": true,
+          "clip_only_margin_is_positive": true,
+          "clipped_candidate_has_strict_inward_margin": true,
+          "clipped_candidate_rounding_is_absorbed": true,
+          "dead_zone_bound_is_finite": true,
+          "inward_margin_is_positive": true,
+          "normal_anchor_converts_crumbs": true,
+          "normal_fallback_rounding_is_absorbed": true,
+          "outward_radius_rounding_is_sound": true,
+          "returned_output_is_in_p19_disk": true,
+          "rounded_half_has_strict_inward_margin": true,
+          "sector_center_reconstructs": true,
+          "sector_radius_reconstructs": true,
+          "shape_is_within_p9_entry_domain": true
+        },
+        "entries": 2,
+        "margin": {
+          "acceptance_coefficient": "891/2048",
+          "accepted_candidate_radius": "9178095817772799196604457975497846144177890347612223646815439/21096207243620103096273043167126661179740620731262347163729920",
+          "certified_inward_radius": "501588931008084923/1152921504606846976",
+          "certified_inward_radius_raw": "9178095817772799196604457975497846144177890347612223646815439/21096207243620103096273043167126661179740620731262347163729920",
+          "clip_only_inward_margin": "1688121930335157/1152921504606846976",
+          "clipped_candidate_radius": "357544170381890387806913968683825400724383536968140687436406531/822752131541032559453355277827465146323844899246757443966861312",
+          "displacement_crumb": "33554433/11972621413014756705924586149611790497021399392059392",
+          "displacement_crumb_relative": "33554433/140737488355328",
+          "displacement_signal_slope": "19176359031/576460752303423488",
+          "inward_margin": "1125377397146693/1152921504606846976",
+          "normal_anchor": "1/85070591730234615865843651857942052864",
+          "rounded_half_radius": "487425/8388608"
+        },
+        "root_entries_upper": 2,
+        "shape": [
+          1,
+          2
+        ],
+        "subnormal_guard": {
+          "all_subnormal_input_radius": "8388607/356811923176489970264571492362373784095686656",
+          "zero_instead_of_half_output_error": "8388607/713623846352979940529142984724747568191373312"
+        }
+      },
+      {
+        "balanced_norm": {
+          "division_relative_error": "42535295865117307932921825928971026433/713623846352979940529142984724747568191373312",
+          "lower_factor": "1427247394958880585504544329351275108766842879/1427247692705959881058285969449495136382746624",
+          "pairwise_crumb": "1/178405929686773086294304796489817445319573504",
+          "pairwise_gamma": "3/16777213",
+          "pairwise_path_length": 3,
+          "reduction_block_count": 1,
+          "reduction_block_entries": 1048576,
+          "sqrt_lower": "1208925639470626363142063/1208925819614629174706176",
+          "sqrt_upper": "1208925999758635207494609/1208925819614629174706176",
+          "squared_norm_lower": "4271972034806041132607896065319181881016679831043726254044200923203549884256419921138518562177021/4271973307953329039357761061671971075688598650412657915167989227091770943668293688794659355099136",
+          "squared_norm_upper": "509259054792026212872539221401082621794473696022001153570376925501020019998480479941558273/509258903021017198486061222752567657910418349553663482089995053659888618429695807551700992",
+          "upper_factor": "1427247990453068332577192900877811741561454593/1427247692705959881058285969449495136382746624"
+        },
+        "certified": true,
+        "checks": {
+          "acceptance_coefficient_is_exact_binary32": true,
+          "accepted_candidate_has_strict_inward_margin": true,
+          "accepted_candidate_rounding_is_absorbed": true,
+          "balanced_norm_envelope_certified": true,
+          "bf16_widened_minimum_can_be_halved_in_fp32": true,
+          "blocked_tree_has_global_path_depth": true,
+          "certified_radius_is_inside_original_disk": true,
+          "clip_coefficient_is_exact_binary32": true,
+          "clip_only_margin_is_positive": true,
+          "clipped_candidate_has_strict_inward_margin": true,
+          "clipped_candidate_rounding_is_absorbed": true,
+          "dead_zone_bound_is_finite": true,
+          "inward_margin_is_positive": true,
+          "normal_anchor_converts_crumbs": true,
+          "normal_fallback_rounding_is_absorbed": true,
+          "outward_radius_rounding_is_sound": true,
+          "returned_output_is_in_p19_disk": true,
+          "rounded_half_has_strict_inward_margin": true,
+          "sector_center_reconstructs": true,
+          "sector_radius_reconstructs": true,
+          "shape_is_within_p9_entry_domain": true
+        },
+        "entries": 4,
+        "margin": {
+          "acceptance_coefficient": "891/2048",
+          "accepted_candidate_radius": "119315249186913947352449674116311985865287473374041956867722883/274250685993750205672929350417882123351054935008111805763420160",
+          "certified_inward_radius": "250794480452553055/576460752303423488",
+          "certified_inward_radius_raw": "119315249186913947352449674116311985865287473374041956867722883/274250685993750205672929350417882123351054935008111805763420160",
+          "clip_only_inward_margin": "1688092066866647/1152921504606846976",
+          "clipped_candidate_radius": "357544181037517967254803755272647730625402845092962520715484931/822752107021097694215487087344442801621000709443799853094141952",
+          "displacement_crumb": "33554433/11972621413014756705924586149611790497021399392059392",
+          "displacement_crumb_relative": "33554433/140737488355328",
+          "displacement_signal_slope": "19176359031/576460752303423488",
+          "inward_margin": "562673750062753/576460752303423488",
+          "normal_anchor": "1/85070591730234615865843651857942052864",
+          "rounded_half_radius": "487425/8388608"
+        },
+        "root_entries_upper": 2,
+        "shape": [
+          2,
+          2
+        ],
+        "subnormal_guard": {
+          "all_subnormal_input_radius": "8388607/356811923176489970264571492362373784095686656",
+          "zero_instead_of_half_output_error": "8388607/713623846352979940529142984724747568191373312"
+        }
+      }
+    ],
+    "formulae": {
+      "acceptance": "Nhat(Dhat)<=nextafter(fl64((891/2048)*Nhat(S)),-infinity)",
+      "accepted_radius": "((891/2048)*U/ell+(1143/2048)*u*(1+u)+h*tau*(2+u)/sigma_min)/(1-u)",
+      "candidate_displacement": "Dhat=fl32(C-fl32((1143/2048)*S))",
+      "clip_scalar": "ratio64=down64(Nhat(S)/Nhat(Dhat)); alpha64=down64((890/2048)*ratio64); alpha32=down32(alpha64)",
+      "clip_vectors": "q=fl32(alpha32*Dhat); U=fl32(fl32((1143/2048)*S)+q)",
+      "clipped_radius": "(890/2048)*(U/ell)*(1+u)^2+(1143/2048)*u*(2+u)+h*tau*(3+2u)/sigma_min",
+      "delta": "893/2048-ceil_2^-60(max(accepted_radius,clipped_radius,fallback_radius))",
+      "fallback_radius": "abs(1143/2048-1/2)+h*tau/sigma_min",
+      "norm_reduction": "qhat=balanced_pairwise_fl32(sum_i fl32(z_i*z_i)); n32=fl32(sqrt(qhat)); Nhat=float64(maxabs(x))*float64(n32)",
+      "norm_vector": "v=x/maxabs(x); z=fl32(v)"
+    },
+    "operating_points": {
+      "faster_rate": {
+        "learning_rate": "1/120",
+        "rate": "624350169/625000000"
+      },
+      "maximum_step": {
+        "learning_rate": "1/83",
+        "rate": "999598040401/1000000000000"
+      },
+      "trajectory_premises": "every shield call succeeds; stored S is the abstract operator-port signal; the remaining EMA/Nesterov interconnection uses exact real arithmetic"
+    },
+    "sector": {
+      "acceptance_buffer": "1/1024",
+      "acceptance_coefficient": "891/2048",
+      "center": "1143/2048",
+      "clip_coefficient": "445/1024",
+      "lower": "125/1024",
+      "radius": "893/2048",
+      "upper": "509/512"
+    },
+    "shapes": [
+      {
+        "balanced_norm": {
+          "division_relative_error": "332306998946228968225951765070086147/5575186299632655785383929568162090376495104",
+          "lower_factor": "1427246629322277219480923703245727904070369279/1427247692705959881058285969449495136382746624",
+          "pairwise_crumb": "9/10889022111690777176905462545263718563840",
+          "pairwise_gamma": "21/16777195",
+          "pairwise_path_length": 21,
+          "reduction_block_count": 1,
+          "reduction_block_entries": 1048576,
+          "sqrt_lower": "302231247737789758368707/302231454903657293676544",
+          "sqrt_upper": "1208926648277715989033841/1208925819614629174706176",
+          "squared_norm_lower": "260739921151442894204090472706175601572944858276618202602578552919198942712526307078749290307/260740278602440325119877133646800058263411638464890879321986407212875970233787183916447170560",
+          "squared_norm_upper": "31082705980958631156771192712468421740411081071469479774058041369486895012478634164233/31082663369469681396469728189325339587141470726119384684799481298074241904471776952320",
+          "upper_factor": "1427248756089306614093669790080171303667499009/1427247692705959881058285969449495136382746624"
+        },
+        "certified": true,
+        "checks": {
+          "acceptance_coefficient_is_exact_binary32": true,
+          "accepted_candidate_has_strict_inward_margin": true,
+          "accepted_candidate_rounding_is_absorbed": true,
+          "balanced_norm_envelope_certified": true,
+          "bf16_widened_minimum_can_be_halved_in_fp32": true,
+          "blocked_tree_has_global_path_depth": true,
+          "certified_radius_is_inside_original_disk": true,
+          "clip_coefficient_is_exact_binary32": true,
+          "clip_only_margin_is_positive": true,
+          "clipped_candidate_has_strict_inward_margin": true,
+          "clipped_candidate_rounding_is_absorbed": true,
+          "dead_zone_bound_is_finite": true,
+          "inward_margin_is_positive": true,
+          "normal_anchor_converts_crumbs": true,
+          "normal_fallback_rounding_is_absorbed": true,
+          "outward_radius_rounding_is_sound": true,
+          "returned_output_is_in_p19_disk": true,
+          "rounded_half_has_strict_inward_margin": true,
+          "sector_center_reconstructs": true,
+          "sector_radius_reconstructs": true,
+          "shape_is_within_p9_entry_domain": true
+        },
+        "entries": 589824,
+        "margin": {
+          "acceptance_coefficient": "891/2048",
+          "accepted_candidate_radius": "3616374430155675793616477365053773212350893446856168217557539/8310622390119439966427559013479286438137388077445534994923520",
+          "certified_inward_radius": "501694777300173805/1152921504606846976",
+          "certified_inward_radius_raw": "3616374430155675793616477365053773212350893446856168217557539/8310622390119439966427559013479286438137388077445534994923520",
+          "clip_only_inward_margin": "1529637159705925/1152921504606846976",
+          "clipped_candidate_radius": "357657066351585087996088291458833119023450307952969557233106691/822751665661645326799650757665500567868484617241998652082225152",
+          "displacement_crumb": "100663299/93536104789177786765035829293842113257979682750464",
+          "displacement_crumb_relative": "100663299/1099511627776",
+          "displacement_signal_slope": "19176359031/576460752303423488",
+          "inward_margin": "1019531105057811/1152921504606846976",
+          "normal_anchor": "1/85070591730234615865843651857942052864",
+          "rounded_half_radius": "3811/65536"
+        },
+        "root_entries_upper": 768,
+        "shape": [
+          768,
+          768
+        ],
+        "subnormal_guard": {
+          "all_subnormal_input_radius": "25165821/2787593149816327892691964784081045188247552",
+          "zero_instead_of_half_output_error": "25165821/5575186299632655785383929568162090376495104"
+        }
+      },
+      {
+        "balanced_norm": {
+          "division_relative_error": "166153499473114484112975882535043075/2787593149816327892691964784081045188247552",
+          "lower_factor": "1427246544251416746638395298345963976539504639/1427247692705959881058285969449495136382746624",
+          "pairwise_crumb": "9/2722255203404140635799638853159909064704",
+          "pairwise_gamma": "23/16777193",
+          "pairwise_path_length": 23,
+          "reduction_block_count": 3,
+          "reduction_block_entries": 1048576,
+          "sqrt_lower": "1208924918893333066722539/1208925819614629174706176",
+          "sqrt_upper": "604463360167728028045385/604462909807314587353088",
+          "squared_norm_lower": "65184964746511438418562633909201098430383921848586234114292890525963345440014397934577647409/65185061879934512377052999733852387271777283046595363621938516795969353602829655158277799936",
+          "squared_norm_upper": "7770676495239657789192798178117105435122046474498848311390894622305983108243995492361/7770664916030706450587868658763454827282104855369968846075358008857888412812907118592",
+          "upper_factor": "1427248841160075815707032253048453401946357761/1427247692705959881058285969449495136382746624"
+        },
+        "certified": true,
+        "checks": {
+          "acceptance_coefficient_is_exact_binary32": true,
+          "accepted_candidate_has_strict_inward_margin": true,
+          "accepted_candidate_rounding_is_absorbed": true,
+          "balanced_norm_envelope_certified": true,
+          "bf16_widened_minimum_can_be_halved_in_fp32": true,
+          "blocked_tree_has_global_path_depth": true,
+          "certified_radius_is_inside_original_disk": true,
+          "clip_coefficient_is_exact_binary32": true,
+          "clip_only_margin_is_positive": true,
+          "clipped_candidate_has_strict_inward_margin": true,
+          "clipped_candidate_rounding_is_absorbed": true,
+          "dead_zone_bound_is_finite": true,
+          "inward_margin_is_positive": true,
+          "normal_anchor_converts_crumbs": true,
+          "normal_fallback_rounding_is_absorbed": true,
+          "outward_radius_rounding_is_sound": true,
+          "returned_output_is_in_p19_disk": true,
+          "rounded_half_has_strict_inward_margin": true,
+          "sector_center_reconstructs": true,
+          "sector_radius_reconstructs": true,
+          "shape_is_within_p9_entry_domain": true
+        },
+        "entries": 2359296,
+        "margin": {
+          "acceptance_coefficient": "891/2048",
+          "accepted_candidate_radius": "39788490564292713175088408296912046557022119172928181938159489/91416840842423916934940024015045219077686759971013975888363520",
+          "certified_inward_radius": "250900195110064177/576460752303423488",
+          "certified_inward_radius_raw": "39788490564292713175088408296912046557022119172928181938159489/91416840842423916934940024015045219077686759971013975888363520",
+          "clip_only_inward_margin": "342811937967361/288230376151711744",
+          "clipped_candidate_radius": "357770075400969791454270500559213521725133491326167603010862851/822751616621633099525274043964412926227806222389395195357560832",
+          "displacement_crumb": "100663299/46768052394588893382517914646921056628989841375232",
+          "displacement_crumb_relative": "100663299/549755813888",
+          "displacement_signal_slope": "19176359031/576460752303423488",
+          "inward_margin": "456959092551631/576460752303423488",
+          "normal_anchor": "1/85070591730234615865843651857942052864",
+          "rounded_half_radius": "1907/32768"
+        },
+        "root_entries_upper": 1536,
+        "shape": [
+          768,
+          3072
+        ],
+        "subnormal_guard": {
+          "all_subnormal_input_radius": "25165821/1393796574908163946345982392040522594123776",
+          "zero_instead_of_half_output_error": "25165821/2787593149816327892691964784081045188247552"
+        }
+      },
+      {
+        "balanced_norm": {
+          "division_relative_error": "85070591730234615865843651857942059077/1427247692705959881058285969449495136382746624",
+          "lower_factor": "1427246374109619741507949952602960576401899519/1427247692705959881058285969449495136382746624",
+          "pairwise_crumb": "150771/2787588663671842118600893733732216742084608",
+          "pairwise_gamma": "27/16777189",
+          "pairwise_path_length": 27,
+          "reduction_block_count": 37,
+          "reduction_block_entries": 1048576,
+          "sqrt_lower": "1208924774777616708357927/1208925819614629174706176",
+          "sqrt_upper": "1208926864450974845048915/1208925819614629174706176",
+          "squared_norm_lower": "1553439931851505500842591170176089980968326909067114495118644867128674306890794289909254134912695/1553442617034690922145273547758147580928769271275446151766995388607426502008870690467105747238912",
+          "squared_norm_upper": "2037036219168104851490156885604330487288088533622927394898188016921123689448196634120618649/2037032698080730455350638511817410396363313434604395350150698336920939865362355422394056704",
+          "upper_factor": "1427249011301659854521742640331040526717419521/1427247692705959881058285969449495136382746624"
+        },
+        "certified": true,
+        "checks": {
+          "acceptance_coefficient_is_exact_binary32": true,
+          "accepted_candidate_has_strict_inward_margin": true,
+          "accepted_candidate_rounding_is_absorbed": true,
+          "balanced_norm_envelope_certified": true,
+          "bf16_widened_minimum_can_be_halved_in_fp32": true,
+          "blocked_tree_has_global_path_depth": true,
+          "certified_radius_is_inside_original_disk": true,
+          "clip_coefficient_is_exact_binary32": true,
+          "clip_only_margin_is_positive": true,
+          "clipped_candidate_has_strict_inward_margin": true,
+          "clipped_candidate_rounding_is_absorbed": true,
+          "dead_zone_bound_is_finite": true,
+          "inward_margin_is_positive": true,
+          "normal_anchor_converts_crumbs": true,
+          "normal_fallback_rounding_is_absorbed": true,
+          "outward_radius_rounding_is_sound": true,
+          "returned_output_is_in_p19_disk": true,
+          "rounded_half_has_strict_inward_margin": true,
+          "sector_center_reconstructs": true,
+          "sector_radius_reconstructs": true,
+          "shape_is_within_p9_entry_domain": true
+        },
+        "entries": 38597376,
+        "margin": {
+          "acceptance_coefficient": "891/2048",
+          "accepted_candidate_radius": "39839464016258260328115184695558090881274735450969462271186817/91416829944639199845358765532990822463499048975754537646161920",
+          "certified_inward_radius": "62805413981444221/144115188075855872",
+          "certified_inward_radius_raw": "39839464016258260328115184695558090881274735450969462271186817/91416829944639199845358765532990822463499048975754537646161920",
+          "clip_only_inward_margin": "203462640559001/576460752303423488",
+          "clipped_candidate_radius": "4027620175575184005600031436417115627249645729248898002263739/9244399084736683142600136628964804108395701440107113818882048",
+          "displacement_crumb": "208473692229/23945242826029513411849172299223580994042798784118784",
+          "displacement_crumb_relative": "208473692229/281474976710656",
+          "displacement_signal_slope": "19176359031/576460752303423488",
+          "inward_margin": "33874569209731/144115188075855872",
+          "normal_anchor": "1/85070591730234615865843651857942052864",
+          "rounded_half_radius": "981061/16777216"
+        },
+        "root_entries_upper": 6213,
+        "shape": [
+          768,
+          50257
+        ],
+        "subnormal_guard": {
+          "all_subnormal_input_radius": "52118415291/713623846352979940529142984724747568191373312",
+          "zero_instead_of_half_output_error": "52118415291/1427247692705959881058285969449495136382746624"
+        }
+      },
+      {
+        "balanced_norm": {
+          "division_relative_error": "41538374868278621028243970633760771/696898287454081973172991196020261297061888",
+          "lower_factor": "1427246374109619741507949952602960576401899519/1427247692705959881058285969449495136382746624",
+          "pairwise_crumb": "9/170140909647939582434136580427991744512",
+          "pairwise_gamma": "27/16777189",
+          "pairwise_path_length": 27,
+          "reduction_block_count": 36,
+          "reduction_block_entries": 1048576,
+          "sqrt_lower": "1208924774777616708357927/1208925819614629174706176",
+          "sqrt_upper": "1208926864450974845048915/1208925819614629174706176",
+          "squared_norm_lower": "4074058353988304259602666585907218406360606799799556666356683860928191448560400693771370253/4074065396161460910701277023634820792726626869208790700301396673841879730724710844788113408",
+          "squared_norm_upper": "485667280952478611824549886132319089719215845513071558510576021883593363735397269513/485666441459829915845546367601730918017223700190638387239145836096034017887677054976",
+          "upper_factor": "1427249011301659854521742640331040526717419521/1427247692705959881058285969449495136382746624"
+        },
+        "certified": true,
+        "checks": {
+          "acceptance_coefficient_is_exact_binary32": true,
+          "accepted_candidate_has_strict_inward_margin": true,
+          "accepted_candidate_rounding_is_absorbed": true,
+          "balanced_norm_envelope_certified": true,
+          "bf16_widened_minimum_can_be_halved_in_fp32": true,
+          "blocked_tree_has_global_path_depth": true,
+          "certified_radius_is_inside_original_disk": true,
+          "clip_coefficient_is_exact_binary32": true,
+          "clip_only_margin_is_positive": true,
+          "clipped_candidate_has_strict_inward_margin": true,
+          "clipped_candidate_rounding_is_absorbed": true,
+          "dead_zone_bound_is_finite": true,
+          "inward_margin_is_positive": true,
+          "normal_anchor_converts_crumbs": true,
+          "normal_fallback_rounding_is_absorbed": true,
+          "outward_radius_rounding_is_sound": true,
+          "returned_output_is_in_p19_disk": true,
+          "rounded_half_has_strict_inward_margin": true,
+          "sector_center_reconstructs": true,
+          "sector_radius_reconstructs": true,
+          "shape_is_within_p9_entry_domain": true
+        },
+        "entries": 37748736,
+        "margin": {
+          "acceptance_coefficient": "891/2048",
+          "accepted_candidate_radius": "39838712072451834048236355411554254095287125553924054248849281/91416829944639199845358765532990822463499048975754537646161920",
+          "certified_inward_radius": "62804228570364541/144115188075855872",
+          "certified_inward_radius_raw": "39838712072451834048236355411554254095287125553924054248849281/91416829944639199845358765532990822463499048975754537646161920",
+          "clip_only_inward_margin": "210575106683801/576460752303423488",
+          "clipped_candidate_radius": "4027506116682064923598084418141747286545332825961265857162939/9244399084736683142600136628964804108395701440107113818882048",
+          "displacement_crumb": "100663299/11692013098647223345629478661730264157247460343808",
+          "displacement_crumb_relative": "100663299/137438953472",
+          "displacement_signal_slope": "19176359031/576460752303423488",
+          "inward_margin": "35059980289411/144115188075855872",
+          "normal_anchor": "1/85070591730234615865843651857942052864",
+          "rounded_half_radius": "479/8192"
+        },
+        "root_entries_upper": 6144,
+        "shape": [
+          3072,
+          12288
+        ],
+        "subnormal_guard": {
+          "all_subnormal_input_radius": "25165821/348449143727040986586495598010130648530944",
+          "zero_instead_of_half_output_error": "25165821/696898287454081973172991196020261297061888"
+        }
+      },
+      {
+        "balanced_norm": {
+          "division_relative_error": "20769187434139310514121985316880385/348449143727040986586495598010130648530944",
+          "lower_factor": "1427246459180530920651332663280751781955502079/1427247692705959881058285969449495136382746624",
+          "pairwise_crumb": "1/42535232482587296521451751093810757632",
+          "pairwise_gamma": "25/16777191",
+          "pairwise_path_length": 25,
+          "reduction_block_count": 16,
+          "reduction_block_entries": 1048576,
+          "sqrt_lower": "1208924846835485625020233/1208925819614629174706176",
+          "sqrt_upper": "604463396196604504047257/604462909807314587353088",
+          "squared_norm_lower": "339504943776886215031784633551345294095708893093800254993030664104549812278528133689595213/339505490152390330594462062791691458217196127484208371944689748899581847120898512174186496",
+          "squared_norm_upper": "121416820238119652956137471533079772426235493697338493696577564741162470976927039489/121416624838968633625911019846805855590294406706407680014856963956206505461060468736",
+          "upper_factor": "1427248926230860229181544592039692139843551233/1427247692705959881058285969449495136382746624"
+        },
+        "certified": true,
+        "checks": {
+          "acceptance_coefficient_is_exact_binary32": true,
+          "accepted_candidate_has_strict_inward_margin": true,
+          "accepted_candidate_rounding_is_absorbed": true,
+          "balanced_norm_envelope_certified": true,
+          "bf16_widened_minimum_can_be_halved_in_fp32": true,
+          "blocked_tree_has_global_path_depth": true,
+          "certified_radius_is_inside_original_disk": true,
+          "clip_coefficient_is_exact_binary32": true,
+          "clip_only_margin_is_positive": true,
+          "clipped_candidate_has_strict_inward_margin": true,
+          "clipped_candidate_rounding_is_absorbed": true,
+          "dead_zone_bound_is_finite": true,
+          "inward_margin_is_positive": true,
+          "normal_anchor_converts_crumbs": true,
+          "normal_fallback_rounding_is_absorbed": true,
+          "outward_radius_rounding_is_sound": true,
+          "returned_output_is_in_p19_disk": true,
+          "rounded_half_has_strict_inward_margin": true,
+          "sector_center_reconstructs": true,
+          "sector_radius_reconstructs": true,
+          "shape_is_within_p9_entry_domain": true
+        },
+        "entries": 16777216,
+        "margin": {
+          "acceptance_coefficient": "891/2048",
+          "accepted_candidate_radius": "17064167631657487260311280370871468426914565806281045614376613/39178643740085301574318655123757385096814868076201069384826880",
+          "certified_inward_radius": "502152293766746209/1152921504606846976",
+          "certified_inward_radius_raw": "17064167631657487260311280370871468426914565806281045614376613/39178643740085301574318655123757385096814868076201069384826880",
+          "clip_only_inward_margin": "843422422398803/1152921504606846976",
+          "clipped_candidate_radius": "358146722492397039968827709045485060854651337259928907451203331/822751567581606257158125870512863547892383987941057309601431552",
+          "displacement_crumb": "33554433/5846006549323611672814739330865132078623730171904",
+          "displacement_crumb_relative": "33554433/68719476736",
+          "displacement_signal_slope": "19176359031/576460752303423488",
+          "inward_margin": "562014638485407/1152921504606846976",
+          "normal_anchor": "1/85070591730234615865843651857942052864",
+          "rounded_half_radius": "239/4096"
+        },
+        "root_entries_upper": 4096,
+        "shape": [
+          4096,
+          4096
+        ],
+        "subnormal_guard": {
+          "all_subnormal_input_radius": "8388607/174224571863520493293247799005065324265472",
+          "zero_instead_of_half_output_error": "8388607/348449143727040986586495598010130648530944"
+        }
+      },
+      {
+        "balanced_norm": {
+          "division_relative_error": "85070591730234615865843651857942059579/1427247692705959881058285969449495136382746624",
+          "lower_factor": "1427246374109619741507949952602960576401899519/1427247692705959881058285969449495136382746624",
+          "pairwise_crumb": "43/680563638591758329736546321711966978048",
+          "pairwise_gamma": "27/16777189",
+          "pairwise_path_length": 27,
+          "reduction_block_count": 43,
+          "reduction_block_entries": 1048576,
+          "sqrt_lower": "1208924774777616708357927/1208925819614629174706176",
+          "sqrt_upper": "1208926864450974845048915/1208925819614629174706176",
+          "squared_norm_lower": "17087839250366560509268502871936989790496146021546821710853308319553940914410207554036842602888413/17087868787381600143598009025339623390216461984029907669436949274681691522097577595138163219628032",
+          "squared_norm_upper": "2037036219168104851490156885604330487306619615088596135204451173146159718032486676971915673/2037032698080730455350638511817410396363313434604395350150698336920939865362355422394056704",
+          "upper_factor": "1427249011301659854521742640331040526717419521/1427247692705959881058285969449495136382746624"
+        },
+        "certified": true,
+        "checks": {
+          "acceptance_coefficient_is_exact_binary32": true,
+          "accepted_candidate_has_strict_inward_margin": true,
+          "accepted_candidate_rounding_is_absorbed": true,
+          "balanced_norm_envelope_certified": true,
+          "bf16_widened_minimum_can_be_halved_in_fp32": true,
+          "blocked_tree_has_global_path_depth": true,
+          "certified_radius_is_inside_original_disk": true,
+          "clip_coefficient_is_exact_binary32": true,
+          "clip_only_margin_is_positive": true,
+          "clipped_candidate_has_strict_inward_margin": true,
+          "clipped_candidate_rounding_is_absorbed": true,
+          "dead_zone_bound_is_finite": true,
+          "inward_margin_is_positive": true,
+          "normal_anchor_converts_crumbs": true,
+          "normal_fallback_rounding_is_absorbed": true,
+          "outward_radius_rounding_is_sound": true,
+          "returned_output_is_in_p19_disk": true,
+          "rounded_half_has_strict_inward_margin": true,
+          "sector_center_reconstructs": true,
+          "sector_radius_reconstructs": true,
+          "shape_is_within_p9_entry_domain": true
+        },
+        "entries": 45088768,
+        "margin": {
+          "acceptance_coefficient": "891/2048",
+          "accepted_candidate_radius": "23906960807936051783818435170116820324989016647249458468915943/54850097966783519907215259319794493478099429385452722587697152",
+          "certified_inward_radius": "62814038276545661/144115188075855872",
+          "certified_inward_radius_raw": "23906960807936051783818435170116820324989016647249458468915943/54850097966783519907215259319794493478099429385452722587697152",
+          "clip_only_inward_margin": "151716872520601/576460752303423488",
+          "clipped_candidate_radius": "4028449995348311239875066265029215729185371489399497086910139/9244399084736683142600136628964804108395701440107113818882048",
+          "displacement_crumb": "225318017595/23945242826029513411849172299223580994042798784118784",
+          "displacement_crumb_relative": "225318017595/281474976710656",
+          "displacement_signal_slope": "19176359031/576460752303423488",
+          "inward_margin": "25250274108291/144115188075855872",
+          "normal_anchor": "1/85070591730234615865843651857942052864",
+          "rounded_half_radius": "981563/16777216"
+        },
+        "root_entries_upper": 6715,
+        "shape": [
+          4096,
+          11008
+        ],
+        "subnormal_guard": {
+          "all_subnormal_input_radius": "56329496005/713623846352979940529142984724747568191373312",
+          "zero_instead_of_half_output_error": "56329496005/1427247692705959881058285969449495136382746624"
+        }
+      },
+      {
+        "balanced_norm": {
+          "division_relative_error": "85070591730234615865843651857942060527/1427247692705959881058285969449495136382746624",
+          "lower_factor": "1427246374109619741507949952602960576401899519/1427247692705959881058285969449495136382746624",
+          "pairwise_crumb": "7/85070454823969791217068290213995872256",
+          "pairwise_gamma": "27/16777189",
+          "pairwise_path_length": 27,
+          "reduction_block_count": 56,
+          "reduction_block_entries": 1048576,
+          "sqrt_lower": "1208924774777616708357927/1208925819614629174706176",
+          "sqrt_upper": "1208926864450974845048915/1208925819614629174706176",
+          "squared_norm_lower": "17087839250366560509268502871936989790169714031290931925497887852876011171860931168965031547073925/17087868787381600143598009025339623390216461984029907669436949274681691522097577595138163219628032",
+          "squared_norm_upper": "2037036219168104851490156885604330487345533340742680758840561089474277752954507464829568289/2037032698080730455350638511817410396363313434604395350150698336920939865362355422394056704",
+          "upper_factor": "1427249011301659854521742640331040526717419521/1427247692705959881058285969449495136382746624"
+        },
+        "certified": true,
+        "checks": {
+          "acceptance_coefficient_is_exact_binary32": true,
+          "accepted_candidate_has_strict_inward_margin": true,
+          "accepted_candidate_rounding_is_absorbed": true,
+          "balanced_norm_envelope_certified": true,
+          "bf16_widened_minimum_can_be_halved_in_fp32": true,
+          "blocked_tree_has_global_path_depth": true,
+          "certified_radius_is_inside_original_disk": true,
+          "clip_coefficient_is_exact_binary32": true,
+          "clip_only_margin_is_positive": true,
+          "clipped_candidate_has_strict_inward_margin": true,
+          "clipped_candidate_rounding_is_absorbed": true,
+          "dead_zone_bound_is_finite": true,
+          "inward_margin_is_positive": true,
+          "normal_anchor_converts_crumbs": true,
+          "normal_fallback_rounding_is_absorbed": true,
+          "outward_radius_rounding_is_sound": true,
+          "returned_output_is_in_p19_disk": true,
+          "rounded_half_has_strict_inward_margin": true,
+          "sector_center_reconstructs": true,
+          "sector_radius_reconstructs": true,
+          "shape_is_within_p9_entry_domain": true
+        },
+        "entries": 58720256,
+        "margin": {
+          "acceptance_coefficient": "891/2048",
+          "accepted_candidate_radius": "119565797201788611672358704599959635238695265079684109960926851/274250489833917599536076296598972467390497146927263612938485760",
+          "certified_inward_radius": "502642598351905769/1152921504606846976",
+          "certified_inward_radius_raw": "119565797201788611672358704599959635238695265079684109960926851/274250489833917599536076296598972467390497146927263612938485760",
+          "clip_only_inward_margin": "53997772719001/576460752303423488",
+          "clipped_candidate_radius": "4030017065358121236075729646551667714514192247612182210903739/9244399084736683142600136628964804108395701440107113818882048",
+          "displacement_crumb": "257127620079/23945242826029513411849172299223580994042798784118784",
+          "displacement_crumb_relative": "257127620079/281474976710656",
+          "displacement_signal_slope": "19176359031/576460752303423488",
+          "inward_margin": "71710053325847/1152921504606846976",
+          "normal_anchor": "1/85070591730234615865843651857942052864",
+          "rounded_half_radius": "982511/16777216"
+        },
+        "root_entries_upper": 7663,
+        "shape": [
+          4096,
+          14336
+        ],
+        "subnormal_guard": {
+          "all_subnormal_input_radius": "64281895441/713623846352979940529142984724747568191373312",
+          "zero_instead_of_half_output_error": "64281895441/1427247692705959881058285969449495136382746624"
+        }
+      }
+    ]
+  },
+  "schema_version": "passive-muon-scalable-sector-shield-v1",
+  "shape_summary": [
+    {
+      "certified": true,
+      "certified_inward_radius": {
+        "decimal": "0.435150853978783819404896338056687454809434711933135986328125",
+        "exact": "501694777300173805/1152921504606846976"
+      },
+      "inward_margin": {
+        "decimal": "0.000884302271216180595103661943312545190565288066864013671875",
+        "exact": "1019531105057811/1152921504606846976"
+      },
+      "shape": [
+        768,
+        768
+      ]
+    },
+    {
+      "certified": true,
+      "certified_inward_radius": {
+        "decimal": "0.43524245858458962717130180664071303908713161945343017578125",
+        "exact": "250900195110064177/576460752303423488"
+      },
+      "inward_margin": {
+        "decimal": "0.00079269766541037282869819335928696091286838054656982421875",
+        "exact": "456959092551631/576460752303423488"
+      },
+      "shape": [
+        768,
+        3072
+      ]
+    },
+    {
+      "certified": true,
+      "certified_inward_radius": {
+        "decimal": "0.435800104208213114065362248084056773222982883453369140625",
+        "exact": "62805413981444221/144115188075855872"
+      },
+      "inward_margin": {
+        "decimal": "0.000235052041786885934637751915943226777017116546630859375",
+        "exact": "33874569209731/144115188075855872"
+      },
+      "shape": [
+        768,
+        50257
+      ]
+    },
+    {
+      "certified": true,
+      "certified_inward_radius": {
+        "decimal": "0.435791878766498698427600544391680159606039524078369140625",
+        "exact": "62804228570364541/144115188075855872"
+      },
+      "inward_margin": {
+        "decimal": "0.000243277483501301572399455608319840393960475921630859375",
+        "exact": "35059980289411/144115188075855872"
+      },
+      "shape": [
+        3072,
+        12288
+      ]
+    },
+    {
+      "certified": true,
+      "certified_inward_radius": {
+        "decimal": "0.435547686256388373073067388219214990385808050632476806640625",
+        "exact": "502152293766746209/1152921504606846976"
+      },
+      "inward_margin": {
+        "decimal": "0.000487469993611626926932611780785009614191949367523193359375",
+        "exact": "562014638485407/1152921504606846976"
+      },
+      "shape": [
+        4096,
+        4096
+      ]
+    },
+    {
+      "certified": true,
+      "certified_inward_radius": {
+        "decimal": "0.435859947276917993053135802483666338957846164703369140625",
+        "exact": "62814038276545661/144115188075855872"
+      },
+      "inward_margin": {
+        "decimal": "0.000175208973082006946864197516333661042153835296630859375",
+        "exact": "25250274108291/144115188075855872"
+      },
+      "shape": [
+        4096,
+        11008
+      ]
+    },
+    {
+      "certified": true,
+      "certified_inward_radius": {
+        "decimal": "0.435972957693516052248006165115157273248769342899322509765625",
+        "exact": "502642598351905769/1152921504606846976"
+      },
+      "inward_margin": {
+        "decimal": "0.000062198556483947751993834884842726751230657100677490234375",
+        "exact": "71710053325847/1152921504606846976"
+      },
+      "shape": [
+        4096,
+        14336
+      ]
+    }
+  ],
+  "source_snapshot": {
+    "experiments/mixed_precision/run_p20_scalable_sector_shield_study.py": "700c0e62c4060fdcfb65ee265ae6231c76dcd2a84b4799cccc7f9c9dbddbe0a2",
+    "pyproject.toml": "7a9988bf528baef5145f779516d4315349d1c2a6bbb7394c9b93fbbee1d4f596",
+    "results/summaries/implementation_margin_certificate.json": "ad74050d66f711d2bb8e3e37f80fc29f4d6162419a2f5224931e1ca7fd2e536f",
+    "results/summaries/outer_loop_roundoff_certificate.json": "a36dcf8ab10c6c45b9a31d366cc2c67def0eaddb5be1e30214222e5eb83a84ea",
+    "results/summaries/sector_shielded_inexact_resolvent_certificate.json": "8ed26627d0ce1e5389aacc954834e408e8598348b8b011c76f0b61fe768360f8",
+    "scripts/certify_scalable_sector_shield.py": "da950229411deee553503aaf5a732c50f7a2140d2c1b6e0ca17d63bd67595e38",
+    "scripts/reconstruct_scalable_sector_shield.py": "33a785984fa18ee9f3afa4a630f0dad9fb735201c6baaa362270ca9b3513a278",
+    "src/passive_muon/scalable_mixed_precision_certificate.py": "c73e9bcba24b09f4948105e978cbab9f3723d2d1359b1b231912bc1cc165f93a",
+    "src/passive_muon/scalable_sector_shield.py": "21638fc7bff75158ff9a26ce7f47f5ff142b963250ab9caa562b679e4fe81276",
+    "src/passive_muon/scalable_sector_shield_certificate.py": "1bcd40f62dab8860ee552bdfdc44ffd80de123dcbe4eb9ddc0095ede8c9298bb",
+    "tests/test_p20_scalable_sector_shield_study.py": "d189fb2ab02fccc3fbb252f59aa704fb124a30b06b53151c373709b8dc197134",
+    "tests/test_scalable_sector_shield.py": "39a093d286f86c7df8962dd5f9db4065b12d2f3cd1744bd9e266d1d0fb30f31e",
+    "tests/test_scalable_sector_shield_certificate.py": "74c9ccfeb258dfdca90ed03d2e99d056e4d72056cd36be30f3072dc3217757b1",
+    "tests/test_scalable_sector_shield_reconstruction.py": "2bd3daabeca10495212ac74d4cc100e4731514e10115a4ab30de3bfa0feec111",
+    "theory/scalable_mixed_precision_sector_shield.md": "ba66025c20aeab2371b21ff388c2fde723ab3e8a0728cb604490c191bf16f3e9",
+    "uv.lock": "f097fd7895b5c1c551a0bd233d025c3f8ae97b7dedce6a8690569f1b1f7c5cf1"
+  },
+  "theorem": {
+    "conditional_rate_inheritance": "requires every shield call along the trajectory to succeed, stored S to equal the abstract operator-port signal, and the remaining outer loop to use exact real arithmetic",
+    "inward_disk": "every successful shape-locked return U obeys ||U-(1143/2048)S||_F <= (893/2048-Delta_mn)||S||_F",
+    "original_p19_disk": "therefore ||U-(1143/2048)S||_F <= (893/2048)||S||_F",
+    "runtime_exact_postcheck": "not used",
+    "subnormal_dead_zone": "an all-subnormal FP32 signal has norm at most h*(2^-126-2^-149); the recorded half-distance is an input/output bound only"
+  }
+}
