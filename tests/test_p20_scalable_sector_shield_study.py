@@ -316,6 +316,19 @@ def test_full_default_discrete_decisions_are_locked_across_platforms(
     assert transformer[CANDIDATE_UPSTREAM]["fallback"] == 0
 
 
+def test_committed_canonical_study_matches_the_locked_default_decisions(
+    default_payload: dict[str, object],
+) -> None:
+    canonical_path = ROOT / "results/summaries/p20_scalable_sector_shield_study.json"
+    assert canonical_path.is_file()
+    canonical = json.loads(canonical_path.read_text(encoding="utf-8"))
+    assert _without_provenance(canonical) == _without_provenance(default_payload)
+    git = canonical["experiment_provenance"]["git"]
+    assert git["branch"] == "p20-scalable-mixed-precision-sector-shield"
+    assert git["dirty"] is False
+    assert len(git["sha"]) == 40
+
+
 def test_small_payload_is_deterministic_ignoring_provenance() -> None:
     config = _small_config()
     first = run_study(config)

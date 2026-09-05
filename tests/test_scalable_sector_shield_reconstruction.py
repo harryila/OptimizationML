@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import ast
+import hashlib
 import json
 import subprocess
 import sys
@@ -77,6 +78,17 @@ def test_p20_reconstruction_matches_committed_canonical_when_present() -> None:
     payload = json.loads(_run(root, "--require-canonical").stdout)
     assert payload["canonical_comparison"]["status"] == "matched"
     assert payload["all_exact_checks_passed"]
+
+
+def test_p20_canonical_source_snapshot_matches_the_checkpoint_tree() -> None:
+    root = Path(__file__).resolve().parents[1]
+    canonical = root / "results/summaries/scalable_sector_shield_certificate.json"
+    assert canonical.is_file()
+    payload = json.loads(canonical.read_text(encoding="utf-8"))
+    for relative, expected in payload["source_snapshot"].items():
+        observed = hashlib.sha256((root / relative).read_bytes()).hexdigest()
+        assert observed == expected, relative
+    assert payload["git"]["dirty"] is False
 
 
 def test_p20_reconstruction_rejects_tampered_margin(tmp_path: Path) -> None:
