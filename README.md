@@ -649,6 +649,42 @@ yet a scalable BF16/GPU theorem. See
 and
 [`results/summaries/P19_SECTOR_SHIELDED_INEXACT_RESOLVENT_RESULTS.md`](results/summaries/P19_SECTOR_SHIELDED_INEXACT_RESOLVENT_RESULTS.md).
 
+Branch `p20-scalable-mixed-precision-sector-shield` replaces P19's runtime
+exact-rational postcheck with a statically certified, shape-locked arithmetic
+graph. For stored FP32 or exactly widened BF16 signal/candidate tensors, the
+CPU proof reference uses round-to-nearest-even FP32 vector arithmetic,
+maximum-scaled fixed balanced reductions, an exact FP64 product of two FP32
+norm factors, and directed-inward scalar comparisons. It returns an inward
+candidate unchanged, contracts a rejected finite candidate along its computed
+displacement ray, and reserves `fl32(S/2)` for exceptional arithmetic. Every
+successful stored FP32 return satisfies the same full-matrix pointwise sector
+`[125/1024,509/512]` without a runtime big-integer check.
+
+The exact shape recurrence certifies all seven P9 Transformer shapes. The
+tight `4096 x 14336` overall margin is exactly
+`71710053325847/1152921504606846976` (about `6.220e-5`); its clip-only margin
+is `53997772719001/576460752303423488` (about `9.367e-5`). When stored `S` is
+identified with the optimizer signal at the abstract port, the P19 smooth-PL
+rates replay conditionally at `eta=1/83`, `q=999598040401/1000000000000`, and at
+`eta=1/120`, `q=624350169/625000000`. P20 does not yet compose BF16/FP32
+signal casts or outer momentum, parameter, master-weight, aspect-scaling,
+weight-decay, or distributed arithmetic into that interconnection.
+
+The frozen study leaves `2671/2688` P18 annulus candidates bitwise unchanged,
+radially clips the remaining `17`, uses no half fallback there, and retains all
+`2176/2176` informative fidelity passes. All `14/14` declared operating
+Transformer spectra are inactive; seven deliberately flat boundary stresses
+clip. The pinned upstream candidate passes through on `761/2688` annulus
+cases and clips on `1927`, which demonstrates a safeguarded candidate rather
+than certifying unmodified upstream Muon. P20 is an accept/clip/fallback map,
+not P19's metric projection: fixed-input nonexpansiveness and global identity
+on exact P18 are not claimed. FTZ/DAZ, native GPU reductions, a BF16 output,
+and all-subnormal signals without exactly representable halving remain outside
+the positive result. See
+[`theory/scalable_mixed_precision_sector_shield.md`](theory/scalable_mixed_precision_sector_shield.md)
+and
+[`results/summaries/P20_SCALABLE_MIXED_PRECISION_SECTOR_SHIELD_RESULTS.md`](results/summaries/P20_SCALABLE_MIXED_PRECISION_SECTOR_SHIELD_RESULTS.md).
+
 The repair claim is intentionally scoped. A constant `rho` is the exact minimal
 linear shift for a **specified point, pair, sample set, or domain with a finite
 certified deficit**. For exact scale-invariant normalization on every nonzero
@@ -708,6 +744,9 @@ uv run --locked python scripts/reconstruct_sector_projected_useful_rate.py \
 uv run --locked python scripts/certify_sector_shielded_inexact_resolvent.py
 uv run --locked python scripts/reconstruct_sector_shielded_inexact_resolvent.py \
   --require-canonical
+uv run --locked python scripts/certify_scalable_sector_shield.py
+uv run --locked python scripts/reconstruct_scalable_sector_shield.py \
+  --require-canonical
 uv run --locked pytest
 ```
 
@@ -728,6 +767,8 @@ uv run --locked python experiments/resolvent/run_p16_solver_study.py
 uv run --locked python experiments/resolvent/run_p17_shape_preserving_study.py
 uv run --locked python experiments/resolvent/run_p18_sector_projected_study.py
 uv run --locked python experiments/resolvent/run_p19_sector_shielded_study.py
+uv run --locked python \
+  experiments/mixed_precision/run_p20_scalable_sector_shield_study.py
 uv run --locked python scripts/make_figures.py
 ```
 
@@ -743,7 +784,7 @@ not support a universal claim across BF16 backends.
 
 ## Scope
 
-This repository stays focused on twenty-two technical goals:
+This repository stays focused on twenty-three technical goals:
 
 1. a theorem for current-input Frobenius normalization;
 2. exact local and finite-pair controls for the five-step Jordan map;
@@ -790,7 +831,11 @@ This repository stays focused on twenty-two technical goals:
     makes arbitrary finite approximate candidates pointwise safe, replays
     both P18 rates, and exact-checks every successful binary64 reference
     output;
-22. qualified matrix, quadratic, nonlinear, and precision diagnostics.
+22. a statically certified, shape-locked BF16/FP32-to-FP32 CPU shield with
+    balanced reductions, positive inward margins on seven Transformer shapes,
+    radial clipping, fail-closed near-zero guards, and no runtime big-integer
+    postcheck;
+23. qualified matrix, quadratic, nonlinear, and precision diagnostics.
 
 P7 is the submission cutoff and broadest robustness theorem; P6 is its
 zero-disturbance smooth-PL corollary. P8 and P9 instantiate one P7 disturbance
@@ -827,8 +872,14 @@ so both P18 rates survive without solver accuracy as a stability premise.
 Its fixed-signal nonexpansiveness preserves, but does not itself derive, a
 candidate-fidelity bound from the P15 graph residual. The locked binary64
 reference exact-checks every successful stored output and explicitly fails
-closed on unrepresentable subnormal cases; scalable BF16/GPU shielding
-remains open for P20.
+closed on unrepresentable subnormal cases. P20 replaces that runtime rational
+check with a static proof for one locked CPU FP32 graph, optionally accepting
+exactly widened BF16 inputs. Its pass-through/radial-clip/half-fallback map is
+pointwise safe on seven frozen shapes but is neither P19's metric projection
+nor a theorem for arbitrary GPU, FTZ, reduction, or compiler semantics. The
+P19 rates carry over only after identifying stored `S` with the abstract
+operator-port signal; composing the signal cast and the remaining outer
+finite-precision arithmetic is deferred to P21.
 Production-gradient
 measurement, model-forward use of the logical
 master, weight decay, aspect-ratio scaling, complete stochastic neural-network

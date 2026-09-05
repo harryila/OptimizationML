@@ -1303,6 +1303,107 @@ stochastic gradients, or neural training. See
 `p19_sector_shielded_study.json`, and
 `../../theory/sector_shielded_inexact_resolvent.md`.
 
+## 26. P20 scalable mixed-precision sector shield
+
+P20 replaces P19's runtime exact-dyadic disk postcheck with a static rounding
+certificate for one locked CPU graph. Stored BF16 or FP32 signal/candidate
+tensors are widened to FP32, the output is FP32, vector operations use
+round-to-nearest-even with gradual underflow and no FMA contraction, and norms
+use maximum scaling plus a fixed adjacent balanced FP32 reduction. The two
+FP32 norm factors have an exact FP64 scalar product; comparison and radial-
+clip scalars are directed inward. No runtime rational or big-integer check is
+used.
+
+With
+
+\[
+\gamma=\frac{1143}{2048},\qquad r=\frac{893}{2048},
+\]
+
+an inward candidate passes through unchanged. A rejected finite candidate is
+contracted along its computed displacement ray using the locked coefficient
+`890/2048`; exceptional clip arithmetic falls back to `fl32(S/2)`. The exact
+shape recurrence proves every successful stored output lies in
+
+\[
+\|U-\gamma S\|_F\le r\|S\|_F,
+\]
+
+and hence in the full-matrix pointwise sector `[125/1024,509/512]`. This is
+not an incremental sector, and the implementation is not P19's metric
+projection: fixed-input nonexpansiveness and global identity on exact P18 are
+not claimed.
+
+The exact lower margins after taking the worst pass-through, radial-clip, and
+half-fallback bound are:
+
+| shape | exact inward margin |
+| --- | ---: |
+| `768 x 768` | `1019531105057811/1152921504606846976` |
+| `768 x 3072` | `456959092551631/576460752303423488` |
+| `768 x 50257` | `33874569209731/144115188075855872` |
+| `3072 x 12288` | `35059980289411/144115188075855872` |
+| `4096 x 4096` | `562014638485407/1152921504606846976` |
+| `4096 x 11008` | `25250274108291/144115188075855872` |
+| `4096 x 14336` | `71710053325847/1152921504606846976` |
+
+The last value is the tight overall margin, approximately `6.21985564839e-5`;
+the tight clip-only margin is
+`53997772719001/576460752303423488`, approximately
+`9.36712039861e-5`.
+
+When the stored `S` is identified with the abstract operator-port signal and
+the rest of the EMA/Nesterov interconnection remains exact real arithmetic,
+the P19 smooth-PL certificates replay conditionally:
+
+\[
+\mathcal V_{t+1}\le
+\frac{999598040401}{1000000000000}\mathcal V_t
+\quad\text{at }\eta=\frac1{83},
+\]
+
+and
+
+\[
+\mathcal V_{t+1}\le
+\frac{624350169}{625000000}\mathcal V_t
+\quad\text{at }\eta=\frac1{120}.
+\]
+
+These are pointwise-sector consequences for the pinned `beta=19/20`,
+otherwise-real loop on differentiable globally `10`-smooth, global-PL-`1`
+objectives with finite infimum. P20 does not yet compose the stored signal
+cast with FP32 momentum, Nesterov, parameter, master-weight, aspect-scaling,
+weight-decay, or distributed arithmetic; that is deferred to P21.
+
+The P18 comparator retains additive normalization
+`U/(||U||_F+epsilon)` with `epsilon=1/10000000`, five Jordan stages with
+coefficients `6889/2000`, `-191/40`, and `4063/2000`, `mu=1000`,
+`lambda=1/1000`, gate ceiling `3/4`, ray gain `K=1`, and passive divisor
+`1024`. On the frozen annulus, it passes through bit for bit on `2671/2688`
+calls; the remaining `17` use the radial clip, none uses the half fallback,
+and all `2176/2176` informative cases retain the fidelity gates. All `14/14`
+declared operating Transformer spectra pass through; seven deliberately flat
+boundary stresses clip.
+
+The pinned five-stage BF16 KellerJordan/Muon candidate at revision
+`f98f1cacc0263b04290753e32be8d498c1efc806` passes through on `761/2688`
+annulus calls and clips on `1927`. Only the canonical small-matrix case runs
+the literal matrix graph; Transformer-shape records are packed singular-
+coordinate diagnostics. This is a shielded-candidate result, not a stability
+claim for unmodified upstream Muon or a global fidelity theorem.
+
+At zero input the shield returns zero. An all-subnormal signal uses `S/2`
+only when exact stored halving is proven; otherwise it fails closed. The
+excluded region is an input-space representability dead zone, not an
+objective neighborhood. FTZ/DAZ, native GPU/tensor-core reductions, compiler
+reassociation, final BF16 storage, stochastic gradients, throughput, and
+neural training remain outside P20. See
+`P20_SCALABLE_MIXED_PRECISION_SECTOR_SHIELD_RESULTS.md`,
+`scalable_sector_shield_certificate.json`,
+`p20_scalable_sector_shield_study.json`, and
+`../../theory/scalable_mixed_precision_sector_shield.md`.
+
 ## Reproduce
 
 ```bash
@@ -1380,6 +1481,13 @@ uv run --locked python scripts/reconstruct_sector_shielded_inexact_resolvent.py 
   --require-canonical
 uv run --locked python experiments/resolvent/run_p19_sector_shielded_study.py \
   --output results/summaries/p19_sector_shielded_study.json
+uv run --locked python scripts/certify_scalable_sector_shield.py \
+  --output results/summaries/scalable_sector_shield_certificate.json
+uv run --locked python scripts/reconstruct_scalable_sector_shield.py \
+  --require-canonical
+uv run --locked python \
+  experiments/mixed_precision/run_p20_scalable_sector_shield_study.py \
+  --output results/summaries/p20_scalable_sector_shield_study.json
 uv run --locked python experiments/matrices/run_deficit_audit.py
 uv run --locked python experiments/quadratics/run_lr_sweep.py
 uv run --locked python experiments/quadratics/run_horizon_check.py

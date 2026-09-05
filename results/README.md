@@ -220,6 +220,26 @@ Current outputs:
   exact-as-stored NumPy FP64 reference guarantee, sampled fidelity evidence,
   representability obstruction, and explicit deployment exclusions; the
   human proof audit remains pending and unsigned;
+- `summaries/scalable_sector_shield_certificate.json`: canonical P20 exact
+  artifact for the locked BF16/FP32-to-FP32 CPU arithmetic graph, scaled
+  balanced-norm enclosure, pass-through/radial-clip/half-fallback rounding
+  ledgers, all-subnormal representability guard, seven exact Transformer-shape
+  margins, and conditional replay of both P19 sector rates; generate it with
+  `scripts/certify_scalable_sector_shield.py` and independently check its
+  exact fields with the standard-library-only
+  `scripts/reconstruct_scalable_sector_shield.py`;
+- `summaries/p20_scalable_sector_shield_study.json`: deterministic P20 CPU
+  proof-reference diagnostic covering P18 and pinned-upstream candidates,
+  sampled annulus activation/fidelity, packed Transformer spectra, a sparse
+  full-`768 x 768` arithmetic smoke test, adversarial and one-ULP controls,
+  near-zero/FTZ behavior, and a discrete cross-platform decision digest; its
+  offline exact disk checks are diagnostics, not runtime operations or a
+  native accelerator-parity theorem;
+- `summaries/P20_SCALABLE_MIXED_PRECISION_SECTOR_SHIELD_RESULTS.md`: scoped
+  P20 static containment theorem, exact seven-shape margins, conditional
+  abstract-port rate consequence, candidate diagnostics, near-zero
+  fail-closed boundary, and explicit outer-arithmetic/GPU exclusions; the
+  human proof audit remains pending and unsigned;
 - `summaries/deficit_audit.{json,csv}`: 24-prefix spectral audit;
 - `summaries/quadratic_lr_sweep.json` plus CSV tables: gain-matched quadratic
   sweep and sensitivity classifications;

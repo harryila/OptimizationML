@@ -48,7 +48,10 @@ Experiment order is gated:
 22. the P19 exact-real sector shield, both useful-rate replays, exact-as-stored
     binary64 reference postcondition, corrupted-candidate controls, and
     separate bitwise-inactivity/fidelity diagnostic;
-23. only after model-forward use of the logical master, aspect scaling, weight
+23. the P20 static seven-shape mixed-precision shield certificate, locked CPU
+    BF16/FP32 arithmetic graph, radial-clip and near-zero controls, P18 and
+    pinned-upstream candidate diagnostics, and cross-platform decision replay;
+24. only after model-forward use of the logical master, aspect scaling, weight
     decay, and implementation-parity gates, a small matched neural-training
     sweep.
 
@@ -95,7 +98,13 @@ convergence for a primary ceiling-`3/4`, divisor-`4096`, `eta=1/128000`
 high-fidelity point and a secondary ceiling-`1/8`, divisor-`8192`,
 full-`eta=1/32000` point. Both pass the unchanged canonical P16 fidelity
 thresholds. This is not an incremental theorem and does not propagate P16
-solver or finite-precision error through the gate. Each run
+solver or finite-precision error through the gate. P18 then obtains the
+useful-rate sector, and P19 makes arbitrary candidates safe with an exact-
+checked binary64 projection. P20 replaces that runtime exact check for seven
+fixed shapes with a static rounding certificate around a locked CPU
+BF16/FP32-to-FP32 pass-through/radial-clip/half-fallback graph. Its conditional
+rate inheritance treats stored `S` as the abstract port signal; it does not
+yet compose the outer signal cast or optimizer arithmetic. Each run
 writes a self-contained JSON manifest and compact CSV
 tables under `results/summaries/`; the JSON records inputs, operator details,
 dtype, seed, software, hardware, and Git state.
@@ -186,9 +195,13 @@ uv run --locked python scripts/certify_sector_shielded_inexact_resolvent.py \
   --output results/summaries/sector_shielded_inexact_resolvent_certificate.json
 uv run --locked python scripts/reconstruct_sector_shielded_inexact_resolvent.py \
   --require-canonical
+uv run --locked python scripts/certify_scalable_sector_shield.py \
+  --output results/summaries/scalable_sector_shield_certificate.json
+uv run --locked python scripts/reconstruct_scalable_sector_shield.py \
+  --require-canonical
 ```
 
-The P9--P19 generators and standard-library-only reconstructions carry their
+The P9--P20 generators and standard-library-only reconstructions carry their
 exact claims. P11's adjacent controls establish rejection of the sufficient
 certificate, not actual closed-loop instability. P12's older sampled epsilon
 grid is discovery evidence only; its exact/interval generator carries the
@@ -208,6 +221,12 @@ signal nonexpansiveness does not turn the P15 graph residual alone into a
 final nonlinear P18 candidate-error bound. The locked NumPy binary64 shield
 exact-checks every successful stored result and may fail closed when no
 certified representable result exists; it is not a portable backend theorem.
+P20's exact shape recurrence instead pays statically for the locked scaled
+balanced norm, inward comparison, radial clip, and half fallback. It proves
+pointwise containment for successful stored results on seven fixed shapes,
+not incremental passivity or correctness of an arbitrary CPU/GPU graph. Its
+outer-loop rate statement is conditional on identifying stored `S` with the
+abstract operator-port signal.
 
 Replay the P16 guarded reference solver and fidelity diagnostic separately:
 
@@ -273,6 +292,27 @@ corrupted candidates. The exact disk theorem and rational smooth-PL LMIs are
 separate from these sampled diagnostics. A successful reference-shield return
 is exact-checked, but the study is not a general IEEE-754 or accelerator
 rounding theorem.
+
+Replay the P20 proof-reference shield study separately:
+
+```bash
+uv run --locked python \
+  experiments/mixed_precision/run_p20_scalable_sector_shield_study.py \
+  --output results/summaries/p20_scalable_sector_shield_study.json
+```
+
+The study fixes additive `epsilon=1e-7`, five Jordan stages with coefficients
+`6889/2000`, `-191/40`, and `4063/2000`, the P18 interface parameters, the
+pinned KellerJordan/Muon revision, and the P20 CPU arithmetic graph. It tests
+P18 and literal-upstream candidate families. Only the canonical `2 x 2`
+upstream case executes the full matrix graph; the seven Transformer-shape
+records are packed singular-coordinate diagnostics. The annulus records
+`2671/2688` P18 pass-throughs, `17` radial clips, no half fallbacks, and
+`2176/2176` informative fidelity passes; the upstream candidate records
+`761` pass-throughs and `1927` clips. Offline exact disk checks validate the
+study output but are not part of the runtime. Sampled activation/fidelity and
+a matching cross-platform decision digest do not prove global fidelity or
+extend the static certificate to another backend.
 
 The P9 separate CPU diagnostic is a native-matmul
 falsification probe against a float64, non-exact target:

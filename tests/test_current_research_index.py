@@ -481,7 +481,62 @@ def test_current_indexes_record_scoped_p19_sector_shield() -> None:
     assert "## 25. P19 sector-shielded inexact resolvent" in results
     assert "## C25. Sector shield makes arbitrary finite candidates" in claims
     assert "human proof audit of C25" in tasks
-    assert "twenty-two technical goals" in readme
+    assert "twenty-three technical goals" in readme
+
+
+def test_current_indexes_record_scoped_p20_scalable_sector_shield() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    tasks = (ROOT / "TASKS.md").read_text(encoding="utf-8")
+    results_index = (ROOT / "results/README.md").read_text(encoding="utf-8")
+    experiments = (ROOT / "experiments/README.md").read_text(encoding="utf-8")
+    results = (ROOT / "results/summaries/RESULTS.md").read_text(encoding="utf-8")
+    claims = (ROOT / "theory/claims.md").read_text(encoding="utf-8")
+    theorem = (ROOT / "theory/scalable_mixed_precision_sector_shield.md").read_text(
+        encoding="utf-8"
+    )
+
+    for artifact in (
+        "scalable_sector_shield_certificate.json",
+        "p20_scalable_sector_shield_study.json",
+        "P20_SCALABLE_MIXED_PRECISION_SECTOR_SHIELD_RESULTS.md",
+    ):
+        assert artifact in results_index
+    for command in (
+        "certify_scalable_sector_shield.py",
+        "reconstruct_scalable_sector_shield.py",
+        "run_p20_scalable_sector_shield_study.py",
+    ):
+        assert command in readme
+        assert command in experiments
+        assert command in results
+    for text in (readme, results, claims, theorem):
+        assert "125/1024" in text or r"\frac{125}{1024}" in text
+        assert "509/512" in text or r"\frac{509}{512}" in text
+        assert "1143/2048" in text or r"\frac{1143}{2048}" in text
+        assert "893/2048" in text or r"\frac{893}{2048}" in text
+        assert "4096 x 11008" in text
+        assert "4096 x 14336" in text
+        assert "999598040401" in text
+        assert "624350169" in text
+        assert "pointwise" in text.lower()
+        assert "BF16" in text
+        assert "FP32" in text
+    combined = " ".join((readme, results, claims, theorem))
+    assert "71710053325847" in combined
+    assert "1152921504606846976" in combined
+    assert "2671/2688" in combined
+    assert "2176/2176" in combined
+    assert "761/2688" in combined
+    assert "1927" in combined
+    assert "radial clip" in combined or "radial-clip" in combined
+    assert "runtime big-integer" in combined or "runtime rational" in combined
+    assert "not P19's metric projection" in combined
+    assert "not an incremental" in combined
+    assert "P21" in combined
+    assert "## 26. P20 scalable mixed-precision sector shield" in results
+    assert "## C26. Shape-locked mixed-precision sector containment" in claims
+    assert "human proof audit of C26" in tasks
+    assert "twenty-three technical goals" in readme
 
 
 def test_double_blind_material_is_guarded_from_the_public_repository() -> None:

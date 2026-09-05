@@ -331,6 +331,42 @@
       is needed beyond P19's stability shield. P19 establishes fixed-signal
       nonexpansiveness but does not manufacture this intervening nonlinear
       error estimate.
+- [x] Freeze the P20 proof-reference arithmetic graph: contiguous CPU BF16 or
+      FP32 inputs widened to FP32, FP32 round-to-nearest-even vector
+      operations, maximum-scaled fixed balanced reductions, directed-inward
+      FP64 scalar operations, gradual underflow, no FMA/reassociation, and an
+      FP32 stored output.
+- [x] Derive exact pass-through, radial-clip, and `S/2` fallback envelopes,
+      with positive shape-specific inward margins for all seven frozen P9
+      Transformer shapes. The tight `4096 x 14336` overall margin is
+      `71710053325847/1152921504606846976`.
+- [x] Prove every successful stored P20 output lies in P18's full-matrix
+      pointwise sector `[125/1024,509/512]` without a runtime rational or
+      big-integer postcheck, including the zero, normal-anchor, exactly
+      halvable subnormal, and fail-closed all-subnormal cases.
+- [x] Replay the P19 rates conditionally when stored `S` is the abstract
+      operator-port signal: `eta=1/83` has rate
+      `999598040401/1000000000000`, and `eta=1/120` has rate
+      `624350169/625000000`. Do not treat this as composition of the outer
+      BF16/FP32 signal cast, momentum, parameter, or master-weight arithmetic.
+- [x] Evaluate both the P18 candidate and the literal pinned five-stage
+      upstream candidate. The P18 annulus study has `2671/2688` pass-throughs,
+      `17` radial clips, no half fallbacks, and all `2176/2176` informative
+      fidelity passes; the upstream candidate has `761` pass-throughs and
+      `1927` clips.
+- [x] Add one-ULP, arbitrary/adversarial, nonfinite, normal/subnormal, FTZ,
+      sparse full-shape, and cross-platform decision controls, plus an exact
+      generator, standard-library-only reconstruction, focused tests, and
+      dedicated P20 CI.
+- [ ] Obtain an independent human proof audit of C26, including the scaled
+      balanced-norm envelope, all three stored-output branches, near-zero
+      representability boundary, exact shape recurrence, conditional port
+      identification, and distinction from P19 projection; the unsigned
+      packet is
+      `theory/audits/P20_SCALABLE_MIXED_PRECISION_SECTOR_SHIELD_HUMAN_PROOF_AUDIT.md`.
+- [ ] Compose the P20 stored-signal boundary with FP32 EMA/Nesterov,
+      parameter/master-weight rounding, aspect scaling, weight decay, and
+      distributed semantics. This is the P21 integration gate.
 - [ ] Bound the complete error of a pinned deployed BF16 backend by the C12
       disturbance model and certify its ultimate neighborhood; P8--P10 are
       proposed proof-reference designs, not literal upstream parity.

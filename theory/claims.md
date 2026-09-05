@@ -1816,3 +1816,117 @@ through bit for bit and all `2176/2176` informative cases retain the P18
 fidelity gates. Exact and numerical corrupted-candidate controls are repaired
 into the sector. These diagnostics do not prove global fidelity. See
 `sector_shielded_inexact_resolvent.md`; independent human review is pending.
+
+## C26. Shape-locked mixed-precision sector containment without runtime exact checks — proved
+
+Retain C24--C25's abstract pointwise sector
+`[125/1024,509/512]`, equivalently the moving disk
+
+\[
+\mathcal D_S=\left\{U:
+\left\|U-\frac{1143}{2048}S\right\|_F
+\le\frac{893}{2048}\|S\|_F\right\}.
+\]
+
+P20 certifies a concrete stored-value shield separately for the seven fixed
+matrix shapes `768 x 768`, `768 x 3072`, `768 x 50257`,
+`3072 x 12288`, `4096 x 4096`, `4096 x 11008`, and
+`4096 x 14336`. Signal and candidate inputs are contiguous CPU binary32 or
+bfloat16 tensors; bfloat16 is widened exactly to binary32, and the stored
+output is binary32. The locked graph requires IEEE round-to-nearest,
+ties-to-even with gradual underflow, materialized non-FMA binary32 vector
+operations, maximum-scaled fixed adjacent balanced binary32 reductions, an
+exact binary64 product of the two binary32 norm factors, and explicitly
+directed-inward binary64/binary32 clip scalars. FTZ/DAZ, reassociation,
+tensor-core reductions, a final BF16 cast, and arbitrary backend semantics do
+not inherit the result.
+
+Put `gamma=1143/2048`, `r=893/2048`, and form the stored displacement
+`Dhat=fl32(C-fl32(gamma*S))`. A candidate is returned bit for bit only when
+the rounded scaled-norm screen with coefficient `891/2048` passes. Otherwise
+a finite candidate is contracted along `Dhat` using the stricter coefficient
+`890/2048` and a sequentially downward-rounded scalar. Only exceptional clip
+arithmetic uses `fl32(S/2)`. At `S=0`, the returned value is zero. A nonzero
+all-subnormal signal uses `S/2` only when the locked bit rule proves exact
+halving; otherwise the shield fails closed without emitting an update.
+
+The exact full-matrix rounding recurrence takes the worst of pass-through,
+radial-clip, and half-fallback radii and rounds it outward on a `2^-60` grid.
+It gives the following rigorous positive lower margins
+`Delta_(a,b)=r-R_(a,b)`:
+
+| shape | exact `Delta_(a,b)` | decimal |
+| --- | --- | ---: |
+| `768 x 768` | `1019531105057811/1152921504606846976` | `8.84302271216e-4` |
+| `768 x 3072` | `456959092551631/576460752303423488` | `7.92697665410e-4` |
+| `768 x 50257` | `33874569209731/144115188075855872` | `2.35052041787e-4` |
+| `3072 x 12288` | `35059980289411/144115188075855872` | `2.43277483501e-4` |
+| `4096 x 4096` | `562014638485407/1152921504606846976` | `4.87469993612e-4` |
+| `4096 x 11008` | `25250274108291/144115188075855872` | `1.75208973082e-4` |
+| `4096 x 14336` | `71710053325847/1152921504606846976` | `6.21985564839e-5` |
+
+The tight shape's clip-only margin is
+`53997772719001/576460752303423488`, approximately
+`9.36712039861e-5`. Thus every successful stored return lies in `D_S` without
+a runtime `Fraction` or big-integer check and satisfies C24's full-matrix
+origin-centred **pointwise** sector. This is not an incremental sector,
+Jacobian bound, or global theorem over arbitrary matrix dimensions.
+
+The nonzero all-subnormal failure set is contained in the explicit input-space
+region `||S||_F < ceil(sqrt(ab))*2^-126`. This is a representability dead zone,
+not an objective or Lyapunov neighborhood: a small Nesterov signal can result
+from cancellation while the state remains large.
+
+Conditionally, when stored `S` is identified with the signal at C24's abstract
+operator port and the rest of the loop remains exact real arithmetic, every
+successful shielded step supplies the same pointwise sector. The exact C24--
+C25 smooth-PL implications therefore remain
+
+\[
+\mathcal V_{t+1}\le
+\frac{999598040401}{1000000000000}\mathcal V_t
+\quad\text{at }\eta=\frac1{83},
+\]
+
+and
+
+\[
+\mathcal V_{t+1}\le
+\frac{624350169}{625000000}\mathcal V_t
+\quad\text{at }\eta=\frac1{120},
+\]
+
+for the pinned otherwise-real EMA/Nesterov ordering with `beta=19/20` on
+differentiable globally `10`-smooth, global-PL-`1` objectives with finite
+infimum. This does not yet justify substituting a rounded stored signal into
+the exact-real interconnection or compose momentum, parameter, master-weight,
+aspect-scaling, weight-decay, or distributed arithmetic. Those outer ports
+remain the P21 problem. The rates are Lyapunov-bound rates; PL does not imply
+a unique minimizer, and no arbitrary-pair contraction is claimed.
+
+The comparator specification remains explicit. The P18 candidate uses
+additive normalization `U/(||U||_F+epsilon)` with
+`epsilon=1/10000000`, five Jordan stages with coefficients `6889/2000`,
+`-191/40`, and `4063/2000`, the P13 radial repair, `mu=1000`,
+`lambda=1/1000`, ceiling `3/4`, `K=1`, and passive divisor `1024`. The
+literal small-matrix upstream candidate is the five-stage BF16
+KellerJordan/Muon graph pinned at revision
+`f98f1cacc0263b04290753e32be8d498c1efc806` with additive `1e-7`
+normalization; large-shape records are labelled packed singular-coordinate
+diagnostics rather than backend parity.
+
+On the frozen annulus, P18 passes through bit for bit on `2671/2688` calls;
+the other `17` are radially clipped, none uses the half fallback, and all
+`2176/2176` informative outputs retain the frozen fidelity gates. All `14/14`
+declared operating Transformer spectra pass through while seven flat boundary
+stresses clip. The pinned upstream candidate passes through on `761/2688`
+annulus calls and clips on `1927`. These are sampled activation/fidelity
+diagnostics, not global inactivity or fidelity proofs and not a certificate
+for unmodified upstream Muon.
+
+Unlike C25's exact metric projection, this pass-through/clip/fallback map is
+not claimed to be fixed-input nonexpansive or globally the identity on exact
+P18. It is a correctness-first, memory-scalable CPU proof reference, not a
+native GPU, throughput, stochastic-training, or complete-optimizer theorem.
+See `scalable_mixed_precision_sector_shield.md`; independent human review is
+pending.
