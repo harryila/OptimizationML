@@ -951,7 +951,7 @@
     "git": {
       "branch": "p20-scalable-mixed-precision-sector-shield",
       "dirty": false,
-      "sha": "d1354952e7415bfba000685ed58f19b46f628458"
+      "sha": "d0a9e92403a29638018b13579c2a612965dbc5b4"
     },
     "hardware": {
       "device": "cpu",
@@ -1122,7 +1122,7 @@
         "git": {
           "branch": "p20-scalable-mixed-precision-sector-shield",
           "dirty": false,
-          "sha": "d1354952e7415bfba000685ed58f19b46f628458"
+          "sha": "d0a9e92403a29638018b13579c2a612965dbc5b4"
         },
         "machine": "arm64",
         "platform": "macOS-15.5-arm64-arm-64bit",

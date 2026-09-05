@@ -79,7 +79,7 @@
   "git": {
     "branch": "p20-scalable-mixed-precision-sector-shield",
     "dirty": false,
-    "sha": "d1354952e7415bfba000685ed58f19b46f628458"
+    "sha": "d0a9e92403a29638018b13579c2a612965dbc5b4"
   },
   "prior_p19": {
     "artifact_commit": "154449ed7418ed7264a7442bfb7df92f1366a4b6",
@@ -910,7 +910,7 @@
     "src/passive_muon/scalable_mixed_precision_certificate.py": "c73e9bcba24b09f4948105e978cbab9f3723d2d1359b1b231912bc1cc165f93a",
     "src/passive_muon/scalable_sector_shield.py": "21638fc7bff75158ff9a26ce7f47f5ff142b963250ab9caa562b679e4fe81276",
     "src/passive_muon/scalable_sector_shield_certificate.py": "1bcd40f62dab8860ee552bdfdc44ffd80de123dcbe4eb9ddc0095ede8c9298bb",
-    "tests/test_p20_scalable_sector_shield_study.py": "d189fb2ab02fccc3fbb252f59aa704fb124a30b06b53151c373709b8dc197134",
+    "tests/test_p20_scalable_sector_shield_study.py": "799a3b8b38784046c36b4ff95930f737a587ccf3c7d6e782379e490bacc20797",
     "tests/test_scalable_sector_shield.py": "39a093d286f86c7df8962dd5f9db4065b12d2f3cd1744bd9e266d1d0fb30f31e",
     "tests/test_scalable_sector_shield_certificate.py": "74c9ccfeb258dfdca90ed03d2e99d056e4d72056cd36be30f3072dc3217757b1",
     "tests/test_scalable_sector_shield_reconstruction.py": "2bd3daabeca10495212ac74d4cc100e4731514e10115a4ab30de3bfa0feec111",
