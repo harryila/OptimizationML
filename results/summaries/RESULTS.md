@@ -1113,6 +1113,73 @@ stochastic-gradient behavior, or neural-network convergence. See
 `equivariant_resolvent_solver_certificate.json`, `p16_solver_study.json`, and
 `../../theory/equivariant_resolvent_solver.md`.
 
+## 23. P17 shape-preserving gated resolvent
+
+P17 retains P16's exact resolvent internally but exposes a smooth blend of
+the passive Yosida output and the unshifted five-stage Jordan response. It
+fixes `epsilon=1/10000000`, additive normalization
+`U/(||U||_F+epsilon)`, five stages with coefficients `6889/2000`, `-191/40`,
+and `4063/2000`, `lambda=1/1000`, and `mu=1000`. For
+`q=||S||_F^2`, its `C^2` quintic smootherstep gate is zero for `q<=1/4` and
+reaches its locked ceiling at `q>=1`. The formula and epsilon placement remain
+traced to KellerJordan/Muon revision
+`f98f1cacc0263b04290753e32be8d498c1efc806`; upstream contains neither the
+repair, resolvent, nor gate.
+
+An analytic singular-mode reduction gives the dimension-uniform raw-shape
+gain upper
+
+\[
+M_X=\frac{20191130443162880000000}{26793221204801899863}<754.
+\]
+
+Combining this with the Yosida mode gains in `[500,1000]` proves an
+origin-centered pointwise sector for the gated output on every finite real
+rectangular shape. This is not an incremental sector or a Lipschitz/Jacobian
+bound. The smooth-PL value--momentum proof needs only this pointwise residual
+supply and does not discard the radial derivative cross term of the gate.
+
+Two exact `4 x 4` LMIs pass for the pinned `beta=19/20` EMA/Nesterov loop and
+every differentiable globally `10`-smooth, global-PL-`1` objective:
+
+- the primary high-fidelity point uses gate ceiling `3/4`, passive divisor
+  `4096`, and `eta=1/128000`, with
+  `tau^2=281474943156225/281474976710656<1`;
+- the secondary full-step point uses ceiling `1/8`, divisor `8192`, and
+  `eta=1/32000`, with
+  `tau^2=281474741829681/281474976710656<1`.
+
+Each result is a global exact-real one-trajectory theorem: objective gap,
+gradient, and momentum converge geometrically, and the iterates converge to
+some trajectory-dependent global minimizer. It is not an arbitrary-pair
+incremental-contraction theorem.
+
+Exact/Arb controls show why the passive region matters for a local
+incremental/passivity interpretation. At `t=63/10000`, raw
+`E_(h,epsilon)(J(S))` has derivative in `(-147000,-146000)` at a source in
+`(19/10000,1/500)`, while both locked gates expose only the passive branch.
+An under-sized passive region exposes a derivative in `(-19000,-18000)` and
+has a strictly negative frozen scalar Jury margin. The global pointwise PL
+proof does not require this gate placement; it uses only the ceiling bound.
+
+On the canonical `diag(3,4)` input, outward-rounded enclosures including P15
+residual inflation give best-scalar departure about `5.678e-2` and shaping
+retention about `0.81146` for the primary point, and departure about
+`2.036e-2` and retention about `0.29094` for the full-step point. Both pass
+the unchanged P16 `1/1000` departure and `1/10` retention gates. The wider
+spectrum-grid and realistic-rank readout is deterministic FP64 evidence, not
+a global fidelity extremum or rounding proof.
+
+P17 assumes the exact resolvent in exact real arithmetic. It does not
+propagate P16 approximate-solver error through the shape branch and gate,
+certify FP32/BF16 or rounded residual evaluation, establish literal upstream
+parity, or cover weight decay, aspect scaling, stochastic gradients,
+model-state reconstruction, or neural-network convergence. See
+`P17_SHAPE_PRESERVING_RESOLVENT_RESULTS.md`,
+`shape_preserving_resolvent_certificate.json`,
+`p17_shape_preserving_study.json`, and
+`../../theory/shape_preserving_resolvent.md`.
+
 ## Reproduce
 
 ```bash
@@ -1172,6 +1239,12 @@ uv run --locked python scripts/reconstruct_equivariant_resolvent_solver.py \
   --require-canonical
 uv run --locked python experiments/resolvent/run_p16_solver_study.py \
   --output results/summaries/p16_solver_study.json
+uv run --locked python scripts/certify_shape_preserving_resolvent.py \
+  --output results/summaries/shape_preserving_resolvent_certificate.json
+uv run --locked python scripts/reconstruct_shape_preserving_resolvent.py \
+  --require-canonical
+uv run --locked python experiments/resolvent/run_p17_shape_preserving_study.py \
+  --output results/summaries/p17_shape_preserving_study.json
 uv run --locked python experiments/matrices/run_deficit_audit.py
 uv run --locked python experiments/quadratics/run_lr_sweep.py
 uv run --locked python experiments/quadratics/run_horizon_check.py

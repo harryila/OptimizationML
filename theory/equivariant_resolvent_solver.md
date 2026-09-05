@@ -447,7 +447,7 @@ Only successful calls may emit
 \]
 
 P16 may report attained FP64 residuals.  A rigorous rounding envelope for
-`rbar_fp64` is deferred to P17.
+`rbar_fp64` is deferred to P18.
 
 ## 7. Fidelity is a separate acceptance gate
 

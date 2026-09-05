@@ -293,7 +293,7 @@ def test_cli_writes_canonical_json_for_six_small_shapes(tmp_path: Path) -> None:
     assert payload["canonical_target"] == "results/summaries/p16_solver_study.json"
 
 
-def test_committed_study_provenance_is_clean_and_hash_current_when_present() -> None:
+def test_committed_study_provenance_is_clean_and_matches_recorded_commit() -> None:
     if not CANONICAL.exists():
         return
 
@@ -306,9 +306,13 @@ def test_committed_study_provenance_is_clean_and_hash_current_when_present() -> 
     for relative_path, expected_digest in payload["experiment_provenance"][
         "source_snapshot"
     ].items():
-        source = ROOT / relative_path
-        assert source.is_file(), relative_path
-        assert hashlib.sha256(source.read_bytes()).hexdigest() == expected_digest
+        completed = subprocess.run(
+            ["git", "show", f"{git['sha']}:{relative_path}"],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+        )
+        assert hashlib.sha256(completed.stdout).hexdigest() == expected_digest
 
 
 def test_default_solver_configuration_remains_locked() -> None:

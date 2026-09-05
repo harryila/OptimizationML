@@ -21,7 +21,7 @@ not silently replaced by ``A_epsilon(U)+mu*U`` away from an exact solution.
 
 This literal postcheck requires a second SVD in the reference implementation.
 The locked absolute tolerance below is an operational solver budget, not an
-IEEE-754 error theorem.  P17 is reserved for certifying finite-precision
+IEEE-754 error theorem.  P18 is reserved for certifying finite-precision
 residual evaluation and solve errors.
 """
 

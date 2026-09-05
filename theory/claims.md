@@ -1499,3 +1499,103 @@ fidelity obstruction; it does not satisfy the overall P16 acceptance gate.
 It is not an FP64 rounding theorem, a BF16 solver, a literal upstream-Muon
 implementation, or evidence for neural-network convergence. See
 `equivariant_resolvent_solver.md`; independent human review is pending.
+
+## C23. Shape-preserving gated resolvent — two global pointwise-sector smooth-PL designs certified
+
+Retain C19--C22's exact-real additive-epsilon architecture on an arbitrary
+fixed finite real `m x n` matrix space. Fix `epsilon=1/10000000`, five Jordan
+stages with exact coefficients `6889/2000`, `-191/40`, and `4063/2000`, the
+P13 radial repair, `mu=1000`, and `lambda=1/1000`. The practical polynomial
+and epsilon placement are traced to KellerJordan/Muon revision
+`f98f1cacc0263b04290753e32be8d498c1efc806`; upstream contains neither the
+radial repair, resolvent, nor gate below.
+
+Let `A_epsilon=E_(h,epsilon)+G_epsilon`, `B=A_epsilon+1000I`,
+`J=(I+B/1000)^(-1)`, `Y=1000(I-J)`, and
+`X(S)=E_(h,epsilon)(J(S))`. For `q=||S||_F^2`, define the `C^2` gate
+
+\[
+\theta(q)=
+\begin{cases}
+0,&q\le 1/4,\\
+\bar\theta\,\psi((4q-1)/3),&1/4<q<1,\\
+\bar\theta,&q\ge1,
+\end{cases}
+\qquad
+\psi(t)=6t^5-15t^4+10t^3,
+\]
+
+and expose
+
+\[
+T_{\bar\theta,c}(S)
+=\bigl(1-\theta(\|S\|_F^2)\bigr)Y(S)/c
+ +\theta(\|S\|_F^2)X(S).
+\]
+
+Bi-orthogonal equivariance and rank preservation reduce the origin-centered
+bound to nonnegative singular modes, including repeated and zero modes. Write
+the singular-mode values of `X(S)` as `e_i(S)`. Exact P12--P13 inequalities
+give the dimension-uniform analytic gain bound
+
+\[
+0\le \frac{e_i(S)}{\sigma_i(S)}\le
+M_X:=\frac{20191130443162880000000}{26793221204801899863}
+<754.
+\]
+
+Together with `500<=y_i(S)/sigma_i(S)<=1000`, this proves
+
+\[
+m=\frac{(1-\bar\theta)500}{c},\qquad
+M=\frac{(1-\bar\theta)1000}{c}+\bar\theta M_X,
+\qquad
+\|T(S)-\gamma S\|_F\le K\|S\|_F,
+\]
+
+where `gamma=(M+m)/2` and `K=(M-m)/2`. This is a global
+**origin-centered pointwise sector**, not an incremental sector, Lipschitz
+bound, or Jacobian certificate. Differentiating the gate would add a radial
+cross term; the P6 value--momentum proof does not differentiate `T` or compare
+two arbitrary inputs and therefore needs only the displayed pointwise
+residual supply.
+
+For the pinned exact-real EMA/Nesterov ordering with `beta=19/20`, two exact
+`4 x 4` value--momentum LMIs prove global one-trajectory convergence for every
+differentiable globally `10`-smooth objective with finite infimum satisfying
+the global PL inequality with constant `1`:
+
+- the primary high-fidelity design has `bar_theta=3/4`, `c=4096`,
+  `eta=1/128000`, and
+  `tau^2=281474943156225/281474976710656<1`;
+- the secondary full-step design has `bar_theta=1/8`, `c=8192`,
+  `eta=1/32000`, and
+  `tau^2=281474741829681/281474976710656<1`.
+
+In both cases, objective gap, gradient, and momentum converge geometrically,
+and summable parameter updates imply convergence to some trajectory-dependent
+global minimizer. PL does not imply uniqueness, and no arbitrary-pair
+incremental contraction is claimed.
+
+The passive region is necessary only for the claimed local
+incremental/passivity safeguard, not for the pointwise-sector PL proof. At
+the exact scalar control `t=63/10000`, raw `X` has derivative strictly between
+`-147000` and `-146000` at a source strictly between `19/10000` and `1/500`.
+Both locked gates are zero there. An under-sized passive-region control
+instead exposes a derivative between `-19000` and `-18000` and has a strictly
+negative frozen scalar EMA/Nesterov Jury margin. This is a local linearization
+control, not a claimed divergent smooth-PL trajectory; the global PL proof
+uses only `0<=theta<=bar_theta`.
+
+Outward-rounded Arb enclosures on the canonical `diag(3,4)` input, including
+P15 residual inflation, prove that both designs pass the unchanged P16
+best-scalar-departure `1/1000` and shaping-retention `1/10` thresholds. The
+declared spectrum-grid and realistic-rank study is deterministic FP64
+diagnostic evidence, not a global fidelity extremum or rounding certificate.
+
+C23 assumes the exact resolvent in exact real arithmetic. It does not
+propagate P16 approximate-solver error through `X` and the gate; certify FP64
+or BF16 arithmetic or rounded residual evaluation; establish literal
+upstream parity; cover weight decay, aspect scaling, stochastic gradients, or
+model-state reconstruction; or prove neural-network convergence. See
+`shape_preserving_resolvent.md`; independent human review is pending.

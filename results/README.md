@@ -168,6 +168,22 @@ Current outputs:
   real solver theorem and diagnostic readout, including algebraic noncollapse,
   the failed meaningful-fidelity gate, and deployment exclusions; the human
   proof audit remains pending and unsigned;
+- `summaries/shape_preserving_resolvent_certificate.json`: canonical P17
+  exact/Arb artifact for the dimension-uniform origin-centered pointwise
+  sector, the primary high-fidelity reduced-step and secondary full-step
+  smooth-PL certificates, the unsafe raw-shape derivative band, canonical
+  fidelity decisions, and the under-sized-passive-region control; generate it
+  with `scripts/certify_shape_preserving_resolvent.py` and independently check
+  its exact fields with the standard-library-only
+  `scripts/reconstruct_shape_preserving_resolvent.py`;
+- `summaries/p17_shape_preserving_study.json`: deterministic computed-residual-
+  checked FP64 spectrum-grid and realistic-rank fidelity diagnostic for both
+  locked P17 designs; it is not a global fidelity extremum, an inexact-solver
+  theorem, or a rounding certificate;
+- `summaries/P17_SHAPE_PRESERVING_RESOLVENT_RESULTS.md`: scoped P17 global
+  exact-real one-trajectory smooth-PL result, canonical fidelity pass, unsafe-
+  band and gate controls, and explicit incremental/inexact-solver/deployment
+  exclusions; the human proof audit remains pending and unsigned;
 - `summaries/deficit_audit.{json,csv}`: 24-prefix spectral audit;
 - `summaries/quadratic_lr_sweep.json` plus CSV tables: gain-matched quadratic
   sweep and sensitivity classifications;

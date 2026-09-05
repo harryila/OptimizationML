@@ -1,0 +1,69 @@
+name: P17 shape-preserving resolvent replay
+
+on:
+  push:
+    branches:
+      - main
+      - p17-shape-preserving-resolvent
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  shape-preserving-resolvent:
+    name: Exact gate, PL certificate, and fidelity replay (Python 3.12)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out repository with certificate history
+        uses: actions/checkout@v7
+        with:
+          # The frozen P16 artifact and annotated tag are checked by history.
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          enable-cache: true
+
+      - name: Install the locked environment
+        run: uv sync --locked
+
+      - name: Generate the exact and Arb P17 certificate
+        run: >-
+          uv run --locked python scripts/certify_shape_preserving_resolvent.py
+          --output "$RUNNER_TEMP/shape_preserving_resolvent_certificate.json"
+
+      - name: Independently reconstruct the fresh certificate
+        run: >-
+          uv run --locked python scripts/reconstruct_shape_preserving_resolvent.py
+          --canonical "$RUNNER_TEMP/shape_preserving_resolvent_certificate.json"
+          --require-canonical
+
+      - name: Compare the committed canonical certificate
+        run: >-
+          uv run --locked python scripts/reconstruct_shape_preserving_resolvent.py
+          --require-canonical
+
+      - name: Replay the deterministic spectrum and negative-control study
+        run: >-
+          uv run --locked python experiments/resolvent/run_p17_shape_preserving_study.py
+          --output "$RUNNER_TEMP/p17_shape_preserving_study.json"
+
+      - name: Run P17 theorem, fidelity, provenance, and index tests
+        run: >-
+          uv run --locked pytest -q
+          tests/test_shape_preserving_resolvent.py
+          tests/test_shape_preserving_resolvent_certificate.py
+          tests/test_p17_shape_preserving_study.py
+          tests/test_shape_preserving_resolvent_cli.py
+          tests/test_shape_preserving_resolvent_reconstruction.py
+          tests/test_shape_preserving_resolvent_result_manifest.py
+          tests/test_current_research_index.py

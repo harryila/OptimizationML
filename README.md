@@ -548,6 +548,36 @@ solver and fidelity obstruction, not a successful Muon-fidelity result. See
 and
 [`results/summaries/P16_EQUIVARIANT_RESOLVENT_SOLVER_RESULTS.md`](results/summaries/P16_EQUIVARIANT_RESOLVENT_SOLVER_RESULTS.md).
 
+Branch `p17-shape-preserving-resolvent` resolves that fidelity failure by
+keeping the P16 resolvent internally while exposing a smooth blend of its
+passive Yosida output and the unshifted five-stage Jordan response. With
+`q=||S||_F^2`, the exact C2 quintic gate is zero for `q<=1/4` and reaches a
+locked ceiling for `q>=1`. The passive branch avoids exposing the raw
+negative slope on the certified small-signal band, while the Jordan branch
+restores spectral shaping away from the origin. That placement is a
+local/incremental safeguard; the global one-trajectory PL proof itself uses
+only `0<=theta<=bar_theta`.
+
+An analytic singular-mode argument gives a dimension-uniform **pointwise**
+sector on every finite rectangular shape. Exact `4 x 4` value--momentum LMIs
+then prove global one-trajectory convergence for every differentiable
+globally `10`-smooth, global-PL-`1` objective at two locked points:
+
+- the primary high-fidelity design uses gate ceiling `3/4`, passive divisor
+  `4096`, and `eta=1/128000`, with
+  `tau^2=281474943156225/281474976710656<1`;
+- the secondary full-step design uses ceiling `1/8`, divisor `8192`, and
+  `eta=1/32000`, with
+  `tau^2=281474741829681/281474976710656<1`.
+
+Both rigorously pass the unchanged P16 fidelity thresholds on the canonical
+`diag(3,4)` input after P15 residual inflation. The theorem uses the exact
+resolvent in exact real arithmetic: it is not an incremental-sector theorem
+and does not propagate P16 solver error or FP64/BF16 rounding. See
+[`theory/shape_preserving_resolvent.md`](theory/shape_preserving_resolvent.md)
+and
+[`results/summaries/P17_SHAPE_PRESERVING_RESOLVENT_RESULTS.md`](results/summaries/P17_SHAPE_PRESERVING_RESOLVENT_RESULTS.md).
+
 The repair claim is intentionally scoped. A constant `rho` is the exact minimal
 linear shift for a **specified point, pair, sample set, or domain with a finite
 certified deficit**. For exact scale-invariant normalization on every nonzero
@@ -598,6 +628,9 @@ uv run --locked python scripts/reconstruct_inexact_yosida_robustness.py \
 uv run --locked python scripts/certify_equivariant_resolvent_solver.py
 uv run --locked python scripts/reconstruct_equivariant_resolvent_solver.py \
   --require-canonical
+uv run --locked python scripts/certify_shape_preserving_resolvent.py
+uv run --locked python scripts/reconstruct_shape_preserving_resolvent.py \
+  --require-canonical
 uv run --locked pytest
 ```
 
@@ -615,6 +648,7 @@ uv run --locked python experiments/mixed_precision/run_mixed_precision_falsifica
 uv run --locked python experiments/mixed_precision/run_scalable_mixed_precision_diagnostic.py
 uv run --locked python experiments/mixed_precision/run_finite_precision_outer_loop_diagnostic.py
 uv run --locked python experiments/resolvent/run_p16_solver_study.py
+uv run --locked python experiments/resolvent/run_p17_shape_preserving_study.py
 uv run --locked python scripts/make_figures.py
 ```
 
@@ -630,7 +664,7 @@ not support a universal claim across BF16 backends.
 
 ## Scope
 
-This repository stays focused on nineteen technical goals:
+This repository stays focused on twenty technical goals:
 
 1. a theorem for current-input Frobenius normalization;
 2. exact local and finite-pair controls for the five-step Jordan map;
@@ -667,7 +701,10 @@ This repository stays focused on nineteen technical goals:
     smooth-PL ultimate-bound certificate at the full pinned step;
 18. an equivariant singular-value resolvent reduction, guarded reference
     solver, and an honestly failed meaningful-Muon-fidelity gate;
-19. qualified matrix, quadratic, nonlinear, and precision diagnostics.
+19. a C2-gated shape-preserving resolvent interface with a global pointwise
+    sector, two exact smooth-PL stability points, and a recovered canonical
+    meaningful-fidelity pass;
+20. qualified matrix, quadratic, nonlinear, and precision diagnostics.
 
 P7 is the submission cutoff and broadest robustness theorem; P6 is its
 zero-disturbance smooth-PL corollary. P8 and P9 instantiate one P7 disturbance
@@ -689,9 +726,14 @@ relative graph-residual tolerance and gives an explicit neighborhood for an
 absolute residual floor. P16 supplies an exact-real globally convergent
 structured solver and a checked FP64 reference implementation, but its locked
 operator fails the meaningful-fidelity gate and no sampled frontier point
-jointly passes that gate and the frozen P14 certificate. A useful uniform
-iteration bound, certified FP64 rounding, and a stable higher-fidelity design
-remain open. Production-gradient
+jointly passes that gate and the frozen P14 certificate. P17 changes the
+exposed interface, proves global exact-real one-trajectory smooth-PL
+convergence for a primary `3/4` high-fidelity design at one-quarter step and a
+secondary `1/8` full-step design, and restores the canonical fidelity pass.
+Its pointwise sector is not incremental, and its theorem does not inherit
+P15's inexact-solver robustness. A useful uniform iteration bound, P17
+solver-error propagation, and certified FP64 rounding remain open for P18.
+Production-gradient
 measurement, model-forward use of the logical
 master, weight decay, aspect-ratio scaling, complete stochastic neural-network
 training, production-kernel parity, and formal circuit ports remain open.

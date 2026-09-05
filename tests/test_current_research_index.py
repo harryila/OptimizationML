@@ -321,9 +321,60 @@ def test_current_indexes_record_scoped_p16_equivariant_resolvent_solver() -> Non
     assert "## 22. P16 equivariant resolvent solver" in results
     assert "## C22. Equivariant structured resolvent solve" in claims
     assert "human proof audit of C22" in tasks
-    assert "nineteen technical goals" in readme
+    assert "twenty technical goals" in readme
     assert "not a useful uniform" in " ".join(claims.split())
     assert "fails its overall meaningful-Muon acceptance gate" in results
+
+
+def test_current_indexes_record_scoped_p17_shape_preserving_resolvent() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    tasks = (ROOT / "TASKS.md").read_text(encoding="utf-8")
+    results_index = (ROOT / "results/README.md").read_text(encoding="utf-8")
+    experiments = (ROOT / "experiments/README.md").read_text(encoding="utf-8")
+    results = (ROOT / "results/summaries/RESULTS.md").read_text(encoding="utf-8")
+    claims = (ROOT / "theory/claims.md").read_text(encoding="utf-8")
+    p17_summary = (ROOT / "results/summaries/P17_SHAPE_PRESERVING_RESOLVENT_RESULTS.md").read_text(
+        encoding="utf-8"
+    )
+
+    for artifact in (
+        "shape_preserving_resolvent_certificate.json",
+        "p17_shape_preserving_study.json",
+        "P17_SHAPE_PRESERVING_RESOLVENT_RESULTS.md",
+    ):
+        assert artifact in results_index
+    for command in (
+        "certify_shape_preserving_resolvent.py",
+        "reconstruct_shape_preserving_resolvent.py",
+        "run_p17_shape_preserving_study.py",
+    ):
+        assert command in readme
+        assert command in experiments
+        assert command in results
+    for text in (readme, results, claims, p17_summary):
+        assert "1e-7" in text or "1/10000000" in text
+        assert "6889/2000" in text
+        assert "-191/40" in text
+        assert "4063/2000" in text
+        assert "1/1000" in text
+        assert "mu=1000" in text
+        assert "3/4" in text
+        assert "4096" in text
+        assert "1/128000" in text
+        assert "1/8" in text
+        assert "8192" in text
+        assert "1/32000" in text
+        assert "pointwise" in text.lower()
+        assert "exact-real" in text
+    combined = " ".join((readme, results, claims, p17_summary))
+    assert "281474943156225/281474976710656" in combined
+    assert "281474741829681/281474976710656" in combined
+    assert "not incremental" in combined or "not an incremental" in combined
+    assert "inexact-solver" in combined or "approximate-solver" in combined
+    assert "## 23. P17 shape-preserving gated resolvent" in results
+    assert "## C23. Shape-preserving gated resolvent" in claims
+    assert "human proof audit of C23" in tasks
+    assert "twenty technical goals" in readme
 
 
 def test_double_blind_material_is_guarded_from_the_public_repository() -> None:

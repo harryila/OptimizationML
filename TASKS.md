@@ -268,12 +268,29 @@
       convention, Arb enclosure, and fidelity classification; the unsigned
       packet is
       `theory/audits/P16_EQUIVARIANT_RESOLVENT_SOLVER_HUMAN_PROOF_AUDIT.md`.
-- [ ] Certify finite-precision evaluation of the P16 graph residual and solver
-      arithmetic. The current FP64 success statuses are checked diagnostics,
-      not exact rounding certificates.
-- [ ] Design and certify a stable resolvent interface that passes the locked
-      meaningful-fidelity gate; P16's six-point sampled frontier did not find
-      one and does not prove none exists.
+- [x] Define the P17 C2 gate between the scaled passive Yosida fallback and
+      `E_(h,epsilon)(J(S))`, with the passive region covering the exact/Arb
+      unsafe raw-shape derivative band as a local/incremental safeguard (the
+      pointwise PL theorem uses only the gate ceiling).
+- [x] Derive a dimension-uniform origin-centered pointwise sector for that
+      interface, including the exact full-matrix raw-shape gain upper
+      `20191130443162880000000/26793221204801899863`.
+- [x] Certify global exact-real one-trajectory smooth-PL convergence for the
+      primary ceiling-`3/4`, divisor-`4096`, `eta=1/128000` design and the
+      secondary ceiling-`1/8`, divisor-`8192`, full-`eta=1/32000` design.
+- [x] Replay both exact `4 x 4` LMIs independently, prove the C2 gate joins,
+      enclose the canonical `diag(3,4)` fidelity decisions after P15 residual
+      inflation, and include an under-sized-passive-region Jury control.
+- [ ] Obtain an independent human proof audit of C23, including the
+      singular-mode pointwise bound, distinction from an incremental sector,
+      PL use of the pointwise residual supply, gate coverage of the unsafe
+      band, both exact LMIs, and exact-real/inexact-solver separation; the
+      unsigned packet is
+      `theory/audits/P17_SHAPE_PRESERVING_RESOLVENT_HUMAN_PROOF_AUDIT.md`.
+- [ ] In P18, propagate P16 approximate-solver error through the P17 shape
+      channel and gate, and certify finite-precision graph-residual and solver
+      arithmetic. Current FP64 success statuses remain checked diagnostics,
+      not exact rounding certificates or a P17 theorem premise.
 - [ ] Bound the complete error of a pinned deployed BF16 backend by the C12
       disturbance model and certify its ultimate neighborhood; P8--P10 are
       proposed proof-reference designs, not literal upstream parity.

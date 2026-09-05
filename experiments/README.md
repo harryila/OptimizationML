@@ -39,7 +39,10 @@ Experiment order is gated:
 19. the P16 exact-real equivariant singular-value solver theorem, guarded
     FP64 computed-residual study, exact/Arb noncollapse witness, and sampled
     stability--fidelity frontier;
-20. only after model-forward use of the logical master, aspect scaling, weight
+20. the P17 exact-real shape-preserving gated-resolvent pointwise-sector
+    theorem, two smooth-PL certificates, exact/Arb unsafe-band and canonical
+    fidelity controls, and separate FP64 spectrum diagnostic;
+21. only after model-forward use of the logical master, aspect scaling, weight
     decay, and implementation-parity gates, a small matched neural-training
     sweep.
 
@@ -79,7 +82,14 @@ about `8.403e-5` of the upstream comparator's spectral shaping and therefore
 fails the frozen pre-certificate meaningful-fidelity gate. Its six-point sampled
 `(lambda,mu)` frontier finds no joint frozen-P14/fidelity pass; this is not a
 global impossibility theorem. P16 provides neither a useful uniform
-iteration-count bound nor certified FP64 rounding. Each run
+iteration-count bound nor certified FP64 rounding. P17 retains that resolvent
+internally and gates between scaled `Y` and `E_(h,epsilon)(J(S))`. A global
+origin-centered pointwise sector yields exact one-trajectory smooth-PL
+convergence for a primary ceiling-`3/4`, divisor-`4096`, `eta=1/128000`
+high-fidelity point and a secondary ceiling-`1/8`, divisor-`8192`,
+full-`eta=1/32000` point. Both pass the unchanged canonical P16 fidelity
+thresholds. This is not an incremental theorem and does not propagate P16
+solver or finite-precision error through the gate. Each run
 writes a self-contained JSON manifest and compact CSV
 tables under `results/summaries/`; the JSON records inputs, operator details,
 dtype, seed, software, hardware, and Git state.
@@ -158,9 +168,13 @@ uv run --locked python scripts/certify_equivariant_resolvent_solver.py \
   --output results/summaries/equivariant_resolvent_solver_certificate.json
 uv run --locked python scripts/reconstruct_equivariant_resolvent_solver.py \
   --require-canonical
+uv run --locked python scripts/certify_shape_preserving_resolvent.py \
+  --output results/summaries/shape_preserving_resolvent_certificate.json
+uv run --locked python scripts/reconstruct_shape_preserving_resolvent.py \
+  --require-canonical
 ```
 
-The P9--P16 generators and standard-library-only reconstructions carry their
+The P9--P17 generators and standard-library-only reconstructions carry their
 exact claims. P11's adjacent controls establish rejection of the sufficient
 certificate, not actual closed-loop instability. P12's older sampled epsilon
 grid is discovery evidence only; its exact/interval generator carries the
@@ -168,7 +182,9 @@ global upper. P15's residual and base-operator evaluations are exact real;
 its stopping rule is not a finite-precision solver claim. P16's exact/Arb
 artifact proves algebraic noncollapse, while its FP64 solver and sampled
 frontier are diagnostics and do not certify rounding error or a global
-fidelity impossibility.
+fidelity impossibility. P17's exact sector is pointwise and origin-centered,
+not incremental; its exact-real stability theorem assumes the exact
+resolvent, while its separate FP64 spectrum grid is diagnostic evidence only.
 
 Replay the P16 guarded reference solver and fidelity diagnostic separately:
 
@@ -188,6 +204,21 @@ SVD, or benchmark an accelerator. A returned success proves only that the
 computed FP64 candidate passes the computed P15 residual test. The exact-real
 global convergence theorem and Arb fidelity enclosure are separate from this
 diagnostic.
+
+Replay the P17 shape-preserving spectrum and fidelity diagnostic separately:
+
+```bash
+uv run --locked python experiments/resolvent/run_p17_shape_preserving_study.py \
+  --output results/summaries/p17_shape_preserving_study.json
+```
+
+The study evaluates both locked gates on the declared spectrum grid and
+complete reduced singular-value vectors for representative Transformer
+shapes. It records computed P15 residual checks, fidelity, amplitude, and
+rank accumulation. These deterministic FP64 results are not a proof of the
+dimension-uniform pointwise sector, a global fidelity extremum, or an exact
+rounding envelope. The exact P17 generator and independent reconstruction
+carry the smooth-PL theorem and canonical gate decisions.
 
 The P9 separate CPU diagnostic is a native-matmul
 falsification probe against a float64, non-exact target:
