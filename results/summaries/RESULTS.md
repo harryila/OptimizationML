@@ -1205,9 +1205,10 @@ proves
 
 for the pinned `beta=19/20` loop and every differentiable globally
 `10`-smooth, global-PL-`1` objective. The exact comparison of the tenth power
-of this rate with P14's rate proves a certified objective half-life about
+of this rate with P14's rate proves a certified Lyapunov-rate half-life about
 `9.9592x` P14's, within the predeclared one-order-of-magnitude gate. A second
-exact point at `eta=1/120` has a faster `666.31`-iteration half-life.
+exact point at `eta=1/120` has a faster `666.31`-iteration Lyapunov-rate
+half-life.
 
 The requested `eta=1/50` fails for the full declared pointwise-sector class:
 an exact admissible complex-skew boundary example has a negative
@@ -1229,6 +1230,78 @@ See `P18_SECTOR_PROJECTED_USEFUL_RATE_RESULTS.md`,
 `sector_projected_useful_rate_certificate.json`,
 `p18_sector_projected_study.json`, and
 `../../theory/sector_projected_useful_rate.md`.
+
+## 25. P19 sector-shielded inexact resolvent
+
+P19 places a final metric-projection shield around any finite approximate
+P18 candidate. With
+
+\[
+\gamma=\frac{1143}{2048},\qquad r=\frac{893}{2048},
+\]
+
+the allowed set at signal `S` is
+
+\[
+\mathcal D_S=\{U:\|U-\gamma S\|_F\le r\|S\|_F\}.
+\]
+
+Exact expansion identifies this ball with the P18 origin-centred pointwise
+sector `[125/1024,509/512]`. Therefore projection of every finite candidate,
+including an arbitrarily corrupted or time-varying candidate, satisfies the
+same full-matrix sector. At `S=0` the set is the singleton `{0}`. Because the
+exact P18 output already lies in this disk globally, the shield is exactly
+the identity on P18.
+
+The P18 value--momentum certificate consequently replays without any solver-
+accuracy premise. At `eta=1/83`,
+
+\[
+\mathcal V_{t+1}\le
+\frac{999598040401}{1000000000000}\mathcal V_t,
+\]
+
+with certified Lyapunov-rate half-life about `1724.0734`. At `eta=1/120`,
+
+\[
+\mathcal V_{t+1}\le
+\frac{624350169}{625000000}\mathcal V_t,
+\]
+
+with certified Lyapunov-rate half-life about `666.314`. Both are exact
+rational `4 x 4` smooth-PL LMI replays for the pinned `beta=19/20` loop on
+the complete differentiable globally `10`-smooth, global-PL-`1` objective
+class. These half-lives describe geometric Lyapunov bounds, not exact
+observed-objective halving times.
+
+For each fixed `S`, the shield is nonexpansive in its candidate and cannot
+increase error to the exact P18 output. This does not supply joint
+nonexpansiveness in `(S,C)` or turn the P15 graph residual alone into a final
+P18 fidelity bound.
+
+The locked binary64 reference uses balanced/scaled norms, an inward-rounded
+radius, and a mandatory exact dyadic postcheck of every successful stored
+return. Nonfinite candidates use a certified `S/2` fallback; nonfinite
+signals are rejected. A least-subnormal representation control demonstrates
+why the implementation must also fail closed when no valid binary64 interior
+output exists.
+
+On the frozen sampled annulus, all `2688/2688` guarded P18 candidates pass
+through bit for bit, and all `2176/2176` informative cases retain the P18
+fidelity gates. Four finite corrupted candidates fail before shielding and
+pass the exact stored-value sector check afterward. All `2690` solver graph-
+residual diagnostics pass, with worst threshold ratio about `1.356e-11`.
+Those diagnostics are sampled fidelity evidence, not the global proof.
+
+P19 retains additive normalization `U/(||U||_F+1e-7)`, five Jordan stages
+with coefficients `6889/2000`, `-191/40`, and `4063/2000`, P13's radial
+repair, `mu=1000`, and `lambda=1/1000`. It does not certify arbitrary FP64
+backends, BF16/GPU execution, literal upstream Muon, production additions,
+stochastic gradients, or neural training. See
+`P19_SECTOR_SHIELDED_INEXACT_RESOLVENT_RESULTS.md`,
+`sector_shielded_inexact_resolvent_certificate.json`,
+`p19_sector_shielded_study.json`, and
+`../../theory/sector_shielded_inexact_resolvent.md`.
 
 ## Reproduce
 
@@ -1301,6 +1374,12 @@ uv run --locked python scripts/reconstruct_sector_projected_useful_rate.py \
   --require-canonical
 uv run --locked python experiments/resolvent/run_p18_sector_projected_study.py \
   --output results/summaries/p18_sector_projected_study.json
+uv run --locked python scripts/certify_sector_shielded_inexact_resolvent.py \
+  --output results/summaries/sector_shielded_inexact_resolvent_certificate.json
+uv run --locked python scripts/reconstruct_sector_shielded_inexact_resolvent.py \
+  --require-canonical
+uv run --locked python experiments/resolvent/run_p19_sector_shielded_study.py \
+  --output results/summaries/p19_sector_shielded_study.json
 uv run --locked python experiments/matrices/run_deficit_audit.py
 uv run --locked python experiments/quadratics/run_lr_sweep.py
 uv run --locked python experiments/quadratics/run_horizon_check.py

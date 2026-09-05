@@ -297,17 +297,40 @@
       this is not claimed to be a counterexample to the structured P18 map.
 - [x] Replay the mandated exact rational frontier and lock `eta=1/83`,
       `q=999598040401/1000000000000`. The exact comparison against P14 proves
-      a half-life ratio below ten; `eta=1/120` supplies a faster-rate
-      alternative.
+      a certified Lyapunov-rate half-life ratio below ten; `eta=1/120`
+      supplies a faster-rate alternative.
 - [x] Add non-scale-invariant global amplitude and effective-update gates,
       canonical Arb fidelity checks, operating-annulus and broad-spectrum
       diagnostics, plus unprojected and small-`K` controls.
 - [ ] Obtain an independent human proof audit of C24; the unsigned packet is
       `theory/audits/P18_SECTOR_PROJECTED_USEFUL_RATE_HUMAN_PROOF_AUDIT.md`.
-- [ ] In P19, propagate P16 approximate-solver error through the P18 shape
-      projection and gate, and certify FP64 graph-residual evaluation. Current
-      computed-residual success statuses remain diagnostics, not exact
-      rounding certificates or a P18 theorem premise.
+- [x] Define the P19 moving Frobenius-ball shield and prove exactly, including
+      at `S=0`, that it is equivalent to P18's full-matrix origin-centred
+      pointwise sector `[125/1024,509/512]`.
+- [x] Prove that every finite approximate or corrupted candidate is shielded
+      into the P18 sector, while every exact P18 output is fixed globally.
+- [x] Prove fixed-signal metric-projection nonexpansiveness and its modular
+      candidate-error corollary, without claiming joint nonexpansiveness or
+      that the P15 graph residual alone bounds the nonlinear P18 candidate.
+- [x] Replay the exact P18 smooth-PL certificates at both `eta=1/83` and
+      `eta=1/120` for arbitrary time-varying finite shielded candidates.
+- [x] Implement the scaled/balanced inward-margin NumPy FP64 shield with a
+      mandatory exact-as-stored dyadic postcheck, certified `S/2` fallback,
+      positive-part clipping of P18's rounded inner product, and fail-closed
+      nonfinite/unrepresentable semantics.
+- [x] Verify normal bitwise inactivity on all 2,688 declared annulus calls,
+      preserve all 2,176 informative fidelity passes, and add exact and
+      numerical corrupted-candidate controls.
+- [x] Add a standard-library-only independent reconstruction, exact
+      provenance locks, dedicated tests, and P19 CI replay.
+- [ ] Obtain an independent human proof audit of C25; the unsigned packet is
+      `theory/audits/P19_SECTOR_SHIELDED_INEXACT_RESOLVENT_HUMAN_PROOF_AUDIT.md`.
+      The P18 and P19 packets are ready, but no external reviewer or delivery
+      destination has been supplied.
+- [ ] Derive a final P15-graph-residual-to-P18-candidate fidelity bound if one
+      is needed beyond P19's stability shield. P19 establishes fixed-signal
+      nonexpansiveness but does not manufacture this intervening nonlinear
+      error estimate.
 - [ ] Bound the complete error of a pinned deployed BF16 backend by the C12
       disturbance model and certify its ultimate neighborhood; P8--P10 are
       proposed proof-reference designs, not literal upstream parity.

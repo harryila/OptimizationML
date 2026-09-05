@@ -593,10 +593,11 @@ The initially proposed `eta=1/50` is impossible for a theorem using only
 this sector: an admissible complex-skew boundary map violates Schur--Cohn
 exactly. The mandated rational frontier nevertheless yields an acceptance-
 passing point at `eta=1/83`, with
-`q=999598040401/1000000000000`. Its certified objective half-life is about
-`1724.07`, or `9.959x` P14's, and the exact comparison `q^10<249001/250000`
-closes the predeclared rate gate. A smaller-step `eta=1/120` point certifies a
-faster `666.31`-iteration half-life.
+`q=999598040401/1000000000000`. Its certified Lyapunov-rate half-life is
+about `1724.07`, or `9.959x` P14's, and the exact comparison
+`q^10<249001/250000` closes the predeclared rate gate. A smaller-step
+`eta=1/120` point certifies a faster `666.31`-iteration Lyapunov-rate
+half-life.
 
 Outward-rounded canonical checks retain about `51.86%` of upstream shaping,
 and all 2,176 informative points in the sampled P17 operating annulus pass
@@ -608,6 +609,45 @@ the exact resolvent and exact real arithmetic. See
 [`theory/sector_projected_useful_rate.md`](theory/sector_projected_useful_rate.md)
 and
 [`results/summaries/P18_SECTOR_PROJECTED_USEFUL_RATE_RESULTS.md`](results/summaries/P18_SECTOR_PROJECTED_USEFUL_RATE_RESULTS.md).
+
+Branch `p19-sector-shielded-inexact-resolvent` removes solver accuracy as a
+premise for P18's stability theorem. For any finite approximate candidate
+`C(S)`, it returns the metric projection onto
+
+\[
+\mathcal D_S=\left\{U:
+\left\|U-\frac{1143}{2048}S\right\|_F
+\le\frac{893}{2048}\|S\|_F\right\}.
+\]
+
+This ball is exactly the P18 pointwise sector
+`[125/1024,509/512]`, including the singleton `{0}` at `S=0`. Every finite
+candidate is therefore safe after shielding, while the exact P18 output is
+fixed because it already lies in the disk. For each fixed signal, projection
+is nonexpansive in its candidate and cannot increase an independently
+established error to P18. This is not joint nonexpansiveness in signal and
+candidate, and the P15 graph residual alone still does not bound the final
+nonlinear P18 candidate error.
+
+The exact P18 smooth-PL certificates replay unchanged for arbitrary
+time-varying finite candidates after shielding: `eta=1/83` has
+`q=999598040401/1000000000000`, while `eta=1/120` has the faster certified
+rate `q=624350169/625000000`. Their certified Lyapunov-rate half-lives are
+approximately `1724.0734` and `666.314` iterations. These are rates of the
+geometric storage bounds, not promises about an observed objective halving
+at a fixed iteration.
+
+The locked binary64 reference uses scaled/balanced norm evaluation, projects
+to an inward margin, and exactly checks the stored dyadic output against the
+original P18 disk. Every successful return is thus certified. Nonfinite
+candidates use an exact-checked interior fallback; nonfinite signals and
+unrepresentable subnormal cases fail closed. On all 2,688 declared annulus
+calls the shield is inactive and bitwise identical, preserving all 2,176
+informative fidelity passes. This is a correctness-first CPU reference, not
+yet a scalable BF16/GPU theorem. See
+[`theory/sector_shielded_inexact_resolvent.md`](theory/sector_shielded_inexact_resolvent.md)
+and
+[`results/summaries/P19_SECTOR_SHIELDED_INEXACT_RESOLVENT_RESULTS.md`](results/summaries/P19_SECTOR_SHIELDED_INEXACT_RESOLVENT_RESULTS.md).
 
 The repair claim is intentionally scoped. A constant `rho` is the exact minimal
 linear shift for a **specified point, pair, sample set, or domain with a finite
@@ -665,6 +705,9 @@ uv run --locked python scripts/reconstruct_shape_preserving_resolvent.py \
 uv run --locked python scripts/certify_sector_projected_useful_rate.py
 uv run --locked python scripts/reconstruct_sector_projected_useful_rate.py \
   --require-canonical
+uv run --locked python scripts/certify_sector_shielded_inexact_resolvent.py
+uv run --locked python scripts/reconstruct_sector_shielded_inexact_resolvent.py \
+  --require-canonical
 uv run --locked pytest
 ```
 
@@ -684,6 +727,7 @@ uv run --locked python experiments/mixed_precision/run_finite_precision_outer_lo
 uv run --locked python experiments/resolvent/run_p16_solver_study.py
 uv run --locked python experiments/resolvent/run_p17_shape_preserving_study.py
 uv run --locked python experiments/resolvent/run_p18_sector_projected_study.py
+uv run --locked python experiments/resolvent/run_p19_sector_shielded_study.py
 uv run --locked python scripts/make_figures.py
 ```
 
@@ -699,7 +743,7 @@ not support a universal claim across BF16 backends.
 
 ## Scope
 
-This repository stays focused on twenty-one technical goals:
+This repository stays focused on twenty-two technical goals:
 
 1. a theorem for current-input Frobenius normalization;
 2. exact local and finite-pair controls for the five-step Jordan map;
@@ -742,7 +786,11 @@ This repository stays focused on twenty-one technical goals:
 20. a ray-sector-projected interface with a tight global pointwise sector,
     an exact useful-rate smooth-PL certificate, nonvanishing amplitude and
     effective-step guards, and a rational step--rate frontier;
-21. qualified matrix, quadratic, nonlinear, and precision diagnostics.
+21. an exact final sector shield that preserves P18 on exact candidates,
+    makes arbitrary finite approximate candidates pointwise safe, replays
+    both P18 rates, and exact-checks every successful binary64 reference
+    output;
+22. qualified matrix, quadratic, nonlinear, and precision diagnostics.
 
 P7 is the submission cutoff and broadest robustness theorem; P6 is its
 zero-disturbance smooth-PL corollary. P8 and P9 instantiate one P7 disturbance
@@ -771,10 +819,16 @@ secondary `1/8` full-step design, and restores the canonical fidelity pass.
 Its pointwise sector is not incremental, and its theorem does not inherit
 P15's inexact-solver robustness. P18 projects the shape branch into `[0,1]`,
 reduces the global condition ratio to `1018/125`, and certifies the selected
-`eta=1/83` point within ten times P14's half-life. The initial `eta=1/50`
-sector target has an exact generic complex-skew obstruction; this does not
-prove instability of the more structured P18 operator. P18 solver-error
-propagation and certified FP64 rounding remain open for P19.
+`eta=1/83` point within ten times P14's certified Lyapunov-rate half-life.
+The initial `eta=1/50` sector target has an exact generic complex-skew
+obstruction; this does not prove instability of the more structured P18
+operator. P19 projects every finite candidate back into P18's pointwise disk,
+so both P18 rates survive without solver accuracy as a stability premise.
+Its fixed-signal nonexpansiveness preserves, but does not itself derive, a
+candidate-fidelity bound from the P15 graph residual. The locked binary64
+reference exact-checks every successful stored output and explicitly fails
+closed on unrepresentable subnormal cases; scalable BF16/GPU shielding
+remains open for P20.
 Production-gradient
 measurement, model-forward use of the logical
 master, weight decay, aspect-ratio scaling, complete stochastic neural-network

@@ -1669,8 +1669,8 @@ The exact comparison
 <\frac{249001}{250000}
 \]
 
-proves that the certified objective half-life is below ten times P14's. Its
-descriptive value is `1724.0734` iterations, about `9.9592x` P14. Exact
+proves that the certified Lyapunov-rate half-life is below ten times P14's.
+Its descriptive value is `1724.0734` iterations, about `9.9592x` P14. Exact
 amplitude and selected-step guards are
 
 \[
@@ -1695,8 +1695,8 @@ does not prove the structured P18 map itself is unstable. A finite exact
 rational frontier records passing points from `eta=1/75` through `1/150`.
 The selected `1/83` point is the declared maximum-step rate-gate pass, while
 the `eta=1/120`, `q=624350169/625000000` point has a faster certified
-half-life of about `666.31` iterations. No global optimality over unsearched
-storages or stronger structural descriptions is claimed.
+Lyapunov-rate half-life of about `666.31` iterations. No global optimality
+over unsearched storages or stronger structural descriptions is claimed.
 
 Outward-rounded Arb arithmetic on `diag(3,4)` certifies the frozen P16
 departure and retention gates and the new amplitude gate. The separate FP64
@@ -1712,3 +1712,107 @@ establish upstream learning-rate or update-magnitude parity, cover weight
 decay, aspect scaling, stochastic gradients, represented model state, or
 neural-network training. See `sector_projected_useful_rate.md`; independent
 human review is pending.
+
+## C25. Sector shield makes arbitrary finite candidates pointwise safe — proved
+
+Retain C24's full operator specification: every fixed positive finite real
+rectangular matrix space; additive normalization
+`U/(||U||_F+epsilon)` with `epsilon=1/10000000`; five Jordan stages with
+coefficients `6889/2000`, `-191/40`, and `4063/2000`; the P13 radial repair;
+`mu=1000`; `lambda=1/1000`; the P17 C2 gate with ceiling `3/4`; ray gain
+`K=1`; passive divisor `1024`; and `beta=19/20`.
+
+For any finite approximate candidate `C(S)`, define
+
+\[
+\mathcal D_S=\left\{U:
+\left\|U-\frac{1143}{2048}S\right\|_F
+\le\frac{893}{2048}\|S\|_F\right\},
+\qquad
+T_{19}(S)=\Pi_{\mathcal D_S}(C(S)).
+\]
+
+For `S!=0`, this is the ordinary closed-ball projection
+
+\[
+\frac{1143}{2048}S+
+\min\!\left\{1,
+\frac{(893/2048)\|S\|_F}
+{\|C(S)-(1143/2048)S\|_F}\right\}
+\left(C(S)-\frac{1143}{2048}S\right),
+\]
+
+with multiplier one at zero displacement. At `S=0`, the disk is the
+singleton `{0}` and every finite candidate projects to zero. Exact expansion
+gives
+
+\[
+\left\langle U-\frac{125}{1024}S,
+\frac{509}{512}S-U\right\rangle_F
+=\left(\frac{893}{2048}\right)^2\|S\|_F^2
+-\left\|U-\frac{1143}{2048}S\right\|_F^2.
+\]
+
+Therefore every shielded finite candidate satisfies C24's exact
+dimension-uniform origin-centred pointwise sector
+`[125/1024,509/512]`, independently of candidate quality or time variation.
+This is not an incremental sector or a derivative bound.
+
+C24 proves its exact output `T18(S)` belongs to `D_S` globally, so metric
+projection fixes it exactly. For each fixed `S`, projection is nonexpansive
+in the candidate and hence
+
+\[
+\|T_{19}(S)-T_{18}(S)\|_F
+\le\|C(S)-T_{18}(S)\|_F.
+\]
+
+The set changes with `S`; no joint nonexpansiveness in `(S,C)` or
+arbitrary-pair contraction follows. P15's graph residual alone does not bound
+the final nonlinear P18 ray-projected candidate. The shield preserves an
+independently established candidate-error bound but does not replace that
+missing fidelity analysis.
+
+Because C24's value--momentum theorem uses only the current pointwise supply,
+it applies unchanged to every sequence of finite shielded candidates. For
+every differentiable globally `10`-smooth objective with finite infimum and
+global PL constant `1`, the pinned EMA/Nesterov loop replays
+
+\[
+\mathcal V_{t+1}\le
+\frac{999598040401}{1000000000000}\mathcal V_t
+\quad\text{at }\eta=\frac1{83},
+\]
+
+and
+
+\[
+\mathcal V_{t+1}\le
+\frac{624350169}{625000000}\mathcal V_t
+\quad\text{at }\eta=\frac1{120}.
+\]
+
+Exact rational `4 x 4` LMI reconstructions certify both. Their descriptive
+certified Lyapunov-rate half-lives are approximately `1724.0734` and
+`666.314` iterations, respectively; these are rates of the geometric storage
+upper bounds, not assertions about the realized objective at a fixed
+iteration. The usual C24 objective-gap, gradient, momentum, and
+trajectory-to-some-global-minimizer conclusions follow. Neither minimizer
+uniqueness nor arbitrary-pair contraction is claimed.
+
+The locked NumPy binary64 reference uses scaled/balanced norms and an
+inward-rounded projection, then converts every stored return to exact dyadic
+rationals and checks the original C24 disk. Safely interior candidates are
+returned bit for bit. A nonfinite candidate or failed projection postcheck
+uses an exact-checked `S/2` fallback. A nonfinite signal is rejected. If no
+certified binary64 interior output is representable, as can happen for the
+least positive subnormal signal, the call raises instead of returning an
+uncertified update. Thus only successful returns are certified; this is a
+reference implementation, not a theorem for arbitrary FP64, BLAS, GPU, or
+BF16 execution.
+
+On the frozen sampled annulus, all `2688/2688` guarded P18 candidates pass
+through bit for bit and all `2176/2176` informative cases retain the P18
+fidelity gates. Exact and numerical corrupted-candidate controls are repaired
+into the sector. These diagnostics do not prove global fidelity. See
+`sector_shielded_inexact_resolvent.md`; independent human review is pending.

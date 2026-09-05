@@ -202,6 +202,24 @@ Current outputs:
   gates, finite step--rate frontier, fidelity diagnostics, and explicit
   incremental/inexact-solver/deployment exclusions; the human proof audit
   remains pending and unsigned;
+- `summaries/sector_shielded_inexact_resolvent_certificate.json`: canonical
+  P19 exact artifact for the moving-ball shield, disk/sector identity,
+  zero-input rule, exact-P18 fixed-point property, arbitrary finite-candidate
+  containment, fixed-input nonexpansiveness, both exact P18 smooth-PL rate
+  replays, corruption controls, and binary64 reference scope; generate it
+  with `scripts/certify_sector_shielded_inexact_resolvent.py` and independently
+  replay its exact fields with the standard-library-only
+  `scripts/reconstruct_sector_shielded_inexact_resolvent.py`;
+- `summaries/p19_sector_shielded_study.json`: deterministic P19 binary64
+  canonical, sampled-annulus, solver-residual, bitwise-inactivity, and
+  deliberately corrupted-candidate diagnostics; it is not a global fidelity
+  extremum, a graph-residual-to-final-candidate theorem, or a portable
+  rounding certificate;
+- `summaries/P19_SECTOR_SHIELDED_INEXACT_RESOLVENT_RESULTS.md`: scoped P19
+  exact-real arbitrary-finite-candidate safety theorem, replayed useful rates,
+  exact-as-stored NumPy FP64 reference guarantee, sampled fidelity evidence,
+  representability obstruction, and explicit deployment exclusions; the
+  human proof audit remains pending and unsigned;
 - `summaries/deficit_audit.{json,csv}`: 24-prefix spectral audit;
 - `summaries/quadratic_lr_sweep.json` plus CSV tables: gain-matched quadratic
   sweep and sensitivity classifications;

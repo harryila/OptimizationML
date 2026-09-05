@@ -426,7 +426,62 @@ def test_current_indexes_record_scoped_p18_sector_projected_useful_rate() -> Non
     assert "## 24. P18 sector-projected useful-rate resolvent" in results
     assert "## C24. Sector-projected shape interface" in claims
     assert "human proof audit of C24" in tasks
-    assert "twenty-one technical goals" in readme
+    assert "technical goals" in readme
+
+
+def test_current_indexes_record_scoped_p19_sector_shield() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    tasks = (ROOT / "TASKS.md").read_text(encoding="utf-8")
+    results_index = (ROOT / "results/README.md").read_text(encoding="utf-8")
+    experiments = (ROOT / "experiments/README.md").read_text(encoding="utf-8")
+    results = (ROOT / "results/summaries/RESULTS.md").read_text(encoding="utf-8")
+    claims = (ROOT / "theory/claims.md").read_text(encoding="utf-8")
+    p19_summary = (
+        ROOT / "results/summaries/P19_SECTOR_SHIELDED_INEXACT_RESOLVENT_RESULTS.md"
+    ).read_text(encoding="utf-8")
+    p19_theorem = (ROOT / "theory/sector_shielded_inexact_resolvent.md").read_text(encoding="utf-8")
+
+    for artifact in (
+        "sector_shielded_inexact_resolvent_certificate.json",
+        "p19_sector_shielded_study.json",
+        "P19_SECTOR_SHIELDED_INEXACT_RESOLVENT_RESULTS.md",
+    ):
+        assert artifact in results_index
+    for command in (
+        "certify_sector_shielded_inexact_resolvent.py",
+        "reconstruct_sector_shielded_inexact_resolvent.py",
+        "run_p19_sector_shielded_study.py",
+    ):
+        assert command in readme
+        assert command in experiments
+        assert command in results
+    for text in (readme, results, claims, p19_summary, p19_theorem):
+        assert "1e-7" in text or "1/10000000" in text
+        assert "6889/2000" in text
+        assert "-191/40" in text
+        assert "4063/2000" in text
+        assert "1/1000" in text
+        assert "mu=1000" in text or "\\mu=1000" in text
+        assert "125/1024" in text or r"\frac{125}{1024}" in text
+        assert "509/512" in text or r"\frac{509}{512}" in text
+        assert "1143/2048" in text or r"\frac{1143}{2048}" in text
+        assert "893/2048" in text or r"\frac{893}{2048}" in text
+        assert "1/83" in text or r"\frac1{83}" in text
+        assert "1/120" in text or r"\frac1{120}" in text
+        assert "999598040401" in text
+        assert "624350169" in text
+        assert "pointwise" in text.lower()
+    combined = " ".join((readme, results, claims, p19_summary, p19_theorem))
+    assert "S=0" in combined or "S = 0" in combined
+    assert "nonexpansive" in combined
+    assert "successful return" in combined
+    assert "subnormal" in combined
+    assert "2688" in combined
+    assert "2176" in combined
+    assert "## 25. P19 sector-shielded inexact resolvent" in results
+    assert "## C25. Sector shield makes arbitrary finite candidates" in claims
+    assert "human proof audit of C25" in tasks
+    assert "twenty-two technical goals" in readme
 
 
 def test_double_blind_material_is_guarded_from_the_public_repository() -> None:

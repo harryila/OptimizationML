@@ -45,7 +45,10 @@ Experiment order is gated:
 21. the P18 exact-real ray-sector projection, useful-rate smooth-PL
     certificate, rational step--rate frontier, canonical Arb gates, and
     separate FP64 fidelity/amplitude diagnostic;
-22. only after model-forward use of the logical master, aspect scaling, weight
+22. the P19 exact-real sector shield, both useful-rate replays, exact-as-stored
+    binary64 reference postcondition, corrupted-candidate controls, and
+    separate bitwise-inactivity/fidelity diagnostic;
+23. only after model-forward use of the logical master, aspect scaling, weight
     decay, and implementation-parity gates, a small matched neural-training
     sweep.
 
@@ -179,9 +182,13 @@ uv run --locked python scripts/certify_sector_projected_useful_rate.py \
   --output results/summaries/sector_projected_useful_rate_certificate.json
 uv run --locked python scripts/reconstruct_sector_projected_useful_rate.py \
   --require-canonical
+uv run --locked python scripts/certify_sector_shielded_inexact_resolvent.py \
+  --output results/summaries/sector_shielded_inexact_resolvent_certificate.json
+uv run --locked python scripts/reconstruct_sector_shielded_inexact_resolvent.py \
+  --require-canonical
 ```
 
-The P9--P18 generators and standard-library-only reconstructions carry their
+The P9--P19 generators and standard-library-only reconstructions carry their
 exact claims. P11's adjacent controls establish rejection of the sufficient
 certificate, not actual closed-loop instability. P12's older sampled epsilon
 grid is discovery evidence only; its exact/interval generator carries the
@@ -195,7 +202,12 @@ resolvent, while its separate FP64 spectrum grid is diagnostic evidence only.
 P18's ray projection is likewise pointwise rather than incremental. Its
 selected useful-rate theorem assumes the exact resolvent, while the
 computed-residual-checked FP64 diagnostics do not propagate solver or
-rounding error through the nonlinear projection.
+rounding error through the nonlinear projection. P19 makes arbitrary finite
+candidates pointwise safe by final projection into P18's sector. Its fixed-
+signal nonexpansiveness does not turn the P15 graph residual alone into a
+final nonlinear P18 candidate-error bound. The locked NumPy binary64 shield
+exact-checks every successful stored result and may fail closed when no
+certified representable result exists; it is not a portable backend theorem.
 
 Replay the P16 guarded reference solver and fidelity diagnostic separately:
 
@@ -244,6 +256,23 @@ P15 residual postcheck. It additionally records projection activity, raw
 amplitude, effective-update gates, the unprojected control, and the
 `K=1/100` control. These are deterministic FP64 diagnostics, not global
 fidelity, inexact-solver, or finite-precision certificates.
+
+Replay the P19 shield inactivity, fidelity, and corruption study separately:
+
+```bash
+uv run --locked python experiments/resolvent/run_p19_sector_shielded_study.py \
+  --output results/summaries/p19_sector_shielded_study.json
+```
+
+The study uses the same additive `epsilon=1e-7`, five Jordan stages with
+coefficients `6889/2000`, `-191/40`, and `4063/2000`, `lambda=1/1000`,
+`mu=1000`, P18 gate/projection design, and sampled annulus. It records exact-
+as-stored disk checks, bitwise identity on normal guarded candidates, both
+P18 operating-point replays, computed P15 graph residuals, and deliberately
+corrupted candidates. The exact disk theorem and rational smooth-PL LMIs are
+separate from these sampled diagnostics. A successful reference-shield return
+is exact-checked, but the study is not a general IEEE-754 or accelerator
+rounding theorem.
 
 The P9 separate CPU diagnostic is a native-matmul
 falsification probe against a float64, non-exact target:

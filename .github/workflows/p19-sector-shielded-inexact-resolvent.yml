@@ -1,0 +1,80 @@
+name: P19 sector-shielded inexact-resolvent replay
+
+on:
+  push:
+    branches:
+      - main
+      - p19-sector-shielded-inexact-resolvent
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  sector-shielded-inexact-resolvent:
+    name: Exact shield, FP64 postcheck, rates, and fidelity (Python 3.12)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out repository with certificate history
+        uses: actions/checkout@v7
+        with:
+          # P19 locks the frozen P18 source, artifact, and annotated tag.
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          enable-cache: true
+
+      - name: Install the locked environment
+        run: uv sync --locked
+
+      - name: Generate the exact P19 certificate
+        run: >-
+          uv run --locked python
+          scripts/certify_sector_shielded_inexact_resolvent.py
+          --output
+          "$RUNNER_TEMP/sector_shielded_inexact_resolvent_certificate.json"
+
+      - name: Independently reconstruct the fresh certificate
+        run: >-
+          uv run --locked python
+          scripts/reconstruct_sector_shielded_inexact_resolvent.py
+          --canonical
+          "$RUNNER_TEMP/sector_shielded_inexact_resolvent_certificate.json"
+          --require-canonical
+
+      - name: Compare the committed canonical certificate
+        run: >-
+          uv run --locked python
+          scripts/reconstruct_sector_shielded_inexact_resolvent.py
+          --require-canonical
+
+      - name: Replay the deterministic shield and fidelity study
+        run: >-
+          uv run --locked python
+          experiments/resolvent/run_p19_sector_shielded_study.py
+          --output "$RUNNER_TEMP/p19_sector_shielded_study.json"
+
+      - name: Run P19 theorem, runtime, study, provenance, and index tests
+        run: >-
+          uv run --locked pytest -q
+          tests/test_sector_shielded_resolvent.py
+          tests/test_sector_shielded_inexact_resolvent_certificate.py
+          tests/test_sector_shielded_inexact_resolvent_cli.py
+          tests/test_sector_shielded_inexact_resolvent_reconstruction.py
+          tests/test_p19_sector_shielded_study.py
+          tests/test_sector_projected_resolvent.py
+          tests/test_current_research_index.py
+
+      - name: Check formatting and lint
+        run: |
+          uv run --locked ruff format --check src scripts experiments tests
+          uv run --locked ruff check src scripts experiments tests

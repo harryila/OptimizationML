@@ -11,8 +11,8 @@ pointwise gain interval by the exact full-matrix sector
 ```
 
 An exact rational smooth-PL certificate then proves global one-trajectory
-convergence at `eta=1/83`. Its certified objective half-life is less than ten
-times P14's, so it passes the predeclared useful-rate gate. The initially
+convergence at `eta=1/83`. Its certified Lyapunov-rate half-life is less than
+ten times P14's, so it passes the predeclared useful-rate gate. The initially
 requested `eta=1/50` is ruled out for the whole declared sector class by an
 exact complex-skew boundary control; that control is not claimed to be an
 instability example for the more structured P18 map.
@@ -97,11 +97,11 @@ The exact rate-gate comparison is
 (999598040401/10^12)^10 < 249001/250000.
 ```
 
-The P18 half-life is about `1724.0734` iterations, or `9.9592x` P14's
-`173.1135`. A second exact point at `eta=1/120` has rate
-`624350169/625000000` and a shorter certified half-life of about `666.31`.
-This nonmonotone certificate frontier is why both maximum step and rate are
-reported.
+The P18 certified Lyapunov-rate half-life is about `1724.0734` iterations, or
+`9.9592x` P14's `173.1135`. A second exact point at `eta=1/120` has rate
+`624350169/625000000` and a shorter certified Lyapunov-rate half-life of about
+`666.31`. This nonmonotone certificate frontier is why both maximum step and
+rate are reported.
 
 ## Attempted `eta=1/50` and frontier
 

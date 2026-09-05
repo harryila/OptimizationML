@@ -21,9 +21,10 @@ not silently replaced by ``A_epsilon(U)+mu*U`` away from an exact solution.
 
 This literal postcheck requires a second SVD in the reference implementation.
 The locked absolute tolerance below is an operational solver budget, not an
-IEEE-754 error theorem.  After P18's exact-real interface redesign, P19 is
-reserved for propagating solver error and certifying finite-precision
-residual evaluation.
+IEEE-754 error theorem.  P19 subsequently adds a final exact-as-stored sector
+shield: that makes every successful returned update pointwise safe without
+promoting this computed graph residual into a complete nonlinear P18
+candidate-fidelity or portable finite-precision theorem.
 """
 
 from __future__ import annotations

@@ -190,8 +190,8 @@ comparison
 q_{18}^{10}<q_{14}
 \]
 
-proves that P18's objective half-life is less than ten times P14's.  The
-readable values are approximately \(1724.0734\) iterations versus
+proves that P18's certified Lyapunov-rate half-life is less than ten times
+P14's.  The readable values are approximately \(1724.0734\) iterations versus
 \(173.1135\), a ratio of approximately \(9.9592\).  This narrowly passes the
 predeclared useful-rate gate.
 
@@ -243,7 +243,7 @@ Following the predeclared fallback rule, an exact rational step--rate frontier
 was replayed.  Every passing row has its own strictly feasible rational LMI;
 the decimals are descriptive only.
 
-| \(\eta\) | \(\tau\) | certified half-life | interpretation |
+| \(\eta\) | \(\tau\) | certified Lyapunov-rate half-life | interpretation |
 |---:|---:|---:|---|
 | \(1/75\) | \(99995/100000\) | 6931.30 | larger step; misses rate gate |
 | \(1/83\) | \(999799/1000000\) | 1724.07 | selected maximum-step gate pass |
