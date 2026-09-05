@@ -1,0 +1,147 @@
+name: P20 scalable mixed-precision sector-shield replay
+
+on:
+  push:
+    branches:
+      - main
+      - p20-scalable-mixed-precision-sector-shield
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-certificate-and-runtime:
+    name: Exact margins, runtime, and fidelity (Python 3.12)
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    steps:
+      - name: Check out repository with certificate history
+        uses: actions/checkout@v7
+        with:
+          # P20 locks the P10, P11, and annotated P19 provenance chain.
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          enable-cache: true
+
+      - name: Install the locked environment
+        run: uv sync --locked
+
+      - name: Generate the exact P20 shape certificate
+        run: >-
+          uv run --locked python scripts/certify_scalable_sector_shield.py
+          --output "$RUNNER_TEMP/scalable_sector_shield_certificate.json"
+
+      - name: Independently reconstruct the fresh certificate
+        run: >-
+          uv run --locked python scripts/reconstruct_scalable_sector_shield.py
+          --canonical "$RUNNER_TEMP/scalable_sector_shield_certificate.json"
+          --require-canonical
+
+      - name: Compare the committed canonical certificate
+        run: >-
+          uv run --locked python scripts/reconstruct_scalable_sector_shield.py
+          --require-canonical
+
+      - name: Replay the full deterministic candidate study
+        run: >-
+          uv run --locked python
+          experiments/mixed_precision/run_p20_scalable_sector_shield_study.py
+          --output "$RUNNER_TEMP/p20_scalable_sector_shield_study.json"
+
+      - name: Run P20 theorem, runtime, study, provenance, and index tests
+        run: >-
+          uv run --locked pytest -q
+          tests/test_scalable_sector_shield_certificate.py
+          tests/test_scalable_sector_shield_reconstruction.py
+          tests/test_scalable_sector_shield.py
+          tests/test_p20_scalable_sector_shield_study.py
+          tests/test_current_research_index.py
+
+      - name: Check formatting, lint, and branch whitespace
+        run: |
+          uv run --locked ruff format --check src scripts experiments tests
+          uv run --locked ruff check src scripts experiments tests
+          git diff --check p19-sector-shielded-inexact-resolvent-checkpoint...HEAD
+
+  cross-platform-decisions:
+    name: Locked decisions (${{ matrix.os }}, Python 3.12)
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-14
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          enable-cache: true
+
+      - name: Install the locked environment
+        run: uv sync --locked
+
+      - name: Replay and enforce the default decision digest
+        run: >-
+          uv run --locked python
+          experiments/mixed_precision/run_p20_scalable_sector_shield_study.py
+          --output "$RUNNER_TEMP/p20-cross-platform.json"
+
+      - name: Run backend probes and the locked-digest unit gate
+        run: >-
+          uv run --locked pytest -q
+          tests/test_scalable_sector_shield.py
+          tests/test_p20_scalable_sector_shield_study.py::test_full_default_discrete_decisions_are_locked_across_platforms
+
+      - name: Archive the complete platform record
+        uses: actions/upload-artifact@v4
+        with:
+          name: p20-platform-${{ runner.os }}-${{ runner.arch }}
+          path: ${{ runner.temp }}/p20-cross-platform.json
+          if-no-files-found: error
+          retention-days: 14
+
+  compare-platform-decisions:
+    name: Compare macOS and Ubuntu decision digests
+    needs: cross-platform-decisions
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Download both platform records
+        uses: actions/download-artifact@v4
+        with:
+          pattern: p20-platform-*
+          path: platform-artifacts
+
+      - name: Require two matching locked digests
+        run: >-
+          python -c "import glob,json;
+          paths=glob.glob('platform-artifacts/**/p20-cross-platform.json',recursive=True);
+          assert len(paths)==2, paths;
+          records=[json.load(open(path,encoding='utf-8')) for path in paths];
+          expected='998ef020d1b642cf923a0789dfdd489b2b949a2aed0b3948cff67b88584a5c9c';
+          digests={record['decision_digest'] for record in records};
+          assert digests=={expected}, (paths,digests);
+          assert all(record['cross_platform_replay']['locked_default_digest_matches'] for record in records);
+          print({'records':paths,'decision_digest':expected})"
