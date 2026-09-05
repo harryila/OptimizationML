@@ -1,0 +1,486 @@
+{
+  "acceptance": {
+    "faster_point_has_strictly_better_rate": true,
+    "faster_rate": {
+      "certified_lyapunov_rate_half_life_steps": 666.3143717981078,
+      "learning_rate": {
+        "decimal": "0.00833333333333333333333333333333333333333333333333333333333333",
+        "exact": "1/120"
+      },
+      "name": "faster_rate_eta_1_over_120",
+      "rate_squared": {
+        "decimal": "0.9989602704",
+        "exact": "624350169/625000000"
+      }
+    },
+    "maximum_step": {
+      "certified_lyapunov_rate_half_life_steps": 1724.073425209877,
+      "learning_rate": {
+        "decimal": "0.0120481927710843373493975903614457831325301204819277108433735",
+        "exact": "1/83"
+      },
+      "name": "maximum_step_eta_1_over_83",
+      "rate_squared": {
+        "decimal": "0.999598040401",
+        "exact": "999598040401/1000000000000"
+      }
+    }
+  },
+  "audit": {
+    "all_exact_checks_passed": true,
+    "checks": {
+      "both_operating_points_are_strictly_certified": true,
+      "exact_both_P18_operating_point_LMIs_replay_exactly": true,
+      "exact_disk_slack_equals_sector_supply": true,
+      "exact_eta_1_over_120_has_better_certified_rate": true,
+      "exact_faster_rate_is_exact": true,
+      "exact_fixed_input_projection_control_is_nonexpansive": true,
+      "exact_interior_candidate_is_unchanged": true,
+      "exact_maximum_step_rate_is_exact": true,
+      "exact_radial_corruption_is_repaired_to_boundary": true,
+      "exact_sector_center_and_radius_are_exact": true,
+      "exact_shield_does_not_increase_error_to_admissible_exact_output": true,
+      "exact_shielded_finite_controls_all_lie_in_sector": true,
+      "exact_tangential_corruption_is_repaired_to_boundary": true,
+      "exact_zero_input_projects_every_candidate_to_zero": true,
+      "p18_artifact_hash_matches": true,
+      "p18_certified_disk_matches_P19_shield": true,
+      "p18_checkpoint_tag_matches": true,
+      "p18_exact_certificate_checks_pass": true,
+      "p18_historical_artifact_blob_matches": true,
+      "p18_source_commit_matches": true,
+      "p18_source_was_clean": true
+    },
+    "human_proof_audit": "pending; packet external review is not automated here"
+  },
+  "canonical_result_path": "results/summaries/sector_shielded_inexact_resolvent_certificate.json",
+  "claim_scope": {
+    "arithmetic_model_theorem": "exact real arithmetic",
+    "candidate_scope": "every finite approximate or corrupted candidate C(S)",
+    "classification": "dimension-uniform exact-real pointwise-sector safety for arbitrary finite approximate candidates, with exact replay of the P18 smooth-PL rates",
+    "matrix_domain": "R^(m x n) for every fixed finite positive m,n",
+    "not_claimed": [
+      "an incremental sector or arbitrary-pair contraction theorem",
+      "joint nonexpansiveness in input and candidate",
+      "that the P15 graph residual alone bounds nonlinear P18 candidate error",
+      "an IEEE-754, BF16, accelerator, or literal upstream-Muon theorem"
+    ]
+  },
+  "exact_corruption_controls": {
+    "interior_identity": {
+      "candidate": [
+        "1643/2048",
+        "11823/4096"
+      ],
+      "candidate_ball_slack": "59808675/16777216",
+      "candidate_supply": "59808675/16777216",
+      "projected": [
+        "1643/2048",
+        "11823/4096"
+      ],
+      "projected_ball_slack": "59808675/16777216",
+      "projected_supply": "59808675/16777216",
+      "projection_was_active": false,
+      "source": [
+        "3",
+        "4"
+      ]
+    },
+    "radial_corruption": {
+      "candidate": [
+        "3063/512",
+        "1021/128"
+      ],
+      "candidate_ball_slack": "-47925/1024",
+      "candidate_supply": "-47925/1024",
+      "projected": [
+        "1527/512",
+        "509/128"
+      ],
+      "projected_ball_slack": "0",
+      "projected_supply": "0",
+      "projection_was_active": true,
+      "source": [
+        "3",
+        "4"
+      ]
+    },
+    "tangential_corruption": {
+      "candidate": [
+        "-3715/2048",
+        "4965/1024"
+      ],
+      "candidate_ball_slack": "-59808675/4194304",
+      "candidate_supply": "-59808675/4194304",
+      "projected": [
+        "-143/2048",
+        "7251/2048"
+      ],
+      "projected_ball_slack": "0",
+      "projected_supply": "0",
+      "projection_was_active": true,
+      "source": [
+        "3",
+        "4"
+      ]
+    },
+    "zero_input_singleton": {
+      "candidate": [
+        "7",
+        "-11"
+      ],
+      "candidate_ball_slack": "-170",
+      "candidate_supply": "-170",
+      "projected": [
+        "0",
+        "0"
+      ],
+      "projected_ball_slack": "0",
+      "projected_supply": "0",
+      "projection_was_active": true,
+      "source": [
+        "0",
+        "0"
+      ]
+    }
+  },
+  "git": {
+    "branch": "p19-sector-shielded-inexact-resolvent",
+    "dirty": false,
+    "sha": "45fd279362792a0f5cae7559d6d70fe651586580"
+  },
+  "hardware": {
+    "logical_cpu_count": 10,
+    "machine": "arm64",
+    "platform": "macOS-15.5-arm64-arm-64bit",
+    "processor": "arm"
+  },
+  "operating_points": {
+    "faster_rate_eta_1_over_120": {
+      "certified": true,
+      "certified_lyapunov_rate_half_life_steps": 666.3143717981078,
+      "dimensionless_step": "381/8192",
+      "function_storage": "1",
+      "interpolation_reverse_weight": "2177/200",
+      "learning_rate": "1/120",
+      "multipliers": [
+        "7427475169/625000000",
+        "2177/200",
+        "649831/125000000",
+        "53/2500"
+      ],
+      "negative_lmi_leading_minors": [
+        "818282510128434804671/26843545600000000000000",
+        "2460403591521068216235541847989279/83886080000000000000000000000000000",
+        "41361474609957038583588604605900014467/7372800000000000000000000000000000000000000",
+        "4540878009126796478413253720218453415344153/9216000000000000000000000000000000000000000000000000"
+      ],
+      "rate_squared": "624350169/625000000",
+      "residual_multiplier": "53/2500",
+      "residual_ratio": "893/1143",
+      "storage": [
+        [
+          "599/1000",
+          "-231/625"
+        ],
+        [
+          "-231/625",
+          "657/2500"
+        ]
+      ],
+      "storage_leading_minors": [
+        "599/1000",
+        "260163/12500000"
+      ],
+      "tau": "24987/25000"
+    },
+    "maximum_step_eta_1_over_83": {
+      "certified": true,
+      "certified_lyapunov_rate_half_life_steps": 1724.073425209877,
+      "dimensionless_step": "5715/84992",
+      "function_storage": "1",
+      "interpolation_reverse_weight": "3459/500",
+      "learning_rate": "1/83",
+      "multipliers": [
+        "7917598040401/1000000000000",
+        "3459/500",
+        "401959599/200000000000",
+        "9/250"
+      ],
+      "negative_lmi_leading_minors": [
+        "29927321321181435421995147/924625928192000000000000000",
+        "8250787544082072394768602635459352796391/462312964096000000000000000000000000000000",
+        "1391032153976146286203283830581420859889968429/288945602560000000000000000000000000000000000000000",
+        "21663211559038354188730641491352664731711338441500319/577891205120000000000000000000000000000000000000000000000000000"
+      ],
+      "rate_squared": "999598040401/1000000000000",
+      "residual_multiplier": "9/250",
+      "residual_ratio": "893/1143",
+      "storage": [
+        [
+          "97/125",
+          "-151/500"
+        ],
+        [
+          "-151/500",
+          "17/100"
+        ]
+      ],
+      "storage_leading_minors": [
+        "97/125",
+        "10179/250000"
+      ],
+      "tau": "999799/1000000"
+    }
+  },
+  "prior_p18": {
+    "artifact_commit": "5e8b2f15081d887b2a7bccd029dc890f12cbfe9e",
+    "artifact_path": "results/summaries/sector_projected_useful_rate_certificate.json",
+    "artifact_sha256": "42172726212f76f98b12b322ecac50ffe9fe1601bf03621f7dbb85578cdbcce6",
+    "checkpoint_tag": "p18-sector-projected-useful-rate-checkpoint",
+    "checkpoint_tag_object": "147a4f10283e2afb2efcf018e7c318bacd377b60",
+    "source_commit": "77e81b2462455cd96c5dfbb74b5a67a4cea5a475"
+  },
+  "proof_replay_provenance": {
+    "methods": [
+      "exact rational disk-sector algebra",
+      "exact rational zero, identity, radial, and tangential controls",
+      "exact rational 4-by-4 smooth-PL LMI Sylvester replay",
+      "standard-library-only independent reconstruction"
+    ],
+    "source_snapshot": {
+      "experiments/resolvent/run_p19_sector_shielded_study.py": "051c4addd8abf7f2123389dd0954151518c487baa954c61212fdf0ddc36bfcd2",
+      "pyproject.toml": "7a9988bf528baef5145f779516d4315349d1c2a6bbb7394c9b93fbbee1d4f596",
+      "results/summaries/sector_projected_useful_rate_certificate.json": "42172726212f76f98b12b322ecac50ffe9fe1601bf03621f7dbb85578cdbcce6",
+      "scripts/certify_sector_shielded_inexact_resolvent.py": "cc889d0d16d8f0f5f9465d901861a94162529c2a4bc3744126f988af25902b40",
+      "scripts/reconstruct_sector_shielded_inexact_resolvent.py": "abcb7d7c07be67ac4b05c12c22897f16524bc14e48e527e733933c606a2ea16c",
+      "src/passive_muon/momentum_iqc.py": "c1e7346473d2d8e96ad2e378ac7d47b98f35786752c31c50109375cec3ab415d",
+      "src/passive_muon/pl_convergence.py": "d59d56d6e2ba808aaa519770f3b4442ccfb54aa5144755b760bcb2c7cea8b446",
+      "src/passive_muon/sector_shielded_inexact_resolvent_certificate.py": "3965dbc9d73f5c1ffe747016e464f443ccaaa22a783af78a179824690781147c",
+      "src/passive_muon/sector_shielded_resolvent.py": "52523649d47d38713b8b2443594c1418cd11af9611f3393a454117fef3f2fc5e",
+      "tests/test_p19_sector_shielded_study.py": "3e2901cf8b481933b9828e29186f3ce25c2c7841ef39b197e42cd1dd86dc2406",
+      "tests/test_sector_shielded_inexact_resolvent_certificate.py": "f37075b5feccaf185f43a91657db03f2abdead83ab530534ce4d373a2550efa0",
+      "tests/test_sector_shielded_inexact_resolvent_cli.py": "c2801cef7f1462c9c3c853c7102595b45984ebbf5a27568b4a86ada3538ac3b3",
+      "tests/test_sector_shielded_inexact_resolvent_reconstruction.py": "365fcb8ba16ceee7f4a4ee41383bc621c2f11288b1bca86a85f080b80ddc09bc",
+      "tests/test_sector_shielded_resolvent.py": "61e6a8d58f23ae439a6da8d8b80f8483fdbe6f764362aa4ed8d5178ed881053f",
+      "uv.lock": "f097fd7895b5c1c551a0bd233d025c3f8ae97b7dedce6a8690569f1b1f7c5cf1"
+    }
+  },
+  "reconstruction_fields": {
+    "exact_controls": {
+      "interior_identity": {
+        "candidate": [
+          "1643/2048",
+          "11823/4096"
+        ],
+        "candidate_ball_slack": "59808675/16777216",
+        "candidate_supply": "59808675/16777216",
+        "projected": [
+          "1643/2048",
+          "11823/4096"
+        ],
+        "projected_ball_slack": "59808675/16777216",
+        "projected_supply": "59808675/16777216",
+        "projection_was_active": false,
+        "source": [
+          "3",
+          "4"
+        ]
+      },
+      "radial_corruption": {
+        "candidate": [
+          "3063/512",
+          "1021/128"
+        ],
+        "candidate_ball_slack": "-47925/1024",
+        "candidate_supply": "-47925/1024",
+        "projected": [
+          "1527/512",
+          "509/128"
+        ],
+        "projected_ball_slack": "0",
+        "projected_supply": "0",
+        "projection_was_active": true,
+        "source": [
+          "3",
+          "4"
+        ]
+      },
+      "tangential_corruption": {
+        "candidate": [
+          "-3715/2048",
+          "4965/1024"
+        ],
+        "candidate_ball_slack": "-59808675/4194304",
+        "candidate_supply": "-59808675/4194304",
+        "projected": [
+          "-143/2048",
+          "7251/2048"
+        ],
+        "projected_ball_slack": "0",
+        "projected_supply": "0",
+        "projection_was_active": true,
+        "source": [
+          "3",
+          "4"
+        ]
+      },
+      "zero_input_singleton": {
+        "candidate": [
+          "7",
+          "-11"
+        ],
+        "candidate_ball_slack": "-170",
+        "candidate_supply": "-170",
+        "projected": [
+          "0",
+          "0"
+        ],
+        "projected_ball_slack": "0",
+        "projected_supply": "0",
+        "projection_was_active": true,
+        "source": [
+          "0",
+          "0"
+        ]
+      }
+    },
+    "operating_points": {
+      "faster_rate_eta_1_over_120": {
+        "dimensionless_step": "381/8192",
+        "function_storage": "1",
+        "interpolation_reverse_weight": "2177/200",
+        "learning_rate": "1/120",
+        "multipliers": [
+          "7427475169/625000000",
+          "2177/200",
+          "649831/125000000",
+          "53/2500"
+        ],
+        "negative_lmi_leading_minors": [
+          "818282510128434804671/26843545600000000000000",
+          "2460403591521068216235541847989279/83886080000000000000000000000000000",
+          "41361474609957038583588604605900014467/7372800000000000000000000000000000000000000",
+          "4540878009126796478413253720218453415344153/9216000000000000000000000000000000000000000000000000"
+        ],
+        "rate_squared": "624350169/625000000",
+        "residual_multiplier": "53/2500",
+        "residual_ratio": "893/1143",
+        "storage": [
+          [
+            "599/1000",
+            "-231/625"
+          ],
+          [
+            "-231/625",
+            "657/2500"
+          ]
+        ],
+        "storage_leading_minors": [
+          "599/1000",
+          "260163/12500000"
+        ],
+        "tau": "24987/25000"
+      },
+      "maximum_step_eta_1_over_83": {
+        "dimensionless_step": "5715/84992",
+        "function_storage": "1",
+        "interpolation_reverse_weight": "3459/500",
+        "learning_rate": "1/83",
+        "multipliers": [
+          "7917598040401/1000000000000",
+          "3459/500",
+          "401959599/200000000000",
+          "9/250"
+        ],
+        "negative_lmi_leading_minors": [
+          "29927321321181435421995147/924625928192000000000000000",
+          "8250787544082072394768602635459352796391/462312964096000000000000000000000000000000",
+          "1391032153976146286203283830581420859889968429/288945602560000000000000000000000000000000000000000",
+          "21663211559038354188730641491352664731711338441500319/577891205120000000000000000000000000000000000000000000000000000"
+        ],
+        "rate_squared": "999598040401/1000000000000",
+        "residual_multiplier": "9/250",
+        "residual_ratio": "893/1143",
+        "storage": [
+          [
+            "97/125",
+            "-151/500"
+          ],
+          [
+            "-151/500",
+            "17/100"
+          ]
+        ],
+        "storage_leading_minors": [
+          "97/125",
+          "10179/250000"
+        ],
+        "tau": "999799/1000000"
+      }
+    },
+    "shield_geometry": {
+      "center": "1143/2048",
+      "exact_output_fidelity_lemma": "||Pi_{D_S}(C)-T18(S)||_F<=||C-T18(S)||_F for T18(S) in D_S",
+      "fidelity_caveat": "a P15 graph residual requires an intervening candidate-error bound",
+      "fixed_input_nonexpansiveness": "||Pi_{D_S}(C1)-Pi_{D_S}(C2)||_F<=||C1-C2||_F",
+      "lower": "125/1024",
+      "matrix_domain": "R^(m x n) for arbitrary positive finite m and n",
+      "projection_nonzero": "gamma*S+min(1,radius*||S||_F/||C-gamma*S||_F)*(C-gamma*S)",
+      "radius": "893/2048",
+      "sector_equivalence": "<U-lower*S,upper*S-U>_F=radius^2*||S||_F^2-||U-center*S||_F^2",
+      "sector_kind": "origin-centred pointwise, not incremental",
+      "set": "D_S={U: ||U-gamma*S||_F <= radius*||S||_F}",
+      "upper": "509/512",
+      "zero_displacement_rule": "the radial multiplier is 1 when C=gamma*S",
+      "zero_input_rule": "Pi_{D_0}(C)=0"
+    }
+  },
+  "schema_version": "passive-muon-sector-shielded-inexact-resolvent-certificate-v1",
+  "sector_shield": {
+    "center": {
+      "decimal": "0.55810546875",
+      "exact": "1143/2048"
+    },
+    "exact_P18_identity": "P18 globally certifies T18(S) in D_S for every finite matrix shape; therefore Pi_{D_S}(T18(S))=T18(S)",
+    "finite_candidate_safety": "Pi_{D_S}(C(S)) lies in D_S for every finite C(S), including S=0",
+    "formula": {
+      "center": "1143/2048",
+      "exact_output_fidelity_lemma": "||Pi_{D_S}(C)-T18(S)||_F<=||C-T18(S)||_F for T18(S) in D_S",
+      "fidelity_caveat": "a P15 graph residual requires an intervening candidate-error bound",
+      "fixed_input_nonexpansiveness": "||Pi_{D_S}(C1)-Pi_{D_S}(C2)||_F<=||C1-C2||_F",
+      "lower": "125/1024",
+      "matrix_domain": "R^(m x n) for arbitrary positive finite m and n",
+      "projection_nonzero": "gamma*S+min(1,radius*||S||_F/||C-gamma*S||_F)*(C-gamma*S)",
+      "radius": "893/2048",
+      "sector_equivalence": "<U-lower*S,upper*S-U>_F=radius^2*||S||_F^2-||U-center*S||_F^2",
+      "sector_kind": "origin-centred pointwise, not incremental",
+      "set": "D_S={U: ||U-gamma*S||_F <= radius*||S||_F}",
+      "upper": "509/512",
+      "zero_displacement_rule": "the radial multiplier is 1 when C=gamma*S",
+      "zero_input_rule": "Pi_{D_0}(C)=0"
+    },
+    "fp64_runtime_interface": {
+      "nonfinite_candidate": "replace by the certified S/2 fallback",
+      "nonfinite_source": "reject without returning an update",
+      "projection_postcheck_failure": "replace by an exact-checked S/2 fallback",
+      "successful_return": "the stored binary64 arrays pass an exact Fraction postcheck against the original P18 disk",
+      "unrepresentable_nonzero_subnormal": "fail closed without returning an update"
+    },
+    "lower": {
+      "decimal": "0.1220703125",
+      "exact": "125/1024"
+    },
+    "radius": {
+      "decimal": "0.43603515625",
+      "exact": "893/2048"
+    },
+    "upper": {
+      "decimal": "0.994140625",
+      "exact": "509/512"
+    }
+  },
+  "software": {
+    "python": "3.12.11 (main, Jul  8 2025, 20:41:49) [Clang 20.1.4 ]"
+  }
+}
