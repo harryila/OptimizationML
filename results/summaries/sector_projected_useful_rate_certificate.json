@@ -1,0 +1,923 @@
+{
+  "audit": {
+    "all_exact_and_interval_checks_passed": true,
+    "checks": {
+      "all_cross_precision_interval_checks_pass": true,
+      "all_pl_replays_pass": true,
+      "exact_all_six_pareto_certificates_pass": true,
+      "exact_generic_sector_obstruction_is_strict": true,
+      "exact_generic_sector_obstruction_matches_frozen_margin": true,
+      "exact_locked_epsilon_lambda_mu_and_kappa_match": true,
+      "exact_locked_projected_sector_is_exact": true,
+      "exact_operator_is_locked_five_stage_jordan": true,
+      "exact_primary_effective_step_guard_closes": true,
+      "exact_primary_rate_gate_is_exact": true,
+      "exact_quintic_stage_is_sign_preserving": true,
+      "exact_sector_endpoints_follow_projection_hull": true,
+      "exact_small_k_control_sector_is_finite": true,
+      "exact_unprojected_control_is_huge": true,
+      "locked_canonical_fidelity_passes": true,
+      "p17_artifact_hash_matches": true,
+      "p17_checkpoint_tag_matches": true,
+      "p17_historical_artifact_blob_matches": true,
+      "p17_source_commit_matches": true,
+      "p17_source_was_clean": true,
+      "small_k_control_fails_fidelity": true
+    },
+    "human_proof_audit": "pending; packet committed but unsigned"
+  },
+  "canonical_result_path": "results/summaries/sector_projected_useful_rate_certificate.json",
+  "claim_scope": {
+    "arithmetic_model_theorem": "exact real arithmetic and exact resolvent",
+    "classification": "global exact-real smooth-PL convergence from a dimension-uniform origin-centred pointwise sector",
+    "coefficients_exact": [
+      "6889/2000",
+      "-191/40",
+      "4063/2000"
+    ],
+    "epsilon": {
+      "decimal": "1E-7",
+      "exact": "1/10000000"
+    },
+    "matrix_domain": "R^(m x n) for every fixed finite positive m,n",
+    "normalization": "current Frobenius norm plus additive epsilon; no max floor",
+    "not_claimed": [
+      "an incremental sector or arbitrary-pair contraction theorem",
+      "realizability of the generic eta=1/50 complex-skew obstruction by P18",
+      "propagation of P16 graph residual through the nonlinear sector projection",
+      "an FP64 rounding, BF16, accelerator, or literal upstream-Muon theorem",
+      "weight decay, aspect scaling, stochastic gradients, or neural training"
+    ],
+    "polynomial": "five composed Jordan quintics"
+  },
+  "controls": {
+    "projection_gain_1_over_100": {
+      "blended_upper_at_gate_cap": "3221/12800",
+      "projection_gain": "1/100",
+      "scope": "fidelity-only negative control, not a sector failure",
+      "uniform_upper": "125/128"
+    },
+    "unprojected_shape_branch": {
+      "effective_upper_at_eta_1_over_50": "103423243237668615433105/9145419504572381819904",
+      "raw_shape_gain_upper": "20191130443162880000000/26793221204801899863",
+      "scope": "huge generic-sector diagnostic, not an instability proof",
+      "uniform_upper": "2585581080941715385827625/4572709752286190909952"
+    }
+  },
+  "fidelity": {
+    "canonical_input": "diag(3,4)",
+    "canonical_input_exact": [
+      "3",
+      "4"
+    ],
+    "interval_passes": [
+      {
+        "all_checks_pass": true,
+        "canonical": {
+          "fidelity_control_K_1_over_100": {
+            "best_scalar_departure": "[0.00271558974 +/- 3.63e-12]",
+            "decisions_are_definite": true,
+            "graph_residual_norm": "[4.69799113548749e-16 +/- 2.19e-31]",
+            "meaningful_fidelity_passes": false,
+            "output_singular_values": [
+              "[0.57708998287 +/- 6.43e-12]",
+              "[0.77382231148 +/- 5.56e-12]"
+            ],
+            "output_to_input_amplitude": "[0.193063079649 +/- 9.66e-13]",
+            "output_to_upstream_amplitude": "[0.72451868796 +/- 2.35e-12]",
+            "projection_gain": "1/100",
+            "projection_scale": "[0.03743538213 +/- 6.31e-12]",
+            "projection_status": "active",
+            "root_error_norm_upper": "[2.34899556774375e-16 +/- 3.91e-31]",
+            "upstream_best_scalar_departure": "[0.0699674683071178 +/- 9.92e-18]",
+            "upstream_shaping_retention": "[0.0388121766 +/- 7.35e-11]",
+            "yosida_error_norm_upper": "[2.34899556774375e-13 +/- 3.91e-28]"
+          },
+          "locked_K_1": {
+            "best_scalar_departure": "[0.0362830180 +/- 1.20e-11]",
+            "decisions_are_definite": true,
+            "graph_residual_norm": "[4.69799113548749e-16 +/- 2.19e-31]",
+            "meaningful_fidelity_passes": true,
+            "output_singular_values": [
+              "[1.0989861244 +/- 2.52e-11]",
+              "[1.5817888207 +/- 4.61e-11]"
+            ],
+            "output_to_input_amplitude": "[0.38521819141 +/- 3.32e-12]",
+            "output_to_upstream_amplitude": "[1.4456299937 +/- 2.74e-11]",
+            "projection_gain": "1",
+            "projection_scale": "1.00000000000000",
+            "projection_status": "inactive",
+            "root_error_norm_upper": "[2.34899556774375e-16 +/- 3.91e-31]",
+            "upstream_best_scalar_departure": "[0.0699674683071178 +/- 9.92e-18]",
+            "upstream_shaping_retention": "[0.518569828 +/- 1.74e-10]",
+            "yosida_error_norm_upper": "[2.34899556774375e-13 +/- 3.91e-28]"
+          }
+        },
+        "checks": {
+          "canonical_departure_inside_guard": true,
+          "canonical_fidelity_decisions_are_definite": true,
+          "canonical_fidelity_passes": true,
+          "canonical_input_amplitude_inside_guard": true,
+          "canonical_projection_is_definitely_inactive": true,
+          "canonical_retention_inside_guard": true,
+          "canonical_upstream_amplitude_inside_guard": true,
+          "small_k_departure_inside_guard": true,
+          "small_k_fails_retention_gate": true,
+          "small_k_fidelity_decision_is_definite": true,
+          "small_k_projection_is_definitely_active": true,
+          "small_k_retention_inside_guard": true
+        },
+        "precision_bits": 160
+      },
+      {
+        "all_checks_pass": true,
+        "canonical": {
+          "fidelity_control_K_1_over_100": {
+            "best_scalar_departure": "[0.00271558974 +/- 3.63e-12]",
+            "decisions_are_definite": true,
+            "graph_residual_norm": "[4.69799113548749e-16 +/- 2.19e-31]",
+            "meaningful_fidelity_passes": false,
+            "output_singular_values": [
+              "[0.57708998287 +/- 6.43e-12]",
+              "[0.77382231148 +/- 5.56e-12]"
+            ],
+            "output_to_input_amplitude": "[0.193063079649 +/- 9.66e-13]",
+            "output_to_upstream_amplitude": "[0.72451868796 +/- 2.35e-12]",
+            "projection_gain": "1/100",
+            "projection_scale": "[0.03743538213 +/- 6.31e-12]",
+            "projection_status": "active",
+            "root_error_norm_upper": "[2.34899556774375e-16 +/- 3.91e-31]",
+            "upstream_best_scalar_departure": "[0.0699674683071178 +/- 9.92e-18]",
+            "upstream_shaping_retention": "[0.0388121766 +/- 7.35e-11]",
+            "yosida_error_norm_upper": "[2.34899556774375e-13 +/- 3.91e-28]"
+          },
+          "locked_K_1": {
+            "best_scalar_departure": "[0.0362830180 +/- 1.20e-11]",
+            "decisions_are_definite": true,
+            "graph_residual_norm": "[4.69799113548749e-16 +/- 2.19e-31]",
+            "meaningful_fidelity_passes": true,
+            "output_singular_values": [
+              "[1.0989861244 +/- 2.52e-11]",
+              "[1.5817888207 +/- 4.61e-11]"
+            ],
+            "output_to_input_amplitude": "[0.38521819141 +/- 3.32e-12]",
+            "output_to_upstream_amplitude": "[1.4456299937 +/- 2.74e-11]",
+            "projection_gain": "1",
+            "projection_scale": "1.00000000000000",
+            "projection_status": "inactive",
+            "root_error_norm_upper": "[2.34899556774375e-16 +/- 3.91e-31]",
+            "upstream_best_scalar_departure": "[0.0699674683071178 +/- 9.92e-18]",
+            "upstream_shaping_retention": "[0.518569828 +/- 1.74e-10]",
+            "yosida_error_norm_upper": "[2.34899556774375e-13 +/- 3.91e-28]"
+          }
+        },
+        "checks": {
+          "canonical_departure_inside_guard": true,
+          "canonical_fidelity_decisions_are_definite": true,
+          "canonical_fidelity_passes": true,
+          "canonical_input_amplitude_inside_guard": true,
+          "canonical_projection_is_definitely_inactive": true,
+          "canonical_retention_inside_guard": true,
+          "canonical_upstream_amplitude_inside_guard": true,
+          "small_k_departure_inside_guard": true,
+          "small_k_fails_retention_gate": true,
+          "small_k_fidelity_decision_is_definite": true,
+          "small_k_projection_is_definitely_active": true,
+          "small_k_retention_inside_guard": true
+        },
+        "precision_bits": 224
+      }
+    ],
+    "locked_guards": {
+      "departure": {
+        "strict_lower": "18141/500000",
+        "strict_upper": "9071/250000"
+      },
+      "output_to_input_amplitude": {
+        "strict_lower": "77/200",
+        "strict_upper": "193/500"
+      },
+      "output_to_upstream_amplitude": {
+        "strict_lower": "289/200",
+        "strict_upper": "1447/1000"
+      },
+      "retention": {
+        "strict_lower": "1037/2000",
+        "strict_upper": "5187/10000"
+      }
+    },
+    "small_k_negative_control_guards": {
+      "departure": {
+        "strict_lower": "543/200000",
+        "strict_upper": "2717/1000000"
+      },
+      "retention": {
+        "strict_lower": "97/2500",
+        "strict_upper": "389/10000"
+      }
+    },
+    "thresholds": {
+      "best_scalar_departure": "1/1000",
+      "upstream_shaping_retention": "1/10"
+    }
+  },
+  "generic_sector_obstruction": {
+    "classification": "strict instability of an admissible constant complex-skew endpoint in the generic sector class; not a structured-P18 counterexample",
+    "learning_rate": {
+      "decimal": "0.02",
+      "exact": "1/50"
+    },
+    "schur_cohn_margin": {
+      "decimal": "-0.0000021420649882080739808998259832151234149932861328125",
+      "exact": "-3768360579178620269/1759218604441600000000000"
+    }
+  },
+  "git": {
+    "branch": "p18-sector-projected-useful-rate",
+    "dirty": false,
+    "sha": "77e81b2462455cd96c5dfbb74b5a67a4cea5a475"
+  },
+  "hardware": {
+    "logical_cpu_count": 10,
+    "machine": "arm64",
+    "platform": "macOS-15.5-arm64-arm-64bit",
+    "processor": "arm"
+  },
+  "operator": {
+    "definition": "Z=alpha*X, alpha=min(1,K*<X,S>/||X||^2); T=(1-theta)*Y/c+theta*Z",
+    "epsilon": {
+      "decimal": "1E-7",
+      "exact": "1/10000000"
+    },
+    "gate_cap": {
+      "decimal": "0.75",
+      "exact": "3/4"
+    },
+    "gate_squared_radius_interval": [
+      "1/4",
+      "1"
+    ],
+    "lambda": {
+      "decimal": "0.001",
+      "exact": "1/1000"
+    },
+    "mu": {
+      "decimal": "1000",
+      "exact": "1000"
+    },
+    "p15_relative_residual_tolerance": {
+      "decimal": "0.004",
+      "exact": "1/250"
+    },
+    "passive_divisor": {
+      "decimal": "1024",
+      "exact": "1024"
+    },
+    "projection_gain": {
+      "decimal": "1",
+      "exact": "1"
+    }
+  },
+  "pareto_certificates": {
+    "eta_1_over_150": {
+      "certified": true,
+      "dimensionless_step": "381/10240",
+      "function_storage": "1",
+      "half_life_steps": 577.4493463376268,
+      "interpolation_reverse_weight": "27489/2000",
+      "learning_rate": "1/150",
+      "multipliers": [
+        "368582509/25000000",
+        "27489/2000",
+        "29991/5000000",
+        "153/10000"
+      ],
+      "negative_lmi_leading_minors": [
+        "48550770672962485671/1677721600000000000000",
+        "3701405091411779448863071314953/104857600000000000000000000000000",
+        "5472905342946443045568553857583121/1179648000000000000000000000000000000000",
+        "45118654647984982938938533702681723979/58982400000000000000000000000000000000000000000"
+      ],
+      "rate_squared": "24970009/25000000",
+      "residual_multiplier": "153/10000",
+      "residual_ratio": "893/1143",
+      "storage": [
+        [
+          "5133/10000",
+          "-407/1000"
+        ],
+        [
+          "-407/1000",
+          "663/2000"
+        ]
+      ],
+      "storage_leading_minors": [
+        "5133/10000",
+        "90199/20000000"
+      ],
+      "tau": "4997/5000"
+    },
+    "eta_1_over_75": {
+      "certified": true,
+      "dimensionless_step": "381/5120",
+      "function_storage": "1",
+      "half_life_steps": 6931.29851735993,
+      "interpolation_reverse_weight": "12009/2000",
+      "learning_rate": "1/75",
+      "multipliers": [
+        "2801760001/400000000",
+        "12009/2000",
+        "39999/80000000",
+        "83/2000"
+      ],
+      "negative_lmi_leading_minors": [
+        "219856123519976257319/6710886400000000000000",
+        "80765314010076917150471950385403/5368709120000000000000000000000000",
+        "2029210738997542827009422709606250357/241591910400000000000000000000000000000000",
+        "272788217240627612583367694875376574473927/193273528320000000000000000000000000000000000000000"
+      ],
+      "rate_squared": "399960001/400000000",
+      "residual_multiplier": "83/2000",
+      "residual_ratio": "893/1143",
+      "storage": [
+        [
+          "417/500",
+          "-113/400"
+        ],
+        [
+          "-113/400",
+          "299/2000"
+        ]
+      ],
+      "storage_leading_minors": [
+        "417/500",
+        "179507/4000000"
+      ],
+      "tau": "19999/20000"
+    },
+    "eta_1_over_90": {
+      "certified": true,
+      "dimensionless_step": "127/2048",
+      "function_storage": "1",
+      "half_life_steps": 1386.1210671035876,
+      "interpolation_reverse_weight": "767/100",
+      "learning_rate": "1/90",
+      "multipliers": [
+        "138712001/16000000",
+        "767/100",
+        "7999/3200000",
+        "4/125"
+      ],
+      "negative_lmi_leading_minors": [
+        "1380635360703710511/42949672960000000000",
+        "3644185979703095445170072427/171798691840000000000000000000",
+        "2065232531574770902788718090897/69578470195200000000000000000000000",
+        "15830218287878736944946395283359867/2226511046246400000000000000000000000000000"
+      ],
+      "rate_squared": "15992001/16000000",
+      "residual_multiplier": "4/125",
+      "residual_ratio": "893/1143",
+      "storage": [
+        [
+          "183/250",
+          "-79/250"
+        ],
+        [
+          "-79/250",
+          "47/250"
+        ]
+      ],
+      "storage_leading_minors": [
+        "183/250",
+        "118/3125"
+      ],
+      "tau": "3999/4000"
+    },
+    "eta_1_over_95": {
+      "certified": true,
+      "dimensionless_step": "1143/19456",
+      "function_storage": "1",
+      "half_life_steps": 1155.0720054723918,
+      "interpolation_reverse_weight": "4107/500",
+      "learning_rate": "1/95",
+      "multipliers": [
+        "921340009/100000000",
+        "4107/500",
+        "59991/20000000",
+        "3/100"
+      ],
+      "negative_lmi_leading_minors": [
+        "2116267078003510239/67108864000000000000",
+        "51544535040598072198243626957023/2422629990400000000000000000000000",
+        "1445145060670376900703251827147453/378535936000000000000000000000000000000",
+        "62804498473929875796748189597610017847/75707187200000000000000000000000000000000000000"
+      ],
+      "rate_squared": "99940009/100000000",
+      "residual_multiplier": "3/100",
+      "residual_ratio": "893/1143",
+      "storage": [
+        [
+          "88/125",
+          "-163/500"
+        ],
+        [
+          "-163/500",
+          "201/1000"
+        ]
+      ],
+      "storage_leading_minors": [
+        "88/125",
+        "8807/250000"
+      ],
+      "tau": "9997/10000"
+    },
+    "pareto_eta_1_over_120": {
+      "certified": true,
+      "dimensionless_step": "381/8192",
+      "function_storage": "1",
+      "half_life_steps": 666.3143717981078,
+      "interpolation_reverse_weight": "2177/200",
+      "learning_rate": "1/120",
+      "multipliers": [
+        "7427475169/625000000",
+        "2177/200",
+        "649831/125000000",
+        "53/2500"
+      ],
+      "negative_lmi_leading_minors": [
+        "818282510128434804671/26843545600000000000000",
+        "2460403591521068216235541847989279/83886080000000000000000000000000000",
+        "41361474609957038583588604605900014467/7372800000000000000000000000000000000000000",
+        "4540878009126796478413253720218453415344153/9216000000000000000000000000000000000000000000000000"
+      ],
+      "rate_squared": "624350169/625000000",
+      "residual_multiplier": "53/2500",
+      "residual_ratio": "893/1143",
+      "storage": [
+        [
+          "599/1000",
+          "-231/625"
+        ],
+        [
+          "-231/625",
+          "657/2500"
+        ]
+      ],
+      "storage_leading_minors": [
+        "599/1000",
+        "260163/12500000"
+      ],
+      "tau": "24987/25000"
+    },
+    "primary_eta_1_over_83": {
+      "certified": true,
+      "dimensionless_step": "5715/84992",
+      "function_storage": "1",
+      "half_life_steps": 1724.073425209877,
+      "interpolation_reverse_weight": "3459/500",
+      "learning_rate": "1/83",
+      "multipliers": [
+        "7917598040401/1000000000000",
+        "3459/500",
+        "401959599/200000000000",
+        "9/250"
+      ],
+      "negative_lmi_leading_minors": [
+        "29927321321181435421995147/924625928192000000000000000",
+        "8250787544082072394768602635459352796391/462312964096000000000000000000000000000000",
+        "1391032153976146286203283830581420859889968429/288945602560000000000000000000000000000000000000000",
+        "21663211559038354188730641491352664731711338441500319/577891205120000000000000000000000000000000000000000000000000000"
+      ],
+      "rate_squared": "999598040401/1000000000000",
+      "residual_multiplier": "9/250",
+      "residual_ratio": "893/1143",
+      "storage": [
+        [
+          "97/125",
+          "-151/500"
+        ],
+        [
+          "-151/500",
+          "17/100"
+        ]
+      ],
+      "storage_leading_minors": [
+        "97/125",
+        "10179/250000"
+      ],
+      "tau": "999799/1000000"
+    }
+  },
+  "pointwise_sector": {
+    "center": {
+      "decimal": "0.55810546875",
+      "exact": "1143/2048"
+    },
+    "lower": {
+      "decimal": "0.1220703125",
+      "exact": "125/1024"
+    },
+    "radius": {
+      "decimal": "0.43603515625",
+      "exact": "893/2048"
+    },
+    "scope": "pointwise at the origin, not incremental",
+    "supply": "||T(S)-gamma*S||_F <= K_E*||S||_F",
+    "upper": {
+      "decimal": "0.994140625",
+      "exact": "509/512"
+    }
+  },
+  "primary_acceptance": {
+    "effective_update_guard": {
+      "attained": [
+        "125/84992",
+        "509/42496"
+      ],
+      "required": [
+        "1/1000",
+        "1/80"
+      ]
+    },
+    "exact_rate_gate": "q_primary^10 < q_P14",
+    "exact_rate_gate_passes": true,
+    "half_life_ratio_to_p14": 9.95921125703302,
+    "half_life_steps": 1724.073425209877,
+    "learning_rate": {
+      "decimal": "0.0120481927710843373493975903614457831325301204819277108433735",
+      "exact": "1/83"
+    },
+    "name": "primary_eta_1_over_83",
+    "p14_half_life_steps": 173.1134505247458,
+    "rate_squared": {
+      "decimal": "0.999598040401",
+      "exact": "999598040401/1000000000000"
+    }
+  },
+  "prior_p17": {
+    "artifact_commit": "1f7024b5ad562601b4da3d3f25ba0dc5758a7c39",
+    "artifact_path": "results/summaries/shape_preserving_resolvent_certificate.json",
+    "artifact_sha256": "6ceea44127493cc3cb811826879413f87363a21457670e0e8be687aaef980455",
+    "checkpoint_tag": "p17-shape-preserving-resolvent-checkpoint",
+    "checkpoint_tag_object": "3a3c860f62fc0feb573435ea0670bfb6045ca943",
+    "source_commit": "d5f0f89cf9c1bf3fdff5cea131389725c12bbe6b"
+  },
+  "proof_replay_provenance": {
+    "arb_precision_bits": [
+      160,
+      224
+    ],
+    "methods": [
+      "exact rational pointwise-sector algebra and PL Sylvester tests",
+      "exact Schur-Cohn arithmetic for a generic-sector negative control",
+      "cross-precision outward-rounded Arb canonical fidelity with residual inflation",
+      "standard-library-only independent exact reconstruction"
+    ],
+    "source_snapshot": {
+      "pyproject.toml": "7a9988bf528baef5145f779516d4315349d1c2a6bbb7394c9b93fbbee1d4f596",
+      "results/summaries/shape_preserving_resolvent_certificate.json": "6ceea44127493cc3cb811826879413f87363a21457670e0e8be687aaef980455",
+      "scripts/certify_sector_projected_useful_rate.py": "1860cdec99378e246a90be35ef4ce57b12d298bd75edd63c01b8fdbb991def6d",
+      "scripts/reconstruct_sector_projected_useful_rate.py": "1a4a4f70247dbc840eb2b93609ef0467df72c9549af5b81fac935968ff2258ac",
+      "src/passive_muon/momentum_iqc.py": "c1e7346473d2d8e96ad2e378ac7d47b98f35786752c31c50109375cec3ab415d",
+      "src/passive_muon/pl_convergence.py": "d59d56d6e2ba808aaa519770f3b4442ccfb54aa5144755b760bcb2c7cea8b446",
+      "src/passive_muon/sector_projected_resolvent.py": "416a4ffed4db0cb34e5a7a61db83a5afad04e01a0dfba9fe6a12c01941970e9e",
+      "src/passive_muon/sector_projected_resolvent_certificate.py": "fd521b24fd53ccbbb64829def5c32da5015c2b689015deed1bb7573c64ab9a9d",
+      "src/passive_muon/specs.py": "85fcee0f87485fc3cac2f426d62ec6e55da7896caade2f5df2a1c87f7d9c5d6c",
+      "src/passive_muon/structure_aware_stability.py": "fbbbfa314b26c8c549dcc915bcbe590fadc55fb712288c1757ff24881ababc4a",
+      "src/passive_muon/upstream_momentum.py": "7479613bb307debbb2a02e04e6bbe53a428855c51e1e21210f9c2be2e68d3d7e",
+      "tests/test_sector_projected_resolvent.py": "d1a1ad459c3b6fe47cb222e1738f6e9ae083cf663e2f92a15aaa12e83745ccab",
+      "tests/test_sector_projected_resolvent_certificate.py": "5910fceeea2db5fd1b92a34dc2be501aa612e55f1c5ff070c44d9585a2b7eb4c",
+      "tests/test_sector_projected_resolvent_cli.py": "eb2a9f62c41ea2f233bf22ec5a013ca828d0bc4aa2f5556b087f5d63e29eceb8",
+      "tests/test_sector_projected_resolvent_reconstruction.py": "7e2b75b93274a750b47383cd241eaeb2e36e1a564b29ebc57d8a83db75273536",
+      "uv.lock": "f097fd7895b5c1c551a0bd233d025c3f8ae97b7dedce6a8690569f1b1f7c5cf1"
+    }
+  },
+  "reconstruction_fields": {
+    "complex_skew_obstruction": {
+      "characteristic_coefficient_one": {
+        "imaginary": "34827/4096000",
+        "real": "-7942623/4096000"
+      },
+      "characteristic_coefficient_zero": {
+        "imaginary": "-16967/4096000",
+        "real": "3869483/4096000"
+      },
+      "curvature": "10",
+      "determinant": {
+        "imaginary": "-16967/4096000",
+        "real": "3869483/4096000"
+      },
+      "determinant_disk_margin": "902014716811/8388608000000",
+      "gain": {
+        "imaginary": "893/2048",
+        "real": "1143/2048"
+      },
+      "learning_rate": "1/50",
+      "schur_cohn_margin": "-3768360579178620269/1759218604441600000000000",
+      "schur_vector": {
+        "imaginary": "34827/4096000",
+        "real": "-899274112191/8388608000000"
+      },
+      "scope": "admissible constant two-dimensional map in the generic origin-centred sector; not an actual-P18 realizability claim",
+      "sector_boundary_residual": "0",
+      "trace": {
+        "imaginary": "-34827/4096000",
+        "real": "7942623/4096000"
+      }
+    },
+    "controls": {
+      "projection_gain_1_over_100": {
+        "blended_upper_at_gate_cap": "3221/12800",
+        "projection_gain": "1/100",
+        "scope": "fidelity-only negative control, not a sector failure",
+        "uniform_upper": "125/128"
+      },
+      "unprojected_shape_branch": {
+        "effective_upper_at_eta_1_over_50": "103423243237668615433105/9145419504572381819904",
+        "raw_shape_gain_upper": "20191130443162880000000/26793221204801899863",
+        "scope": "huge generic-sector diagnostic, not an instability proof",
+        "uniform_upper": "2585581080941715385827625/4572709752286190909952"
+      }
+    },
+    "exact_certificates": {
+      "eta_1_over_150": {
+        "dimensionless_step": "381/10240",
+        "function_storage": "1",
+        "interpolation_reverse_weight": "27489/2000",
+        "learning_rate": "1/150",
+        "multipliers": [
+          "368582509/25000000",
+          "27489/2000",
+          "29991/5000000",
+          "153/10000"
+        ],
+        "negative_lmi_leading_minors": [
+          "48550770672962485671/1677721600000000000000",
+          "3701405091411779448863071314953/104857600000000000000000000000000",
+          "5472905342946443045568553857583121/1179648000000000000000000000000000000000",
+          "45118654647984982938938533702681723979/58982400000000000000000000000000000000000000000"
+        ],
+        "rate_squared": "24970009/25000000",
+        "residual_multiplier": "153/10000",
+        "residual_ratio": "893/1143",
+        "storage": [
+          [
+            "5133/10000",
+            "-407/1000"
+          ],
+          [
+            "-407/1000",
+            "663/2000"
+          ]
+        ],
+        "storage_leading_minors": [
+          "5133/10000",
+          "90199/20000000"
+        ],
+        "tau": "4997/5000"
+      },
+      "eta_1_over_75": {
+        "dimensionless_step": "381/5120",
+        "function_storage": "1",
+        "interpolation_reverse_weight": "12009/2000",
+        "learning_rate": "1/75",
+        "multipliers": [
+          "2801760001/400000000",
+          "12009/2000",
+          "39999/80000000",
+          "83/2000"
+        ],
+        "negative_lmi_leading_minors": [
+          "219856123519976257319/6710886400000000000000",
+          "80765314010076917150471950385403/5368709120000000000000000000000000",
+          "2029210738997542827009422709606250357/241591910400000000000000000000000000000000",
+          "272788217240627612583367694875376574473927/193273528320000000000000000000000000000000000000000"
+        ],
+        "rate_squared": "399960001/400000000",
+        "residual_multiplier": "83/2000",
+        "residual_ratio": "893/1143",
+        "storage": [
+          [
+            "417/500",
+            "-113/400"
+          ],
+          [
+            "-113/400",
+            "299/2000"
+          ]
+        ],
+        "storage_leading_minors": [
+          "417/500",
+          "179507/4000000"
+        ],
+        "tau": "19999/20000"
+      },
+      "eta_1_over_90": {
+        "dimensionless_step": "127/2048",
+        "function_storage": "1",
+        "interpolation_reverse_weight": "767/100",
+        "learning_rate": "1/90",
+        "multipliers": [
+          "138712001/16000000",
+          "767/100",
+          "7999/3200000",
+          "4/125"
+        ],
+        "negative_lmi_leading_minors": [
+          "1380635360703710511/42949672960000000000",
+          "3644185979703095445170072427/171798691840000000000000000000",
+          "2065232531574770902788718090897/69578470195200000000000000000000000",
+          "15830218287878736944946395283359867/2226511046246400000000000000000000000000000"
+        ],
+        "rate_squared": "15992001/16000000",
+        "residual_multiplier": "4/125",
+        "residual_ratio": "893/1143",
+        "storage": [
+          [
+            "183/250",
+            "-79/250"
+          ],
+          [
+            "-79/250",
+            "47/250"
+          ]
+        ],
+        "storage_leading_minors": [
+          "183/250",
+          "118/3125"
+        ],
+        "tau": "3999/4000"
+      },
+      "eta_1_over_95": {
+        "dimensionless_step": "1143/19456",
+        "function_storage": "1",
+        "interpolation_reverse_weight": "4107/500",
+        "learning_rate": "1/95",
+        "multipliers": [
+          "921340009/100000000",
+          "4107/500",
+          "59991/20000000",
+          "3/100"
+        ],
+        "negative_lmi_leading_minors": [
+          "2116267078003510239/67108864000000000000",
+          "51544535040598072198243626957023/2422629990400000000000000000000000",
+          "1445145060670376900703251827147453/378535936000000000000000000000000000000",
+          "62804498473929875796748189597610017847/75707187200000000000000000000000000000000000000"
+        ],
+        "rate_squared": "99940009/100000000",
+        "residual_multiplier": "3/100",
+        "residual_ratio": "893/1143",
+        "storage": [
+          [
+            "88/125",
+            "-163/500"
+          ],
+          [
+            "-163/500",
+            "201/1000"
+          ]
+        ],
+        "storage_leading_minors": [
+          "88/125",
+          "8807/250000"
+        ],
+        "tau": "9997/10000"
+      },
+      "pareto_eta_1_over_120": {
+        "dimensionless_step": "381/8192",
+        "function_storage": "1",
+        "interpolation_reverse_weight": "2177/200",
+        "learning_rate": "1/120",
+        "multipliers": [
+          "7427475169/625000000",
+          "2177/200",
+          "649831/125000000",
+          "53/2500"
+        ],
+        "negative_lmi_leading_minors": [
+          "818282510128434804671/26843545600000000000000",
+          "2460403591521068216235541847989279/83886080000000000000000000000000000",
+          "41361474609957038583588604605900014467/7372800000000000000000000000000000000000000",
+          "4540878009126796478413253720218453415344153/9216000000000000000000000000000000000000000000000000"
+        ],
+        "rate_squared": "624350169/625000000",
+        "residual_multiplier": "53/2500",
+        "residual_ratio": "893/1143",
+        "storage": [
+          [
+            "599/1000",
+            "-231/625"
+          ],
+          [
+            "-231/625",
+            "657/2500"
+          ]
+        ],
+        "storage_leading_minors": [
+          "599/1000",
+          "260163/12500000"
+        ],
+        "tau": "24987/25000"
+      },
+      "primary_eta_1_over_83": {
+        "dimensionless_step": "5715/84992",
+        "function_storage": "1",
+        "interpolation_reverse_weight": "3459/500",
+        "learning_rate": "1/83",
+        "multipliers": [
+          "7917598040401/1000000000000",
+          "3459/500",
+          "401959599/200000000000",
+          "9/250"
+        ],
+        "negative_lmi_leading_minors": [
+          "29927321321181435421995147/924625928192000000000000000",
+          "8250787544082072394768602635459352796391/462312964096000000000000000000000000000000",
+          "1391032153976146286203283830581420859889968429/288945602560000000000000000000000000000000000000000",
+          "21663211559038354188730641491352664731711338441500319/577891205120000000000000000000000000000000000000000000000000000"
+        ],
+        "rate_squared": "999598040401/1000000000000",
+        "residual_multiplier": "9/250",
+        "residual_ratio": "893/1143",
+        "storage": [
+          [
+            "97/125",
+            "-151/500"
+          ],
+          [
+            "-151/500",
+            "17/100"
+          ]
+        ],
+        "storage_leading_minors": [
+          "97/125",
+          "10179/250000"
+        ],
+        "tau": "999799/1000000"
+      }
+    },
+    "locked_design": {
+      "blended_upper_at_gate_cap": "509/512",
+      "gate_cap": "3/4",
+      "passive_branch_sector": {
+        "lower": "125/256",
+        "upper": "125/128"
+      },
+      "passive_divisor": "1024",
+      "projected_pointwise_sector": {
+        "center": "1143/2048",
+        "lower": "125/1024",
+        "radius": "893/2048",
+        "upper": "509/512"
+      },
+      "projection_gain": "1",
+      "yosida_sector": {
+        "lower": "500",
+        "upper": "1000"
+      }
+    },
+    "operator_specification": {
+      "arithmetic": "exact real",
+      "domain": "R^(m x n) for arbitrary positive finite m and n",
+      "epsilon": "1/10000000",
+      "normalization": "U/(||U||_F+epsilon)",
+      "passive_shunt": "1000",
+      "polynomial_coefficients": {
+        "a": "6889/2000",
+        "b": "-191/40",
+        "c": "4063/2000"
+      },
+      "polynomial_iteration_count": 5,
+      "resolvent": "exact",
+      "resolvent_lambda": "1/1000",
+      "sector_scope": "origin-centred pointwise, not incremental"
+    },
+    "useful_rate": {
+      "effective_step_window": {
+        "lower": "1/1000",
+        "upper": "1/80"
+      },
+      "p14_rate_squared": "249001/250000",
+      "pareto_design": "pareto_eta_1_over_120",
+      "primary_design": "primary_eta_1_over_83",
+      "primary_effective_sector": {
+        "lower": "125/84992",
+        "upper": "509/42496"
+      },
+      "primary_rate_to_tenth_power": "995987666940417982677276370661873980985276899407987573658961044869552299589477194342793838247639006238038622165107604001/1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+    }
+  },
+  "schema_version": "passive-muon-sector-projected-resolvent-certificate-v1",
+  "software": {
+    "python": "3.12.11 (main, Jul  8 2025, 20:41:49) [Clang 20.1.4 ]"
+  },
+  "upstream_formula_provenance": {
+    "audited_file": "muon.py",
+    "audited_file_sha256": "2479665a90124f62e4df557816665851ca317e42fcfda2af1da02c1f44ab5f3d",
+    "comparison_scope": "exact-real five-stage spectral counterpart only",
+    "normalization": "X/(X.norm(dim=(-2,-1),keepdim=True)+1e-7)",
+    "repository": "https://github.com/KellerJordan/Muon",
+    "revision": "f98f1cacc0263b04290753e32be8d498c1efc806"
+  }
+}
