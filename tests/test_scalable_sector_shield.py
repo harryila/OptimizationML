@@ -9,9 +9,11 @@ import torch
 
 from passive_muon.scalable_sector_shield import (
     ACCEPTANCE_RADIUS_FP32_BITS,
+    CLIP_COEFFICIENT_FP32_BITS,
     FALLBACK_GAIN_FP32_BITS,
     FP32_MIN_NORMAL,
     LOCKED_ACCEPTANCE_RADIUS,
+    LOCKED_CLIP_COEFFICIENT,
     LOCKED_FALLBACK_GAIN,
     LOCKED_REDUCTION_BLOCK_SIZE,
     LOCKED_REPRESENTATIVE_SHAPES,
@@ -25,6 +27,7 @@ from passive_muon.scalable_sector_shield import (
     NearZeroUnrepresentable,
     ScalableSectorShieldConfig,
     ScalableSectorShieldFailure,
+    ShieldAction,
     SignalGuardClass,
     _balanced_sum_fp32,
     _balanced_sum_one_block,
@@ -64,17 +67,21 @@ def test_constants_bits_and_backend_are_locked() -> None:
     assert LOCKED_SHIELD_CENTER == 1_143 / 2_048
     assert LOCKED_SHIELD_RADIUS == 893 / 2_048
     assert LOCKED_ACCEPTANCE_RADIUS == 891 / 2_048
+    assert LOCKED_CLIP_COEFFICIENT == 890 / 2_048
     assert LOCKED_RESERVED_INWARD_MARGIN == 1 / 1_024
     assert LOCKED_FALLBACK_GAIN == 0.5
     assert SHIELD_CENTER_FP32_BITS == 0x3F0EE000
     assert SHIELD_RADIUS_FP32_BITS == 0x3EDF4000
     assert ACCEPTANCE_RADIUS_FP32_BITS == 0x3EDEC000
+    assert CLIP_COEFFICIENT_FP32_BITS == 0x3EDE8000
     assert FALLBACK_GAIN_FP32_BITS == 0x3F000000
     assert _bits(torch.tensor(LOCKED_SHIELD_CENTER, dtype=torch.float32)) == SHIELD_CENTER_FP32_BITS
     assert _bits(torch.tensor(LOCKED_SHIELD_RADIUS, dtype=torch.float32)) == SHIELD_RADIUS_FP32_BITS
     assert report["rounding"] == "IEEE-754 roundTiesToEven"
     assert report["gradual_underflow"] is True
     assert report["ftz_daz"] is False
+    assert report["fp64_to_fp32_halfway_bits_hex"] == "0x3f800000"
+    assert report["fp32_one_nextafter_zero_bits_hex"] == "0x3f7fffff"
 
 
 def test_all_seven_transformer_shapes_construct_with_positive_static_margin() -> None:
@@ -105,6 +112,8 @@ def test_fp32_inside_candidate_passes_through_bit_for_bit() -> None:
     assert result.diagnostics.candidate_accepted
     assert not result.diagnostics.active
     assert not result.diagnostics.used_fallback
+    assert not result.diagnostics.candidate_clipped
+    assert result.diagnostics.action is ShieldAction.PASS_THROUGH
     assert not result.diagnostics.fail_closed
     assert result.diagnostics.signal_guard_class is SignalGuardClass.NORMAL_ANCHORED
     assert result.output.dtype == torch.float32
@@ -156,11 +165,9 @@ def test_guarded_p18_candidate_is_normally_inactive() -> None:
     (
         torch.tensor([100.0, -200.0], dtype=torch.float32),
         torch.tensor([-3.0e30, 2.0e30], dtype=torch.float32),
-        torch.tensor([math.nan, 1.0], dtype=torch.float32),
-        torch.tensor([math.inf, -math.inf], dtype=torch.float32),
     ),
 )
-def test_corrupted_and_nonfinite_candidates_use_safe_half_fallback(
+def test_finite_corrupted_candidates_are_radially_clipped_and_exactly_safe(
     candidate: torch.Tensor,
 ) -> None:
     config = ScalableSectorShieldConfig((768, 768))
@@ -169,13 +176,64 @@ def test_corrupted_and_nonfinite_candidates_use_safe_half_fallback(
     result = shield_reduced_spectrum_mixed_precision(signal, candidate, config)
 
     assert result.diagnostics.active
-    assert result.diagnostics.used_fallback
+    assert result.diagnostics.candidate_clipped
+    assert not result.diagnostics.used_fallback
     assert not result.diagnostics.candidate_accepted
+    assert not result.diagnostics.fail_closed
+    assert result.diagnostics.action is ShieldAction.RADIAL_CLIP
+    assert result.diagnostics.reason == "candidate_outside_inward_screen_radial_clip"
+    assert result.diagnostics.clip_ratio_fp64_downward is not None
+    assert result.diagnostics.clip_scale_fp64_downward is not None
+    assert result.diagnostics.clip_alpha_fp32 is not None
+    assert result.diagnostics.clip_alpha_fp32_bits is not None
+    assert result.diagnostics.signal_norm is not None
+    assert result.diagnostics.displacement_norm is not None
+    assert result.diagnostics.signal_norm.returned_norm is not None
+    assert result.diagnostics.displacement_norm.returned_norm is not None
+    expected_ratio = math.nextafter(
+        result.diagnostics.signal_norm.returned_norm
+        / result.diagnostics.displacement_norm.returned_norm,
+        0.0,
+    )
+    expected_scale = math.nextafter(LOCKED_CLIP_COEFFICIENT * expected_ratio, 0.0)
+    assert result.diagnostics.clip_ratio_fp64_downward == expected_ratio
+    assert result.diagnostics.clip_scale_fp64_downward == expected_scale
+    rne_alpha = torch.tensor(
+        result.diagnostics.clip_scale_fp64_downward,
+        dtype=torch.float64,
+    ).to(torch.float32)
+    expected_alpha = (
+        torch.nextafter(rne_alpha, torch.zeros((), dtype=torch.float32))
+        if bool(rne_alpha != 0.0)
+        else rne_alpha
+    )
+    assert result.diagnostics.clip_alpha_fp32_bits == _bits(expected_alpha)
+    assert result.diagnostics.clip_alpha_fp32 <= result.diagnostics.clip_scale_fp64_downward
+    assert not torch.equal(result.output, torch.tensor([1.5, 2.0], dtype=torch.float32))
+    assert _exact_disk_margin(result.output, signal) > 0
+
+
+@pytest.mark.parametrize(
+    "candidate",
+    (
+        torch.tensor([math.nan, 1.0], dtype=torch.float32),
+        torch.tensor([math.inf, -math.inf], dtype=torch.float32),
+    ),
+)
+def test_nonfinite_candidates_use_safe_half_fallback(candidate: torch.Tensor) -> None:
+    config = ScalableSectorShieldConfig((768, 768))
+    signal = torch.tensor([3.0, 4.0], dtype=torch.float32)
+
+    result = shield_reduced_spectrum_mixed_precision(signal, candidate, config)
+
+    assert result.diagnostics.active
+    assert not result.diagnostics.candidate_clipped
+    assert result.diagnostics.used_fallback
+    assert result.diagnostics.fail_closed
+    assert result.diagnostics.action is ShieldAction.HALF_FALLBACK
+    assert result.diagnostics.reason == "nonfinite_candidate_half_fallback"
     assert torch.equal(result.output, torch.tensor([1.5, 2.0], dtype=torch.float32))
     assert _exact_disk_margin(result.output, signal) > 0
-    if not bool(torch.isfinite(candidate).all()):
-        assert result.diagnostics.fail_closed
-        assert result.diagnostics.reason == "nonfinite_candidate_half_fallback"
 
 
 def test_displacement_overflow_falls_back_without_emitting_nonfinite_output() -> None:
@@ -187,7 +245,10 @@ def test_displacement_overflow_falls_back_without_emitting_nonfinite_output() ->
     result = shield_reduced_spectrum_mixed_precision(signal, candidate, config)
 
     assert result.diagnostics.active
+    assert not result.diagnostics.candidate_clipped
+    assert result.diagnostics.used_fallback
     assert result.diagnostics.fail_closed
+    assert result.diagnostics.action is ShieldAction.HALF_FALLBACK
     assert result.diagnostics.reason == "displacement_overflow_half_fallback"
     assert bool(torch.isfinite(result.output).all())
     assert _exact_disk_margin(result.output, signal) > 0
@@ -224,6 +285,7 @@ def test_all_subnormal_signal_uses_only_exact_half_or_fails_closed() -> None:
 
     assert result.diagnostics.signal_guard_class is SignalGuardClass.SUBNORMAL_EXACT_HALVING
     assert result.diagnostics.exact_halving_guard
+    assert result.diagnostics.action is ShieldAction.HALF_FALLBACK
     assert _bits(result.output) == 0x0000_0001
     assert _exact_disk_margin(result.output, even) > 0
     with pytest.raises(NearZeroUnrepresentable, match="all nonzero signal entries") as raised:
@@ -248,15 +310,17 @@ def test_widened_bf16_subnormal_has_an_exact_fp32_half() -> None:
 
 def test_normal_anchor_absorbs_rounded_halves_of_odd_subnormal_entries() -> None:
     config = ScalableSectorShieldConfig((768, 768))
-    signal = torch.stack((_from_bits(0x0080_0000), _from_bits(0x0000_0001)))
-    candidate = torch.tensor([100.0, -100.0], dtype=torch.float32)
+    maximum = torch.finfo(torch.float32).max
+    signal = torch.stack((torch.tensor(-maximum), _from_bits(0x0000_0001)))
+    candidate = torch.tensor([maximum, 0.0], dtype=torch.float32)
 
     result = shield_reduced_spectrum_mixed_precision(signal, candidate, config)
 
     assert result.diagnostics.normal_anchor
     assert not result.diagnostics.exact_halving_guard
     assert result.diagnostics.used_fallback
-    assert _bits(result.output[0]) == 0x0040_0000
+    assert result.diagnostics.action is ShieldAction.HALF_FALLBACK
+    assert _bits(result.output[0]) == 0xFEFF_FFFF
     assert _bits(result.output[1]) == 0x0000_0000
     assert _exact_disk_margin(result.output, signal) > 0
 
@@ -274,10 +338,38 @@ def test_original_boundary_and_one_ulp_escape_are_rejected_by_inward_screen() ->
     assert _exact_disk_margin(escaped, signal) < 0
     assert boundary_result.diagnostics.active
     assert escaped_result.diagnostics.active
-    assert torch.equal(boundary_result.output, signal * 0.5)
-    assert torch.equal(escaped_result.output, signal * 0.5)
+    assert boundary_result.diagnostics.candidate_clipped
+    assert escaped_result.diagnostics.candidate_clipped
+    assert not boundary_result.diagnostics.used_fallback
+    assert not escaped_result.diagnostics.used_fallback
+    assert boundary_result.diagnostics.action is ShieldAction.RADIAL_CLIP
+    assert escaped_result.diagnostics.action is ShieldAction.RADIAL_CLIP
+    assert float(boundary_result.output) < float(boundary)
+    assert float(escaped_result.output) < float(escaped)
     assert _exact_disk_margin(boundary_result.output, signal) > 0
     assert _exact_disk_margin(escaped_result.output, signal) > 0
+
+
+def test_seeded_finite_adversarial_clips_all_pass_offline_exact_disk_check() -> None:
+    config = ScalableSectorShieldConfig((768, 768))
+    generator = np.random.default_rng(20_260_905)
+    clipped = 0
+    for exponent in (-100, -40, 0, 40, 100):
+        for gain in (2.0, 17.0, 1_024.0):
+            signal = torch.from_numpy(
+                np.asarray(generator.normal(size=9) * 2.0**exponent, dtype=np.float32)
+            )
+            candidate = torch.from_numpy(
+                np.asarray(
+                    generator.normal(size=9) * 2.0**exponent * gain,
+                    dtype=np.float32,
+                )
+            )
+            result = shield_reduced_spectrum_mixed_precision(signal, candidate, config)
+            assert _exact_disk_margin(result.output, signal) >= 0
+            assert not result.diagnostics.used_fallback
+            clipped += int(result.diagnostics.candidate_clipped)
+    assert clipped >= 12
 
 
 def test_chunked_balanced_tree_matches_global_adjacent_tree_bitwise() -> None:
@@ -306,6 +398,8 @@ def test_manifest_freezes_cast_reduction_ftz_and_scope() -> None:
     ]
     assert manifest["matrix_domain"]["output_dtype"] == "torch.float32"
     assert manifest["disk"]["acceptance_radius"] == "891/2048"
+    assert manifest["disk"]["clip_coefficient"] == "890/2048 = 445/1024"
+    assert "ratio64=nextafter" in manifest["operation_graph"]["radial_clip"]
     assert manifest["operation_graph"]["fma_allowed"] is False
     assert manifest["underflow_contract"]["ftz_daz_allowed"] is False
     assert manifest["backend"]["per_output_fraction_or_big_integer_postcheck"] is False

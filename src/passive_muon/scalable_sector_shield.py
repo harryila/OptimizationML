@@ -8,11 +8,13 @@ for all rounding through an inward disk reserve.  Given the P18/P19 disk
 
 the runtime screens a finite candidate with coefficient ``k=r-1/1024``.  The
 static shape audit proves that any accepted stored candidate lies at a
-shape-dependent positive distance inside the original disk.  All rejected
-finite candidates, failed norm computations, and nonfinite candidates use
-``fl32(S/2)``.  The latter point is well inside the disk under the certified
-normal-anchor guard.  An all-subnormal nonzero signal is accepted only when
-halving every stored entry is exact; otherwise the call fails closed.
+shape-dependent positive distance inside the original disk.  A rejected
+finite candidate is radially clipped using the stricter coefficient
+``k_clip=890/2048`` and directed-down FP64/FP32 scale construction.  The
+fallback ``fl32(S/2)`` is used only if clipping cannot be computed.  It is
+well inside the disk under the certified normal-anchor guard.  An
+all-subnormal nonzero signal is accepted only when halving every stored entry
+is exact; otherwise the call fails closed.
 
 This is a CPU proof-reference graph, not a claim about an arbitrary BLAS,
 GPU, compiler, or tensor-core implementation.  Inputs may be FP32 or BF16;
@@ -42,7 +44,7 @@ from torch import Tensor
 
 SCALABLE_SECTOR_SHIELD_SCHEMA_VERSION: Final = "passive-muon-scalable-sector-shield-v1"
 LOCKED_SCALABLE_SHIELD_BACKEND: Final = (
-    "torch-cpu-eager-ieee-rne-balanced-fp32-screen-half-fallback-v1"
+    "torch-cpu-eager-ieee-rne-balanced-fp32-screen-radial-clip-half-fallback-v1"
 )
 
 # Exact binary32 dyadics.  The exact P19 radius is 893/2048 and the locked
@@ -50,11 +52,13 @@ LOCKED_SCALABLE_SHIELD_BACKEND: Final = (
 SHIELD_CENTER_FP32_BITS: Final = 0x3F0E_E000  # 1143/2048
 SHIELD_RADIUS_FP32_BITS: Final = 0x3EDF_4000  # 893/2048
 ACCEPTANCE_RADIUS_FP32_BITS: Final = 0x3EDE_C000  # 891/2048
+CLIP_COEFFICIENT_FP32_BITS: Final = 0x3EDE_8000  # 890/2048 = 445/1024
 FALLBACK_GAIN_FP32_BITS: Final = 0x3F00_0000  # 1/2
 
 LOCKED_SHIELD_CENTER: Final = 1143.0 / 2048.0
 LOCKED_SHIELD_RADIUS: Final = 893.0 / 2048.0
 LOCKED_ACCEPTANCE_RADIUS: Final = 891.0 / 2048.0
+LOCKED_CLIP_COEFFICIENT: Final = 890.0 / 2048.0
 LOCKED_RESERVED_INWARD_MARGIN: Final = 1.0 / 1024.0
 LOCKED_FALLBACK_GAIN: Final = 0.5
 
@@ -109,6 +113,15 @@ class SignalGuardClass(StrEnum):
     ZERO = "zero"
     NORMAL_ANCHORED = "normal_anchored"
     SUBNORMAL_EXACT_HALVING = "subnormal_exact_halving"
+
+
+class ShieldAction(StrEnum):
+    """The output path taken by one successful shield call."""
+
+    PASS_THROUGH = "pass_through"
+    RADIAL_CLIP = "radial_clip"
+    HALF_FALLBACK = "half_fallback"
+    ZERO_SINGLETON = "zero_singleton"
 
 
 class ScalableSectorShieldFailure(FloatingPointError):
@@ -212,15 +225,22 @@ class ScalableSectorShieldDiagnostics:
     exact_halving_guard: bool
     candidate_finite: bool
     candidate_accepted: bool
+    candidate_clipped: bool
     active: bool
     used_fallback: bool
     fail_closed: bool
+    action: ShieldAction
     reason: str | None
     signal_norm: ScalableNormDiagnostics | None
     displacement_norm: ScalableNormDiagnostics | None
     acceptance_threshold: float | None
+    clip_ratio_fp64_downward: float | None
+    clip_scale_fp64_downward: float | None
+    clip_alpha_fp32: float | None
+    clip_alpha_fp32_bits: int | None
     original_radius: float
     acceptance_radius: float
+    clip_coefficient: float
     reserved_inward_margin: float
     certified_inward_margin: float
     certified_inward_radius: float
@@ -269,6 +289,12 @@ def _require_locked_rounding_contract() -> None:
     bf16_tie = torch.tensor(1.0 + 2.0**-8, dtype=torch.float32).to(torch.bfloat16)
     bf16_min_subnormal = torch.tensor(2.0**-133, dtype=torch.float32).to(torch.bfloat16)
     bf16_readback = bf16_min_subnormal.to(torch.float32)
+    fp64_to_fp32_tie = torch.tensor(
+        1.0 + 2.0**-24,
+        dtype=torch.float64,
+        device="cpu",
+    ).to(torch.float32)
+    fp32_next_down = torch.nextafter(one, torch.zeros((), dtype=torch.float32))
     if _fp32_bits(fp32_tie) != 0x3F80_0000:
         raise RuntimeError("CPU FP32 addition must use round-to-nearest, ties-to-even")
     if _fp32_bits(fp32_min_subnormal) != 0x0000_0001:
@@ -281,6 +307,10 @@ def _require_locked_rounding_contract() -> None:
         raise RuntimeError("CPU BF16 gradual underflow is required; FTZ is excluded")
     if _fp32_bits(bf16_readback) != 0x0001_0000:
         raise RuntimeError("CPU BF16-to-FP32 widening must preserve subnormal values exactly")
+    if _fp32_bits(fp64_to_fp32_tie) != 0x3F80_0000:
+        raise RuntimeError("CPU FP64-to-FP32 conversion must use ties-to-even")
+    if _fp32_bits(fp32_next_down) != 0x3F7F_FFFF:
+        raise RuntimeError("CPU FP32 nextafter toward zero does not match the locked graph")
 
 
 def locked_scalable_shield_backend_self_check() -> dict[str, object]:
@@ -294,6 +324,8 @@ def locked_scalable_shield_backend_self_check() -> dict[str, object]:
         "bf16_cast_halfway_bits_hex": "0x3f80",
         "bf16_min_subnormal_bits_hex": "0x0001",
         "bf16_min_subnormal_to_fp32_bits_hex": "0x00010000",
+        "fp64_to_fp32_halfway_bits_hex": "0x3f800000",
+        "fp32_one_nextafter_zero_bits_hex": "0x3f7fffff",
         "rounding": "IEEE-754 roundTiesToEven",
         "gradual_underflow": True,
         "ftz_daz": False,
@@ -394,6 +426,46 @@ def _scale_free_balanced_norm_fp32(values: Tensor) -> ScalableNormDiagnostics:
     )
 
 
+def _directed_clip_alpha_fp32(
+    signal_norm: float,
+    displacement_norm: float,
+) -> tuple[Tensor, float, float]:
+    """Build the locked downward radial scale in its exact operation order.
+
+    ``signal_norm`` and ``displacement_norm`` are exact binary64 products of
+    FP32 norm parts.  Division and multiplication round normally in binary64;
+    one ``nextafter`` toward zero follows each.  The RNE FP64-to-FP32 cast is
+    followed unconditionally by one FP32 ``nextafter`` toward zero whenever
+    the cast is nonzero.  Hence the returned FP32 scale cannot exceed the
+    directed binary64 target.
+    """
+
+    if (
+        not math.isfinite(signal_norm)
+        or not math.isfinite(displacement_norm)
+        or signal_norm <= 0.0
+        or displacement_norm <= 0.0
+    ):
+        raise ScalableSectorShieldFailure("clip norms must be positive and finite")
+    ratio = signal_norm / displacement_norm
+    if not math.isfinite(ratio) or ratio < 0.0:
+        raise ScalableSectorShieldFailure("clip norm ratio is not finite and nonnegative")
+    ratio_down = math.nextafter(ratio, 0.0) if ratio != 0.0 else 0.0
+    scaled = LOCKED_CLIP_COEFFICIENT * ratio_down
+    if not math.isfinite(scaled) or scaled < 0.0:
+        raise ScalableSectorShieldFailure("clip scale is not finite and nonnegative")
+    scaled_down = math.nextafter(scaled, 0.0) if scaled != 0.0 else 0.0
+    scaled_down = min(1.0, scaled_down)
+    alpha_rne = torch.tensor(scaled_down, dtype=torch.float64, device="cpu").to(torch.float32)
+    if bool(alpha_rne != 0.0):
+        alpha = torch.nextafter(alpha_rne, torch.zeros((), dtype=torch.float32))
+    else:
+        alpha = alpha_rne
+    if not bool(torch.isfinite(alpha)) or bool(alpha < 0.0) or bool(alpha > 1.0):
+        raise ScalableSectorShieldFailure("directed FP32 clip scale left [0,1]")
+    return alpha, ratio_down, scaled_down
+
+
 def _all_entries_halved_exactly_fp32(signal: Tensor) -> bool:
     """Bit-level exactness test for ``fl32(signal/2)==signal/2`` entrywise."""
 
@@ -452,15 +524,22 @@ def _shield_widened_fp32(
     signal_norm: ScalableNormDiagnostics | None = None
     displacement_norm: ScalableNormDiagnostics | None = None
     threshold: float | None = None
+    clip_ratio: float | None = None
+    clip_scale: float | None = None
+    clip_alpha: Tensor | None = None
     accepted = False
+    clipped = False
+    used_fallback = False
     reason: str | None = None
     fail_closed = False
+    action = ShieldAction.PASS_THROUGH
 
     if guard_class is SignalGuardClass.ZERO:
         accepted = candidate_finite and bool(torch.eq(candidate, 0.0).all())
         output = candidate.clone() if accepted else torch.zeros_like(signal)
         reason = None if accepted else "zero_signal_singleton_fallback"
         fail_closed = not candidate_finite
+        action = ShieldAction.PASS_THROUGH if accepted else ShieldAction.ZERO_SINGLETON
     elif not normal_anchor:
         # Candidate screening is intentionally disabled without the normal
         # anchor used by the shape-specific rounding proof.  Exact halving is
@@ -468,10 +547,14 @@ def _shield_widened_fp32(
         output = _fallback_half(signal)
         reason = "subnormal_signal_exact_half_fallback"
         fail_closed = not candidate_finite
+        used_fallback = True
+        action = ShieldAction.HALF_FALLBACK
     elif not candidate_finite:
         output = _fallback_half(signal)
         reason = "nonfinite_candidate_half_fallback"
         fail_closed = True
+        used_fallback = True
+        action = ShieldAction.HALF_FALLBACK
     else:
         center = _fp32_from_bits(SHIELD_CENTER_FP32_BITS)
         centered_signal = torch.mul(center, signal)
@@ -480,6 +563,8 @@ def _shield_widened_fp32(
             output = _fallback_half(signal)
             reason = "displacement_overflow_half_fallback"
             fail_closed = True
+            used_fallback = True
+            action = ShieldAction.HALF_FALLBACK
         else:
             signal_norm = _scale_free_balanced_norm_fp32(signal)
             displacement_norm = _scale_free_balanced_norm_fp32(displacement)
@@ -487,6 +572,8 @@ def _shield_widened_fp32(
                 output = _fallback_half(signal)
                 reason = "norm_overflow_half_fallback"
                 fail_closed = True
+                used_fallback = True
+                action = ShieldAction.HALF_FALLBACK
             else:
                 # k is exactly representable in binary64, and an FP32 norm
                 # widens exactly.  One nextafter makes the scalar comparison
@@ -499,8 +586,27 @@ def _shield_widened_fp32(
                 if accepted:
                     output = candidate.clone()
                 else:
-                    output = _fallback_half(signal)
-                    reason = "candidate_outside_inward_screen_half_fallback"
+                    try:
+                        clip_alpha, clip_ratio, clip_scale = _directed_clip_alpha_fp32(
+                            signal_norm.returned_norm,
+                            displacement_norm.returned_norm,
+                        )
+                        clip_offset = torch.mul(clip_alpha, displacement)
+                        clipped_output = torch.add(centered_signal, clip_offset)
+                        if not bool(torch.isfinite(clipped_output).all()):
+                            raise ScalableSectorShieldFailure(
+                                "radial clip produced a nonfinite output"
+                            )
+                        output = clipped_output
+                        clipped = True
+                        action = ShieldAction.RADIAL_CLIP
+                        reason = "candidate_outside_inward_screen_radial_clip"
+                    except ScalableSectorShieldFailure:
+                        output = _fallback_half(signal)
+                        used_fallback = True
+                        fail_closed = True
+                        action = ShieldAction.HALF_FALLBACK
+                        reason = "radial_clip_failed_half_fallback"
 
     if not bool(torch.isfinite(output).all()):
         raise ScalableSectorShieldFailure("shield output became nonfinite")
@@ -515,15 +621,22 @@ def _shield_widened_fp32(
         exact_halving_guard=exact_halving,
         candidate_finite=candidate_finite,
         candidate_accepted=accepted,
+        candidate_clipped=clipped,
         active=not accepted,
-        used_fallback=not accepted,
+        used_fallback=used_fallback,
         fail_closed=fail_closed,
+        action=action,
         reason=reason,
         signal_norm=signal_norm,
         displacement_norm=displacement_norm,
         acceptance_threshold=threshold,
+        clip_ratio_fp64_downward=clip_ratio,
+        clip_scale_fp64_downward=clip_scale,
+        clip_alpha_fp32=float(clip_alpha) if clip_alpha is not None else None,
+        clip_alpha_fp32_bits=(_fp32_bits(clip_alpha) if clip_alpha is not None else None),
         original_radius=LOCKED_SHIELD_RADIUS,
         acceptance_radius=LOCKED_ACCEPTANCE_RADIUS,
+        clip_coefficient=LOCKED_CLIP_COEFFICIENT,
         reserved_inward_margin=LOCKED_RESERVED_INWARD_MARGIN,
         certified_inward_margin=config.certified_inward_margin,
         certified_inward_radius=config.certified_inward_radius,
@@ -646,9 +759,11 @@ def scalable_sector_shield_manifest(config: ScalableSectorShieldConfig) -> dict[
             "original_radius": "893/2048",
             "reserved_inward_margin": "1/1024",
             "acceptance_radius": "891/2048",
+            "clip_coefficient": "890/2048 = 445/1024",
             "center_fp32_bits_hex": f"0x{SHIELD_CENTER_FP32_BITS:08x}",
             "radius_fp32_bits_hex": f"0x{SHIELD_RADIUS_FP32_BITS:08x}",
             "acceptance_radius_fp32_bits_hex": f"0x{ACCEPTANCE_RADIUS_FP32_BITS:08x}",
+            "clip_coefficient_fp32_bits_hex": f"0x{CLIP_COEFFICIENT_FP32_BITS:08x}",
             "shape_certified_inward_radius": config.certified_inward_radius,
             "shape_certified_inward_margin": config.certified_inward_margin,
         },
@@ -660,11 +775,18 @@ def scalable_sector_shield_manifest(config: ScalableSectorShieldConfig) -> dict[
             ),
             "acceptance": ("Nhat(d)<=nextafter(float64(891/2048)*float64(Nhat(S)),-inf)"),
             "accepted_output": "stored widened FP32 candidate, unchanged",
-            "fallback": "fl32((1/2)_32*S)",
+            "radial_clip": (
+                "ratio64=nextafter(Nhat(S)/Nhat(d),0); "
+                "scale64=nextafter((890/2048)*ratio64,0); "
+                "alpha32=nextafter(RNE32(scale64),0) unless zero; "
+                "q=fl32(alpha32*d); U=fl32(fl32(gamma32*S)+q)"
+            ),
+            "fallback": "fl32((1/2)_32*S), only if radial clipping cannot be computed",
             "reduction_depth": config.balanced_reduction_depth,
             "reduction_block_size": LOCKED_REDUCTION_BLOCK_SIZE,
             "fma_allowed": False,
             "reassociation_allowed": False,
+            "fp64_to_fp32_conversion": "round-to-nearest, ties-to-even",
         },
         "underflow_contract": {
             "rounding": "IEEE-754 roundTiesToEven",
@@ -707,11 +829,13 @@ def scalable_sector_shield_manifest(config: ScalableSectorShieldConfig) -> dict[
 
 __all__ = [
     "ACCEPTANCE_RADIUS_FP32_BITS",
+    "CLIP_COEFFICIENT_FP32_BITS",
     "FALLBACK_GAIN_FP32_BITS",
     "FP32_MIN_NORMAL",
     "FP32_MIN_SUBNORMAL",
     "LOCKED_ACCEPTANCE_RADIUS",
     "LOCKED_CERTIFIED_SHAPES",
+    "LOCKED_CLIP_COEFFICIENT",
     "LOCKED_DIAGNOSTIC_SHAPES",
     "LOCKED_FALLBACK_GAIN",
     "LOCKED_REDUCTION_BLOCK_SIZE",
@@ -731,6 +855,7 @@ __all__ = [
     "ScalableSectorShieldDiagnostics",
     "ScalableSectorShieldFailure",
     "ScalableSectorShieldResult",
+    "ShieldAction",
     "SignalGuardClass",
     "locked_scalable_shield_backend_self_check",
     "scalable_sector_shield_manifest",
