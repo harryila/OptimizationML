@@ -114,7 +114,7 @@ jobs:
           tests/test_p20_scalable_sector_shield_study.py::test_full_default_discrete_decisions_are_locked_across_platforms
 
       - name: Archive the complete platform record
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: p20-platform-${{ runner.os }}-${{ runner.arch }}
           path: ${{ runner.temp }}/p20-cross-platform.json
@@ -129,7 +129,7 @@ jobs:
 
     steps:
       - name: Download both platform records
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           pattern: p20-platform-*
           path: platform-artifacts

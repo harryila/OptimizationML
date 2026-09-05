@@ -328,7 +328,18 @@ def test_committed_canonical_study_matches_the_locked_default_decisions(
     canonical_path = ROOT / "results/summaries/p20_scalable_sector_shield_study.json"
     assert canonical_path.is_file()
     canonical = json.loads(canonical_path.read_text(encoding="utf-8"))
-    assert _without_provenance(canonical) == _without_provenance(default_payload)
+    # The committed JSON is one platform's complete numerical record.  Raw
+    # floating diagnostics and tensor hashes are intentionally archived per
+    # platform; the portable invariant is the frozen configuration plus the
+    # recomputed discrete-decision digest.
+    assert canonical["schema_version"] == default_payload["schema_version"]
+    assert canonical["config"] == default_payload["config"]
+    for payload in (canonical, default_payload):
+        assert EXPERIMENT._decision_digest(payload) == LOCKED_DEFAULT_DECISION_DIGEST
+        assert payload["decision_digest"] == LOCKED_DEFAULT_DECISION_DIGEST
+        replay = payload["cross_platform_replay"]
+        assert replay["this_run_uses_locked_default_grid"] is True
+        assert replay["locked_default_digest_matches"] is True
     git = canonical["experiment_provenance"]["git"]
     assert git["branch"] == "p20-scalable-mixed-precision-sector-shield"
     assert git["dirty"] is False
