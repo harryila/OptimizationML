@@ -1,0 +1,632 @@
+{
+  "canonical_diag_3_4": {
+    "computed_residual_error_allowance": {
+      "coarse_raw_jordan_output_error_allowance": 3.4046398843192745e-06,
+      "coarse_unprojected_blend_error_allowance": 2.5534799134108835e-06,
+      "computed_graph_residual": 1.4043333874306805e-15,
+      "exact_real_solution_error_allowance": 7.021666937153402e-16,
+      "exact_real_yosida_output_error_allowance": 7.021666937153402e-13,
+      "final_ray_projected_p18_candidate_error_allowance": null,
+      "final_shield_contract": "for fixed S, the exact Euclidean shield is nonexpansive in its candidate; it preserves but does not create an independently proved P18 error bound",
+      "why_final_allowance_is_not_claimed": "the P18 ray projection is not the Euclidean disk projection and the loose P15 threshold alone does not bound its nonlinear scale change"
+    },
+    "input": "diag(3,4)",
+    "input_sha256_float64_bytes": "0a5f3698e35b65b3c9a17fea04e2428f0023232dd529146a8261e8e330c27d36",
+    "shield_change_frobenius": 0.0,
+    "shield_diagnostics": {
+      "active": false,
+      "candidate_inside": true,
+      "displacement_scale": 0.0,
+      "displacement_scaled_norm": 0.0,
+      "exact_sector_certified": true,
+      "exact_sector_margin": "81106072943190803398594699700075/20282409603651670423947251286016",
+      "fail_closed": false,
+      "inward_radius": 0.4360351562499982,
+      "reason": null,
+      "signal_scale": 4.0,
+      "signal_scaled_norm": 1.25,
+      "used_interior_fallback": false
+    },
+    "shield_was_identity_bitwise": true,
+    "shielded_metrics": {
+      "annulus_upstream_amplitude_gate_passes": true,
+      "best_scalar_departure": 0.03628301800271472,
+      "effective_updates_per_input": {
+        "1/120": {
+          "gate_passes": true,
+          "value": 0.0032101515950833165
+        },
+        "1/83": {
+          "gate_passes": true,
+          "value": 0.00464118302903612
+        }
+      },
+      "informative_upstream_shaping": true,
+      "input_frobenius": 5.0,
+      "meaningful_fidelity_gate_passes": true,
+      "output_frobenius": 1.9260909570499898,
+      "output_to_input_amplitude": 0.38521819140999797,
+      "output_to_upstream_amplitude": 1.4456299937148924,
+      "shaping_retention_fraction": 0.518569827958525,
+      "upstream_best_scalar_departure": 0.06996746830711605,
+      "upstream_output_frobenius": 1.3323540362499244
+    },
+    "solver_diagnostics": {
+      "actual_graph_residual_norm": 1.4043333874306805e-15,
+      "backtracks": 0,
+      "certified": true,
+      "iterations": 8,
+      "p15_threshold": 0.020000000000909495,
+      "residual_to_p15_threshold_ratio": 7.021666936834094e-14,
+      "status": "strict_residual"
+    },
+    "unshielded_metrics": {
+      "annulus_upstream_amplitude_gate_passes": true,
+      "best_scalar_departure": 0.03628301800271472,
+      "effective_updates_per_input": {
+        "1/120": {
+          "gate_passes": true,
+          "value": 0.0032101515950833165
+        },
+        "1/83": {
+          "gate_passes": true,
+          "value": 0.00464118302903612
+        }
+      },
+      "informative_upstream_shaping": true,
+      "input_frobenius": 5.0,
+      "meaningful_fidelity_gate_passes": true,
+      "output_frobenius": 1.9260909570499898,
+      "output_to_input_amplitude": 0.38521819140999797,
+      "output_to_upstream_amplitude": 1.4456299937148924,
+      "shaping_retention_fraction": 0.518569827958525,
+      "upstream_best_scalar_departure": 0.06996746830711605,
+      "upstream_output_frobenius": 1.3323540362499244
+    }
+  },
+  "canonical_target": "results/summaries/p19_sector_shielded_study.json",
+  "claim_scope": {
+    "fidelity": "computed P15 residuals and the frozen sampled annulus measure fidelity to P18, not basic stability or a global fidelity theorem",
+    "floating_point": "the inward-margin FP64 shield supplies an exact-float containment check; this is not yet a complete FP32/BF16 optimizer certificate",
+    "global_exact": "the exact Euclidean projection places every finite candidate in the dimension-independent P18 disk sector; this script is diagnostic evidence",
+    "nonexpansivity": "for each fixed finite S, exact projection onto D_S is nonexpansive in C; since exact P18 is in D_S, shielding preserves any independently proved candidate-to-P18 error bound, but the P15 residual alone does not provide one",
+    "stability": "shielded safety needs no graph-residual accuracy; the two exact P18 smooth-PL certificates replay because the exposed sector is unchanged"
+  },
+  "config": {
+    "epsilon": 1e-07,
+    "frozen_fidelity_thresholds": {
+      "best_scalar_departure": 0.001,
+      "informative_upstream_departure": 0.01,
+      "upstream_shaping_retention": 0.1
+    },
+    "inward_ulps": 32,
+    "jordan_coefficients": [
+      "6889/2000",
+      "-191/40",
+      "4063/2000"
+    ],
+    "jordan_iteration_count": 5,
+    "normalization": "S/(||S||_F+epsilon)",
+    "operating_annulus_grid_points": 33,
+    "operating_points": [
+      {
+        "decimal": 0.012048192771084338,
+        "denominator": 83,
+        "fraction": "1/83",
+        "numerator": 1
+      },
+      {
+        "decimal": 0.008333333333333333,
+        "denominator": 120,
+        "fraction": "1/120",
+        "numerator": 1
+      }
+    ],
+    "seed": 20260905,
+    "shield_center": {
+      "decimal": 0.55810546875,
+      "denominator": 2048,
+      "fraction": "1143/2048",
+      "numerator": 1143
+    },
+    "shield_radius": {
+      "decimal": 0.43603515625,
+      "denominator": 2048,
+      "fraction": "893/2048",
+      "numerator": 893
+    },
+    "solver": {
+      "armijo_constant": 0.0001,
+      "epsilon": 1e-07,
+      "maximum_backtracks": 64,
+      "maximum_iterations": 64,
+      "minimum_sherman_morrison_denominator": 9.313225746154785e-10,
+      "minimum_step": 8.673617379884035e-19,
+      "negative_solution_tolerance": 1.4210854715202004e-14,
+      "p15_absolute_tolerance": 9.094947017729282e-13,
+      "p15_relative_tolerance": 0.004,
+      "resolvent_parameter": 0.001,
+      "shunt": 1000.0,
+      "signal_norm_guard": 25.23350608041983,
+      "strict_absolute_tolerance": 3.552713678800501e-15,
+      "strict_relative_tolerance": 9.094947017729282e-13
+    }
+  },
+  "corrupted_candidate_controls": {
+    "all_declared_finite_corruptions_reduce_distance_to_p18_reference": true,
+    "all_finite_shielded_outputs_certified": true,
+    "all_finite_unshielded_candidates_violate": true,
+    "all_nonfinite_candidates_fail_closed": true,
+    "all_nonfinite_signals_rejected": true,
+    "all_zero_signal_outputs_are_zero": true,
+    "exact_nonexpansivity_contract": "for fixed S, Euclidean projection onto D_S is one-Lipschitz in the candidate; because exact P18 lies in D_S, ||Pi(C)-T18|| <= ||C-T18||",
+    "finite_corruptions": {
+      "anti_aligned": {
+        "candidate": [
+          -9.0,
+          -12.0
+        ],
+        "candidate_distance_to_guarded_p18_reference": 16.924967010608817,
+        "observed_distance_nonexpansion": true,
+        "shield_diagnostics": {
+          "active": true,
+          "candidate_inside": false,
+          "displacement_scale": 1.18603515625,
+          "displacement_scaled_norm": 1.25,
+          "exact_sector_certified": true,
+          "exact_sector_margin": "3173384071808018047/81129638414606681695789005144064",
+          "fail_closed": false,
+          "inward_radius": 0.4360351562499982,
+          "reason": null,
+          "signal_scale": 4.0,
+          "signal_scaled_norm": 1.25,
+          "used_interior_fallback": false
+        },
+        "shielded_distance_to_guarded_p18_reference": 1.316327573841251,
+        "shielded_output": [
+          0.36621093750000533,
+          0.4882812500000072
+        ],
+        "unshielded_nominal_disk_margin_fp64": -311.7496967315674,
+        "unshielded_violates_sector": true
+      },
+      "large_skew": {
+        "candidate": [
+          -10.53466796875,
+          11.38916015625
+        ],
+        "candidate_distance_to_guarded_p18_reference": 15.215992904618364,
+        "observed_distance_nonexpansion": true,
+        "shield_diagnostics": {
+          "active": true,
+          "candidate_inside": false,
+          "displacement_scale": 1.0719828510182208,
+          "displacement_scaled_norm": 1.25,
+          "exact_sector_certified": true,
+          "exact_sector_margin": "201839794824700081143/5192296858534827628530496329220096",
+          "fail_closed": false,
+          "inward_radius": 0.4360351562499982,
+          "reason": null,
+          "signal_scale": 4.0,
+          "signal_scaled_norm": 1.25,
+          "used_interior_fallback": false
+        },
+        "shielded_distance_to_guarded_p18_reference": 2.2809590570853504,
+        "shielded_output": [
+          -0.06982421874999285,
+          3.5405273437499947
+        ],
+        "unshielded_nominal_disk_margin_fp64": -228.1519889831543,
+        "unshielded_violates_sector": true
+      },
+      "outward_centerline": {
+        "candidate": [
+          6.90673828125,
+          9.208984375
+        ],
+        "candidate_distance_to_guarded_p18_reference": 9.586662460905243,
+        "observed_distance_nonexpansion": true,
+        "shield_diagnostics": {
+          "active": true,
+          "candidate_inside": false,
+          "displacement_scale": 0.7575821845174974,
+          "displacement_scaled_norm": 1.25,
+          "exact_sector_certified": true,
+          "exact_sector_margin": "12273298545049575/316912650057057350374175801344",
+          "fail_closed": false,
+          "inward_radius": 0.4360351562499982,
+          "reason": null,
+          "signal_scale": 4.0,
+          "signal_scaled_norm": 1.25,
+          "used_interior_fallback": false
+        },
+        "shielded_distance_to_guarded_p18_reference": 3.046681998803035,
+        "shielded_output": [
+          2.9824218749999947,
+          3.976562499999993
+        ],
+        "unshielded_nominal_disk_margin_fp64": -71.29749655723572,
+        "unshielded_violates_sector": true
+      },
+      "premature_zero": {
+        "candidate": [
+          0.0,
+          0.0
+        ],
+        "candidate_distance_to_guarded_p18_reference": 1.9260909570499898,
+        "observed_distance_nonexpansion": true,
+        "shield_diagnostics": {
+          "active": true,
+          "candidate_inside": false,
+          "displacement_scale": 0.55810546875,
+          "displacement_scaled_norm": 1.25,
+          "exact_sector_certified": true,
+          "exact_sector_margin": "378999459071130903/10141204801825835211973625643008",
+          "fail_closed": false,
+          "inward_radius": 0.4360351562499982,
+          "reason": null,
+          "signal_scale": 4.0,
+          "signal_scaled_norm": 1.25,
+          "used_interior_fallback": false
+        },
+        "shielded_distance_to_guarded_p18_reference": 1.3163275738412512,
+        "shielded_output": [
+          0.3662109375000051,
+          0.4882812500000069
+        ],
+        "unshielded_nominal_disk_margin_fp64": -3.033876419067383,
+        "unshielded_violates_sector": true
+      }
+    },
+    "guarded_p18_reference": [
+      1.0989861244117323,
+      1.5817888206648276
+    ],
+    "nonfinite_candidate_controls": {
+      "nan_candidate": {
+        "shield_diagnostics": {
+          "active": true,
+          "candidate_inside": false,
+          "displacement_scale": null,
+          "displacement_scaled_norm": null,
+          "exact_sector_certified": true,
+          "exact_sector_margin": "2447775/524288",
+          "fail_closed": true,
+          "inward_radius": 0.4360351562499982,
+          "reason": "nonfinite_candidate_interior_fallback",
+          "signal_scale": 4.0,
+          "signal_scaled_norm": 1.25,
+          "used_interior_fallback": true
+        },
+        "shielded_output": [
+          1.5,
+          2.0
+        ]
+      },
+      "negative_infinity_candidate": {
+        "shield_diagnostics": {
+          "active": true,
+          "candidate_inside": false,
+          "displacement_scale": null,
+          "displacement_scaled_norm": null,
+          "exact_sector_certified": true,
+          "exact_sector_margin": "2447775/524288",
+          "fail_closed": true,
+          "inward_radius": 0.4360351562499982,
+          "reason": "nonfinite_candidate_interior_fallback",
+          "signal_scale": 4.0,
+          "signal_scaled_norm": 1.25,
+          "used_interior_fallback": true
+        },
+        "shielded_output": [
+          1.5,
+          2.0
+        ]
+      },
+      "positive_infinity_candidate": {
+        "shield_diagnostics": {
+          "active": true,
+          "candidate_inside": false,
+          "displacement_scale": null,
+          "displacement_scaled_norm": null,
+          "exact_sector_certified": true,
+          "exact_sector_margin": "2447775/524288",
+          "fail_closed": true,
+          "inward_radius": 0.4360351562499982,
+          "reason": "nonfinite_candidate_interior_fallback",
+          "signal_scale": 4.0,
+          "signal_scaled_norm": 1.25,
+          "used_interior_fallback": true
+        },
+        "shielded_output": [
+          1.5,
+          2.0
+        ]
+      }
+    },
+    "nonfinite_signal_policy": "a nonfinite S has no well-defined D_S and is rejected",
+    "nonfinite_signal_rejections": {
+      "infinite_signal": "nonfinite signal rejected without emitting an update",
+      "nan_signal": "nonfinite signal rejected without emitting an update"
+    },
+    "signal": [
+      3.0,
+      4.0
+    ],
+    "zero_signal_controls": {
+      "finite_nonzero_candidate": {
+        "shield_diagnostics": {
+          "active": true,
+          "candidate_inside": false,
+          "displacement_scale": 0.0,
+          "displacement_scaled_norm": 0.0,
+          "exact_sector_certified": true,
+          "exact_sector_margin": "0",
+          "fail_closed": false,
+          "inward_radius": 0.4360351562499982,
+          "reason": null,
+          "signal_scale": 0.0,
+          "signal_scaled_norm": 0.0,
+          "used_interior_fallback": false
+        },
+        "shielded_output": [
+          0.0,
+          0.0
+        ]
+      },
+      "nonfinite_candidate": {
+        "shield_diagnostics": {
+          "active": true,
+          "candidate_inside": false,
+          "displacement_scale": 0.0,
+          "displacement_scaled_norm": 0.0,
+          "exact_sector_certified": true,
+          "exact_sector_margin": "0",
+          "fail_closed": true,
+          "inward_radius": 0.4360351562499982,
+          "reason": "nonfinite_candidate_zero_signal",
+          "signal_scale": 0.0,
+          "signal_scaled_norm": 0.0,
+          "used_interior_fallback": true
+        },
+        "shielded_output": [
+          0.0,
+          0.0
+        ]
+      },
+      "zero_candidate": {
+        "shield_diagnostics": {
+          "active": false,
+          "candidate_inside": true,
+          "displacement_scale": 0.0,
+          "displacement_scaled_norm": 0.0,
+          "exact_sector_certified": true,
+          "exact_sector_margin": "0",
+          "fail_closed": false,
+          "inward_radius": 0.4360351562499982,
+          "reason": null,
+          "signal_scale": 0.0,
+          "signal_scaled_norm": 0.0,
+          "used_interior_fallback": false
+        },
+        "shielded_output": [
+          0.0,
+          0.0
+        ]
+      }
+    }
+  },
+  "declared_operating_annulus_grid": {
+    "all_effective_update_gates_pass": true,
+    "all_informative_fidelity_pass": true,
+    "all_upstream_amplitudes_pass": true,
+    "effective_update_passes": {
+      "1/120": 2688,
+      "1/83": 2688
+    },
+    "evaluated": 2688,
+    "fidelity_passes": 2176,
+    "informative": 2176,
+    "input_radius_interval": {
+      "lower": {
+        "decimal": 0.75,
+        "denominator": 4,
+        "fraction": "3/4",
+        "numerator": 3
+      },
+      "upper": {
+        "decimal": 25.0,
+        "denominator": 1,
+        "fraction": "25",
+        "numerator": 25
+      }
+    },
+    "maximum_output_to_input_amplitude": 0.9941247614950919,
+    "maximum_output_to_upstream_amplitude": 5.649995308886116,
+    "minimum_informative_best_scalar_departure": 0.0018593105114761512,
+    "minimum_informative_shaping_retention": 0.1302496508172689,
+    "minimum_output_to_input_amplitude": 0.1573945369347035,
+    "minimum_output_to_upstream_amplitude": 0.39276399695437364,
+    "mode_ratio_count": 42,
+    "radius_count": 64,
+    "scope": "post-P17 sampled operating annulus; every all-point statement below concerns only this frozen grid, not every matrix in the annulus",
+    "shield_active_count": 0,
+    "shield_bitwise_identity_count": 2688,
+    "shield_inactive_count": 2688,
+    "shield_normally_inactive": true,
+    "upstream_amplitude_passes": 2688,
+    "worst_shield_change_frobenius": 0.0
+  },
+  "experiment_provenance": {
+    "git": {
+      "branch": "p19-sector-shielded-inexact-resolvent",
+      "dirty": false,
+      "sha": "d3d75dc8d8f7de67968d37346c68fb38e5ba17dc"
+    },
+    "hardware": {
+      "device": "cpu",
+      "logical_cpu_count": 10,
+      "machine": "arm64",
+      "platform": "macOS-15.5-arm64-arm-64bit",
+      "processor": "arm"
+    },
+    "seed": 20260905,
+    "software": {
+      "blas_lapack": {
+        "Build Dependencies": {
+          "blas": {
+            "detection method": "system",
+            "found": true,
+            "include directory": "unknown",
+            "lib directory": "unknown",
+            "name": "accelerate",
+            "openblas configuration": "unknown",
+            "pc file directory": "unknown",
+            "version": "unknown"
+          },
+          "lapack": {
+            "detection method": "system",
+            "found": true,
+            "include directory": "unknown",
+            "lib directory": "unknown",
+            "name": "accelerate",
+            "openblas configuration": "unknown",
+            "pc file directory": "unknown",
+            "version": "unknown"
+          }
+        },
+        "Compilers": {
+          "c": {
+            "commands": "cc",
+            "linker": "ld64",
+            "name": "clang",
+            "version": "15.0.0"
+          },
+          "c++": {
+            "commands": "c++",
+            "linker": "ld64",
+            "name": "clang",
+            "version": "15.0.0"
+          },
+          "cython": {
+            "commands": "cython",
+            "linker": "cython",
+            "name": "cython",
+            "version": "3.2.9"
+          }
+        },
+        "Machine Information": {
+          "build": {
+            "cpu": "aarch64",
+            "endian": "little",
+            "family": "aarch64",
+            "system": "darwin"
+          },
+          "host": {
+            "cpu": "aarch64",
+            "endian": "little",
+            "family": "aarch64",
+            "system": "darwin"
+          }
+        },
+        "Python Information": {
+          "path": "/private/var/folders/g3/pffjr_y96bq06blnkf72x_hw0000gn/T/build-env-re3_temx/bin/python",
+          "version": "3.12"
+        },
+        "SIMD Extensions": {
+          "baseline": [
+            "NEON",
+            "NEON_FP16",
+            "NEON_VFPV4",
+            "ASIMD"
+          ],
+          "found": [
+            "ASIMDHP",
+            "ASIMDDP"
+          ],
+          "not found": [
+            "ASIMDFHM"
+          ]
+        }
+      },
+      "numpy": "2.5.2",
+      "python": "3.12.11 (main, Jul  8 2025, 20:41:49) [Clang 20.1.4 ]"
+    },
+    "source_snapshot": {
+      "experiments/resolvent/run_p19_sector_shielded_study.py": "051c4addd8abf7f2123389dd0954151518c487baa954c61212fdf0ddc36bfcd2",
+      "pyproject.toml": "7a9988bf528baef5145f779516d4315349d1c2a6bbb7394c9b93fbbee1d4f596",
+      "src/passive_muon/equivariant_resolvent_solver.py": "14490dd076bffa31ab42eaec3108fc1decff9dd9dd36a4755829ff8a9a927093",
+      "src/passive_muon/sector_projected_resolvent.py": "9f4367577b5b2c8dab68f28d3fabea5b45616f4fb7dd96426940dbab26c6a4ad",
+      "src/passive_muon/sector_projected_resolvent_certificate.py": "fd521b24fd53ccbbb64829def5c32da5015c2b689015deed1bb7573c64ab9a9d",
+      "src/passive_muon/sector_shielded_resolvent.py": "52523649d47d38713b8b2443594c1418cd11af9611f3393a454117fef3f2fc5e",
+      "src/passive_muon/shape_preserving_resolvent.py": "f17495774e32044c685ec2f89e38b7bb84f8eabcda0477d654932906030c95ab",
+      "src/passive_muon/upstream_momentum.py": "7479613bb307debbb2a02e04e6bbe53a428855c51e1e21210f9c2be2e68d3d7e",
+      "uv.lock": "f097fd7895b5c1c551a0bd233d025c3f8ae97b7dedce6a8690569f1b1f7c5cf1"
+    }
+  },
+  "operating_point_replays": [
+    {
+      "certified_lyapunov_rate_half_life": 1724.073425209877,
+      "exact_certificate_replay_passes": true,
+      "learning_rate": {
+        "decimal": 0.012048192771084338,
+        "denominator": 83,
+        "fraction": "1/83",
+        "numerator": 1
+      },
+      "rate_squared": {
+        "decimal": 0.999598040401,
+        "denominator": 1000000000000,
+        "fraction": "999598040401/1000000000000",
+        "numerator": 999598040401
+      },
+      "role": "maximum_step",
+      "shield_interpretation": "every exposed output remains in the identical P18 pointwise sector, so the unchanged P18 smooth-PL certificate applies"
+    },
+    {
+      "certified_lyapunov_rate_half_life": 666.3143717981078,
+      "exact_certificate_replay_passes": true,
+      "learning_rate": {
+        "decimal": 0.008333333333333333,
+        "denominator": 120,
+        "fraction": "1/120",
+        "numerator": 1
+      },
+      "rate_squared": {
+        "decimal": 0.9989602704,
+        "denominator": 625000000,
+        "fraction": "624350169/625000000",
+        "numerator": 624350169
+      },
+      "role": "faster_certified_rate",
+      "shield_interpretation": "every exposed output remains in the identical P18 pointwise sector, so the unchanged P18 smooth-PL certificate applies"
+    }
+  ],
+  "schema_version": "passive-muon-p19-sector-shielded-study-v1",
+  "solver_graph_residual_fidelity_summary": {
+    "all_calls_computed_residual_certified": true,
+    "call_count": 2690,
+    "final_p18_candidate_error_allowance_from_residual": null,
+    "limitation": "the nonlinear P18 ray projection prevents promoting these loose branch allowances into a final-candidate or rigorous annulus-fidelity enclosure",
+    "maximum_actual_graph_residual": 8.627920786224328e-13,
+    "maximum_backtracks": 0,
+    "maximum_coarse_raw_jordan_output_error_allowance": 0.002091737153758772,
+    "maximum_exact_real_solution_error_allowance": 4.313960393112164e-13,
+    "maximum_exact_real_yosida_output_error_allowance": 4.313960393112164e-10,
+    "maximum_iterations": 10,
+    "minimum_iterations": 6,
+    "role": "computed P15 graph residuals quantify solver/root/Y fidelity ingredients; they are not sufficient alone for final nonlinear P18 fidelity, while the sector shield independently supplies the P19 stability interface",
+    "status_counts": {
+      "strict_residual": 2690
+    },
+    "worst_residual_to_p15_threshold_ratio": 1.3560582767938696e-11
+  },
+  "upstream_formula_provenance": {
+    "audited_file": "muon.py",
+    "audited_file_sha256": "2479665a90124f62e4df557816665851ca317e42fcfda2af1da02c1f44ab5f3d",
+    "comparison_scope": "FP64 five-stage spectral counterpart before aspect scaling and BF16 casts",
+    "normalization": "X/(X.norm(dim=(-2,-1),keepdim=True)+1e-7)",
+    "repository": "https://github.com/KellerJordan/Muon",
+    "revision": "f98f1cacc0263b04290753e32be8d498c1efc806"
+  }
+}
