@@ -1,0 +1,1959 @@
+{
+  "canonical_diag_3_4": {
+    "designs": {
+      "full_step_fidelity_floor": {
+        "approximate_solution_singular_values": [
+          0.9591318543292702,
+          0.7193768248604903
+        ],
+        "computed_residual_error_allowance": {
+          "blended_output_error_allowance": 4.255799856149088e-07,
+          "computed_graph_residual": 1.4043333874306805e-15,
+          "jordan_output_error_allowance": 3.4046398843192745e-06,
+          "solution_error_allowance": 7.021666937153402e-16,
+          "yosida_output_error_allowance": 7.021666937153402e-13
+        },
+        "diagnostics": {
+          "actual_residual_norm": 1.4043333874306805e-15,
+          "backtracks": 0,
+          "certified": true,
+          "iterations": 8,
+          "jacobian_evaluations": 8,
+          "operator_evaluations": 10,
+          "p15_threshold": 0.020000000000909495,
+          "reconstruction_matmuls": 2,
+          "residual_to_p15_threshold_ratio": 7.021666936834094e-14,
+          "sherman_morrison_solves": 8,
+          "status": "strict_residual",
+          "svd_count": 2
+        },
+        "fidelity": {
+          "absolute_shaping_gate_passes": true,
+          "best_scalar_multiple": {
+            "coefficient": 0.11442716546257936,
+            "relative_residual": 0.020356115033149855,
+            "residual_frobenius": 0.011648876446171652
+          },
+          "computed_residual_amplitude_interval": [
+            0.11445079539044041,
+            0.11445096562243465
+          ],
+          "computed_residual_best_scalar_departure_interval": [
+            0.020355356204880656,
+            0.020356873862547722
+          ],
+          "computed_residual_shaping_retention_interval": [
+            0.2909260074343781,
+            0.290947698338791
+          ],
+          "directional_sine_to_upstream": 0.04964674277967685,
+          "input_frobenius": 5.0,
+          "meaningful_fidelity_gate_passes": true,
+          "modal_gains": {
+            "maximum": 0.1161744969295051,
+            "median": 0.11374764766988602,
+            "minimum": 0.11132079841026692,
+            "positive_mode_count": 2,
+            "spread": 0.004853698519238184,
+            "values": [
+              0.11132079841026692,
+              0.1161744969295051
+            ]
+          },
+          "output_frobenius": 0.5722544025321876,
+          "output_to_input_amplitude": 0.11445088050643752,
+          "shaping_retention_fraction": 0.2909368528785189,
+          "upstream_best_scalar_multiple": {
+            "coefficient": 0.26581776022369596,
+            "relative_residual": 0.06996746830711605,
+            "residual_frobenius": 0.09322143880517474
+          },
+          "upstream_retention_gate_passes": true
+        },
+        "gate_weight": 0.125,
+        "input_sha256_float64_bytes": "0a5f3698e35b65b3c9a17fea04e2428f0023232dd529146a8261e8e330c27d36",
+        "squared_signal_norm": 25.0
+      },
+      "high_fidelity_reduced_step": {
+        "approximate_solution_singular_values": [
+          0.9591318543292702,
+          0.7193768248604903
+        ],
+        "computed_residual_error_allowance": {
+          "blended_output_error_allowance": 2.5534799132823128e-06,
+          "computed_graph_residual": 1.4043333874306805e-15,
+          "jordan_output_error_allowance": 3.4046398843192745e-06,
+          "solution_error_allowance": 7.021666937153402e-16,
+          "yosida_output_error_allowance": 7.021666937153402e-13
+        },
+        "diagnostics": {
+          "actual_residual_norm": 1.4043333874306805e-15,
+          "backtracks": 0,
+          "certified": true,
+          "iterations": 8,
+          "jacobian_evaluations": 8,
+          "operator_evaluations": 10,
+          "p15_threshold": 0.020000000000909495,
+          "reconstruction_matmuls": 2,
+          "residual_to_p15_threshold_ratio": 7.021666936834094e-14,
+          "sherman_morrison_solves": 8,
+          "status": "strict_residual",
+          "svd_count": 2
+        },
+        "fidelity": {
+          "absolute_shaping_gate_passes": true,
+          "best_scalar_multiple": {
+            "coefficient": 0.24576526321745912,
+            "relative_residual": 0.05677578670757688,
+            "residual_frobenius": 0.06988030095834802
+          },
+          "computed_residual_amplitude_interval": [
+            0.24616182367470887,
+            0.24616284506667419
+          ],
+          "computed_residual_best_scalar_departure_interval": [
+            0.05677359429243522,
+            0.05677797913181547
+          ],
+          "computed_residual_shaping_retention_interval": [
+            0.811428449050529,
+            0.8114911187381187
+          ],
+          "directional_sine_to_upstream": 0.013217962775061232,
+          "input_frobenius": 5.0,
+          "meaningful_fidelity_gate_passes": true,
+          "modal_gains": {
+            "maximum": 0.25624730836121135,
+            "median": 0.24168891232822215,
+            "minimum": 0.22713051629523298,
+            "positive_mode_count": 2,
+            "spread": 0.029116792065978364,
+            "values": [
+              0.22713051629523298,
+              0.25624730836121135
+            ]
+          },
+          "output_frobenius": 1.2308116718534576,
+          "output_to_input_amplitude": 0.24616233437069152,
+          "shaping_retention_fraction": 0.8114597838293156,
+          "upstream_best_scalar_multiple": {
+            "coefficient": 0.26581776022369596,
+            "relative_residual": 0.06996746830711605,
+            "residual_frobenius": 0.09322143880517474
+          },
+          "upstream_retention_gate_passes": true
+        },
+        "gate_weight": 0.75,
+        "input_sha256_float64_bytes": "0a5f3698e35b65b3c9a17fea04e2428f0023232dd529146a8261e8e330c27d36",
+        "squared_signal_norm": 25.0
+      }
+    },
+    "input": "diag(3,4)",
+    "scope": "full 2x2 SVD/reconstruction path; FP64 evidence with a conservative computed-residual allowance, not an interval-arithmetic root certificate"
+  },
+  "canonical_fidelity_gate": {
+    "all_locked_designs_pass": true,
+    "passes_by_design": {
+      "full_step_fidelity_floor": true,
+      "high_fidelity_reduced_step": true
+    },
+    "thresholds_unchanged_from_p16": true
+  },
+  "canonical_target": "results/summaries/p17_shape_preserving_study.json",
+  "claim_scope": {
+    "exact_theorem": "the separately replayed pointwise sectors cover every finite rectangular matrix shape and imply the locked global smooth-PL trajectory results",
+    "incremental_warning": "the radial gate derivative adds a rank-one term, so this is not incremental passivity or an incremental sector",
+    "large_shape_caveat": "large-shape cases use complete singular spectra but omit dense SVD, reconstruction, accelerator timing, and memory traffic",
+    "numerical_study": "deterministic FP64 falsification/fidelity evidence; sampled extrema are not global certificates and computed residuals are not directed-rounding bounds"
+  },
+  "config": {
+    "deployed_yosida_output": "(s-u_hat)/lambda",
+    "epsilon": 1e-07,
+    "frozen_p16_thresholds": {
+      "best_scalar_departure": 0.001,
+      "upstream_shaping_retention": 0.1
+    },
+    "include_realistic_spectrum_cases": true,
+    "jordan_coefficients": [
+      "6889/2000",
+      "-191/40",
+      "4063/2000"
+    ],
+    "jordan_iteration_count": 5,
+    "normalization": "S/(||S||_F+epsilon)",
+    "operating_annulus_grid_points": 33,
+    "p15_stopping_rule": "||r||_F <= ||s||_F/250 + rbar_fp64",
+    "rank_radius_points": 13,
+    "realistic_transformer_shapes": [
+      [
+        768,
+        768
+      ],
+      [
+        768,
+        3072
+      ],
+      [
+        3072,
+        12288
+      ],
+      [
+        4096,
+        11008
+      ]
+    ],
+    "seed": 20260905,
+    "solver": {
+      "armijo_constant": 0.0001,
+      "epsilon": 1e-07,
+      "maximum_backtracks": 64,
+      "maximum_iterations": 64,
+      "minimum_sherman_morrison_denominator": 9.313225746154785e-10,
+      "minimum_step": 8.673617379884035e-19,
+      "negative_solution_tolerance": 1.4210854715202004e-14,
+      "p15_absolute_tolerance": 9.094947017729282e-13,
+      "p15_relative_tolerance": 0.004,
+      "resolvent_parameter": 0.001,
+      "shunt": 1000.0,
+      "signal_norm_guard": 25.23350608041983,
+      "strict_absolute_tolerance": 3.552713678800501e-15,
+      "strict_relative_tolerance": 9.094947017729282e-13
+    },
+    "spectrum_grid_points": 17
+  },
+  "declared_dense_two_mode_grid": {
+    "candidate_count": 437,
+    "designs": {
+      "full_step_fidelity_floor": {
+        "evaluated": 418,
+        "frozen_gate_pass_fraction_on_informative_points": 0.6085626911314985,
+        "gate_passes": 199,
+        "informative": 327,
+        "max_amplitude": {
+          "constructed_solution_mode_ratio": 1.0,
+          "constructed_solution_radius": 3.456307699780697e-05,
+          "input_frobenius": 0.9347982181592047,
+          "metrics": {
+            "best_scalar_departure": 0.0,
+            "gate_weight": 0.12045131203224592,
+            "output_to_input_amplitude": 0.3099729761266347,
+            "residual_to_p15_threshold_ratio": 0.0,
+            "shaping_retention_fraction": 0.0,
+            "upstream_best_scalar_departure": 2.0038114705270653e-16
+          }
+        },
+        "max_departure": {
+          "constructed_solution_mode_ratio": 0.0041,
+          "constructed_solution_radius": 3.456307699780697e-05,
+          "input_frobenius": 0.9339310706291009,
+          "metrics": {
+            "best_scalar_departure": 0.6142491844803718,
+            "gate_weight": 0.12029108156403708,
+            "output_to_input_amplitude": 0.2513213264198185,
+            "residual_to_p15_threshold_ratio": 0.0,
+            "shaping_retention_fraction": 0.7276575096301909,
+            "upstream_best_scalar_departure": 0.8441460114835407
+          }
+        },
+        "min_departure": {
+          "constructed_solution_mode_ratio": 7.498942093324559e-05,
+          "constructed_solution_radius": 1e-12,
+          "input_frobenius": 6.434147146984767e-06,
+          "metrics": {
+            "best_scalar_departure": 2.6345759747578234e-17,
+            "gate_weight": 0.0,
+            "output_to_input_amplitude": 0.12207029352774001,
+            "residual_to_p15_threshold_ratio": 3.2910461830605834e-13,
+            "shaping_retention_fraction": 5.284541392900155e-16,
+            "upstream_best_scalar_departure": 0.04985439187395538
+          }
+        },
+        "min_retention": {
+          "constructed_solution_mode_ratio": 7.498942093324559e-05,
+          "constructed_solution_radius": 1e-12,
+          "input_frobenius": 6.434147146984767e-06,
+          "metrics": {
+            "best_scalar_departure": 2.6345759747578234e-17,
+            "gate_weight": 0.0,
+            "output_to_input_amplitude": 0.12207029352774001,
+            "residual_to_p15_threshold_ratio": 3.2910461830605834e-13,
+            "shaping_retention_fraction": 5.284541392900155e-16,
+            "upstream_best_scalar_departure": 0.04985439187395538
+          }
+        }
+      },
+      "high_fidelity_reduced_step": {
+        "evaluated": 418,
+        "frozen_gate_pass_fraction_on_informative_points": 0.6207951070336392,
+        "gate_passes": 203,
+        "informative": 327,
+        "max_amplitude": {
+          "constructed_solution_mode_ratio": 1.0,
+          "constructed_solution_radius": 3.456307699780697e-05,
+          "input_frobenius": 0.9347982181592047,
+          "metrics": {
+            "best_scalar_departure": 1.3087598212669145e-16,
+            "gate_weight": 0.7227078721934755,
+            "output_to_input_amplitude": 1.2833567464616942,
+            "residual_to_p15_threshold_ratio": 0.0,
+            "shaping_retention_fraction": 0.6531352078360294,
+            "upstream_best_scalar_departure": 2.0038114705270653e-16
+          }
+        },
+        "max_departure": {
+          "constructed_solution_mode_ratio": 0.0041,
+          "constructed_solution_radius": 3.456307699780697e-05,
+          "input_frobenius": 0.9339310706291009,
+          "metrics": {
+            "best_scalar_departure": 0.8336814122640785,
+            "gate_weight": 0.7217464893842225,
+            "output_to_input_amplitude": 1.1110281190802382,
+            "residual_to_p15_threshold_ratio": 0.0,
+            "shaping_retention_fraction": 0.9876033303751904,
+            "upstream_best_scalar_departure": 0.8441460114835407
+          }
+        },
+        "min_departure": {
+          "constructed_solution_mode_ratio": 7.498942093324559e-05,
+          "constructed_solution_radius": 1e-12,
+          "input_frobenius": 6.434147146984767e-06,
+          "metrics": {
+            "best_scalar_departure": 2.6345759747578234e-17,
+            "gate_weight": 0.0,
+            "output_to_input_amplitude": 0.24414058705548003,
+            "residual_to_p15_threshold_ratio": 3.2910461830605834e-13,
+            "shaping_retention_fraction": 5.284541392900155e-16,
+            "upstream_best_scalar_departure": 0.04985439187395538
+          }
+        },
+        "min_retention": {
+          "constructed_solution_mode_ratio": 7.498942093324559e-05,
+          "constructed_solution_radius": 1e-12,
+          "input_frobenius": 6.434147146984767e-06,
+          "metrics": {
+            "best_scalar_departure": 2.6345759747578234e-17,
+            "gate_weight": 0.0,
+            "output_to_input_amplitude": 0.24414058705548003,
+            "residual_to_p15_threshold_ratio": 3.2910461830605834e-13,
+            "shaping_retention_fraction": 5.284541392900155e-16,
+            "upstream_best_scalar_departure": 0.04985439187395538
+          }
+        }
+      }
+    },
+    "frozen_p16_absolute_threshold": 0.001,
+    "frozen_p16_retention_threshold": 0.1,
+    "informative_upstream_shaping_threshold": 0.01,
+    "mode_ratio_count": 19,
+    "parameterization": "u=r*(a,1)/sqrt(1+a^2), followed by s=u+lambda*B(u); every retained s is then independently resolved by the fail-closed P16 solver",
+    "radius_count": 23,
+    "skipped_over_p11_guard": 19,
+    "status": "sampled diagnostic; extrema are not global certificates"
+  },
+  "declared_primary_operating_annulus_grid": {
+    "all_informative_computed_residual_allowances_pass": true,
+    "all_informative_point_estimates_pass": true,
+    "candidate_count": 2688,
+    "computed_residual_allowance_gate_pass_count": 2176,
+    "design": "high_fidelity_reduced_step",
+    "frozen_p16_absolute_threshold": 0.001,
+    "frozen_p16_retention_threshold": 0.1,
+    "gate_weight_range": [
+      0.25996455439814775,
+      0.75
+    ],
+    "informative_point_count": 2176,
+    "informative_upstream_shaping_threshold": 0.01,
+    "input_radius_interval": {
+      "lower": {
+        "decimal": 0.75,
+        "denominator": 4,
+        "fraction": "3/4",
+        "numerator": 3
+      },
+      "upper": {
+        "decimal": 25.0,
+        "denominator": 1,
+        "fraction": "25",
+        "numerator": 25
+      }
+    },
+    "maximum_output_to_input_amplitude": {
+      "best_scalar_departure": 0.0,
+      "computed_residual_departure_lower": 0.0,
+      "computed_residual_retention_lower": null,
+      "gate_weight": 0.7215689237376189,
+      "input_frobenius": 0.9337727265057821,
+      "mode_ratio": 1.0,
+      "output_to_input_amplitude": 1.283077795396163,
+      "residual_to_p15_threshold_ratio": 0.0,
+      "shaping_retention_fraction": null,
+      "upstream_best_scalar_departure": 0.0
+    },
+    "minimum_best_scalar_departure": {
+      "best_scalar_departure": 0.004885754565468084,
+      "computed_residual_departure_lower": 0.00488553441667859,
+      "computed_residual_retention_lower": 0.34224480098106225,
+      "gate_weight": 0.25996455439814814,
+      "input_frobenius": 0.75,
+      "mode_ratio": 2.0535250264571462e-05,
+      "output_to_input_amplitude": 0.4258575560530024,
+      "residual_to_p15_threshold_ratio": 3.7007434142952526e-14,
+      "shaping_retention_fraction": 0.3422602229947501,
+      "upstream_best_scalar_departure": 0.014274970438335236
+    },
+    "minimum_computed_residual_departure_lower": {
+      "best_scalar_departure": 0.004885754565468084,
+      "computed_residual_departure_lower": 0.00488553441667859,
+      "computed_residual_retention_lower": 0.34224480098106225,
+      "gate_weight": 0.25996455439814814,
+      "input_frobenius": 0.75,
+      "mode_ratio": 2.0535250264571462e-05,
+      "output_to_input_amplitude": 0.4258575560530024,
+      "residual_to_p15_threshold_ratio": 3.7007434142952526e-14,
+      "shaping_retention_fraction": 0.3422602229947501,
+      "upstream_best_scalar_departure": 0.014274970438335236
+    },
+    "minimum_computed_residual_retention_lower": {
+      "best_scalar_departure": 0.004885754565468084,
+      "computed_residual_departure_lower": 0.00488553441667859,
+      "computed_residual_retention_lower": 0.34224480098106225,
+      "gate_weight": 0.25996455439814814,
+      "input_frobenius": 0.75,
+      "mode_ratio": 2.0535250264571462e-05,
+      "output_to_input_amplitude": 0.4258575560530024,
+      "residual_to_p15_threshold_ratio": 3.7007434142952526e-14,
+      "shaping_retention_fraction": 0.3422602229947501,
+      "upstream_best_scalar_departure": 0.014274970438335236
+    },
+    "minimum_shaping_retention": {
+      "best_scalar_departure": 0.004885754565468084,
+      "computed_residual_departure_lower": 0.00488553441667859,
+      "computed_residual_retention_lower": 0.34224480098106225,
+      "gate_weight": 0.25996455439814814,
+      "input_frobenius": 0.75,
+      "mode_ratio": 2.0535250264571462e-05,
+      "output_to_input_amplitude": 0.4258575560530024,
+      "residual_to_p15_threshold_ratio": 3.7007434142952526e-14,
+      "shaping_retention_fraction": 0.3422602229947501,
+      "upstream_best_scalar_departure": 0.014274970438335236
+    },
+    "mode_ratio_count": 42,
+    "numerical_solver_policy": {
+      "operator_and_p15_postcondition_unchanged": true,
+      "p15_absolute_tolerance": 9.094947017729282e-13,
+      "p15_relative_tolerance": 0.004,
+      "purpose": "a stricter internal Newton target makes the conservative graph-residual fidelity allowance informative; it does not alter the P15 acceptance rule",
+      "strict_absolute_tolerance": 8.881784197001252e-16,
+      "strict_relative_tolerance": 5.684341886080802e-14
+    },
+    "point_estimate_gate_pass_count": 2176,
+    "radius_count": 64,
+    "scope": "post-exploratory sampled operating-annulus diagnostic; not a global theorem, not an interval-arithmetic floating-point certificate, and not evidence near zero",
+    "selection_disclosure": "the annulus was locked only after the broad grid exposed the expected gate-off fidelity failure near the origin",
+    "status": "all informative sampled primary-design points pass both frozen P16 gates, including the conservative computed-residual allowance"
+  },
+  "exact_design_certificates": {
+    "full_step_fidelity_floor": {
+      "certified": true,
+      "claim": "dimension-uniform full-matrix origin-centred pointwise sector; not an incremental Jacobian sector",
+      "contraction_tau": {
+        "decimal": 0.9999995827674866,
+        "denominator": 16777216,
+        "fraction": "16777209/16777216",
+        "numerator": 16777209
+      },
+      "exact_checks": {
+        "gate_left_C2_jet": true,
+        "gate_midpoint_value": true,
+        "gate_right_C2_jet": true,
+        "jordan_after_resolvent_gain_identity": true,
+        "learning_rate_matches_certificate": true,
+        "locked_base_strong_monotonicity": true,
+        "locked_epsilon": true,
+        "locked_resolvent_parameter": true,
+        "sector_center_matches_certificate": true,
+        "sector_radius_matches_certificate": true,
+        "tail_Gamma_endpoint_dominates_U": true,
+        "tail_a_endpoint_dominates_U": true,
+        "tau_matches_locked_design": true
+      },
+      "gate": {
+        "ceiling": {
+          "decimal": 0.125,
+          "denominator": 8,
+          "fraction": "1/8",
+          "numerator": 1
+        },
+        "q0": {
+          "decimal": 0.25,
+          "denominator": 4,
+          "fraction": "1/4",
+          "numerator": 1
+        },
+        "q1": {
+          "decimal": 1.0,
+          "denominator": 1,
+          "fraction": "1",
+          "numerator": 1
+        }
+      },
+      "learning_rate": {
+        "decimal": 3.125e-05,
+        "denominator": 32000,
+        "fraction": "1/32000",
+        "numerator": 1
+      },
+      "passive_divisor": {
+        "decimal": 8192.0,
+        "denominator": 1,
+        "fraction": "8192",
+        "numerator": 8192
+      },
+      "pl_lmi_certified": true,
+      "pointwise_sector": {
+        "center": {
+          "decimal": 47.1795463343594,
+          "denominator": 877960272438948654710784,
+          "fraction": "41421767353260183227140375/877960272438948654710784",
+          "numerator": 41421767353260183227140375
+        },
+        "condition_ratio": {
+          "decimal": 1765.8335706106159,
+          "denominator": 187552548433613299041,
+          "fraction": "331186586277647852518082/187552548433613299041",
+          "numerator": 331186586277647852518082
+        },
+        "lower": {
+          "decimal": 0.05340576171875,
+          "denominator": 16384,
+          "fraction": "875/16384",
+          "numerator": 875
+        },
+        "radius": {
+          "decimal": 47.12614057264065,
+          "denominator": 877960272438948654710784,
+          "fraction": "41374879216151779902380125/877960272438948654710784",
+          "numerator": 41374879216151779902380125
+        },
+        "upper": {
+          "decimal": 94.30568690700005,
+          "denominator": 219490068109737163677696,
+          "fraction": "20699161642352990782380125/219490068109737163677696",
+          "numerator": 20699161642352990782380125
+        }
+      }
+    },
+    "high_fidelity_reduced_step": {
+      "certified": true,
+      "claim": "dimension-uniform full-matrix origin-centred pointwise sector; not an incremental Jacobian sector",
+      "contraction_tau": {
+        "decimal": 0.9999999403953552,
+        "denominator": 16777216,
+        "fraction": "16777215/16777216",
+        "numerator": 16777215
+      },
+      "exact_checks": {
+        "gate_left_C2_jet": true,
+        "gate_midpoint_value": true,
+        "gate_right_C2_jet": true,
+        "jordan_after_resolvent_gain_identity": true,
+        "learning_rate_matches_certificate": true,
+        "locked_base_strong_monotonicity": true,
+        "locked_epsilon": true,
+        "locked_resolvent_parameter": true,
+        "sector_center_matches_certificate": true,
+        "sector_radius_matches_certificate": true,
+        "tail_Gamma_endpoint_dominates_U": true,
+        "tail_a_endpoint_dominates_U": true,
+        "tau_matches_locked_design": true
+      },
+      "gate": {
+        "ceiling": {
+          "decimal": 0.75,
+          "denominator": 4,
+          "fraction": "3/4",
+          "numerator": 3
+        },
+        "q0": {
+          "decimal": 0.25,
+          "denominator": 4,
+          "fraction": "1/4",
+          "numerator": 1
+        },
+        "q1": {
+          "decimal": 1.0,
+          "denominator": 1,
+          "fraction": "1",
+          "numerator": 1
+        }
+      },
+      "learning_rate": {
+        "decimal": 7.8125e-06,
+        "denominator": 128000,
+        "fraction": "1/128000",
+        "numerator": 1
+      },
+      "passive_divisor": {
+        "decimal": 4096.0,
+        "denominator": 1,
+        "fraction": "4096",
+        "numerator": 4096
+      },
+      "pl_lmi_certified": true,
+      "pointwise_sector": {
+        "center": {
+          "decimal": 282.64240251787515,
+          "denominator": 73163356036579054559232,
+          "fraction": "20679066726449389357482875/73163356036579054559232",
+          "numerator": 20679066726449389357482875
+        },
+        "condition_ratio": {
+          "decimal": 18522.252491411466,
+          "denominator": 8931073734933966621,
+          "fraction": "165423602737860180893242/8931073734933966621",
+          "numerator": 165423602737860180893242
+        },
+        "lower": {
+          "decimal": 0.030517578125,
+          "denominator": 4096,
+          "fraction": "125/4096",
+          "numerator": 125
+        },
+        "radius": {
+          "decimal": 282.61188493975015,
+          "denominator": 73163356036579054559232,
+          "fraction": "20676833958015655865827625/73163356036579054559232",
+          "numerator": 20676833958015655865827625
+        },
+        "upper": {
+          "decimal": 565.2542874576253,
+          "denominator": 18290839009144763639808,
+          "fraction": "10338975171116261305827625/18290839009144763639808",
+          "numerator": 10338975171116261305827625
+        }
+      }
+    }
+  },
+  "experiment_provenance": {
+    "git": {
+      "branch": "p17-shape-preserving-resolvent",
+      "dirty": false,
+      "sha": "bf2812fb9460289ef780edb272d3e086f51f8853"
+    },
+    "hardware": {
+      "device": "cpu",
+      "logical_cpu_count": 10,
+      "machine": "arm64",
+      "platform": "macOS-15.5-arm64-arm-64bit",
+      "processor": "arm"
+    },
+    "seed": 20260905,
+    "software": {
+      "blas_lapack": {
+        "Build Dependencies": {
+          "blas": {
+            "detection method": "system",
+            "found": true,
+            "include directory": "unknown",
+            "lib directory": "unknown",
+            "name": "accelerate",
+            "openblas configuration": "unknown",
+            "pc file directory": "unknown",
+            "version": "unknown"
+          },
+          "lapack": {
+            "detection method": "system",
+            "found": true,
+            "include directory": "unknown",
+            "lib directory": "unknown",
+            "name": "accelerate",
+            "openblas configuration": "unknown",
+            "pc file directory": "unknown",
+            "version": "unknown"
+          }
+        },
+        "Compilers": {
+          "c": {
+            "commands": "cc",
+            "linker": "ld64",
+            "name": "clang",
+            "version": "15.0.0"
+          },
+          "c++": {
+            "commands": "c++",
+            "linker": "ld64",
+            "name": "clang",
+            "version": "15.0.0"
+          },
+          "cython": {
+            "commands": "cython",
+            "linker": "cython",
+            "name": "cython",
+            "version": "3.2.9"
+          }
+        },
+        "Machine Information": {
+          "build": {
+            "cpu": "aarch64",
+            "endian": "little",
+            "family": "aarch64",
+            "system": "darwin"
+          },
+          "host": {
+            "cpu": "aarch64",
+            "endian": "little",
+            "family": "aarch64",
+            "system": "darwin"
+          }
+        },
+        "Python Information": {
+          "path": "/private/var/folders/g3/pffjr_y96bq06blnkf72x_hw0000gn/T/build-env-re3_temx/bin/python",
+          "version": "3.12"
+        },
+        "SIMD Extensions": {
+          "baseline": [
+            "NEON",
+            "NEON_FP16",
+            "NEON_VFPV4",
+            "ASIMD"
+          ],
+          "found": [
+            "ASIMDHP",
+            "ASIMDDP"
+          ],
+          "not found": [
+            "ASIMDFHM"
+          ]
+        }
+      },
+      "numpy": "2.5.2",
+      "python": "3.12.11 (main, Jul  8 2025, 20:41:49) [Clang 20.1.4 ]"
+    },
+    "source_snapshot": {
+      "experiments/resolvent/run_p16_solver_study.py": "035d8559103eb03e996178bb14b6107a3cbc73dbfeb9ae5a083a1cc2856d4f66",
+      "experiments/resolvent/run_p17_shape_preserving_study.py": "298739db8523e9cd6011cd1a7f4802e2184e3fd198df9c78220761ec0320b453",
+      "pyproject.toml": "7a9988bf528baef5145f779516d4315349d1c2a6bbb7394c9b93fbbee1d4f596",
+      "src/passive_muon/additive_epsilon_deficit.py": "24de25c79ddf37565db4833369993b3ad4950afe4b962fdb186c63777b4d1c71",
+      "src/passive_muon/equivariant_resolvent_solver.py": "82e7c957cdc5ef4345dc964019636f8195a628d31a5db16da5e537fc5fe3cea5",
+      "src/passive_muon/floored_certificate.py": "385dee8576e574bebc72fe09478220cf2ec29928045ee6341472c2e9becb6a72",
+      "src/passive_muon/momentum_iqc.py": "c1e7346473d2d8e96ad2e378ac7d47b98f35786752c31c50109375cec3ab415d",
+      "src/passive_muon/pl_convergence.py": "d59d56d6e2ba808aaa519770f3b4442ccfb54aa5144755b760bcb2c7cea8b446",
+      "src/passive_muon/radial_passivation_tradeoff.py": "16ea7d0e2b9af1c2a46af1601ad9bd3d188fbc830f74b2229e9a9631baa28712",
+      "src/passive_muon/shape_preserving_resolvent.py": "f17495774e32044c685ec2f89e38b7bb84f8eabcda0477d654932906030c95ab",
+      "src/passive_muon/shape_preserving_resolvent_certificate.py": "07bffbddadd8e6fa2a1c0953eedf31e10d3dc1e6fa7f9dfb000f4ddfb2ff6b8f",
+      "src/passive_muon/specs.py": "85fcee0f87485fc3cac2f426d62ec6e55da7896caade2f5df2a1c87f7d9c5d6c",
+      "src/passive_muon/structure_aware_stability.py": "fbbbfa314b26c8c549dcc915bcbe590fadc55fb712288c1757ff24881ababc4a",
+      "src/passive_muon/upstream_momentum.py": "7479613bb307debbb2a02e04e6bbe53a428855c51e1e21210f9c2be2e68d3d7e",
+      "src/passive_muon/yosida_stability.py": "35a00901dcd7939506ac6d5b32de3e069982eb22d0192a6b5214267399350996",
+      "uv.lock": "f097fd7895b5c1c551a0bd233d025c3f8ae97b7dedce6a8690569f1b1f7c5cf1"
+    }
+  },
+  "negative_controls": {
+    "locked_full_step_gate_at_same_scalar_witness": {
+      "derivative_diagnostic": {
+        "gated_interface_derivative": 0.12205893533022351,
+        "jordan_derivative_at_root": -1574717898.640279,
+        "normalized_root": 0.0063,
+        "radial_repair_derivative_at_root": 1585445308.0538685,
+        "resolvent_derivative": 9.320177480909962e-05,
+        "root": 6.339941632283385e-10,
+        "shifted_graph_derivative": 10728409.413589478,
+        "yosida_derivative": 999.906798225191
+      },
+      "gate_off_below_q0": true,
+      "gate_weight": 0.0,
+      "interpretation": "the locked gate suppresses the unsafe shape component in this tiny-signal region; this scalar diagnostic alone is not a full-matrix derivative theorem"
+    },
+    "rank_one_fidelity_control": {
+      "best_scalar_departure": 0.0,
+      "interpretation": "one positive singular mode is necessarily collinear with its input and cannot witness nontrivial spectral shaping"
+    },
+    "undersized_passive_region": {
+      "claimed_exact_input_bracket": [
+        0.0019,
+        0.002
+      ],
+      "constructed_input": 0.0019783222654769263,
+      "constructed_input_squared": 3.913758986081758e-06,
+      "derivative_diagnostic": {
+        "gated_interface_derivative": -18345.706070547814,
+        "jordan_derivative_at_root": -1574717898.640279,
+        "normalized_root": 0.0063,
+        "radial_repair_derivative_at_root": 1585445308.0538685,
+        "resolvent_derivative": 9.320177480909962e-05,
+        "root": 6.339941632283385e-10,
+        "shifted_graph_derivative": 10728409.413589478,
+        "yosida_derivative": 999.906798225191
+      },
+      "gate_ceiling": {
+        "decimal": 0.125,
+        "denominator": 8,
+        "fraction": "1/8",
+        "numerator": 1
+      },
+      "gate_q0": {
+        "decimal": 2.384185791015625e-07,
+        "denominator": 4194304,
+        "fraction": "1/4194304",
+        "numerator": 1
+      },
+      "gate_q1": {
+        "decimal": 9.5367431640625e-07,
+        "denominator": 1048576,
+        "fraction": "1/1048576",
+        "numerator": 1
+      },
+      "gate_weight": 0.125,
+      "on_gate_plateau": true,
+      "solver_diagnostics": {
+        "actual_residual_norm": 2.2325891135821507e-15,
+        "backtracks": 0,
+        "certified": true,
+        "iterations": 10,
+        "jacobian_evaluations": 10,
+        "operator_evaluations": 11,
+        "p15_threshold": 7.913289971402408e-06,
+        "reconstruction_matmuls": 0,
+        "residual_to_p15_threshold_ratio": 2.821315940209995e-10,
+        "sherman_morrison_solves": 10,
+        "status": "strict_residual",
+        "svd_count": 0
+      },
+      "status": "negative derivative; this rejects an incremental/passivity claim for the undersized gate, not the locked pointwise PL theorem"
+    }
+  },
+  "rank_accumulation_diagnostic": {
+    "by_rank": [
+      {
+        "evaluated_radius_count": 20,
+        "maximum_sampled_amplitude_by_design": {
+          "full_step_fidelity_floor": {
+            "best_scalar_departure": 1.8007650700347756e-16,
+            "computed_residual_amplitude_interval": [
+              0.18378808545575875,
+              0.18378808545575875
+            ],
+            "constructed_solution_radius": 1.898107179673478e-05,
+            "gate_weight": 0.08627197716150363,
+            "input_frobenius": 0.838640490619999,
+            "modal_gain_summary": {
+              "maximum": 0.18378808545575875,
+              "median": 0.18378808545575875,
+              "minimum": 0.18378808545575875,
+              "positive_mode_count": 1,
+              "spread": 0.0,
+              "values": [
+                0.18378808545575875
+              ]
+            },
+            "output_to_input_amplitude": 0.18378808545575875,
+            "residual_to_p15_threshold_ratio": 0.0
+          },
+          "high_fidelity_reduced_step": {
+            "best_scalar_departure": 1.200710385887057e-16,
+            "computed_residual_amplitude_interval": [
+              0.55127226093375,
+              0.55127226093375
+            ],
+            "constructed_solution_radius": 1.898107179673478e-05,
+            "gate_weight": 0.5176318629690217,
+            "input_frobenius": 0.838640490619999,
+            "modal_gain_summary": {
+              "maximum": 0.55127226093375,
+              "median": 0.55127226093375,
+              "minimum": 0.55127226093375,
+              "positive_mode_count": 1,
+              "spread": 0.0,
+              "values": [
+                0.55127226093375
+              ]
+            },
+            "output_to_input_amplitude": 0.55127226093375,
+            "residual_to_p15_threshold_ratio": 0.0
+          }
+        },
+        "mode_ratio": 0.0041,
+        "rank": 1
+      },
+      {
+        "evaluated_radius_count": 20,
+        "maximum_sampled_amplitude_by_design": {
+          "full_step_fidelity_floor": {
+            "best_scalar_departure": 0.5556385831556484,
+            "computed_residual_amplitude_interval": [
+              0.22187656533308292,
+              0.22187662071389785
+            ],
+            "constructed_solution_radius": 1.898107179673478e-05,
+            "gate_weight": 0.08627475365611174,
+            "input_frobenius": 0.8386462819861301,
+            "modal_gain_summary": {
+              "maximum": 22.477185720080858,
+              "median": 11.330488724944805,
+              "minimum": 0.18379172980875233,
+              "positive_mode_count": 2,
+              "spread": 22.293393990272104,
+              "values": [
+                0.18379172980875233,
+                22.477185720080858
+              ]
+            },
+            "output_to_input_amplitude": 0.2218765930234904,
+            "residual_to_p15_threshold_ratio": 3.3096697886017204e-14
+          },
+          "high_fidelity_reduced_step": {
+            "best_scalar_departure": 0.7996841693158477,
+            "computed_residual_amplitude_interval": [
+              0.924988954850333,
+              0.9249892871352223
+            ],
+            "constructed_solution_radius": 1.898107179673478e-05,
+            "gate_weight": 0.5176485219366704,
+            "input_frobenius": 0.8386462819861301,
+            "modal_gain_summary": {
+              "maximum": 134.31165280723764,
+              "median": 67.43147245038487,
+              "minimum": 0.5512920935321106,
+              "positive_mode_count": 2,
+              "spread": 133.76036071370552,
+              "values": [
+                0.5512920935321106,
+                134.31165280723764
+              ]
+            },
+            "output_to_input_amplitude": 0.9249891209927776,
+            "residual_to_p15_threshold_ratio": 3.3096697886017204e-14
+          }
+        },
+        "mode_ratio": 0.0041,
+        "rank": 2
+      },
+      {
+        "evaluated_radius_count": 20,
+        "maximum_sampled_amplitude_by_design": {
+          "full_step_fidelity_floor": {
+            "best_scalar_departure": 0.9264186096722522,
+            "computed_residual_amplitude_interval": [
+              0.5154680600162111,
+              0.5154680616924477
+            ],
+            "constructed_solution_radius": 1.898107179673478e-05,
+            "gate_weight": 0.08631361383367053,
+            "input_frobenius": 0.8387273482619223,
+            "modal_gain_summary": {
+              "maximum": 22.489175161451417,
+              "median": 22.489175161451417,
+              "minimum": 0.18384277846423694,
+              "positive_mode_count": 16,
+              "quantiles_05_50_95": [
+                16.912842065704623,
+                22.489175161451417,
+                22.489175161451417
+              ],
+              "spread": 22.30533238298718
+            },
+            "output_to_input_amplitude": 0.5154680608543295,
+            "residual_to_p15_threshold_ratio": 1.0013020239584687e-15
+          },
+          "high_fidelity_reduced_step": {
+            "best_scalar_departure": 0.9778749714132001,
+            "computed_residual_amplitude_interval": [
+              2.9300628764715584,
+              2.930062886528979
+            ],
+            "constructed_solution_radius": 1.898107179673478e-05,
+            "gate_weight": 0.5178816830020232,
+            "input_frobenius": 0.8387273482619223,
+            "modal_gain_summary": {
+              "maximum": 134.38356099361656,
+              "median": 134.38356099361656,
+              "minimum": 0.5515699240617288,
+              "positive_mode_count": 16,
+              "quantiles_05_50_95": [
+                100.92556322622785,
+                134.38356099361656,
+                134.38356099361656
+              ],
+              "spread": 133.83199106955482
+            },
+            "output_to_input_amplitude": 2.9300628815002687,
+            "residual_to_p15_threshold_ratio": 1.0013020239584687e-15
+          }
+        },
+        "mode_ratio": 0.0041,
+        "rank": 16
+      },
+      {
+        "evaluated_radius_count": 20,
+        "maximum_sampled_amplitude_by_design": {
+          "full_step_fidelity_floor": {
+            "best_scalar_departure": 0.9741616001516847,
+            "computed_residual_amplitude_interval": [
+              1.0050913568424908,
+              1.0050914123082526
+            ],
+            "constructed_solution_radius": 1.898107179673478e-05,
+            "gate_weight": 0.08644669628399737,
+            "input_frobenius": 0.8390051077389825,
+            "modal_gain_summary": {
+              "maximum": 22.530249514045774,
+              "median": 22.530249514045774,
+              "minimum": 0.18401819254417023,
+              "positive_mode_count": 64,
+              "quantiles_05_50_95": [
+                22.530249514045774,
+                22.530249514045774,
+                22.530249514045774
+              ],
+              "spread": 22.346231321501605
+            },
+            "output_to_input_amplitude": 1.0050913845753717,
+            "residual_to_p15_threshold_ratio": 3.3081533535481046e-14
+          },
+          "high_fidelity_reduced_step": {
+            "best_scalar_departure": 0.9906183791731069,
+            "computed_residual_amplitude_interval": [
+              5.93036471575161,
+              5.9303650485461805
+            ],
+            "constructed_solution_radius": 1.898107179673478e-05,
+            "gate_weight": 0.5186801777039842,
+            "input_frobenius": 0.8390051077389825,
+            "modal_gain_summary": {
+              "maximum": 134.62990963736826,
+              "median": 134.62990963736826,
+              "minimum": 0.552524938238052,
+              "positive_mode_count": 64,
+              "quantiles_05_50_95": [
+                134.62990963736826,
+                134.62990963736826,
+                134.62990963736826
+              ],
+              "spread": 134.0773846991302
+            },
+            "output_to_input_amplitude": 5.930364882148895,
+            "residual_to_p15_threshold_ratio": 3.3081533535481046e-14
+          }
+        },
+        "mode_ratio": 0.0041,
+        "rank": 64
+      },
+      {
+        "evaluated_radius_count": 20,
+        "maximum_sampled_amplitude_by_design": {
+          "full_step_fidelity_floor": {
+            "best_scalar_departure": 0.983844914415845,
+            "computed_residual_amplitude_interval": [
+              2.005871058707227,
+              2.005871394254857
+            ],
+            "constructed_solution_radius": 1.898107179673478e-05,
+            "gate_weight": 0.08697665672369603,
+            "input_frobenius": 0.8401133308669186,
+            "modal_gain_summary": {
+              "maximum": 22.694043049669943,
+              "median": 22.694043049669943,
+              "minimum": 0.18472571626785306,
+              "positive_mode_count": 256,
+              "quantiles_05_50_95": [
+                22.694043049669943,
+                22.694043049669943,
+                22.694043049669943
+              ],
+              "spread": 22.50931733340209
+            },
+            "output_to_input_amplitude": 2.005871226481042,
+            "residual_to_p15_threshold_ratio": 1.9891178639807895e-13
+          },
+          "high_fidelity_reduced_step": {
+            "best_scalar_departure": 0.9909646340747019,
+            "computed_residual_amplitude_interval": [
+              11.948757344589803,
+              11.948759357875584
+            ],
+            "constructed_solution_radius": 1.898107179673478e-05,
+            "gate_weight": 0.5218599403421762,
+            "input_frobenius": 0.8401133308669186,
+            "modal_gain_summary": {
+              "maximum": 135.61228269920846,
+              "median": 135.61228269920846,
+              "minimum": 0.5563819346992633,
+              "positive_mode_count": 256,
+              "quantiles_05_50_95": [
+                135.61228269920846,
+                135.61228269920846,
+                135.61228269920846
+              ],
+              "spread": 135.0559007645092
+            },
+            "output_to_input_amplitude": 11.948758351232694,
+            "residual_to_p15_threshold_ratio": 1.9891178639807895e-13
+          }
+        },
+        "mode_ratio": 0.0041,
+        "rank": 256
+      },
+      {
+        "evaluated_radius_count": 20,
+        "maximum_sampled_amplitude_by_design": {
+          "full_step_fidelity_floor": {
+            "best_scalar_departure": 0.9791054915036402,
+            "computed_residual_amplitude_interval": [
+              3.511585640330482,
+              3.511586663358768
+            ],
+            "constructed_solution_radius": 1.898107179673478e-05,
+            "gate_weight": 0.08837114977937463,
+            "input_frobenius": 0.8430466609615846,
+            "modal_gain_summary": {
+              "maximum": 23.126800531015185,
+              "median": 23.126800531015185,
+              "minimum": 0.18665369639960902,
+              "positive_mode_count": 768,
+              "quantiles_05_50_95": [
+                23.126800531015185,
+                23.126800531015185,
+                23.126800531015185
+              ],
+              "spread": 22.940146834615575
+            },
+            "output_to_input_amplitude": 3.5115861518446247,
+            "residual_to_p15_threshold_ratio": 5.968788462341826e-13
+          },
+          "high_fidelity_reduced_step": {
+            "best_scalar_departure": 0.9840308901160636,
+            "computed_residual_amplitude_interval": [
+              20.964053477096844,
+              20.964059615266553
+            ],
+            "constructed_solution_radius": 1.898107179673478e-05,
+            "gate_weight": 0.5302268986762477,
+            "input_frobenius": 0.8430466609615846,
+            "modal_gain_summary": {
+              "maximum": 138.20780623714552,
+              "median": 138.20780623714552,
+              "minimum": 0.5669284812568038,
+              "positive_mode_count": 768,
+              "quantiles_05_50_95": [
+                138.20780623714552,
+                138.20780623714552,
+                138.20780623714552
+              ],
+              "spread": 137.6408777558887
+            },
+            "output_to_input_amplitude": 20.9640565461817,
+            "residual_to_p15_threshold_ratio": 5.968788462341826e-13
+          }
+        },
+        "mode_ratio": 0.0041,
+        "rank": 768
+      },
+      {
+        "evaluated_radius_count": 20,
+        "maximum_sampled_amplitude_by_design": {
+          "full_step_fidelity_floor": {
+            "best_scalar_departure": 0.9343392449522584,
+            "computed_residual_amplitude_interval": [
+              8.666802724101741,
+              8.666802967822122
+            ],
+            "constructed_solution_radius": 1.898107179673478e-05,
+            "gate_weight": 0.09673963798438473,
+            "input_frobenius": 0.8613500112355897,
+            "modal_gain_summary": {
+              "maximum": 25.782961400967032,
+              "median": 25.782961400967032,
+              "minimum": 0.19929326599890915,
+              "positive_mode_count": 4096,
+              "quantiles_05_50_95": [
+                25.782961400967032,
+                25.782961400967032,
+                25.782961400967032
+              ],
+              "spread": 25.58366813496812
+            },
+            "output_to_input_amplitude": 8.66680284596193,
+            "residual_to_p15_threshold_ratio": 1.2989619860752185e-13
+          },
+          "high_fidelity_reduced_step": {
+            "best_scalar_departure": 0.9378856371803839,
+            "computed_residual_amplitude_interval": [
+              51.80418645028673,
+              51.80418791260902
+            ],
+            "constructed_solution_radius": 1.898107179673478e-05,
+            "gate_weight": 0.5804378279063084,
+            "input_frobenius": 0.8613500112355897,
+            "modal_gain_summary": {
+              "maximum": 154.13864223317535,
+              "median": 154.13864223317535,
+              "minimum": 0.6366367728988693,
+              "positive_mode_count": 4096,
+              "quantiles_05_50_95": [
+                154.13864223317535,
+                154.13864223317535,
+                154.13864223317535
+              ],
+              "spread": 153.50200546027648
+            },
+            "output_to_input_amplitude": 51.80418718144787,
+            "residual_to_p15_threshold_ratio": 1.2989619860752185e-13
+          }
+        },
+        "mode_ratio": 0.0041,
+        "rank": 4096
+      },
+      {
+        "evaluated_radius_count": 20,
+        "maximum_sampled_amplitude_by_design": {
+          "full_step_fidelity_floor": {
+            "best_scalar_departure": 0.8544616411074238,
+            "computed_residual_amplitude_interval": [
+              15.446280898770642,
+              15.446281294541702
+            ],
+            "constructed_solution_radius": 1.898107179673478e-05,
+            "gate_weight": 0.11010163523506238,
+            "input_frobenius": 0.8954122140488203,
+            "modal_gain_summary": {
+              "maximum": 30.311018346568392,
+              "median": 30.311018346568392,
+              "minimum": 0.20843123142126885,
+              "positive_mode_count": 11008,
+              "quantiles_05_50_95": [
+                30.311018346568392,
+                30.311018346568392,
+                30.311018346568392
+              ],
+              "spread": 30.102587115147124
+            },
+            "output_to_input_amplitude": 15.446281096656172,
+            "residual_to_p15_threshold_ratio": 1.853357993596689e-13
+          },
+          "high_fidelity_reduced_step": {
+            "best_scalar_departure": 0.8571834388278037,
+            "computed_residual_amplitude_interval": [
+              92.38340595431464,
+              92.38340832894099
+            ],
+            "constructed_solution_radius": 1.898107179673478e-05,
+            "gate_weight": 0.6606098114103742,
+            "input_frobenius": 0.8954122140488203,
+            "modal_gain_summary": {
+              "maximum": 181.29719733541978,
+              "median": 181.29719733541978,
+              "minimum": 0.6816781680154724,
+              "positive_mode_count": 11008,
+              "quantiles_05_50_95": [
+                181.29719733541978,
+                181.29719733541978,
+                181.29719733541978
+              ],
+              "spread": 180.6155191674043
+            },
+            "output_to_input_amplitude": 92.38340714162781,
+            "residual_to_p15_threshold_ratio": 1.853357993596689e-13
+          }
+        },
+        "mode_ratio": 0.0041,
+        "rank": 11008
+      }
+    ],
+    "construction": "one leading solution singular mode and k-1 modes at ratio 41/10000, normalized to each sampled solution radius and mapped forward through the graph",
+    "radius_count": 20,
+    "radius_range": [
+      1e-12,
+      3.0
+    ],
+    "status": "sampled adversarial diagnostic; growth across ranks is not a lower-bound theorem and the exact pointwise sector remains authoritative"
+  },
+  "realistic_complete_spectrum_cases": [
+    {
+      "cost_comparison": {
+        "executed_solver_cost": "scalar diagonal-plus-rank-one Newton system",
+        "hypothetical_five_stage_jordan_dense_gemm_count": 15,
+        "important_caveat": "an actual dense deployment also pays for an SVD and reconstruction; this spectrum-only replay is not a runtime benchmark"
+      },
+      "declared_matrix_shape": [
+        768,
+        768
+      ],
+      "designs": {
+        "full_step_fidelity_floor": {
+          "computed_residual_error_allowance": {
+            "blended_output_error_allowance": 1.1654987907200482e-07,
+            "computed_graph_residual": 3.8459253727671276e-16,
+            "jordan_output_error_allowance": 9.323990324117229e-07,
+            "solution_error_allowance": 1.9229626863835638e-16,
+            "yosida_output_error_allowance": 1.9229626863835638e-13
+          },
+          "design": "full_step_fidelity_floor",
+          "diagnostics": {
+            "actual_residual_norm": 3.8459253727671276e-16,
+            "backtracks": 0,
+            "certified": true,
+            "iterations": 8,
+            "jacobian_evaluations": 8,
+            "operator_evaluations": 9,
+            "p15_threshold": 0.004000000000909495,
+            "reconstruction_matmuls": 0,
+            "residual_to_p15_threshold_ratio": 9.614813429731663e-14,
+            "sherman_morrison_solves": 8,
+            "status": "strict_residual",
+            "svd_count": 0
+          },
+          "fidelity": {
+            "absolute_shaping_gate_passes": false,
+            "best_scalar_multiple": {
+              "coefficient": 3.867484546460001,
+              "relative_residual": 3.9777021229857584e-15,
+              "residual_frobenius": 1.5383701491068513e-14
+            },
+            "computed_residual_amplitude_interval": [
+              3.8674844299101134,
+              3.8674846630098716
+            ],
+            "computed_residual_best_scalar_departure_interval": [
+              0.0,
+              3.0135840639548536e-08
+            ],
+            "computed_residual_shaping_retention_interval": [
+              0.0,
+              18383150.99732205
+            ],
+            "directional_sine_to_upstream": 4.712160915387242e-08,
+            "input_frobenius": 0.9999999999999992,
+            "meaningful_fidelity_gate_passes": false,
+            "modal_gains": {
+              "maximum": 3.867484546459986,
+              "median": 3.867484546459986,
+              "minimum": 3.867484546459986,
+              "positive_mode_count": 768,
+              "quantiles_05_50_95": [
+                3.867484546459986,
+                3.867484546459986,
+                3.867484546459986
+              ],
+              "spread": 0.0
+            },
+            "output_frobenius": 3.8674845464599894,
+            "output_to_input_amplitude": 3.8674845464599925,
+            "shaping_retention_fraction": 2.4264363361828263,
+            "upstream_best_scalar_multiple": {
+              "coefficient": 30.02945610609952,
+              "relative_residual": 1.6393185609985226e-15,
+              "residual_frobenius": 4.9227844771419234e-14
+            },
+            "upstream_retention_gate_passes": true
+          },
+          "gate_weight": 0.125
+        },
+        "high_fidelity_reduced_step": {
+          "computed_residual_error_allowance": {
+            "blended_output_error_allowance": 6.99299274320529e-07,
+            "computed_graph_residual": 3.8459253727671276e-16,
+            "jordan_output_error_allowance": 9.323990324117229e-07,
+            "solution_error_allowance": 1.9229626863835638e-16,
+            "yosida_output_error_allowance": 1.9229626863835638e-13
+          },
+          "design": "high_fidelity_reduced_step",
+          "diagnostics": {
+            "actual_residual_norm": 3.8459253727671276e-16,
+            "backtracks": 0,
+            "certified": true,
+            "iterations": 8,
+            "jacobian_evaluations": 8,
+            "operator_evaluations": 9,
+            "p15_threshold": 0.004000000000909495,
+            "reconstruction_matmuls": 0,
+            "residual_to_p15_threshold_ratio": 9.614813429731663e-14,
+            "sherman_morrison_solves": 8,
+            "status": "strict_residual",
+            "svd_count": 0
+          },
+          "fidelity": {
+            "absolute_shaping_gate_passes": false,
+            "best_scalar_multiple": {
+              "coefficient": 22.62509852819829,
+              "relative_residual": 1.6318551511521124e-15,
+              "residual_frobenius": 3.692088357856443e-14
+            },
+            "computed_residual_amplitude_interval": [
+              22.625097828899015,
+              22.625099227497564
+            ],
+            "computed_residual_best_scalar_departure_interval": [
+              0.0,
+              3.090812320591156e-08
+            ],
+            "computed_residual_shaping_retention_interval": [
+              0.0,
+              18854250.74860689
+            ],
+            "directional_sine_to_upstream": 0.0,
+            "input_frobenius": 0.9999999999999992,
+            "meaningful_fidelity_gate_passes": false,
+            "modal_gains": {
+              "maximum": 22.625098528198254,
+              "median": 22.625098528198254,
+              "minimum": 22.625098528198254,
+              "positive_mode_count": 768,
+              "quantiles_05_50_95": [
+                22.625098528198254,
+                22.625098528198254,
+                22.625098528198254
+              ],
+              "spread": 0.0
+            },
+            "output_frobenius": 22.625098528198272,
+            "output_to_input_amplitude": 22.62509852819829,
+            "shaping_retention_fraction": 0.9954472486166055,
+            "upstream_best_scalar_multiple": {
+              "coefficient": 30.02945610609952,
+              "relative_residual": 1.6393185609985226e-15,
+              "residual_frobenius": 4.9227844771419234e-14
+            },
+            "upstream_retention_gate_passes": true
+          },
+          "gate_weight": 0.75
+        }
+      },
+      "input_frobenius": 0.9999999999999992,
+      "input_sha256_float64_bytes": "087bf62067720523914f86dfa483d5f8f04394d1eb19aaabe6e71c0d77247c36",
+      "input_spectrum_summary": {
+        "maximum": 0.036084391824351615,
+        "median": 0.036084391824351615,
+        "minimum": 0.036084391824351615,
+        "positive_condition_number": 1.0
+      },
+      "label": "unit_flat_repeated",
+      "representation": "complete min(m,n) singular spectrum; no dense matrix, SVD, or accelerator timing",
+      "singular_value_count": 768
+    },
+    {
+      "cost_comparison": {
+        "executed_solver_cost": "scalar diagonal-plus-rank-one Newton system",
+        "hypothetical_five_stage_jordan_dense_gemm_count": 15,
+        "important_caveat": "an actual dense deployment also pays for an SVD and reconstruction; this spectrum-only replay is not a runtime benchmark"
+      },
+      "declared_matrix_shape": [
+        768,
+        3072
+      ],
+      "designs": {
+        "full_step_fidelity_floor": {
+          "computed_residual_error_allowance": {
+            "blended_output_error_allowance": 4.4390688306645305e-07,
+            "computed_graph_residual": 1.4648086796181997e-15,
+            "jordan_output_error_allowance": 3.5512550639057907e-06,
+            "solution_error_allowance": 7.324043398090998e-16,
+            "yosida_output_error_allowance": 7.324043398090998e-13
+          },
+          "design": "full_step_fidelity_floor",
+          "diagnostics": {
+            "actual_residual_norm": 1.4648086796181997e-15,
+            "backtracks": 0,
+            "certified": true,
+            "iterations": 7,
+            "jacobian_evaluations": 7,
+            "operator_evaluations": 8,
+            "p15_threshold": 0.050467012161749154,
+            "reconstruction_matmuls": 0,
+            "residual_to_p15_threshold_ratio": 2.902507235663999e-14,
+            "sherman_morrison_solves": 7,
+            "status": "strict_residual",
+            "svd_count": 0
+          },
+          "fidelity": {
+            "absolute_shaping_gate_passes": true,
+            "best_scalar_multiple": {
+              "coefficient": 0.1747057068437754,
+              "relative_residual": 0.6508738715798793,
+              "residual_frobenius": 1.8897458856731864
+            },
+            "computed_residual_amplitude_interval": [
+              0.23012240387377206,
+              0.23012247424162055
+            ],
+            "computed_residual_best_scalar_departure_interval": [
+              0.6508736191741922,
+              0.6508741239856436
+            ],
+            "computed_residual_shaping_retention_interval": [
+              0.8040460694045994,
+              0.8040466930151612
+            ],
+            "directional_sine_to_upstream": 0.23262471645740274,
+            "input_frobenius": 12.616753040209915,
+            "meaningful_fidelity_gate_passes": true,
+            "modal_gains": {
+              "maximum": 4.69688200847561,
+              "median": 4.409390912971184,
+              "minimum": 0.1174315344095484,
+              "positive_mode_count": 768,
+              "quantiles_05_50_95": [
+                0.13614240777375852,
+                4.409390912971184,
+                4.696837414964697
+              ],
+              "spread": 4.5794504740660615
+            },
+            "output_frobenius": 2.9033979826017107,
+            "output_to_input_amplitude": 0.2301224390576963,
+            "shaping_retention_fraction": 0.8040463812098326,
+            "upstream_best_scalar_multiple": {
+              "coefficient": 0.874491449710794,
+              "relative_residual": 0.8094979180187619,
+              "residual_frobenius": 15.212128973886923
+            },
+            "upstream_retention_gate_passes": true
+          },
+          "gate_weight": 0.125
+        },
+        "high_fidelity_reduced_step": {
+          "computed_residual_error_allowance": {
+            "blended_output_error_allowance": 2.6634412979740455e-06,
+            "computed_graph_residual": 1.4648086796181997e-15,
+            "jordan_output_error_allowance": 3.5512550639057907e-06,
+            "solution_error_allowance": 7.324043398090998e-16,
+            "yosida_output_error_allowance": 7.324043398090998e-13
+          },
+          "design": "high_fidelity_reduced_step",
+          "diagnostics": {
+            "actual_residual_norm": 1.4648086796181997e-15,
+            "backtracks": 0,
+            "certified": true,
+            "iterations": 7,
+            "jacobian_evaluations": 7,
+            "operator_evaluations": 8,
+            "p15_threshold": 0.050467012161749154,
+            "reconstruction_matmuls": 0,
+            "residual_to_p15_threshold_ratio": 2.902507235663999e-14,
+            "sherman_morrison_solves": 7,
+            "status": "strict_residual",
+            "svd_count": 0
+          },
+          "fidelity": {
+            "absolute_shaping_gate_passes": true,
+            "best_scalar_multiple": {
+              "coefficient": 0.6931459622694575,
+              "relative_residual": 0.7917467804351115,
+              "residual_frobenius": 11.335075769385083
+            },
+            "computed_residual_amplitude_interval": [
+              1.1347245170659823,
+              1.1347249392730734
+            ],
+            "computed_residual_best_scalar_departure_interval": [
+              0.7917464470996177,
+              0.7917471137707291
+            ],
+            "computed_residual_shaping_retention_interval": [
+              0.9780710110254629,
+              0.9780718345867057
+            ],
+            "directional_sine_to_upstream": 0.03160529640393046,
+            "input_frobenius": 12.616753040209915,
+            "meaningful_fidelity_gate_passes": true,
+            "modal_gains": {
+              "maximum": 27.8180686358036,
+              "median": 26.093639242798023,
+              "minimum": 0.34960396062116567,
+              "positive_mode_count": 768,
+              "quantiles_05_50_95": [
+                0.46183554101650454,
+                26.093639242798023,
+                27.817801154959287
+              ],
+              "spread": 27.46846467518243
+            },
+            "output_frobenius": 14.31654166393426,
+            "output_to_input_amplitude": 1.1347247281695279,
+            "shaping_retention_fraction": 0.9780714228060078,
+            "upstream_best_scalar_multiple": {
+              "coefficient": 0.874491449710794,
+              "relative_residual": 0.8094979180187619,
+              "residual_frobenius": 15.212128973886923
+            },
+            "upstream_retention_gate_passes": true
+          },
+          "gate_weight": 0.75
+        }
+      },
+      "input_frobenius": 12.616753040209915,
+      "input_sha256_float64_bytes": "d6de71d8b77799822ef97c89b4a2327297081f8979801ec9e6af95d519ff0f94",
+      "input_spectrum_summary": {
+        "maximum": 1.9435710299720086,
+        "median": 0.01943606062571728,
+        "minimum": 0.00019435710299720087,
+        "positive_condition_number": 10000.0
+      },
+      "label": "half_guard_log_condition_1e4",
+      "representation": "complete min(m,n) singular spectrum; no dense matrix, SVD, or accelerator timing",
+      "singular_value_count": 768
+    },
+    {
+      "cost_comparison": {
+        "executed_solver_cost": "scalar diagonal-plus-rank-one Newton system",
+        "hypothetical_five_stage_jordan_dense_gemm_count": 15,
+        "important_caveat": "an actual dense deployment also pays for an SVD and reconstruction; this spectrum-only replay is not a runtime benchmark"
+      },
+      "declared_matrix_shape": [
+        3072,
+        12288
+      ],
+      "designs": {
+        "full_step_fidelity_floor": {
+          "computed_residual_error_allowance": {
+            "blended_output_error_allowance": 1.3186515976236958e-06,
+            "computed_graph_residual": 4.3513006427125805e-15,
+            "jordan_output_error_allowance": 1.054921277913049e-05,
+            "solution_error_allowance": 2.1756503213562902e-15,
+            "yosida_output_error_allowance": 2.17565032135629e-12
+          },
+          "design": "full_step_fidelity_floor",
+          "diagnostics": {
+            "actual_residual_norm": 4.3513006427125805e-15,
+            "backtracks": 0,
+            "certified": true,
+            "iterations": 6,
+            "jacobian_evaluations": 6,
+            "operator_evaluations": 7,
+            "p15_threshold": 0.10083309029826713,
+            "reconstruction_matmuls": 0,
+            "residual_to_p15_threshold_ratio": 4.31534988151341e-14,
+            "sherman_morrison_solves": 6,
+            "status": "strict_residual",
+            "svd_count": 0
+          },
+          "fidelity": {
+            "absolute_shaping_gate_passes": true,
+            "best_scalar_multiple": {
+              "coefficient": 0.24748967658842846,
+              "relative_residual": 0.08739200271114202,
+              "residual_frobenius": 0.547314134227913
+            },
+            "computed_residual_amplitude_interval": [
+              0.24844015656893603,
+              0.24844026118948026
+            ],
+            "computed_residual_best_scalar_departure_interval": [
+              0.08739177375561254,
+              0.0873922316667679
+            ],
+            "computed_residual_shaping_retention_interval": [
+              0.7469013544191632,
+              0.7469052679964651
+            ],
+            "directional_sine_to_upstream": 0.029766385961900278,
+            "input_frobenius": 25.20827257433941,
+            "meaningful_fidelity_gate_passes": true,
+            "modal_gains": {
+              "maximum": 2.418658417381273,
+              "median": 1.332965488547811,
+              "minimum": 0.24727255971434922,
+              "positive_mode_count": 3072,
+              "quantiles_05_50_95": [
+                0.24727255971434922,
+                1.332965488547811,
+                2.418658417381273
+              ],
+              "spread": 2.1713858576669236
+            },
+            "output_frobenius": 6.262748503852897,
+            "output_to_input_amplitude": 0.24844020887920815,
+            "shaping_retention_fraction": 0.7469033112074022,
+            "upstream_best_scalar_multiple": {
+              "coefficient": 1.5019582267708718,
+              "relative_residual": 0.11700577758835878,
+              "residual_frobenius": 4.460685522602891
+            },
+            "upstream_retention_gate_passes": true
+          },
+          "gate_weight": 0.125
+        },
+        "high_fidelity_reduced_step": {
+          "computed_residual_error_allowance": {
+            "blended_output_error_allowance": 7.911909584480658e-06,
+            "computed_graph_residual": 4.3513006427125805e-15,
+            "jordan_output_error_allowance": 1.054921277913049e-05,
+            "solution_error_allowance": 2.1756503213562902e-15,
+            "yosida_output_error_allowance": 2.17565032135629e-12
+          },
+          "design": "high_fidelity_reduced_step",
+          "diagnostics": {
+            "actual_residual_norm": 4.3513006427125805e-15,
+            "backtracks": 0,
+            "certified": true,
+            "iterations": 6,
+            "jacobian_evaluations": 6,
+            "operator_evaluations": 7,
+            "p15_threshold": 0.10083309029826713,
+            "reconstruction_matmuls": 0,
+            "residual_to_p15_threshold_ratio": 4.31534988151341e-14,
+            "sherman_morrison_solves": 6,
+            "status": "strict_residual",
+            "svd_count": 0
+          },
+          "fidelity": {
+            "absolute_shaping_gate_passes": true,
+            "best_scalar_multiple": {
+              "coefficient": 1.1605887918554358,
+              "relative_residual": 0.11150682195676412,
+              "residual_frobenius": 3.2827649018275515
+            },
+            "computed_residual_amplitude_interval": [
+              1.1678717152186593,
+              1.1678723429419244
+            ],
+            "computed_residual_best_scalar_departure_interval": [
+              0.11150652324316938,
+              0.1115071206705194
+            ],
+            "computed_residual_shaping_retention_interval": [
+              0.9530001470137955,
+              0.9530052529783243
+            ],
+            "directional_sine_to_upstream": 0.005535183068616517,
+            "input_frobenius": 25.20827257433941,
+            "meaningful_fidelity_gate_passes": true,
+            "modal_gains": {
+              "maximum": 14.18315863334953,
+              "median": 7.671222584110408,
+              "minimum": 1.1592865348712857,
+              "positive_mode_count": 3072,
+              "quantiles_05_50_95": [
+                1.1592865348712857,
+                7.671222584110408,
+                14.18315863334953
+              ],
+              "spread": 13.023872098478243
+            },
+            "output_frobenius": 29.440036441002842,
+            "output_to_input_amplitude": 1.167872029080292,
+            "shaping_retention_fraction": 0.9530026999953738,
+            "upstream_best_scalar_multiple": {
+              "coefficient": 1.5019582267708718,
+              "relative_residual": 0.11700577758835878,
+              "residual_frobenius": 4.460685522602891
+            },
+            "upstream_retention_gate_passes": true
+          },
+          "gate_weight": 0.75
+        }
+      },
+      "input_frobenius": 25.20827257433941,
+      "input_sha256_float64_bytes": "c1c76ea6ebd796a1ba9b3347081c84ffc6e00db84b5d8ad9f9435bb316101efa",
+      "input_spectrum_summary": {
+        "maximum": 0.6431699788063038,
+        "median": 0.3248008392971834,
+        "minimum": 0.006431699788063038,
+        "positive_condition_number": 99.99999999999999
+      },
+      "label": "guard_two_repeated_blocks",
+      "representation": "complete min(m,n) singular spectrum; no dense matrix, SVD, or accelerator timing",
+      "singular_value_count": 3072
+    },
+    {
+      "cost_comparison": {
+        "executed_solver_cost": "scalar diagonal-plus-rank-one Newton system",
+        "hypothetical_five_stage_jordan_dense_gemm_count": 15,
+        "important_caveat": "an actual dense deployment also pays for an SVD and reconstruction; this spectrum-only replay is not a runtime benchmark"
+      },
+      "declared_matrix_shape": [
+        4096,
+        11008
+      ],
+      "designs": {
+        "full_step_fidelity_floor": {
+          "computed_residual_error_allowance": {
+            "blended_output_error_allowance": 8.840626503392555e-07,
+            "computed_graph_residual": 2.9172393872283157e-15,
+            "jordan_output_error_allowance": 7.072501201467665e-06,
+            "solution_error_allowance": 1.4586196936141578e-15,
+            "yosida_output_error_allowance": 1.458619693614158e-12
+          },
+          "design": "full_step_fidelity_floor",
+          "diagnostics": {
+            "actual_residual_norm": 2.9172393872283157e-15,
+            "backtracks": 0,
+            "certified": true,
+            "iterations": 6,
+            "jacobian_evaluations": 6,
+            "operator_evaluations": 7,
+            "p15_threshold": 0.10083309029826715,
+            "reconstruction_matmuls": 0,
+            "residual_to_p15_threshold_ratio": 2.893136944032003e-14,
+            "sherman_morrison_solves": 6,
+            "status": "strict_residual",
+            "svd_count": 0
+          },
+          "fidelity": {
+            "absolute_shaping_gate_passes": true,
+            "best_scalar_multiple": {
+              "coefficient": 0.17292716961676685,
+              "relative_residual": 0.5818614653604823,
+              "residual_frobenius": 3.1187574181657816
+            },
+            "computed_residual_amplitude_interval": [
+              0.21262721059253364,
+              0.21262728073321052
+            ],
+            "computed_residual_best_scalar_departure_interval": [
+              0.5818612044512671,
+              0.5818617262697835
+            ],
+            "computed_residual_shaping_retention_interval": [
+              0.7874554048636117,
+              0.7874561110609108
+            ],
+            "directional_sine_to_upstream": 0.20894588062816466,
+            "input_frobenius": 25.208272574339414,
+            "meaningful_fidelity_gate_passes": true,
+            "modal_gains": {
+              "maximum": 2.4216380249643477,
+              "median": 2.4211872570867943,
+              "minimum": 0.11337507629319547,
+              "positive_mode_count": 4096,
+              "quantiles_05_50_95": [
+                0.16934546710245463,
+                2.4211872570867943,
+                2.4216380236204604
+              ],
+              "spread": 2.3082629486711523
+            },
+            "output_frobenius": 5.3599655654007075,
+            "output_to_input_amplitude": 0.21262724566287208,
+            "shaping_retention_fraction": 0.7874557579622031,
+            "upstream_best_scalar_multiple": {
+              "coefficient": 0.9059113286490781,
+              "relative_residual": 0.7389132144594858,
+              "residual_frobenius": 25.043257016923185
+            },
+            "upstream_retention_gate_passes": true
+          },
+          "gate_weight": 0.125
+        },
+        "high_fidelity_reduced_step": {
+          "computed_residual_error_allowance": {
+            "blended_output_error_allowance": 5.304375901189776e-06,
+            "computed_graph_residual": 2.9172393872283157e-15,
+            "jordan_output_error_allowance": 7.072501201467665e-06,
+            "solution_error_allowance": 1.4586196936141578e-15,
+            "yosida_output_error_allowance": 1.458619693614158e-12
+          },
+          "design": "high_fidelity_reduced_step",
+          "diagnostics": {
+            "actual_residual_norm": 2.9172393872283157e-15,
+            "backtracks": 0,
+            "certified": true,
+            "iterations": 6,
+            "jacobian_evaluations": 6,
+            "operator_evaluations": 7,
+            "p15_threshold": 0.10083309029826715,
+            "reconstruction_matmuls": 0,
+            "residual_to_p15_threshold_ratio": 2.893136944032003e-14,
+            "sherman_morrison_solves": 6,
+            "status": "strict_residual",
+            "svd_count": 0
+          },
+          "fidelity": {
+            "absolute_shaping_gate_passes": true,
+            "best_scalar_multiple": {
+              "coefficient": 0.7133853949764286,
+              "relative_residual": 0.7209000897220358,
+              "residual_frobenius": 18.706162491990064
+            },
+            "computed_residual_amplitude_interval": [
+              1.0293580092102994,
+              1.0293584300543606
+            ],
+            "computed_residual_best_scalar_departure_interval": [
+              0.7208997379346694,
+              0.7209004415095459
+            ],
+            "computed_residual_shaping_retention_interval": [
+              0.9756216614179878,
+              0.9756226135932402
+            ],
+            "directional_sine_to_upstream": 0.02690227240522406,
+            "input_frobenius": 25.208272574339414,
+            "meaningful_fidelity_gate_passes": true,
+            "modal_gains": {
+              "maximum": 14.201048915268153,
+              "median": 14.198345230424128,
+              "minimum": 0.3561946984636973,
+              "positive_mode_count": 4096,
+              "quantiles_05_50_95": [
+                0.6919025092475031,
+                14.198345230424128,
+                14.201048907207577
+              ],
+              "spread": 13.844854216804455
+            },
+            "output_frobenius": 25.94834257712851,
+            "output_to_input_amplitude": 1.0293582196323299,
+            "shaping_retention_fraction": 0.9756221375055167,
+            "upstream_best_scalar_multiple": {
+              "coefficient": 0.9059113286490781,
+              "relative_residual": 0.7389132144594858,
+              "residual_frobenius": 25.043257016923185
+            },
+            "upstream_retention_gate_passes": true
+          },
+          "gate_weight": 0.75
+        }
+      },
+      "input_frobenius": 25.208272574339414,
+      "input_sha256_float64_bytes": "a52cf9aa5047129d1ce6bb4578a476fc896640c419ac02152d72ca32e1c5326f",
+      "input_spectrum_summary": {
+        "maximum": 2.0671995972362596,
+        "median": 0.002067202538395872,
+        "minimum": 2.0671995972362595e-06,
+        "positive_condition_number": 1000000.0
+      },
+      "label": "guard_log_condition_1e6",
+      "representation": "complete min(m,n) singular spectrum; no dense matrix, SVD, or accelerator timing",
+      "singular_value_count": 4096
+    }
+  ],
+  "schema_version": "passive-muon-p17-shape-preserving-study-v1",
+  "solver_summary": {
+    "all_calls_computed_residual_certified": true,
+    "call_count": 3855,
+    "iteration_histogram": {
+      "1": 92,
+      "10": 499,
+      "2": 54,
+      "3": 16,
+      "4": 84,
+      "5": 78,
+      "6": 817,
+      "7": 949,
+      "8": 752,
+      "9": 514
+    },
+    "maximum_actual_residual": 8.627920786224328e-13,
+    "maximum_backtracks": 8,
+    "maximum_iterations": 10,
+    "mean_iterations": 7.302464332036316,
+    "minimum_iterations": 1,
+    "scalar_coordinate_iteration_work_proxy": 4540080,
+    "status_counts": {
+      "strict_residual": 3855
+    },
+    "total_jacobian_evaluations": 28151,
+    "total_operator_evaluations": 32204,
+    "total_sherman_morrison_solves": 28151,
+    "worst_residual_to_p15_threshold_ratio": 2.3510712965477963e-09
+  },
+  "upstream_formula_provenance": {
+    "audited_file": "muon.py",
+    "audited_file_sha256": "2479665a90124f62e4df557816665851ca317e42fcfda2af1da02c1f44ab5f3d",
+    "comparison_scope": "FP64 five-stage spectral counterpart before aspect scaling and without BF16 casts",
+    "normalization": "X/(X.norm(dim=(-2,-1),keepdim=True)+1e-7)",
+    "repository": "https://github.com/KellerJordan/Muon",
+    "revision": "f98f1cacc0263b04290753e32be8d498c1efc806"
+  }
+}
