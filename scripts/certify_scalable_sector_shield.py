@@ -21,6 +21,7 @@ from passive_muon.scalable_sector_shield_certificate import (
     FP32_UNIT_ROUNDOFF,
     LOCKED_ACCEPTANCE_BUFFER,
     LOCKED_ACCEPTANCE_COEFFICIENT,
+    LOCKED_CLIP_COEFFICIENT,
     LOCKED_FASTER_RATE,
     LOCKED_FASTER_RATE_STEP,
     LOCKED_MAXIMUM_STEP,
@@ -50,6 +51,11 @@ P19_ARTIFACT_COMMIT = "154449ed7418ed7264a7442bfb7df92f1366a4b6"
 P19_CHECKPOINT_TAG = "p19-sector-shielded-inexact-resolvent-checkpoint"
 P19_CHECKPOINT_TAG_OBJECT = "3842779cdb48eb798fb8b923f7ef64630636ea33"
 
+P10_ARTIFACT_PATH = "results/summaries/outer_loop_roundoff_certificate.json"
+P10_ARTIFACT_SHA256 = "a36dcf8ab10c6c45b9a31d366cc2c67def0eaddb5be1e30214222e5eb83a84ea"
+P11_ARTIFACT_PATH = "results/summaries/implementation_margin_certificate.json"
+P11_ARTIFACT_SHA256 = "ad74050d66f711d2bb8e3e37f80fc29f4d6162419a2f5224931e1ca7fd2e536f"
+
 SOURCE_PATHS = (
     "scripts/certify_scalable_sector_shield.py",
     "scripts/reconstruct_scalable_sector_shield.py",
@@ -57,6 +63,8 @@ SOURCE_PATHS = (
     "src/passive_muon/scalable_sector_shield.py",
     "experiments/mixed_precision/run_p20_scalable_sector_shield_study.py",
     "src/passive_muon/scalable_mixed_precision_certificate.py",
+    P10_ARTIFACT_PATH,
+    P11_ARTIFACT_PATH,
     P19_ARTIFACT_PATH,
     "pyproject.toml",
     "uv.lock",
@@ -148,6 +156,34 @@ def _prior_p19() -> tuple[dict[str, str], dict[str, bool]]:
     return record, checks
 
 
+def _prior_rounding_ledgers() -> tuple[dict[str, object], dict[str, bool]]:
+    """Lock the P10/P11 artifacts whose rounding convention P20 reuses."""
+
+    records: dict[str, object] = {}
+    checks: dict[str, bool] = {}
+    for name, path_text, expected_hash in (
+        ("p10_outer_loop", P10_ARTIFACT_PATH, P10_ARTIFACT_SHA256),
+        ("p11_implementation_margin", P11_ARTIFACT_PATH, P11_ARTIFACT_SHA256),
+    ):
+        path = ROOT / path_text
+        observed = _sha256(path)
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        records[name] = {
+            "artifact_path": path_text,
+            "artifact_sha256": observed,
+            "source_commit": payload.get("git", {}).get("sha", "unavailable"),
+        }
+        checks[f"{name}_artifact_hash_matches"] = observed == expected_hash
+        checks[f"{name}_exact_checks_pass"] = (
+            payload.get("audit", {}).get("all_exact_checks_passed") is True
+        )
+    records["reuse_scope"] = (
+        "P20 reuses the P10/P11 FP32 relative-plus-absolute-crumb ledger convention; "
+        "it does not yet compose their outer-loop disturbance ports with P19/P20"
+    )
+    return records, checks
+
+
 def _shape_exact_fields(audit: ScalableSectorShieldAudit) -> dict[str, object]:
     norm = audit.norm
     return {
@@ -175,6 +211,8 @@ def _shape_exact_fields(audit: ScalableSectorShieldAudit) -> dict[str, object]:
             "displacement_crumb": str(audit.displacement_crumb),
             "displacement_crumb_relative": str(audit.displacement_crumb_relative),
             "accepted_candidate_radius": str(audit.accepted_candidate_radius),
+            "clipped_candidate_radius": str(audit.clipped_candidate_radius),
+            "clip_only_inward_margin": str(audit.clip_only_inward_margin),
             "rounded_half_radius": str(audit.rounded_half_radius),
             "certified_inward_radius_raw": str(audit.certified_inward_radius_raw),
             "certified_inward_radius": str(audit.certified_inward_radius),
@@ -201,6 +239,7 @@ def reconstruction_fields() -> dict[str, object]:
             "radius": str(LOCKED_SECTOR_RADIUS),
             "acceptance_buffer": str(LOCKED_ACCEPTANCE_BUFFER),
             "acceptance_coefficient": str(LOCKED_ACCEPTANCE_COEFFICIENT),
+            "clip_coefficient": str(LOCKED_CLIP_COEFFICIENT),
         },
         "arithmetic_constants": {
             "fp32_unit_roundoff": str(FP32_UNIT_ROUNDOFF),
@@ -221,11 +260,19 @@ def reconstruction_fields() -> dict[str, object]:
             ),
             "candidate_displacement": ("Dhat=fl32(C-fl32((1143/2048)*S))"),
             "acceptance": ("Nhat(Dhat)<=nextafter(fl64((891/2048)*Nhat(S)),-infinity)"),
+            "clip_scalar": (
+                "ratio64=down64(Nhat(S)/Nhat(Dhat)); "
+                "alpha64=down64((890/2048)*ratio64); alpha32=down32(alpha64)"
+            ),
+            "clip_vectors": ("q=fl32(alpha32*Dhat); U=fl32(fl32((1143/2048)*S)+q)"),
             "accepted_radius": (
                 "((891/2048)*U/ell+(1143/2048)*u*(1+u)+h*tau*(2+u)/sigma_min)/(1-u)"
             ),
+            "clipped_radius": (
+                "(890/2048)*(U/ell)*(1+u)^2+(1143/2048)*u*(2+u)+h*tau*(3+2u)/sigma_min"
+            ),
             "fallback_radius": "abs(1143/2048-1/2)+h*tau/sigma_min",
-            "delta": ("893/2048-ceil_2^-60(max(accepted_radius,fallback_radius))"),
+            "delta": ("893/2048-ceil_2^-60(max(accepted_radius,clipped_radius,fallback_radius))"),
         },
         "shapes": [_shape_exact_fields(audit) for audit in audits],
         "diagnostic_shapes": [
@@ -246,9 +293,10 @@ def reconstruction_fields() -> dict[str, object]:
 
 def build_payload() -> dict[str, object]:
     prior, prior_checks = _prior_p19()
+    ledgers, ledger_checks = _prior_rounding_ledgers()
     audits = representative_sector_shield_audits()
     contract_checks = exact_contract_checks()
-    checks = {**contract_checks, **prior_checks}
+    checks = {**contract_checks, **prior_checks, **ledger_checks}
     return {
         "schema_version": SCHEMA_VERSION,
         "claim_scope": {
@@ -285,7 +333,15 @@ def build_payload() -> dict[str, object]:
             "norm_scalar": ("binary32 max scale and unit norm multiplied exactly in binary64"),
             "threshold": ("one binary64 product followed by nextafter toward -infinity"),
             "candidate_inside_action": "return stored widened FP32 candidate bit-for-bit",
-            "candidate_outside_action": "return fl32(S/2) under the certified fallback guard",
+            "candidate_outside_action": (
+                "apply the locked downward-scalar radial clip; use fl32(S/2) only on "
+                "exceptional arithmetic or an unusable clip"
+            ),
+            "clip_scalar_order": (
+                "downward binary64 Nhat(S)/Nhat(Dhat), then downward binary64 multiply by "
+                "890/2048, then downward binary32 conversion"
+            ),
+            "clip_vector_order": ("q=fl32(alpha32*Dhat), then U=fl32(fl32((1143/2048)*S)+q)"),
             "zero_signal": "return +0 binary32",
             "nonfinite_candidate": "ignore candidate and attempt certified S/2 fallback",
             "nonfinite_signal": "fail closed without an output",
@@ -309,6 +365,7 @@ def build_payload() -> dict[str, object]:
             ),
         },
         "prior_p19": prior,
+        "prior_rounding_ledgers": ledgers,
         "shape_summary": [
             {
                 "shape": [audit.shape.rows, audit.shape.columns],

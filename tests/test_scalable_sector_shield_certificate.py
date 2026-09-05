@@ -25,6 +25,7 @@ from passive_muon.scalable_sector_shield_certificate import (
     FP32_UNIT_ROUNDOFF,
     LOCKED_ACCEPTANCE_BUFFER,
     LOCKED_ACCEPTANCE_COEFFICIENT,
+    LOCKED_CLIP_COEFFICIENT,
     LOCKED_FASTER_RATE,
     LOCKED_FASTER_RATE_STEP,
     LOCKED_MAXIMUM_STEP,
@@ -52,6 +53,7 @@ def test_p20_reuses_p9_rounding_constants_and_p19_sector_exactly() -> None:
     assert LOCKED_SECTOR_RADIUS == (LOCKED_SECTOR_UPPER - LOCKED_SECTOR_LOWER) / 2
     assert Fraction(1, 1_024) == LOCKED_ACCEPTANCE_BUFFER
     assert Fraction(891, 2_048) == LOCKED_ACCEPTANCE_COEFFICIENT
+    assert Fraction(890, 2_048) == LOCKED_CLIP_COEFFICIENT
 
 
 def test_all_seven_transformer_shapes_have_positive_exact_margins() -> None:
@@ -93,6 +95,8 @@ def test_norm_envelope_and_both_output_branches_fit_the_inward_disk() -> None:
     for audit in (*representative_sector_shield_audits(), *diagnostic_sector_shield_audits()):
         assert audit.norm.certified
         assert audit.accepted_candidate_radius <= audit.certified_inward_radius
+        assert audit.clipped_candidate_radius <= audit.certified_inward_radius
+        assert audit.clip_only_inward_margin > 0
         assert audit.rounded_half_radius <= audit.certified_inward_radius
         assert audit.certified_inward_radius + audit.inward_margin == LOCKED_SECTOR_RADIUS
 
@@ -132,6 +136,34 @@ def test_one_over_1024_buffer_is_necessary_for_largest_locked_shape() -> None:
         / (1 - FP32_UNIT_ROUNDOFF)
     )
     assert unbuffered_radius > LOCKED_SECTOR_RADIUS
+
+
+def test_clip_coefficient_pays_for_two_rounded_vector_operations() -> None:
+    audit = audit_scalable_sector_shield((4_096, 14_336))
+    u = FP32_UNIT_ROUNDOFF
+    h = audit.norm.root_entries_upper
+    reconstructed = (
+        LOCKED_CLIP_COEFFICIENT * audit.norm.upper_factor / audit.norm.lower_factor * (1 + u) ** 2
+        + LOCKED_SECTOR_CENTER * u * (2 + u)
+        + h * FP32_HALF_MIN_SUBNORMAL / FP32_MIN_NORMAL * (3 + 2 * u)
+    )
+    assert reconstructed == audit.clipped_candidate_radius
+    assert audit.clip_only_inward_margin == Fraction(53_997_772_719_001, 576_460_752_303_423_488)
+
+
+def test_using_pass_through_coefficient_for_clip_would_escape_largest_disk() -> None:
+    audit = audit_scalable_sector_shield((4_096, 14_336))
+    u = FP32_UNIT_ROUNDOFF
+    h = audit.norm.root_entries_upper
+    unsafe_radius = (
+        LOCKED_ACCEPTANCE_COEFFICIENT
+        * audit.norm.upper_factor
+        / audit.norm.lower_factor
+        * (1 + u) ** 2
+        + LOCKED_SECTOR_CENTER * u * (2 + u)
+        + h * FP32_HALF_MIN_SUBNORMAL / FP32_MIN_NORMAL * (3 + 2 * u)
+    )
+    assert unsafe_radius > LOCKED_SECTOR_RADIUS
 
 
 def test_subnormal_guard_is_an_input_output_bound_not_an_objective_claim() -> None:

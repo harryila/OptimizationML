@@ -11,8 +11,8 @@ an a-priori, shape-dependent inward margin.
 
 The positive arithmetic contract is intentionally narrow:
 
-* the stored signal and candidate are binary32; a binary16 or bfloat16 input
-  is first widened exactly to binary32;
+* the stored signal and candidate are binary32; a bfloat16 input is first
+  widened exactly to binary32;
 * every vector operation and norm leaf/reduction is IEEE binary32
   round-to-nearest, ties-to-even, with gradual underflow and without FMA or
   reassociation;
@@ -22,19 +22,24 @@ The positive arithmetic contract is intentionally narrow:
 * the scale and dimensionless norm are multiplied exactly in binary64 (the
   product of two binary32 values has at most 48 significant bits);
 * the sole acceptance threshold is a positive binary64 product followed by
-  ``nextafter(..., -inf)``, so it is no larger than its exact product; and
+  ``nextafter(..., -inf)``, so it is no larger than its exact product;
+* a rejected finite candidate first receives a radial clip whose scalar is
+  formed by downward binary64 division, downward binary64 multiplication,
+  and a downward binary32 conversion, in that order; and
 * the returned dtype is binary32.  There is no final BF16 cast.
 
-An accepted candidate is returned bit-for-bit.  Otherwise the implementation
-returns ``fl32(S/2)``.  In the normal-anchor regime ``maxabs(S)>=2**-126``,
-the latter is covered by a shape-dependent underflow crumb.  Below that
-anchor, only an entrywise exact-halving bit check authorizes the fallback;
-otherwise the implementation fails closed without returning an update.
+An accepted candidate is returned bit-for-bit.  A rejected finite candidate
+is clipped along the computed displacement ray; exceptional arithmetic uses
+``fl32(S/2)``.  In the normal-anchor regime ``maxabs(S)>=2**-126``, the latter
+is covered by a shape-dependent underflow crumb.  Below that anchor, only an
+entrywise exact-halving bit check authorizes the fallback; otherwise the
+implementation fails closed without returning an update.
 
-This accept-or-fallback construction is not P19's metric projection.  It does
-not inherit fixed-input nonexpansiveness and is not globally the identity on
-the exact P18 operator.  Its theorem is unconditional containment for every
-successful call, plus separately measured inactivity on declared candidates.
+This pass-through/clip/fallback construction is not P19's metric projection.
+It does not inherit fixed-input nonexpansiveness and is not globally the
+identity on the exact P18 operator.  Its theorem is unconditional containment
+for every successful call, plus separately measured inactivity on declared
+candidates.
 
 All proof quantities are exact :class:`fractions.Fraction` values.  Square
 roots are enclosed on a declared dyadic grid and the final certified radius
@@ -65,6 +70,7 @@ LOCKED_SECTOR_RADIUS = Fraction(893, 2_048)
 # binary64.
 LOCKED_ACCEPTANCE_BUFFER = Fraction(1, 1_024)
 LOCKED_ACCEPTANCE_COEFFICIENT = LOCKED_SECTOR_RADIUS - LOCKED_ACCEPTANCE_BUFFER
+LOCKED_CLIP_COEFFICIENT = Fraction(890, 2_048)
 
 FP32_UNIT_ROUNDOFF = Fraction(1, 2**24)
 FP32_HALF_MIN_SUBNORMAL = Fraction(1, 2**150)
@@ -187,6 +193,8 @@ class ScalableSectorShieldAudit:
     displacement_crumb: Fraction
     displacement_crumb_relative: Fraction
     accepted_candidate_radius: Fraction
+    clipped_candidate_radius: Fraction
+    clip_only_inward_margin: Fraction
     rounded_half_radius: Fraction
     certified_inward_radius_raw: Fraction
     certified_inward_radius: Fraction
@@ -264,10 +272,12 @@ def audit_scalable_sector_shield(
 
     If the downward binary64 comparison accepts, ``Nhat(Dhat)<=k*Nhat(S)``.
     Combining this with the norm factors and ``||S||>=2**-126`` gives the
-    exact accepted radius below.  The rounded-half fallback has distance at
-    most ``(|gamma-1/2|+h*tau/2**-126)||S||``.  The larger radius is rounded
-    upward on the declared grid and subtracted from ``r`` to produce
-    ``Delta_(m,n)``.
+    exact accepted radius below.  A rejected finite candidate is clipped with
+    a downward scalar before two rounded vector operations.  The rounded-half
+    fallback has distance at most
+    ``(|gamma-1/2|+h*tau/2**-126)||S||``.  The largest of the pass-through,
+    clip, and fallback radii is rounded upward on the declared grid and
+    subtracted from ``r`` to produce ``Delta_(m,n)``.
     """
 
     selected = shape if isinstance(shape, MatrixShape) else MatrixShape(*shape)
@@ -286,10 +296,26 @@ def audit_scalable_sector_shield(
         + displacement_crumb_relative
     ) / (1 - u)
 
+    # The rejected-candidate scalar is formed in the locked order
+    #
+    # ratio64 = down64(Nhat(S)/Nhat(Dhat)),
+    # alpha64 = down64(k_clip*ratio64),
+    # alpha32 = down32(alpha64).
+    #
+    # Thus alpha32 <= k_clip*Nhat(S)/Nhat(Dhat).  The two materialized
+    # vector operations are q=fl32(alpha32*Dhat) and
+    # U=fl32(fl32(gamma*S)+q).  The following bound pays for both.
+    clipped_radius = (
+        LOCKED_CLIP_COEFFICIENT * norm.upper_factor / norm.lower_factor * (1 + u) ** 2
+        + LOCKED_SECTOR_CENTER * u * (2 + u)
+        + h * tau / anchor * (3 + 2 * u)
+    )
+    clip_only_inward_margin = LOCKED_SECTOR_RADIUS - _upper_radius_grid(clipped_radius)
+
     # Multiplication by 1/2 is exact except possibly at the subnormal boundary;
     # one correctly rounded coordinate contributes at most tau absolute error.
     rounded_half_radius = abs(LOCKED_SECTOR_CENTER - Fraction(1, 2)) + h * tau / anchor
-    raw_radius = max(accepted_radius, rounded_half_radius)
+    raw_radius = max(accepted_radius, clipped_radius, rounded_half_radius)
     certified_radius = _upper_radius_grid(raw_radius)
     inward_margin = LOCKED_SECTOR_RADIUS - certified_radius
 
@@ -312,12 +338,18 @@ def audit_scalable_sector_shield(
             LOCKED_ACCEPTANCE_COEFFICIENT.denominator <= 2**24
             and LOCKED_ACCEPTANCE_COEFFICIENT.denominator.bit_count() == 1
         ),
+        "clip_coefficient_is_exact_binary32": (
+            LOCKED_CLIP_COEFFICIENT.denominator <= 2**24
+            and LOCKED_CLIP_COEFFICIENT.denominator.bit_count() == 1
+        ),
         "balanced_norm_envelope_certified": norm.certified,
         "blocked_tree_has_global_path_depth": (
             norm.pairwise_path_length == 1 + _ceil_log2(selected.entries)
         ),
         "normal_anchor_converts_crumbs": anchor == tau / u,
         "accepted_candidate_has_strict_inward_margin": (accepted_radius < LOCKED_SECTOR_RADIUS),
+        "clipped_candidate_has_strict_inward_margin": (clipped_radius < LOCKED_SECTOR_RADIUS),
+        "clip_only_margin_is_positive": clip_only_inward_margin > 0,
         "rounded_half_has_strict_inward_margin": (rounded_half_radius < LOCKED_SECTOR_RADIUS),
         "outward_radius_rounding_is_sound": raw_radius <= certified_radius,
         "certified_radius_is_inside_original_disk": (certified_radius < LOCKED_SECTOR_RADIUS),
@@ -325,6 +357,7 @@ def audit_scalable_sector_shield(
         "returned_output_is_in_p19_disk": (certified_radius <= LOCKED_SECTOR_RADIUS),
         "normal_fallback_rounding_is_absorbed": rounded_half_radius <= certified_radius,
         "accepted_candidate_rounding_is_absorbed": accepted_radius <= certified_radius,
+        "clipped_candidate_rounding_is_absorbed": clipped_radius <= certified_radius,
         "bf16_widened_minimum_can_be_halved_in_fp32": (
             BF16_MIN_SUBNORMAL / 2 >= FP32_MIN_SUBNORMAL
         ),
@@ -339,6 +372,8 @@ def audit_scalable_sector_shield(
         displacement_crumb=displacement_crumb,
         displacement_crumb_relative=displacement_crumb_relative,
         accepted_candidate_radius=accepted_radius,
+        clipped_candidate_radius=clipped_radius,
+        clip_only_inward_margin=clip_only_inward_margin,
         rounded_half_radius=rounded_half_radius,
         certified_inward_radius_raw=raw_radius,
         certified_inward_radius=certified_radius,
@@ -370,6 +405,9 @@ def exact_contract_checks() -> dict[str, bool]:
     return {
         "seven_transformer_shapes_are_locked": len(audits) == 7,
         "all_shape_audits_certify": all(audit.certified for audit in audits),
+        "all_clip_branches_certify": all(
+            audit.clipped_candidate_radius < LOCKED_SECTOR_RADIUS for audit in audits
+        ),
         "three_diagnostic_shapes_certify": (
             tuple(audit.shape for audit in diagnostics) == DIAGNOSTIC_SHAPES
             and all(audit.certified for audit in diagnostics)
@@ -385,6 +423,8 @@ def exact_contract_checks() -> dict[str, bool]:
         "faster_rate_is_strict": LOCKED_FASTER_RATE < 1,
         "faster_operating_point_has_better_rate": (LOCKED_FASTER_RATE < LOCKED_MAXIMUM_STEP_RATE),
         "output_dtype_remains_fp32": True,
+        "clip_scalar_order_is_sequentially_downward": True,
+        "clip_is_not_claimed_as_metric_projection": True,
         "ftz_is_excluded_from_positive_theorem": True,
         "no_runtime_fraction_postcheck_is_required": True,
         "subnormal_failure_is_not_an_objective_neighborhood": True,
@@ -403,6 +443,7 @@ __all__ = [
     "FP32_UNIT_ROUNDOFF",
     "LOCKED_ACCEPTANCE_BUFFER",
     "LOCKED_ACCEPTANCE_COEFFICIENT",
+    "LOCKED_CLIP_COEFFICIENT",
     "LOCKED_FASTER_RATE",
     "LOCKED_FASTER_RATE_STEP",
     "LOCKED_MAXIMUM_STEP",

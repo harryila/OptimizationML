@@ -26,6 +26,7 @@ CENTER = Fraction(1_143, 2_048)
 RADIUS = Fraction(893, 2_048)
 ACCEPTANCE_BUFFER = Fraction(1, 1_024)
 ACCEPTANCE_COEFFICIENT = Fraction(891, 2_048)
+CLIP_COEFFICIENT = Fraction(890, 2_048)
 
 U32 = Fraction(1, 2**24)
 TAU32 = Fraction(1, 2**150)
@@ -115,8 +116,14 @@ def _shape_fields(shape: tuple[int, int]) -> dict[str, object]:
     accepted_radius = (
         ACCEPTANCE_COEFFICIENT * upper_factor / ell + displacement_slope + relative_crumb
     ) / (1 - U32)
+    clipped_radius = (
+        CLIP_COEFFICIENT * upper_factor / ell * (1 + U32) ** 2
+        + CENTER * U32 * (2 + U32)
+        + h * TAU32 / MIN_NORMAL32 * (3 + 2 * U32)
+    )
+    clip_only_margin = RADIUS - _up_radius(clipped_radius)
     fallback_radius = abs(CENTER - Fraction(1, 2)) + h * TAU32 / MIN_NORMAL32
-    raw_radius = max(accepted_radius, fallback_radius)
+    raw_radius = max(accepted_radius, clipped_radius, fallback_radius)
     certified_radius = _up_radius(raw_radius)
     delta = RADIUS - certified_radius
     dead_zone = h * MAX_SUBNORMAL32
@@ -136,10 +143,15 @@ def _shape_fields(shape: tuple[int, int]) -> dict[str, object]:
             ACCEPTANCE_COEFFICIENT.denominator <= 2**24
             and ACCEPTANCE_COEFFICIENT.denominator.bit_count() == 1
         ),
+        "clip_coefficient_is_exact_binary32": (
+            CLIP_COEFFICIENT.denominator <= 2**24 and CLIP_COEFFICIENT.denominator.bit_count() == 1
+        ),
         "balanced_norm_envelope_certified": norm_certified,
         "blocked_tree_has_global_path_depth": path == 1 + _ceil_log2(entries),
         "normal_anchor_converts_crumbs": MIN_NORMAL32 == TAU32 / U32,
         "accepted_candidate_has_strict_inward_margin": accepted_radius < RADIUS,
+        "clipped_candidate_has_strict_inward_margin": clipped_radius < RADIUS,
+        "clip_only_margin_is_positive": clip_only_margin > 0,
         "rounded_half_has_strict_inward_margin": fallback_radius < RADIUS,
         "outward_radius_rounding_is_sound": raw_radius <= certified_radius,
         "certified_radius_is_inside_original_disk": certified_radius < RADIUS,
@@ -147,6 +159,7 @@ def _shape_fields(shape: tuple[int, int]) -> dict[str, object]:
         "returned_output_is_in_p19_disk": certified_radius <= RADIUS,
         "normal_fallback_rounding_is_absorbed": fallback_radius <= certified_radius,
         "accepted_candidate_rounding_is_absorbed": accepted_radius <= certified_radius,
+        "clipped_candidate_rounding_is_absorbed": clipped_radius <= certified_radius,
         "bf16_widened_minimum_can_be_halved_in_fp32": (MIN_SUBNORMAL_BF16 / 2 >= MIN_SUBNORMAL32),
         "dead_zone_bound_is_finite": zero_half_error > 0,
     }
@@ -175,6 +188,8 @@ def _shape_fields(shape: tuple[int, int]) -> dict[str, object]:
             "displacement_crumb": str(displacement_crumb),
             "displacement_crumb_relative": str(relative_crumb),
             "accepted_candidate_radius": str(accepted_radius),
+            "clipped_candidate_radius": str(clipped_radius),
+            "clip_only_inward_margin": str(clip_only_margin),
             "rounded_half_radius": str(fallback_radius),
             "certified_inward_radius_raw": str(raw_radius),
             "certified_inward_radius": str(certified_radius),
@@ -198,6 +213,7 @@ def reconstruction_fields() -> dict[str, object]:
             "radius": str(RADIUS),
             "acceptance_buffer": str(ACCEPTANCE_BUFFER),
             "acceptance_coefficient": str(ACCEPTANCE_COEFFICIENT),
+            "clip_coefficient": str(CLIP_COEFFICIENT),
         },
         "arithmetic_constants": {
             "fp32_unit_roundoff": str(U32),
@@ -218,11 +234,19 @@ def reconstruction_fields() -> dict[str, object]:
             ),
             "candidate_displacement": "Dhat=fl32(C-fl32((1143/2048)*S))",
             "acceptance": ("Nhat(Dhat)<=nextafter(fl64((891/2048)*Nhat(S)),-infinity)"),
+            "clip_scalar": (
+                "ratio64=down64(Nhat(S)/Nhat(Dhat)); "
+                "alpha64=down64((890/2048)*ratio64); alpha32=down32(alpha64)"
+            ),
+            "clip_vectors": ("q=fl32(alpha32*Dhat); U=fl32(fl32((1143/2048)*S)+q)"),
             "accepted_radius": (
                 "((891/2048)*U/ell+(1143/2048)*u*(1+u)+h*tau*(2+u)/sigma_min)/(1-u)"
             ),
+            "clipped_radius": (
+                "(890/2048)*(U/ell)*(1+u)^2+(1143/2048)*u*(2+u)+h*tau*(3+2u)/sigma_min"
+            ),
             "fallback_radius": "abs(1143/2048-1/2)+h*tau/sigma_min",
-            "delta": "893/2048-ceil_2^-60(max(accepted_radius,fallback_radius))",
+            "delta": ("893/2048-ceil_2^-60(max(accepted_radius,clipped_radius,fallback_radius))"),
         },
         "shapes": [_shape_fields(shape) for shape in SHAPES],
         "diagnostic_shapes": [_shape_fields(shape) for shape in DIAGNOSTIC_SHAPES],
