@@ -42,7 +42,13 @@ def default_payload() -> dict[str, object]:
 
 
 def _without_provenance(payload: dict[str, object]) -> dict[str, object]:
-    return {key: value for key, value in payload.items() if key != "experiment_provenance"}
+    stable = {key: value for key, value in payload.items() if key != "experiment_provenance"}
+    contract = dict(stable["locked_runtime_contract"])
+    manifest = dict(contract["representative_manifest"])
+    manifest.pop("provenance")
+    contract["representative_manifest"] = manifest
+    stable["locked_runtime_contract"] = contract
+    return stable
 
 
 def test_scope_separates_theorem_sampling_and_literal_backend(
