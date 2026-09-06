@@ -784,11 +784,14 @@ observed: trace-off records
 `not_observed` and zero captures, while trace-on must contain exactly
 `48 x 24 = 1,152` actual post-aspect candidate observations.
 
-P23 is currently **protocol-ready and runtime-lock-pending**. Its acquisition
-contract requires Docker network mode `none` and freezes the complete Python
-3.12 interpreter-flag map and safe executable search path in addition to the
-executable bytes. No CUDA run or
-P23 fidelity result exists, and the local host has no CUDA device.  Trace-on
+P23 is currently **protocol-ready and CUDA-runtime-locked**. The populated
+host attestation and runtime lock were generated on the selected A100 and
+committed at `ad52f7e`; they bind image digest
+`sha256:44ef23717780b1cbf112b183e7988b1319ddfed6b1d224efaa33e1e6d96de4c1`.
+The acquisition contract requires Docker network mode `none` and freezes the
+complete Python 3.12 interpreter-flag map and safe executable search path in
+addition to the executable bytes. CUDA/BF16 setup smoke checks passed. There
+is no trace-off, trace-on, training, or P23 fidelity result. Trace-on
 remains mechanically barred until fresh-process CUDA off-A/off-B manifests
 match with zero exact differences; `allclose` is not an alternative.  See
 [`theory/p23_deterministic_cuda_shadow_trace_addendum.md`](theory/p23_deterministic_cuda_shadow_trace_addendum.md)

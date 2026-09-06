@@ -673,7 +673,7 @@ def test_double_blind_material_is_guarded_from_the_public_repository() -> None:
         assert pattern in ignore.splitlines()
 
 
-def test_p23_is_preregistered_without_claiming_cuda_evidence() -> None:
+def test_p23_is_runtime_locked_without_claiming_trace_evidence() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     tasks = (ROOT / "TASKS.md").read_text(encoding="utf-8")
     experiments = (ROOT / "experiments/README.md").read_text(encoding="utf-8")
@@ -697,6 +697,10 @@ def test_p23_is_preregistered_without_claiming_cuda_evidence() -> None:
             encoding="utf-8"
         )
     )
+    runtime_lock_path = ROOT / "experiments/training/p23_cuda_runtime_lock.json"
+    runtime_lock = json.loads(runtime_lock_path.read_text(encoding="utf-8"))
+    attestation_path = ROOT / "experiments/training/p23_host_attestation.json"
+    attestation = json.loads(attestation_path.read_text(encoding="utf-8"))
 
     assert addendum["schema_version"] == (
         "passive-muon-p23-deterministic-cuda-shadow-trace-addendum-v1"
@@ -734,6 +738,28 @@ def test_p23_is_preregistered_without_claiming_cuda_evidence() -> None:
             for mount in template["container"]["mount_contract"]["mounts"]
         )
     assert attestation_template["evidence"]["running_mountinfo_sha256"] is None
+    assert runtime_lock["schema_version"] == "passive-muon-p23-cuda-runtime-lock-v3"
+    assert runtime_lock["status"] == "pinned_for_acquisition"
+    assert attestation["schema_version"] == "passive-muon-p23-host-attestation-v3"
+    assert attestation["status"] == "procedurally_host_attested"
+    assert (
+        runtime_lock["p23_addendum_sha256"]
+        == hashlib.sha256(addendum_path.read_bytes()).hexdigest()
+    )
+    assert (
+        runtime_lock["container"]["host_attestation_sha256"]
+        == hashlib.sha256(attestation_path.read_bytes()).hexdigest()
+    )
+    expected_image_digest = (
+        "sha256:44ef23717780b1cbf112b183e7988b1319ddfed6b1d224efaa33e1e6d96de4c1"
+    )
+    assert runtime_lock["container"]["repository_digest"] == expected_image_digest
+    assert runtime_lock["container"]["image"].endswith(f"@{expected_image_digest}")
+    assert runtime_lock["container"] == {
+        **attestation["container"],
+        "host_attestation_sha256": hashlib.sha256(attestation_path.read_bytes()).hexdigest(),
+    }
+    assert runtime_lock["gpu"] == attestation["gpu"]
 
     for inherited in (
         "p21_fidelity_gates",
@@ -753,12 +779,14 @@ def test_p23_is_preregistered_without_claiming_cuda_evidence() -> None:
         "file-backed loaded-module",
         "not_observed",
         "1152",
-        "no cuda run",
-        "no p23 cuda execution",
+        "no trace-off",
         "exact",
     ):
         assert required in combined
+    readme_flat = " ".join(readme.lower().split())
+    assert "there is no trace-off, trace-on, training, or p23 fidelity result" in readme_flat
     assert "mutually hash-bound" not in combined
+    assert "- [x] populate and commit the p23 runtime lock" in tasks.lower()
     assert "- [x] finish the p23 runner and verifier hardening" in tasks.lower()
     assert "- [x] version p23 capture semantics" in tasks.lower()
     for command in (
@@ -800,7 +828,10 @@ def test_p23_is_preregistered_without_claiming_cuda_evidence() -> None:
     assert "/proc/self/maps" in p23_runbook
     assert "--host-running-mountinfo /mounted-host-evidence/running-mountinfo.txt" in p23_runbook
     assert "docker inspect --format '{{.State.Pid}}' p23-acquisition" in p23_runbook
-    assert 'cat "/proc/$P23_CONTAINER_INIT_PID/mountinfo"' in p23_runbook
+    assert '/usr/bin/nsenter --target "$P23_CONTAINER_INIT_PID"' in p23_runbook
+    assert "--mount --pid --cgroup --" in p23_runbook
+    assert "/usr/bin/cat /proc/self/mountinfo" in p23_runbook
+    assert 'cat "/proc/$P23_CONTAINER_INIT_PID/mountinfo"' not in p23_runbook
     assert "cached bytecode" in p23_runbook
     assert (
         "/private/tmp/optimizationml-p22-data/materialized/p22_fineweb_manifest.json"

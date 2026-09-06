@@ -2,10 +2,11 @@
 
 ## Status
 
-**Unsigned pre-acquisition review packet.**  P23 is protocol-ready, but its
-host-generated CUDA runtime lock is pending and no P23 CUDA execution exists.
-Unchecked acquisition items must not be cited as completed review or empirical
-evidence.
+**Unsigned pre-acquisition review packet.** P23 is protocol-ready and its
+host-generated CUDA runtime lock and host attestation are committed. Only
+setup-level CUDA/BF16 smoke checks and runtime freezing have run: no trace-off,
+trace-on, training, or fidelity acquisition exists. Unchecked acquisition
+items must not be cited as completed review or empirical evidence.
 
 ## Materials under review
 
@@ -13,6 +14,8 @@ evidence.
 - `theory/p23_deterministic_cuda_shadow_trace_addendum.md`;
 - `experiments/training/p23_cuda_runtime_lock.template.json`;
 - `experiments/training/p23_host_attestation.template.json`;
+- populated `experiments/training/p23_cuda_runtime_lock.json` and
+  `experiments/training/p23_host_attestation.json`;
 - `experiments/training/p23_runtime.Dockerfile`, its exact-version
   requirements, and its path-only repository hook;
 - the P23 runner, provenance, verifier, and evidence code named by the final

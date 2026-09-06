@@ -440,7 +440,7 @@
       without changing their bytes, schedule, candidate, data, or empirical
       gates. Keep P23 explicitly result-free while its host runtime lock is
       absent.
-- [ ] Populate and commit the P23 runtime lock before acquisition: one
+- [x] Populate and commit the P23 runtime lock before acquisition: one
       explicitly selected non-MIG BF16 NVIDIA GPU, exact UUID/PCI/device/VBIOS,
       driver and CUDA/PyTorch stack, host-attested OCI repository digest,
       image-resident `/opt/p23-venv/bin/python` invocation path and
