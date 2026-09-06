@@ -1,0 +1,169 @@
+{
+  "schema_version": "passive-muon-p26-permission-safe-acquisition-contract-v1",
+  "status": "frozen_pre_fresh_runtime_and_pre_acquisition",
+  "branch": "p26-permission-safe-acquisition-bridge",
+  "purpose": "Repair only P25's host read-permission boundary by authenticating both sanitized wrapper byte strings inside the logged root container verifier before the unchanged P23 acquisition.",
+  "claim_boundary": "This is a pre-execution control contract. It records no P26 runtime, bridge pass, CUDA gradient, exact repeatability, observer noninterference, candidate fidelity, shield execution, or training result.",
+  "terminal_parent": {
+    "branch": "p25-cuda-diagnostic-determinism-and-redaction",
+    "outcome_path": "results/summaries/p25_cuda_diagnostic_outcome.json",
+    "outcome_sha256": "d7a06f6f25bc4839db256720fe5c8ef3c99f6ea45b53b48da2135fcde76a423a",
+    "outcome_commit": "f055405cc879ba0ac5afe26bc34a7336d5d2efbf",
+    "outcome_tree": "a5ee62de68b091719938829e579853b226b7f086",
+    "attempt_id": "20260906-01",
+    "attempt_is_terminal": true,
+    "attempt_reuse_allowed": false,
+    "diagnostic_passed_checks": 40,
+    "diagnostic_failed_checks": 0,
+    "unprivileged_cmp_exit": 2,
+    "privileged_cmp_exit": 0,
+    "trace_off_a_started": false,
+    "candidate_observations": 0
+  },
+  "fresh_attempt": {
+    "attempt_id": "20260906-02",
+    "attempt_root": "/secure/p25/attempt-20260906-02",
+    "container_name": "p25-acquisition-20260906-02",
+    "root_must_not_preexist": true,
+    "new_no_cache_build_required": true,
+    "new_container_required": true,
+    "new_runtime_lock_required": true,
+    "new_host_attestation_required": true,
+    "new_corrected_diagnostic_required": true,
+    "new_sanitized_bridge_required": true,
+    "no_favorable_rerun": true
+  },
+  "frozen_p25_control": {
+    "source_preregistration_commit": "e76ab62f92c95e6f0716cf2f1ed38a583cadfe56",
+    "source_preregistration_tree": "4fe0f57d50a8fa136bb192ec3fbac95b1e746aa2",
+    "contract": {
+      "path": "experiments/training/p25_cuda_diagnostic_contract.json",
+      "sha256": "51e1fc22f685cc904fcdfff2775cff4293fdaa67a6e048072ee4dc49777f34e2"
+    },
+    "host_orchestrator": {
+      "path": "scripts/run_p25_cuda_attempt.sh",
+      "sha256": "fce74a7e65d48cd6391d0986f60ce977cc3b36215908d80349d38f37d95fd441",
+      "allowed_phases": [
+        "prepare-runtime",
+        "run-diagnostic"
+      ],
+      "run_acquisition_allowed": false
+    },
+    "diagnostic": {
+      "path": "experiments/training/run_p25_executable_origin_diagnostic.py",
+      "sha256": "6305fb9683503eb67e091cdfb0a1105628fcb4bec76fe5ef7fd23dd49ba9d770"
+    },
+    "sanitizer": {
+      "path": "scripts/sanitize_p25_executable_origin_diagnostic.py",
+      "sha256": "7d28a04ac99f96315d4a1160b741897660bb829617768af3641eb82f890c745e"
+    }
+  },
+  "p26_control_sources": {
+    "host_orchestrator": {
+      "path": "scripts/run_p26_permission_safe_acquisition.sh",
+      "sha256": "4ecc2766ac429171a630266db014407e414ede3079179f1aa0868404a3285c3c"
+    },
+    "independent_reconstructor": {
+      "path": "scripts/reconstruct_p26_permission_safe_acquisition.py",
+      "sha256": "b83d4d2e50a9dda0090c1389b09a7218bb24fd3dbb8ca6983fbeb44ef848fee4"
+    },
+    "root_container_verifier": {
+      "path": "scripts/verify_p26_permission_safe_bridge.py",
+      "sha256": "2225a9822076e0055d8017f8b8549eb9e937434d4789463adb2fcec26ee3756a"
+    }
+  },
+  "permission_safe_bridge": {
+    "execution_context": "root_inside_fresh_attested_network_none_read_only_root_container",
+    "transcript_prefix": "p26-permission-safe-bridge-verification",
+    "before_trace_off_a": true,
+    "repository_wrapper": "/workspace/OptimizationML/results/summaries/p25_executable_origin_diagnostic.sanitized.json",
+    "retained_wrapper": "/workspace/evidence/p23/p25-remediated-executable-origin.sanitized.json",
+    "retained_native": "/workspace/evidence/p23/p25-remediated-executable-origin.native.json",
+    "required_checks": [
+      "both wrappers exist and are regular nonsymlink files",
+      "each wrapper is read exactly once with stable file identity",
+      "repository wrapper mode is 0644",
+      "retained wrapper remains root:root mode 0600",
+      "captured wrapper byte strings are exactly equal",
+      "both captured wrapper byte strings strict-parse independently",
+      "retained native remains root:root mode 0600",
+      "retained native SHA-256 and byte count match the wrapper",
+      "retained native strict semantics reconstruct through the frozen P25 sanitizer",
+      "every P25 contract source hash reconstructs"
+    ],
+    "mutations_allowed": [],
+    "host_cmp_used": false,
+    "chmod_allowed": false,
+    "chown_allowed": false
+  },
+  "unchanged_scientific_authorities": {
+    "p21_fidelity_gates": {
+      "path": "experiments/training/p21_shadow_trace_protocol.json",
+      "sha256": "ca40ef0aef676971ca4464c3f838c6bd956ecc9806c2023af0d4ea699375315a"
+    },
+    "p22_protocol": {
+      "path": "experiments/training/p22_real_gradient_shadow_trace_protocol.json",
+      "sha256": "f88eda60b366b561d277e41335b02c3fb9861a2604a947f8dd5c28fb54bedeac"
+    },
+    "p22_erratum": {
+      "path": "theory/p22_real_gradient_shadow_trace_protocol_erratum.md",
+      "sha256": "42dc57bd8fb03b619c0de75c58570991ca520131ab7d1660b4f9373fd756a2cd"
+    },
+    "p23_addendum": {
+      "path": "experiments/training/p23_deterministic_cuda_shadow_trace_addendum.json",
+      "sha256": "ad29a15e3b027250a35b6c3af6ce214cc98d664cad7d9821730e7e0cdaab9e3a"
+    },
+    "cuda_acquisition_runner": {
+      "path": "experiments/training/run_p23_deterministic_cuda_shadow_trace.py",
+      "sha256": "a2b4bb5b686b7f681958d09be1d465917b40e34d45e4d3503efef0f35e7ae8cb"
+    },
+    "observer": {
+      "path": "experiments/training/p22_observed_muon.py",
+      "sha256": "5355b553e871406491599945ed790288f59d636a7f9e1d931b9d8234ba42818f"
+    }
+  },
+  "runtime_contract": {
+    "gpu_uuid": "GPU-ee4c9bf9-42f5-7cdd-66d2-f638c2db549d",
+    "gpu_name": "NVIDIA A100-SXM4-40GB",
+    "exact_bind_mount_count": 10,
+    "network_mode": "none",
+    "root_filesystem_read_only": true,
+    "tmpfs": {
+      "/tmp": "rw,noexec,nosuid,nodev,size=1073741824"
+    },
+    "image_digest_must_be_bound_before_diagnostic": true,
+    "digest_must_differ_from_prior_attempt": false
+  },
+  "acquisition_order": [
+    "validate P26 control commit, tree, clean state, contract hash, orchestrator hash, verifier hash and independent reconstruction",
+    "validate fresh P25 runtime and diagnostic bridge history",
+    "validate retained BuildKit image against the live fresh container",
+    "reject any preexisting P23 acquisition artifact or process log",
+    "run the logged root-container permission-safe bridge verifier",
+    "trace_off_a",
+    "trace_off_b only after trace_off_a passes",
+    "verify_repeatability with exact equality only",
+    "trace_on only after zero exact repeatability mismatches",
+    "verify_noninterference with exact equality only",
+    "aggregate unchanged fidelity gates only after zero noninterference mismatches",
+    "sanitize and retain every success artifact or the first failure artifact"
+  ],
+  "terminal_routing": {
+    "bridge_failure": "stop before trace_off_a and retain the first failure transcript",
+    "trace_off_a_failure": "stop and retain the native and sanitized failure artifacts",
+    "trace_off_b_failure": "stop and retain completed A plus the B failure",
+    "repeatability_failure": "bar trace_on and retain exact mismatch evidence",
+    "noninterference_failure": "bar aggregation and retain exact mismatch evidence",
+    "fidelity_failure": "record the unchanged gate failure; do not tune on this attempt",
+    "all_gates_pass": "record the successful real-gradient shadow trace and route to a native CUDA sector shield"
+  },
+  "forbidden_changes": [
+    "reuse or resume P25 attempt 20260906-01",
+    "change a P23 or P21 fidelity threshold",
+    "replace exact equality with allclose or another tolerance",
+    "change seed, data, capture schedule, model or optimizer",
+    "chmod or chown retained native or sanitized evidence",
+    "run trace_on before exact off-A/off-B repeatability",
+    "rerun until favorable"
+  ]
+}
