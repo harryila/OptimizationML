@@ -746,6 +746,49 @@ The compact canonical failure evidence is
 the native manifests remain external and are bound by the SHA-256 values in
 that record.
 
+Branch `p23-deterministic-cuda-shadow-trace` preregisters the CUDA-only replay
+without changing the P22 protocol, its arithmetic erratum, or any empirical
+gate.  The addendum requires one digest-pinned OCI image and one explicitly
+identified non-MIG BF16 NVIDIA GPU, math-only SDPA, the complete deterministic
+runtime settings, a clean contemporaneous repository snapshot, exact
+file-backed loaded-module and regular `/proc/self/maps` closures at
+initialization and completion, and field-by-field reconstruction of run
+identity. A retained host `/proc/<State.Pid>/mountinfo` snapshot must also
+match `/proc/self/mountinfo` in every live evidence process, independently
+binding the process-visible mount modes. The
+module closure covers `__file__`, spec origin, existing cached
+bytecode, and source when available across the complete loaded module set;
+mapped shared objects, including mapped driver libraries, are hashed directly.
+Lazy-load additions are retained and must match across runs, while removals or
+byte changes fail closed. Anonymous mappings have no file bytes and remain
+outside this closure.  The digest-pinned OCI image, runtime lock, and host
+attestation bind the broader procedural environment boundary.  The three
+experiment-controlled source trees are byte-inventoried directly; Torch and
+other third-party image dependencies are covered by the complete loaded-file
+closure and image/runtime evidence, not individually claimed as
+Git-controlled sources.
+All P23 processes directly use the image-resident
+`/opt/p23-venv/bin/python`, whose path and executable hash are locked; no
+repository `.venv` or acquisition-time dependency sync is permitted.  P23
+also moves the model to CUDA before constructing the optimizer and
+distinguishes a CUDA candidate that is executed from one that is actually
+observed: trace-off records
+`not_observed` and zero captures, while trace-on must contain exactly
+`48 x 24 = 1,152` actual post-aspect candidate observations.
+
+P23 is currently **protocol-ready and runtime-lock-pending**. Its acquisition
+contract requires Docker network mode `none` and freezes the complete Python
+3.12 interpreter-flag map in addition to the executable bytes. No CUDA run or
+P23 fidelity result exists, and the local host has no CUDA device.  Trace-on
+remains mechanically barred until fresh-process CUDA off-A/off-B manifests
+match with zero exact differences; `allclose` is not an alternative.  See
+[`theory/p23_deterministic_cuda_shadow_trace_addendum.md`](theory/p23_deterministic_cuda_shadow_trace_addendum.md)
+and the unsigned
+[`P23 audit packet`](theory/audits/P23_DETERMINISTIC_CUDA_SHADOW_TRACE_AUDIT.md).
+Acquisition additionally requires a tracked, sanitized host-attestation
+artifact binding the OCI repository digest and physical GPU evidence; a digest
+asserted only from inside the container is insufficient.
+
 The repair claim is intentionally scoped. A constant `rho` is the exact minimal
 linear shift for a **specified point, pair, sample set, or domain with a finite
 certified deficit**. For exact scale-invariant normalization on every nonzero
@@ -855,7 +898,7 @@ not support a universal claim across BF16 backends.
 
 ## Scope
 
-This repository stays focused on twenty-five technical goals:
+This repository stays focused on twenty-six technical goals:
 
 1. a theorem for current-input Frobenius normalization;
 2. exact local and finite-pair controls for the five-step Jordan map;
@@ -915,6 +958,12 @@ This repository stays focused on twenty-five technical goals:
 25. a frozen, fail-closed real-gradient shadow acquisition with exact
     off-A/off-B repeatability before observer noninterference, including the
     first blocked Apple-MPS baseline diagnostic and a predeclared CUDA replay.
+26. a CUDA-only preregistration layer with a digest-pinned runtime lock,
+    complete tracked-repository provenance and file-backed loaded-module
+    closures at initialization and completion, exact model-to-optimizer
+    binding, truthful zero-capture trace-off manifests, and a
+    mechanically gated 1,152-observation trace-on acquisition; the runtime
+    lock and CUDA result remain pending.
 
 P7 is the submission cutoff and broadest robustness theorem; P6 is its
 zero-disturbance smooth-PL corollary. P8 and P9 instantiate one P7 disturbance
@@ -964,7 +1013,9 @@ EMA/Nesterov and compensated master. Its pathwise affine source budget and
 nonzero-decay bounds remain explicit premises; they are not derived from an
 arbitrary training run. P22 closes the static GPT-2 matrix-shape inventory but
 its first MPS acquisition fails exact baseline repeatability before the
-observer is enabled. Production-gradient fidelity evidence, native
+observer is enabled. P23 freezes the stricter deterministic-CUDA replay and
+provenance contract but has no populated host runtime lock or acquisition.
+Production-gradient fidelity evidence, native
 accelerator/distributed parity, generic stochastic-gradient guarantees,
 throughput, and formal circuit ports remain open.
 

@@ -41,7 +41,8 @@ from passive_muon.p22_scalable_sector_shield_extension import (
 
 P22_PROTOCOL_SCHEMA: Final = "passive-muon-p22-real-gradient-shadow-trace-v1"
 P22_DATA_SCHEMA: Final = "passive-muon-p22-fineweb-materialization-v1"
-P22_RUN_MANIFEST_SCHEMA: Final = "passive-muon-p22-run-manifest-v1"
+P22_LEGACY_RUN_MANIFEST_SCHEMA: Final = "passive-muon-p22-run-manifest-v1"
+P22_RUN_MANIFEST_SCHEMA: Final = "passive-muon-p22-run-manifest-v2"
 P22_COMPARISON_SCHEMA: Final = "passive-muon-p22-noninterference-v1"
 
 NANOGPT_REVISION: Final = "3adf61e154c3fe3fca428ad6bc3818b27a3b8291"
@@ -53,6 +54,13 @@ MUON_SOURCE_SHA256: Final = "2479665a90124f62e4df557816665851ca317e42fcfda2af1da
 
 EXPECTED_OPTIMIZER_STEPS: Final = 256
 EXPECTED_CAPTURE_STEPS: Final = tuple(CAPTURE_STEPS)
+EXPECTED_CANDIDATE_OBSERVATIONS: Final = 48 * len(EXPECTED_CAPTURE_STEPS)
+EXPECTED_MODEL_PARAMETER_COUNT: Final = 75
+EXPECTED_MUON_PARAMETER_COUNT: Final = 48
+EXPECTED_AUXILIARY_PARAMETER_COUNT: Final = 27
+EXPECTED_TIED_PARAMETER_ALIASES: Final = [
+    ["lm_head.weight", "transformer.wte.weight"],
+]
 EXPECTED_TRAINING_TOKENS_CONSUMED: Final = 32_768
 EXPECTED_SEQUENCE_LENGTH: Final = EXPECTED_TRAINING_TOKENS_CONSUMED // EXPECTED_OPTIMIZER_STEPS
 EXPECTED_TRAIN_POOL_TOKENS: Final = 131_072
@@ -848,13 +856,119 @@ def run_rng_neutral_observer(
     return result, before_digest
 
 
+def _validate_model_optimizer_binding(payload: Mapping[str, object], expected_mode: str) -> None:
+    """Validate the stable record of the in-process post-move identity audit."""
+
+    audit = payload.get("model_optimizer_binding")
+    if not isinstance(audit, Mapping):
+        raise P22ProtocolError(f"{expected_mode} has no model/optimizer binding audit")
+    for field in (
+        "verified",
+        "complete_unique_identity_coverage",
+        "no_duplicate_optimizer_parameters",
+        "muon_metadata_exact",
+    ):
+        if audit.get(field) is not True:
+            raise P22ProtocolError(f"{expected_mode} binding audit did not verify {field}")
+    if audit.get("verification") != (
+        "exact in-process Python object identity after accelerator move"
+    ):
+        raise P22ProtocolError(f"{expected_mode} binding-audit method changed")
+
+    backend = payload["accelerator_backend"]
+    if audit.get("selected_device_type") != backend:
+        raise P22ProtocolError(f"{expected_mode} binding audit names the wrong device type")
+    devices = audit.get("stored_parameter_devices")
+    if (
+        not isinstance(devices, list)
+        or not devices
+        or any(
+            not isinstance(device, str)
+            or (device != backend and not device.startswith(f"{backend}:"))
+            for device in devices
+        )
+    ):
+        raise P22ProtocolError(f"{expected_mode} binding audit has the wrong stored devices")
+    if audit.get("stored_parameter_dtypes") != ["torch.float32"]:
+        raise P22ProtocolError(f"{expected_mode} binding audit is not entirely FP32")
+
+    expected_counts = {
+        "model_unique_parameter_count": EXPECTED_MODEL_PARAMETER_COUNT,
+        "optimizer_parameter_count": EXPECTED_MODEL_PARAMETER_COUNT,
+        "muon_parameter_count": EXPECTED_MUON_PARAMETER_COUNT,
+        "auxiliary_parameter_count": EXPECTED_AUXILIARY_PARAMETER_COUNT,
+    }
+    if any(audit.get(field) != value for field, value in expected_counts.items()):
+        raise P22ProtocolError(f"{expected_mode} binding-audit parameter counts changed")
+    if audit.get("tied_parameter_aliases") != EXPECTED_TIED_PARAMETER_ALIASES:
+        raise P22ProtocolError(f"{expected_mode} binding-audit alias inventory changed")
+    if audit.get("model_config") != {
+        "block_size": 1024,
+        "vocab_size": 50_257,
+        "n_layer": 12,
+        "n_head": 12,
+        "n_embd": 768,
+        "dropout": 0.0,
+        "bias": False,
+    }:
+        raise P22ProtocolError(f"{expected_mode} binding-audit model configuration changed")
+
+    groups = audit.get("optimizer_groups")
+    if not isinstance(groups, list) or len(groups) != 2:
+        raise P22ProtocolError(f"{expected_mode} binding audit has the wrong optimizer groups")
+    expected_group_contract = (
+        (
+            0,
+            False,
+            EXPECTED_AUXILIARY_PARAMETER_COUNT,
+            {
+                "learning_rate": 3.0 / 5_000.0,
+                "betas": [0.9, 0.95],
+                "epsilon": 1.0e-10,
+                "weight_decay": 0.0,
+            },
+        ),
+        (
+            1,
+            True,
+            48,
+            {
+                "learning_rate": 1.0 / 120.0,
+                "momentum": 19.0 / 20.0,
+                "weight_decay": 0.0,
+            },
+        ),
+    )
+    names: list[str] = []
+    for group, (index, use_muon, count, hyperparameters) in zip(
+        groups, expected_group_contract, strict=True
+    ):
+        if not isinstance(group, Mapping):
+            raise P22ProtocolError(f"{expected_mode} binding audit has a malformed group")
+        parameter_names = group.get("parameter_names")
+        if (
+            group.get("group_index") != index
+            or group.get("use_muon") is not use_muon
+            or group.get("hyperparameters") != hyperparameters
+            or not isinstance(parameter_names, list)
+            or len(parameter_names) != count
+            or any(not isinstance(name, str) or name.startswith("<") for name in parameter_names)
+        ):
+            raise P22ProtocolError(f"{expected_mode} binding-audit group contract changed")
+        names.extend(parameter_names)
+    if len(names) != len(set(names)) or len(names) != EXPECTED_MODEL_PARAMETER_COUNT:
+        raise P22ProtocolError(f"{expected_mode} binding audit repeats a parameter name")
+
+
 def _load_run_manifest(path: Path, expected_mode: str) -> dict[str, Any]:
     try:
         payload = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as error:
         raise P22ProtocolError(f"cannot read {expected_mode} manifest: {error}") from error
-    if payload.get("schema_version") != P22_RUN_MANIFEST_SCHEMA:
+    schema_version = payload.get("schema_version")
+    if schema_version not in {P22_LEGACY_RUN_MANIFEST_SCHEMA, P22_RUN_MANIFEST_SCHEMA}:
         raise P22ProtocolError(f"{expected_mode} manifest schema mismatch")
+    legacy_manifest = schema_version == P22_LEGACY_RUN_MANIFEST_SCHEMA
     if payload.get("trace_mode") != expected_mode:
         raise P22ProtocolError(f"expected trace_mode={expected_mode!r}")
     if payload.get("evidence_kind") != "real_gradient_shadow_trace":
@@ -865,8 +979,37 @@ def _load_run_manifest(path: Path, expected_mode: str) -> dict[str, Any]:
         raise P22ProtocolError(f"{expected_mode} applied or ambiguously applied a shadow update")
     if payload.get("accelerator_backend") not in {"cuda", "mps"}:
         raise P22ProtocolError(f"{expected_mode} has no explicit CUDA/MPS backend")
-    if payload.get("actual_accelerator_candidates") is not True:
-        raise P22ProtocolError(f"{expected_mode} did not use actual accelerator candidates")
+    if legacy_manifest:
+        # Historical P22 trace-off manifests used this ambiguous boolean.  Keep
+        # them replayable without carrying that schema into new acquisitions.
+        if payload.get("actual_accelerator_candidates") is not True:
+            raise P22ProtocolError(f"{expected_mode} did not use actual accelerator candidates")
+    else:
+        accelerator_backend = payload["accelerator_backend"]
+        execution = payload.get("candidate_execution")
+        if execution != {
+            "backend": accelerator_backend,
+            "actual_accelerator_candidate_computed_and_applied": True,
+            "shield_shadow_only": True,
+        }:
+            raise P22ProtocolError(f"{expected_mode} candidate-execution contract mismatch")
+        observation = payload.get("candidate_observation")
+        expected_observation = (
+            {
+                "status": f"observed_actual_post_aspect_{accelerator_backend}",
+                "capture_step_count": len(EXPECTED_CAPTURE_STEPS),
+                "observation_count": EXPECTED_CANDIDATE_OBSERVATIONS,
+            }
+            if expected_mode == "trace_on"
+            else {
+                "status": "not_observed",
+                "capture_step_count": 0,
+                "observation_count": 0,
+            }
+        )
+        if observation != expected_observation:
+            raise P22ProtocolError(f"{expected_mode} candidate-observation contract mismatch")
+        _validate_model_optimizer_binding(payload, expected_mode)
     for field in ("run_identity_sha256", "initial_state_sha256"):
         if not _is_sha256(payload.get(field)):
             raise P22ProtocolError(f"{expected_mode} has an invalid {field}")
@@ -909,6 +1052,8 @@ def _load_run_manifest(path: Path, expected_mode: str) -> dict[str, Any]:
         if expected_mode == "trace_off":
             if record.get("capture") is not None:
                 raise P22ProtocolError(f"trace_off step {step} contains a shadow capture")
+            if not legacy_manifest and record.get("observation_count") != 0:
+                raise P22ProtocolError(f"trace_off step {step} has a candidate observation")
             observer_status = record.get("observer_rng_unchanged")
             if observer_status is not None and observer_status is not False:
                 raise P22ProtocolError(f"trace_off step {step} claims an observer invocation")
@@ -920,10 +1065,13 @@ def _load_run_manifest(path: Path, expected_mode: str) -> dict[str, Any]:
             required_capture = {
                 "parameter_count": 48,
                 "actual_post_aspect_candidate": True,
+                "actual_post_aspect_cuda_candidate": payload["accelerator_backend"] == "cuda",
                 "p20_shadow_only": True,
             }
             if any(capture.get(key) != value for key, value in required_capture.items()):
                 raise P22ProtocolError(f"trace_on step {step} capture contract mismatch")
+            if not legacy_manifest and steps[step].get("observation_count") != 48:
+                raise P22ProtocolError(f"trace_on step {step} observation count is not 48")
             if not isinstance(capture.get("actual_pre_aspect_candidate"), bool):
                 raise P22ProtocolError(f"trace_on step {step} pre-aspect status is missing")
             if not _is_sha256(capture.get("record_sha256")):
@@ -933,6 +1081,27 @@ def _load_run_manifest(path: Path, expected_mode: str) -> dict[str, Any]:
         for step in set(range(EXPECTED_OPTIMIZER_STEPS)) - set(EXPECTED_CAPTURE_STEPS):
             if steps[step].get("capture") is not None:
                 raise P22ProtocolError(f"trace_on step {step} has an unscheduled capture")
+            if not legacy_manifest and steps[step].get("observation_count") != 0:
+                raise P22ProtocolError(
+                    f"trace_on step {step} has an unscheduled candidate observation"
+                )
+        if not legacy_manifest:
+            observed = sum(int(record["observation_count"]) for record in steps)
+            if observed != EXPECTED_CANDIDATE_OBSERVATIONS:
+                raise P22ProtocolError("trace_on total candidate-observation count changed")
+            raw_trace = payload.get("raw_trace")
+            if (
+                not isinstance(raw_trace, dict)
+                or raw_trace.get("observation_count") != EXPECTED_CANDIDATE_OBSERVATIONS
+                or not _is_sha256(raw_trace.get("sha256"))
+            ):
+                raise P22ProtocolError("trace_on raw-trace observation contract mismatch")
+    if (
+        not legacy_manifest
+        and expected_mode == "trace_off"
+        and payload.get("raw_trace") is not None
+    ):
+        raise P22ProtocolError("trace_off manifest must not reference a raw candidate trace")
     final_state = payload.get("final_state")
     if not isinstance(final_state, dict):
         raise P22ProtocolError(f"{expected_mode} has no final state")

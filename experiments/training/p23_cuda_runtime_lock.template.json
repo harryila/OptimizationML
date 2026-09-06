@@ -1,0 +1,127 @@
+{
+  "schema_version": "passive-muon-p23-cuda-runtime-lock-v2",
+  "status": "template_not_valid_for_acquisition",
+  "p23_addendum_sha256": null,
+  "container": {
+    "image": null,
+    "repository_digest": null,
+    "container_id": null,
+    "image_id": null,
+    "container_init_pid": null,
+    "hostname": null,
+    "default_hostname": true,
+    "rootfs_read_only": true,
+    "network_mode": "none",
+    "mountinfo_sha256": null,
+    "mount_contract": {
+      "sha256": null,
+      "mounts": [
+        {"name": "repository", "type": "bind", "read_only": true, "propagation": "rprivate"},
+        {"name": "nanogpt", "type": "bind", "read_only": true, "propagation": "rprivate"},
+        {"name": "muon", "type": "bind", "read_only": true, "propagation": "rprivate"},
+        {"name": "data", "type": "bind", "read_only": true, "propagation": "rprivate"},
+        {"name": "preprocessor_alias", "type": "bind", "read_only": true, "propagation": "rprivate"},
+        {"name": "native_evidence", "type": "bind", "read_only": false, "propagation": "rprivate"},
+        {"name": "image_inspection", "type": "bind", "read_only": true, "propagation": "rprivate"},
+        {"name": "running_container_inspection", "type": "bind", "read_only": true, "propagation": "rprivate"},
+        {"name": "running_mountinfo", "type": "bind", "read_only": true, "propagation": "rprivate"},
+        {"name": "nvidia_smi_query", "type": "bind", "read_only": true, "propagation": "rprivate"}
+      ]
+    },
+    "tmpfs_contract": {
+      "sha256": null,
+      "mounts": {
+        "/tmp": "rw,noexec,nosuid,nodev,size=1073741824"
+      }
+    },
+    "attestation_scope": "procedural_host_inspection_not_cryptographic_remote_attestation",
+    "host_attestation_sha256": null
+  },
+  "gpu": {
+    "uuid": null,
+    "pci_bus_id": null,
+    "name": null,
+    "vbios_version": null,
+    "driver_version": null,
+    "compute_capability": null,
+    "multiprocessor_count": null,
+    "total_memory": null,
+    "nvidia_smi_memory_total_mib": null,
+    "mig_mode": "disabled"
+  },
+  "software": {
+    "python": null,
+    "python_executable": "/opt/p23-venv/bin/python",
+    "python_executable_sha256": null,
+    "python_flags": {
+      "debug": 0,
+      "inspect": 0,
+      "interactive": 0,
+      "optimize": 0,
+      "dont_write_bytecode": 1,
+      "no_user_site": 1,
+      "no_site": 0,
+      "ignore_environment": 0,
+      "verbose": 0,
+      "bytes_warning": 0,
+      "quiet": 0,
+      "isolated": 0,
+      "hash_randomization": 1,
+      "dev_mode": false,
+      "utf8_mode": 0,
+      "warn_default_encoding": 0,
+      "safe_path": false,
+      "int_max_str_digits": 4300
+    },
+    "torch_version": null,
+    "torch_git_version": null,
+    "torch_config_sha256": null,
+    "torch_cuda_compiled_version": null,
+    "cuda_runtime_version": null,
+    "cudnn_version": null,
+    "numpy_version": null,
+    "platform": null,
+    "system": null,
+    "release": null,
+    "version": null,
+    "machine": null,
+    "processor": null,
+    "libc": null,
+    "cpu_identity": {
+      "vendor_id": null,
+      "cpu_family": null,
+      "model": null,
+      "model_name": null,
+      "stepping": null,
+      "microcode": null,
+      "flags_sha256": null,
+      "logical_processor_count": null
+    },
+    "proc_version_sha256": null
+  },
+  "determinism": {
+    "cublas_workspace_config": ":4096:8",
+    "pythonhashseed": "1337",
+    "nvidia_tf32_override": "0",
+    "cuda_visible_devices": null,
+    "nvidia_visible_devices": null,
+    "sdpa_backend": "math",
+    "deterministic_algorithms": true,
+    "deterministic_debug_mode": "error",
+    "tf32": false,
+    "cudnn_benchmark": false,
+    "cudnn_deterministic": true,
+    "float32_matmul_precision": "highest",
+    "fp16_reduced_precision_reduction": false,
+    "bf16_reduced_precision_reduction": false,
+    "cpu_threads": 1,
+    "interop_threads": 1
+  },
+  "loader_environment": {
+    "LD_PRELOAD": null,
+    "LD_LIBRARY_PATH": null,
+    "LD_AUDIT": null,
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONOPTIMIZE": null
+  }
+}

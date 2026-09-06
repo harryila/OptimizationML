@@ -1,0 +1,176 @@
+{
+  "schema_version": "passive-muon-p23-deterministic-cuda-shadow-trace-addendum-v1",
+  "status": "frozen_pre_acquisition_cuda_runtime_lock_pending",
+  "inherits": {
+    "p21_fidelity_gates": {
+      "path": "experiments/training/p21_shadow_trace_protocol.json",
+      "sha256": "ca40ef0aef676971ca4464c3f838c6bd956ecc9806c2023af0d4ea699375315a",
+      "mutation_allowed": false
+    },
+    "p22_protocol": {
+      "path": "experiments/training/p22_real_gradient_shadow_trace_protocol.json",
+      "sha256": "f88eda60b366b561d277e41335b02c3fb9861a2604a947f8dd5c28fb54bedeac",
+      "mutation_allowed": false
+    },
+    "p22_erratum": {
+      "path": "theory/p22_real_gradient_shadow_trace_protocol_erratum.md",
+      "sha256": "42dc57bd8fb03b619c0de75c58570991ca520131ab7d1660b4f9373fd756a2cd",
+      "mutation_allowed": false
+    },
+    "p22_fused_qkv_certificate": {
+      "path": "results/summaries/p22_scalable_shield_shape_extension_certificate.json",
+      "sha256": "9480525384a57bb09869a55c878251f44f170930f3050a1ad50b4d934dcb7450",
+      "mutation_allowed": false
+    }
+  },
+  "provenance_parent": {
+    "branch": "p22-real-gradient-shadow-trace",
+    "diagnostic_commit": "10d3c8becb98267135c29cb504a0ab5d6e5ff886",
+    "diagnostic_tag": "p22-real-gradient-shadow-trace-diagnostic"
+  },
+  "cuda_environment": {
+    "backend": "cuda",
+    "device_count": 1,
+    "bf16_required": true,
+    "cpu_or_mps_substitution_allowed": false,
+    "mig_allowed": false,
+    "cuda_visible_devices": "one explicit full-GPU UUID, never an ordinal",
+    "container_identity": "host image inspect and actual-running-container inspect must link one canonical container ID to one immutable image ID and digest-pinned OCI reference",
+    "container_attestation_scope": "procedural_host_inspection_not_cryptographic_remote_attestation",
+    "default_container_hostname": "the live process hostname must equal the first 12 hexadecimal characters of the inspected 64-hex container ID",
+    "network_mode": "none",
+    "mount_contract": "the inspected container must use network mode none, a read-only root filesystem, the exact one-entry /tmp tmpfs map, exactly the ten predeclared bind destinations and read-only/read-write modes, and a host-captured /proc/<State.Pid>/mountinfo snapshot that matches /proc/self/mountinfo in every live evidence process",
+    "runtime_lock": "a sanitized host-generated lock must be committed before acquisition and must match every run exactly",
+    "python_executable": "/opt/p23-venv/bin/python",
+    "python_executable_sha256": "required in the populated runtime lock",
+    "virtual_environment": "/opt/p23-venv",
+    "python_no_user_site": "1",
+    "python_dont_write_bytecode": "1",
+    "python_optimize": null,
+    "python_flags": "the complete Python 3.12 sys.flags map is pinned to the ordinary nonoptimized, nonisolated image invocation",
+    "pythonpath": null,
+    "pythonhome": null,
+    "ld_preload": null,
+    "ld_library_path": null,
+    "ld_audit": null,
+    "repository_virtual_environment_allowed": false,
+    "runtime_dependency_sync_allowed": false,
+    "cublas_workspace_config": ":4096:8",
+    "pythonhashseed": "1337",
+    "sdpa_backend": "math",
+    "flash_sdpa": false,
+    "memory_efficient_sdpa": false,
+    "cudnn_sdpa": false,
+    "math_sdpa": true,
+    "deterministic_algorithms": true,
+    "deterministic_debug_mode": "error",
+    "tf32": false,
+    "cudnn_benchmark": false,
+    "cudnn_deterministic": true,
+    "float32_matmul_precision": "highest",
+    "fp16_reduced_precision_reduction": false,
+    "bf16_reduced_precision_reduction": false,
+    "compile": false,
+    "autocast": false,
+    "cpu_threads": 1,
+    "interop_threads": 1
+  },
+  "source_provenance": {
+    "repository": "record contemporaneous HEAD, HEAD tree, origin, submodule status, exact porcelain-v1-z bytes and their SHA-256; require clean",
+    "tracked_tree": "retain the SHA-256 and byte count of every tracked repository file",
+    "loaded_sources": "at initialized and completed boundaries, hash every file-backed sys.modules __file__, spec origin, existing cached bytecode, available source file, and every regular file-backed /proc/self/maps pathname; all records use explicit logical roots",
+    "late_imports": "completed closure may add only explicitly recorded modules or mapped files; removal, relocation, or byte change of an initialized entry aborts, and exact additions must agree across off-A, off-B, and trace-on",
+    "executable_origins": "module origins and executable mappings are permitted only from the read-only repository, nanoGPT, Muon, image Python environment, or image-layer roots; executable data, preprocessor-alias, writable evidence, /tmp, and /dev/shm origins abort",
+    "run_identity": "canonical hash of addendum/protocol/erratum, repository, initialized/completed loaded-file closure and additions, frozen run configuration, data identity, live mountinfo-bound runtime map, and runtime-lock hash",
+    "independent_verifier": "recollect initialized membership after the frozen setup, rehash every initialized/completed retained file, recompute run identity, and compare complete repository/source/runtime maps; an opaque digest comparison is forbidden",
+    "sanitized_retention": "retain all semantic manifest fields while replacing machine-local absolute paths with deterministic logical-root references"
+  },
+  "model_optimizer_binding": {
+    "order": [
+      "construct model on host",
+      "move the model to CUDA device 0",
+      "enumerate model parameters and aliases on CUDA",
+      "construct the optimizer from those exact Parameter objects",
+      "assert optimizer/model parameter object identity, device membership, dtype, coverage, and tied-storage inventory"
+    ],
+    "parameter_dtype": "torch.float32",
+    "selected_device": "cuda:0"
+  },
+  "capture_semantics": {
+    "trace_off": {
+      "status": "not_observed",
+      "capture_steps": 0,
+      "observation_count": 0,
+      "actual_post_aspect_candidate_count": 0
+    },
+    "trace_on": {
+      "status": "observed",
+      "capture_steps": 24,
+      "parameters_per_capture": 48,
+      "observation_count": 1152,
+      "actual_post_aspect_candidate_count": 1152,
+      "candidate": "actual stored BF16 CUDA post-aspect value returned by the pinned Muon call"
+    }
+  },
+  "run_sequence": {
+    "process_isolation": "each acquisition is a fresh Python process in the same host-inspected container ID, using the same committed tree, runtime lock, data, and source bytes",
+    "ordered_roles": [
+      "trace_off_a",
+      "trace_off_b",
+      "verify_repeatability",
+      "trace_on",
+      "verify_noninterference",
+      "aggregate_fidelity"
+    ],
+    "trace_on_prerequisite": "the exact trace-off-A/trace-off-B verifier must pass with zero mismatches",
+    "fidelity_prerequisite": "both exact repeatability and exact noninterference verifiers must pass with zero mismatches"
+  },
+  "exact_comparison": {
+    "numeric_tolerance": null,
+    "allclose_allowed": false,
+    "repeatability_required_mismatches": 0,
+    "noninterference_required_mismatches": 0,
+    "source_runtime_map_equality": "exact keys and values",
+    "state_and_rng_schedule": "unchanged from P22"
+  },
+  "acceptance_gates": {
+    "repeatability": "zero exact off-A/off-B mismatches",
+    "noninterference": "zero exact off-A/trace-on state, loss, data, and RNG mismatches",
+    "observations": 1152,
+    "actual_post_aspect_cuda_candidates": 1152,
+    "shape_inventory": "48/48 Muon parameters and 84934656/84934656 elements",
+    "fidelity_gates": "unchanged frozen P21/P22 activation, correction, cosine, amplitude, P16, P18, and mild-intervention gates",
+    "result_routing": {
+      "repeatability_failure": "P24 operation-level first-difference localization",
+      "noninterference_failure": "P24 observer redesign",
+      "fidelity_failure": "P24 preregistered candidate adapter evaluated on a held-out seed",
+      "all_pass": "P24 native CUDA sector shield followed by matched shielded training"
+    }
+  },
+  "fail_closed": {
+    "runtime_lock_template": "experiments/training/p23_cuda_runtime_lock.template.json",
+    "runtime_lock_missing": "block before model allocation",
+    "runtime_lock_mismatch": "block before model allocation",
+    "running_container_or_mount_mismatch": "block before model allocation",
+    "loader_environment_override": "block before Torch import",
+    "dirty_repository": "block before model allocation",
+    "loaded_file_removal_change_deleted_or_unrooted_origin": "abort and discard acquisition",
+    "nonfinite_or_wrong_device": "abort and discard acquisition",
+    "trace_on_before_repeatability": "forbidden",
+    "cuda_unavailable_in_protocol_freeze_environment": true
+  },
+  "claim_boundary": {
+    "protocol_only_until_cuda_acquisition": true,
+    "theorem_effect": "P18-P21 exact and finite-precision theorems are unchanged",
+    "passing_scope": "empirical fidelity and noninterference evidence for one pinned CUDA execution stack only",
+    "not_claimed": [
+      "global PL for the neural loss",
+      "global stability of unrepaired upstream Muon",
+      "all-CUDA or cross-GPU determinism",
+      "cryptographic remote attestation or protection against a malicious host",
+      "native CUDA shield correctness",
+      "distributed parity",
+      "training-quality or throughput parity"
+    ]
+  }
+}

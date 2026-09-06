@@ -435,12 +435,49 @@
       final state hashes, and 303 total verifier mismatches. Per protocol, do
       not run trace-on and do not report these baseline runs as real-gradient
       fidelity evidence.
-- [ ] Replay the unchanged three-run gate on one BF16-capable CUDA device.
-      First add contemporaneous repository SHA/dirty state, complete imported
-      source hashing, exact GPU/driver/runtime identity, and explicit
-      source/runtime-map equality to the native verifier. Require exact CUDA
-      off-A/off-B repeatability before running trace-on; only then interpret
-      shield activation or fidelity metrics.
+- [x] Open `p23-deterministic-cuda-shadow-trace` and freeze a CUDA-only
+      pre-acquisition addendum that inherits the P22 protocol and erratum
+      without changing their bytes, schedule, candidate, data, or empirical
+      gates. Keep P23 explicitly result-free while its host runtime lock is
+      absent.
+- [ ] Populate and commit the P23 runtime lock before acquisition: one
+      explicitly selected non-MIG BF16 NVIDIA GPU, exact UUID/PCI/device/VBIOS,
+      driver and CUDA/PyTorch stack, host-attested OCI repository digest,
+      image-resident `/opt/p23-venv/bin/python` path and executable SHA-256,
+      math-only SDPA, and every frozen deterministic environment/runtime
+      setting, Docker network mode `none`, and the complete nonoptimized Python
+      3.12 interpreter-flag map. Bind a retained host
+      `/proc/<State.Pid>/mountinfo` snapshot to
+      `/proc/self/mountinfo` in every live evidence process. No repository
+      `.venv` or runtime dependency sync is allowed.
+      Also populate the separate sanitized host-attestation artifact;
+      both must be tracked, with the lock binding the attestation bytes and
+      exact container/GPU maps. The checked-in null templates are invalid for
+      acquisition.
+- [x] Finish the P23 runner and verifier hardening before CUDA work: move the
+      model to the selected device before optimizer construction, assert exact
+      model/optimizer object identity and device membership, capture the
+      contemporaneous clean Git tree, every file-backed loaded-module artifact,
+      and every regular file-backed `/proc/self/maps` entry at initialization
+      and completion. Record lazy-load additions, reject removals/changes and
+      writable/tmpfs executable origins, independently rehash retained bytes,
+      recompute run identity, and compare source/runtime maps field by field.
+- [x] Version P23 capture semantics so trace-off reports `not_observed` and
+      exactly zero captures. Mechanically require a hash-bound, zero-mismatch
+      off-A/off-B report before starting trace-on; trace-on must record exactly
+      `48 x 24 = 1152` actual stored BF16 CUDA post-aspect candidates.
+- [ ] Run fresh-process P23 CUDA trace-off A and B and require zero exact
+      mismatches; do not replace this with `allclose`. Only after that passes,
+      run trace-on and require zero off-A/trace-on state, loss, data, and RNG
+      mismatches.
+- [ ] Retain path-sanitized complete manifests and exact raw-artifact hashes,
+      aggregate all 1,152 records, and report the unchanged frozen activation,
+      correction, cosine, amplitude, effective-update, P16/P18, and mild-
+      intervention gates without post-data threshold changes.
+- [ ] Obtain independent review of the P23 runtime lock, source/runtime
+      reconstruction, model/optimizer binding, exact comparison, observation
+      inventory, and claim boundary using
+      `theory/audits/P23_DETERMINISTIC_CUDA_SHADOW_TRACE_AUDIT.md`.
 - [ ] Obtain independent human review of the P22 acquisition stop, source/data
       provenance, exact comparator, and claim boundary using
       `theory/audits/P22_REAL_GRADIENT_SHADOW_TRACE_AUDIT.md`.

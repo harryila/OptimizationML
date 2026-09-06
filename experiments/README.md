@@ -56,7 +56,11 @@ Experiment order is gated:
     decay treatment, and frozen synthetic shadow-observer diagnostic;
 25. the frozen P22 real-gradient protocol, exact `768 x 2304` shape extension,
     and blocked Apple-MPS off-A/off-B baseline-repeatability diagnostic;
-26. only after a fully supported model shape inventory, real-gradient shadow
+26. the P23 CUDA-only addendum, null-invalid runtime-lock and host-attestation
+    templates, hardened model/optimizer and source/runtime binding, exact
+    fresh-process sequencing, and a preregistered 1,152-observation acceptance
+    gate with no CUDA result yet;
+27. only after a fully supported model shape inventory, real-gradient shadow
     gates, model-forward use of the logical master, aspect scaling, weight
     decay, and implementation-parity gates, a small matched neural-training
     sweep.
@@ -475,6 +479,375 @@ uv run --locked python scripts/build_p22_repeatability_failure_evidence.py \
   --native-root /path/to/p22-native-evidence \
   --output-root results/summaries
 ```
+
+P23 does not rerun or amend that failed MPS acquisition. Its machine-readable
+CUDA addendum is
+`experiments/training/p23_deterministic_cuda_shadow_trace_addendum.json`; read
+`theory/p23_deterministic_cuda_shadow_trace_addendum.md` alongside it. The
+checked-in `p23_cuda_runtime_lock.template.json` is intentionally invalid for
+acquisition: every host, container, GPU, driver, CUDA/PyTorch, and
+deterministic-runtime field must be populated and committed from the selected
+CUDA host before model allocation or data collection.  The interpreter is
+fixed at `/opt/p23-venv/bin/python`; its resolved path, executable SHA-256,
+and complete Python 3.12 `sys.flags` map are runtime-lock fields.  Optimized,
+isolated, environment-ignoring, and otherwise flag-divergent invocations are
+rejected.  The separate
+`p23_host_attestation.template.json` is also intentionally invalid. Every P23
+acquisition, verifier, and aggregation command requires a populated
+`--host-attestation`; both artifacts must be tracked and committed before
+acquisition. Offline sanitization consumes only a retained native artifact and
+its declared path roots. The runtime lock binds the
+attestation's exact bytes; the validator also compares their container and GPU
+maps field by field.
+
+There is no hand-authored acquisition JSON. P23 uses one long-lived,
+host-inspected CUDA container and launches every role as a separate fresh
+Python process inside it. This is a procedural inspection chain, not
+cryptographic remote attestation or protection against a malicious host.
+First retain raw host-side image inspection and `nvidia-smi` query output, and
+create the files that will receive the actual running-container inspection and
+its live mount-namespace snapshot:
+
+```bash
+set -euo pipefail
+mkdir -p /secure/p23/evidence
+docker image inspect registry.example/project@sha256:... \
+  > /secure/p23-image-inspect.json
+nvidia-smi --id=GPU-... \
+  --query-gpu=uuid,pci.bus_id,name,driver_version,vbios_version,memory.total,mig.mode.current \
+  --format=csv,noheader,nounits > /secure/p23-nvidia-smi.csv
+touch /secure/p23-running-container-inspect.json
+touch /secure/p23-running-mountinfo.txt
+```
+
+Launch the selected digest-pinned image with `--network none`, `--read-only`, the exact `/tmp`
+tmpfs, and exactly the ten bind mounts below. The five source/data mounts and
+four host-evidence files are read-only; only the native evidence directory is
+writable. The image must already contain every destination parent and the four
+host-evidence file mount points. This is the complete launch command; do not add a writable
+root, another bind, or another tmpfs:
+
+```bash
+set -euo pipefail
+export P23_IMAGE=registry.example/project@sha256:...
+export P23_GPU_UUID=GPU-00000000-0000-0000-0000-000000000000
+
+docker run --detach --name p23-acquisition \
+  --gpus "device=$P23_GPU_UUID" \
+  --network none \
+  --read-only \
+  --tmpfs /tmp:rw,noexec,nosuid,nodev,size=1073741824 \
+  --env VIRTUAL_ENV=/opt/p23-venv \
+  --env PYTHONNOUSERSITE=1 \
+  --env PYTHONDONTWRITEBYTECODE=1 \
+  --env CUDA_VISIBLE_DEVICES="$P23_GPU_UUID" \
+  --env NVIDIA_VISIBLE_DEVICES="$P23_GPU_UUID" \
+  --env CUBLAS_WORKSPACE_CONFIG=:4096:8 \
+  --env PYTHONHASHSEED=1337 \
+  --env NVIDIA_TF32_OVERRIDE=0 \
+  --env OMP_NUM_THREADS=1 \
+  --env MKL_NUM_THREADS=1 \
+  --env P23_REPO=/workspace/OptimizationML \
+  --env P23_NANOGPT=/workspace/inputs/nanoGPT \
+  --env P23_MUON_ROOT=/workspace/inputs/muon \
+  --mount type=bind,src=/secure/p23/OptimizationML,dst=/workspace/OptimizationML,readonly \
+  --mount type=bind,src=/secure/p23/nanoGPT,dst=/workspace/inputs/nanoGPT,readonly \
+  --mount type=bind,src=/secure/p23/Muon,dst=/workspace/inputs/muon,readonly \
+  --mount type=bind,src=/secure/p23/optimizationml-p22-data,dst=/private/tmp/optimizationml-p22-data,readonly \
+  --mount type=bind,src=/secure/p23/OptimizationML/experiments/training/materialize_p22_fineweb.py,dst=/Users/harry/Desktop/temp/OptimizationML/experiments/training/materialize_p22_fineweb.py,readonly \
+  --mount type=bind,src=/secure/p23/evidence,dst=/workspace/evidence/p23 \
+  --mount type=bind,src=/secure/p23-image-inspect.json,dst=/mounted-host-evidence/image-inspect.json,readonly \
+  --mount type=bind,src=/secure/p23-running-container-inspect.json,dst=/mounted-host-evidence/running-container-inspect.json,readonly \
+  --mount type=bind,src=/secure/p23-running-mountinfo.txt,dst=/mounted-host-evidence/running-mountinfo.txt,readonly \
+  --mount type=bind,src=/secure/p23-nvidia-smi.csv,dst=/mounted-host-evidence/nvidia-smi.csv,readonly \
+  --entrypoint /bin/sh \
+  "$P23_IMAGE" -c 'while :; do sleep 3600; done'
+
+docker inspect p23-acquisition \
+  > /secure/p23-running-container-inspect.json
+P23_CONTAINER_INIT_PID="$(
+  docker inspect --format '{{.State.Pid}}' p23-acquisition
+)"
+if ! [[ "$P23_CONTAINER_INIT_PID" =~ ^[1-9][0-9]*$ ]]; then
+  echo "invalid running-container State.Pid: $P23_CONTAINER_INIT_PID" >&2
+  exit 1
+fi
+cat "/proc/$P23_CONTAINER_INIT_PID/mountinfo" \
+  > /secure/p23-running-mountinfo.txt
+```
+
+The `docker inspect` command targets the actual running container, not the
+image or an unrelated container.  The host obtains the same container's init
+PID from Docker's `State.Pid` and retains that process's mount table directly
+from host `/proc`; it does not obtain this evidence through `docker exec`.
+The pre-mounted read-only file reflects the host-side byte update without
+granting the container write access.
+
+The inspected record must be running, use network mode `none`, use the default hostname (the first 12
+characters of its full 64-hex ID), link by immutable image ID to the separately
+inspected image, and contain exactly the ten frozen mounts. The retained host
+`/proc/<State.Pid>/mountinfo` bytes must equal `/proc/self/mountinfo` in every
+evidence process; this independently checks the live read-only/read-write view
+rather than trusting Docker's host metadata alone. Freeze,
+acquisition, verification, and aggregation execute in this same inspected
+container; process isolation comes from separate direct Python invocations,
+not from changing container IDs. Sanitization may run later as an offline
+byte-bound transformation and is not a new CUDA/runtime attestation.
+
+Run the remainder from one host-side Bash session.  The array below makes each
+invocation an explicit `docker exec` of the image-resident interpreter: every
+role is therefore a fresh Python process while retaining the one inspected
+container ID.  The required variables were fixed in the `docker run` command.
+Because there is no intervening shell that repairs the environment,
+`PYTHONPATH`, `PYTHONHOME`, `PYTHONOPTIMIZE`, `LD_PRELOAD`, `LD_LIBRARY_PATH`,
+and `LD_AUDIT` must also be absent from the selected image's `Config.Env`; the
+pre-Torch bootstrap checks that absence and the complete frozen Python 3.12
+interpreter-flag map on every invocation.
+
+Replace both placeholders below with the attested digest and full GPU UUID:
+
+```bash
+set -euo pipefail
+export P23_IMAGE=registry.example/project@sha256:...
+export P23_GPU_UUID=GPU-00000000-0000-0000-0000-000000000000
+export P23_HOST_REPO=/secure/p23/OptimizationML
+export P23_HOST_NATIVE=/secure/p23/evidence
+
+export P23_REPO=/workspace/OptimizationML
+export P23_NANOGPT=/workspace/inputs/nanoGPT
+export P23_MUON_ROOT=/workspace/inputs/muon
+export P23_MUON="$P23_MUON_ROOT/muon.py"
+export P23_DATA_ROOT=/private/tmp/optimizationml-p22-data
+export P23_FINEWEB="$P23_DATA_ROOT/materialized/p22_fineweb_manifest.json"
+export P23_PREPROCESSOR_ALIAS=/Users/harry/Desktop/temp/OptimizationML
+export P23_NATIVE=/workspace/evidence/p23
+export P23_RUNNER="$P23_REPO/experiments/training/run_p23_deterministic_cuda_shadow_trace.py"
+export P23_OBSERVER="$P23_REPO/experiments/training/p22_observed_muon.py"
+export P23_LOCK="$P23_REPO/experiments/training/p23_cuda_runtime_lock.json"
+export P23_ATTESTATION="$P23_REPO/experiments/training/p23_host_attestation.json"
+export P23_PYTHON_ENVIRONMENT=/opt/p23-venv
+P23_PYTHON=(docker exec p23-acquisition /opt/p23-venv/bin/python)
+
+test -d "$P23_HOST_REPO/.git"
+test -d "$P23_HOST_NATIVE"
+docker exec p23-acquisition test ! -e "$P23_REPO/.venv"
+
+"${P23_PYTHON[@]}" "$P23_RUNNER" \
+  freeze-runtime \
+  --container-image "$P23_IMAGE" \
+  --container-repository-digest "${P23_IMAGE##*@}" \
+  --host-image-inspection /mounted-host-evidence/image-inspect.json \
+  --host-running-container-inspection /mounted-host-evidence/running-container-inspect.json \
+  --host-running-mountinfo /mounted-host-evidence/running-mountinfo.txt \
+  --host-nvidia-smi-query /mounted-host-evidence/nvidia-smi.csv \
+  --host-attestation-output /workspace/evidence/p23/p23_host_attestation.json \
+  --runtime-lock-output /workspace/evidence/p23/p23_cuda_runtime_lock.json
+```
+
+Copy both generated files from the host evidence directory into
+`experiments/training/`, review them, and commit them before running trace-off
+A. The read-only repository bind reflects that host-side commit without
+changing the inspected container or its mount contract. The generator refuses
+existing outputs and both checked-in `.template.json` targets. For example,
+after review, the host-side copy and commit are:
+
+```bash
+cp "$P23_HOST_NATIVE/p23_host_attestation.json" \
+  "$P23_HOST_REPO/experiments/training/p23_host_attestation.json"
+cp "$P23_HOST_NATIVE/p23_cuda_runtime_lock.json" \
+  "$P23_HOST_REPO/experiments/training/p23_cuda_runtime_lock.json"
+git -C "$P23_HOST_REPO" add \
+  experiments/training/p23_host_attestation.json \
+  experiments/training/p23_cuda_runtime_lock.json
+git -C "$P23_HOST_REPO" commit -m "Freeze P23 CUDA runtime"
+```
+
+The acquisition commands below are the complete post-freeze runbook. Each
+host-side `"${P23_PYTHON[@]}"` expansion starts the image-resident interpreter
+as a new Python process in the same inspected container. That environment must be built into the image
+before its repository digest is frozen.  The repository mount must contain no
+`.venv`, and neither `uv`, `pip`, nor any dependency-sync or installation
+command may run during `freeze-runtime`, acquisition, verification, or
+aggregation. Sanitization is a later offline byte transformation, not another
+runtime measurement. The OCI digest identifies the image layers, the
+actual-running-container record binds the immutable image ID and mount modes,
+and the runtime lock separately binds the resolved interpreter path and
+executable SHA-256. Use the same absolute container paths and mounts
+for every invocation; do not rewrite the frozen manifests between roles.  In
+particular:
+
+- mount the clean P23 repository, including its `.git` directory, at
+  `P23_REPO`;
+- mount the complete clean pinned nanoGPT checkout at `P23_NANOGPT`;
+- mount the pinned Muon source under `P23_MUON_ROOT` and name the exact source
+  file with `P23_MUON`;
+- mount the complete frozen FineWeb bundle at the manifest's literal absolute
+  root, `/private/tmp/optimizationml-p22-data`; its three captured row shards
+  and two tokenizer files use absolute paths under that root, while
+  `train.bin` and `val.bin` are relative to the `materialized/` manifest
+  directory;
+- expose the one preprocessor file at the other literal path recorded by the
+  manifest,
+  `/Users/harry/Desktop/temp/OptimizationML/experiments/training/materialize_p22_fineweb.py`.
+  This is a read-only file bind from the clean primary repository, not a
+  second repository checkout; `P23_REPO` remains `/workspace/OptimizationML`;
+  and
+- mount one external writable evidence directory at `P23_NATIVE`.  All native
+  outputs stay outside the repository so its worktree remains clean, and that
+  directory must have the identical absolute path in verifier processes
+  because manifests and gate reports bind exact paths and bytes.
+
+The frozen FineWeb manifest is not relocatable: its validator uses absolute
+paths verbatim and resolves only its two relative output paths against the
+manifest's parent.  A CUDA container therefore needs the following bind-mount
+layout.  Replace the host-side `src` values with the immutable local assets,
+but do not change any `dst` value:
+
+```text
+--mount type=bind,src=/secure/p23/OptimizationML,dst=/workspace/OptimizationML,readonly
+--mount type=bind,src=/secure/p23/nanoGPT,dst=/workspace/inputs/nanoGPT,readonly
+--mount type=bind,src=/secure/p23/Muon,dst=/workspace/inputs/muon,readonly
+--mount type=bind,src=/secure/p23/optimizationml-p22-data,dst=/private/tmp/optimizationml-p22-data,readonly
+--mount type=bind,src=/secure/p23/OptimizationML/experiments/training/materialize_p22_fineweb.py,dst=/Users/harry/Desktop/temp/OptimizationML/experiments/training/materialize_p22_fineweb.py,readonly
+--mount type=bind,src=/secure/p23/evidence,dst=/workspace/evidence/p23
+```
+
+The digest-pinned image must contain the parent directory and file mount point
+for the `/Users/harry/Desktop/temp/OptimizationML/...` alias before it is
+frozen.  The alias exists solely because the immutable P22 manifest hashes
+that preprocessor at that absolute path; it is neither the primary repository
+nor an import root. Keep the primary repository read-only inside the inspected
+container even during `freeze-runtime`; write generated artifacts to the
+external evidence mount, then copy, review, and commit them from the host.
+Every acquisition and verifier process uses that committed clean repository
+through the same read-only mount. The complete data-tree mount must place the manifest
+at exactly
+`/private/tmp/optimizationml-p22-data/materialized/p22_fineweb_manifest.json`.
+
+The UUID and digest above are placeholders and must be replaced by the same
+full, non-MIG GPU UUID and immutable image reference frozen into both
+artifacts. After reviewing and committing the generated lock and attestation,
+assemble the shared immutable arguments in the same host Bash session:
+
+```bash
+P23_COMMON=(
+  --nanogpt-root "$P23_NANOGPT"
+  --muon-source "$P23_MUON"
+  --fineweb-manifest "$P23_FINEWEB"
+  --instrumentation-patch "$P23_OBSERVER"
+  --runtime-lock "$P23_LOCK"
+  --host-attestation "$P23_ATTESTATION"
+)
+```
+
+Run trace-off A and trace-off B in two fresh processes:
+
+```bash
+"${P23_PYTHON[@]}" "$P23_RUNNER" run \
+  --role trace_off_a "${P23_COMMON[@]}" \
+  --output "$P23_NATIVE/trace-off-a.json"
+
+"${P23_PYTHON[@]}" "$P23_RUNNER" run \
+  --role trace_off_b "${P23_COMMON[@]}" \
+  --output "$P23_NATIVE/trace-off-b.json"
+```
+
+Verify exact baseline repeatability before creating any trace-on process:
+
+```bash
+"${P23_PYTHON[@]}" "$P23_RUNNER" verify-repeatability \
+  "${P23_COMMON[@]}" \
+  --trace-off-a "$P23_NATIVE/trace-off-a.json" \
+  --trace-off-b "$P23_NATIVE/trace-off-b.json" \
+  --output "$P23_NATIVE/repeatability.json"
+```
+
+Only a zero-mismatch report permits the trace-on command.  Its prerequisite
+arguments are revalidated before model allocation and again before step zero:
+
+```bash
+"${P23_PYTHON[@]}" "$P23_RUNNER" run \
+  --role trace_on "${P23_COMMON[@]}" \
+  --trace-off-a "$P23_NATIVE/trace-off-a.json" \
+  --trace-off-b "$P23_NATIVE/trace-off-b.json" \
+  --repeatability-report "$P23_NATIVE/repeatability.json" \
+  --raw-trace-output "$P23_NATIVE/raw-trace.json" \
+  --output "$P23_NATIVE/trace-on.json"
+```
+
+Then verify observer noninterference and aggregate the unchanged frozen gates:
+
+```bash
+"${P23_PYTHON[@]}" "$P23_RUNNER" verify-noninterference \
+  "${P23_COMMON[@]}" \
+  --trace-off-a "$P23_NATIVE/trace-off-a.json" \
+  --trace-off-b "$P23_NATIVE/trace-off-b.json" \
+  --trace-on "$P23_NATIVE/trace-on.json" \
+  --output "$P23_NATIVE/noninterference.json"
+
+"${P23_PYTHON[@]}" "$P23_RUNNER" aggregate \
+  "${P23_COMMON[@]}" \
+  --trace-off-a "$P23_NATIVE/trace-off-a.json" \
+  --trace-off-b "$P23_NATIVE/trace-off-b.json" \
+  --trace-on "$P23_NATIVE/trace-on.json" \
+  --repeatability-report "$P23_NATIVE/repeatability.json" \
+  --noninterference-report "$P23_NATIVE/noninterference.json" \
+  --output "$P23_NATIVE/aggregate.json"
+```
+
+Finally retain every native artifact and create a path-sanitized complete copy
+of each JSON.  This loop names every required artifact explicitly rather than
+using a filesystem glob:
+
+```bash
+for P23_JSON in \
+  trace-off-a.json trace-off-b.json repeatability.json trace-on.json \
+  raw-trace.json noninterference.json aggregate.json
+do
+  "${P23_PYTHON[@]}" "$P23_RUNNER" sanitize \
+    --manifest "$P23_NATIVE/$P23_JSON" \
+    --path-root "repository=$P23_REPO" \
+    --path-root "nanogpt=$P23_NANOGPT" \
+    --path-root "muon=$P23_MUON_ROOT" \
+    --path-root "data=$P23_DATA_ROOT" \
+    --path-root "preprocessor_alias=$P23_PREPROCESSOR_ALIAS" \
+    --path-root "python_environment=$P23_PYTHON_ENVIRONMENT" \
+    --path-root "native=$P23_NATIVE" \
+    --output "$P23_NATIVE/sanitized-$P23_JSON"
+done
+```
+
+Any nonzero command stops the sequence.  A failed repeatability gate routes to
+P24 localization; it never authorizes trace-on.  These commands create no P23
+result in the current checkout because its runtime lock is still the invalid
+null template and it has no CUDA device.
+
+The CUDA runner must construct and move the model before creating optimizer
+groups, then prove exact parameter-object, device, dtype, alias, name, shape,
+and element-count coverage. P23 also replaces P22's ambiguous trace-off
+candidate flag with an explicit `not_observed` state and zero capture count.
+Only a trace-on run may say `observed`, and it must retain exactly
+`48 x 24 = 1152` actual post-aspect BF16 CUDA candidates.
+
+The acquisition order is fixed: trace-off A, trace-off B, exact repeatability
+verification, trace-on, exact noninterference verification, then aggregation.
+The trace-on entry point must consume a hash-bound passing repeatability
+report; a human promise to run commands in order is insufficient. Both
+comparators independently rebuild run identity and compare the complete
+repository, initialized/completed loaded-file closure, recorded lazy-load
+additions, and stable runtime maps in addition to the inherited
+state/loss/data/RNG schedule. Every file-backed loaded module and every regular
+file-backed `/proc/self/maps` pathname is hash-bound; module records include
+their declared file, spec origin, existing cached bytecode, and recoverable
+source file. No tolerance or
+`allclose` is permitted.
+
+The current machine has no CUDA device and the runtime lock remains a null
+template. Therefore repository CI can replay only schema, provenance,
+fail-closed comparison, sanitization, and CPU fixture checks. Such a replay is
+not a CUDA acquisition, candidate-fidelity observation, or training result.
+An actual P23 result requires access to one preferably exclusive non-MIG,
+BF16-capable NVIDIA GPU and permission to run the digest-pinned OCI image.
 
 The P9 separate CPU diagnostic is a native-matmul
 falsification probe against a float64, non-exact target:

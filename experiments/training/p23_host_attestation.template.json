@@ -1,0 +1,56 @@
+{
+  "schema_version": "passive-muon-p23-host-attestation-v2",
+  "status": "template_not_valid_for_acquisition",
+  "container": {
+    "image": null,
+    "repository_digest": null,
+    "container_id": null,
+    "image_id": null,
+    "container_init_pid": null,
+    "hostname": null,
+    "default_hostname": true,
+    "rootfs_read_only": true,
+    "network_mode": "none",
+    "mountinfo_sha256": null,
+    "mount_contract": {
+      "sha256": null,
+      "mounts": [
+        {"name": "repository", "type": "bind", "read_only": true, "propagation": "rprivate"},
+        {"name": "nanogpt", "type": "bind", "read_only": true, "propagation": "rprivate"},
+        {"name": "muon", "type": "bind", "read_only": true, "propagation": "rprivate"},
+        {"name": "data", "type": "bind", "read_only": true, "propagation": "rprivate"},
+        {"name": "preprocessor_alias", "type": "bind", "read_only": true, "propagation": "rprivate"},
+        {"name": "native_evidence", "type": "bind", "read_only": false, "propagation": "rprivate"},
+        {"name": "image_inspection", "type": "bind", "read_only": true, "propagation": "rprivate"},
+        {"name": "running_container_inspection", "type": "bind", "read_only": true, "propagation": "rprivate"},
+        {"name": "running_mountinfo", "type": "bind", "read_only": true, "propagation": "rprivate"},
+        {"name": "nvidia_smi_query", "type": "bind", "read_only": true, "propagation": "rprivate"}
+      ]
+    },
+    "tmpfs_contract": {
+      "sha256": null,
+      "mounts": {
+        "/tmp": "rw,noexec,nosuid,nodev,size=1073741824"
+      }
+    },
+    "attestation_scope": "procedural_host_inspection_not_cryptographic_remote_attestation"
+  },
+  "gpu": {
+    "uuid": null,
+    "pci_bus_id": null,
+    "name": null,
+    "vbios_version": null,
+    "driver_version": null,
+    "compute_capability": null,
+    "multiprocessor_count": null,
+    "total_memory": null,
+    "nvidia_smi_memory_total_mib": null,
+    "mig_mode": "disabled"
+  },
+  "evidence": {
+    "image_inspection_sha256": null,
+    "running_container_inspection_sha256": null,
+    "running_mountinfo_sha256": null,
+    "nvidia_smi_query_sha256": null
+  }
+}

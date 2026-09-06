@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -595,7 +597,7 @@ def test_current_indexes_record_scoped_p21_outer_loop_composition() -> None:
     assert "## 27. P21 certified stored-signal outer-loop composition" in results
     assert "## C27. Stored-signal finite-precision outer-loop composition" in claims
     assert "human proof audit of C27" in tasks
-    assert "twenty-five technical goals" in readme
+    assert "twenty-six technical goals" in readme
 
 
 def test_current_indexes_record_p22_blocked_mps_repeatability_diagnostic() -> None:
@@ -650,7 +652,7 @@ def test_current_indexes_record_p22_blocked_mps_repeatability_diagnostic() -> No
         assert "build_p22_repeatability_failure_evidence.py" in text
     assert "no trace-on run" in combined.lower()
     assert "not real-gradient fidelity evidence" in combined.lower()
-    assert "twenty-five technical goals" in readme
+    assert "twenty-six technical goals" in readme
     assert "79f33ec" in " ".join((claims, summary))
     assert "provenance caveat" in " ".join((claims, summary)).lower()
     assert "casts" in erratum
@@ -669,3 +671,158 @@ def test_double_blind_material_is_guarded_from_the_public_repository() -> None:
         "anonymized-supplement/",
     ):
         assert pattern in ignore.splitlines()
+
+
+def test_p23_is_preregistered_without_claiming_cuda_evidence() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    tasks = (ROOT / "TASKS.md").read_text(encoding="utf-8")
+    experiments = (ROOT / "experiments/README.md").read_text(encoding="utf-8")
+    results = (ROOT / "results/summaries/RESULTS.md").read_text(encoding="utf-8")
+    claims = (ROOT / "theory/claims.md").read_text(encoding="utf-8")
+    prose = (ROOT / "theory/p23_deterministic_cuda_shadow_trace_addendum.md").read_text(
+        encoding="utf-8"
+    )
+    audit = (ROOT / "theory/audits/P23_DETERMINISTIC_CUDA_SHADOW_TRACE_AUDIT.md").read_text(
+        encoding="utf-8"
+    )
+    addendum_path = ROOT / "experiments/training/p23_deterministic_cuda_shadow_trace_addendum.json"
+    addendum = json.loads(addendum_path.read_text(encoding="utf-8"))
+    runtime_template = json.loads(
+        (ROOT / "experiments/training/p23_cuda_runtime_lock.template.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    attestation_template = json.loads(
+        (ROOT / "experiments/training/p23_host_attestation.template.json").read_text(
+            encoding="utf-8"
+        )
+    )
+
+    assert addendum["schema_version"] == (
+        "passive-muon-p23-deterministic-cuda-shadow-trace-addendum-v1"
+    )
+    assert addendum["status"] == "frozen_pre_acquisition_cuda_runtime_lock_pending"
+    assert addendum["cuda_environment"]["backend"] == "cuda"
+    assert addendum["cuda_environment"]["device_count"] == 1
+    assert addendum["cuda_environment"]["sdpa_backend"] == "math"
+    assert addendum["cuda_environment"]["python_executable"] == ("/opt/p23-venv/bin/python")
+    assert addendum["cuda_environment"]["repository_virtual_environment_allowed"] is False
+    assert addendum["cuda_environment"]["runtime_dependency_sync_allowed"] is False
+    assert addendum["capture_semantics"]["trace_off"]["status"] == "not_observed"
+    assert addendum["capture_semantics"]["trace_off"]["observation_count"] == 0
+    assert addendum["capture_semantics"]["trace_on"]["status"] == "observed"
+    assert addendum["capture_semantics"]["trace_on"]["observation_count"] == 1152
+    assert addendum["exact_comparison"]["allclose_allowed"] is False
+    assert addendum["claim_boundary"]["protocol_only_until_cuda_acquisition"] is True
+    assert runtime_template["status"] == "template_not_valid_for_acquisition"
+    assert runtime_template["container"]["repository_digest"] is None
+    assert runtime_template["gpu"]["uuid"] is None
+    assert runtime_template["software"]["python_executable"] == ("/opt/p23-venv/bin/python")
+    assert runtime_template["software"]["python_executable_sha256"] is None
+    for template in (runtime_template, attestation_template):
+        assert template["container"]["container_init_pid"] is None
+        assert template["container"]["mountinfo_sha256"] is None
+        assert len(template["container"]["mount_contract"]["mounts"]) == 10
+        assert any(
+            mount
+            == {
+                "name": "running_mountinfo",
+                "type": "bind",
+                "read_only": True,
+                "propagation": "rprivate",
+            }
+            for mount in template["container"]["mount_contract"]["mounts"]
+        )
+    assert attestation_template["evidence"]["running_mountinfo_sha256"] is None
+
+    for inherited in (
+        "p21_fidelity_gates",
+        "p22_protocol",
+        "p22_erratum",
+        "p22_fused_qkv_certificate",
+    ):
+        entry = addendum["inherits"][inherited]
+        inherited_bytes = (ROOT / entry["path"]).read_bytes()
+        assert hashlib.sha256(inherited_bytes).hexdigest() == entry["sha256"]
+        assert entry["mutation_allowed"] is False
+
+    combined = " ".join((readme, tasks, experiments, prose, audit)).lower()
+    for required in (
+        "protocol-ready",
+        "runtime lock",
+        "file-backed loaded-module",
+        "not_observed",
+        "1152",
+        "no cuda run",
+        "no p23 cuda execution",
+        "exact",
+    ):
+        assert required in combined
+    assert "mutually hash-bound" not in combined
+    assert "- [x] finish the p23 runner and verifier hardening" in tasks.lower()
+    assert "- [x] version p23 capture semantics" in tasks.lower()
+    for command in (
+        "freeze-runtime",
+        "--role trace_off_a",
+        "--role trace_off_b",
+        "verify-repeatability",
+        "--role trace_on",
+        "verify-noninterference",
+        "aggregate",
+        "sanitize",
+    ):
+        assert command in experiments
+    p23_runbook = experiments[
+        experiments.index("P23 does not rerun or amend") : experiments.index(
+            "The P9 separate CPU diagnostic"
+        )
+    ]
+    assert "uv run" not in p23_runbook
+    assert "/opt/p23-venv/bin/python" in p23_runbook
+    assert "P23_PYTHON=(docker exec p23-acquisition /opt/p23-venv/bin/python)" in p23_runbook
+    assert '"${P23_PYTHON[@]}" "$P23_RUNNER"' in p23_runbook
+    assert 'test ! -e "$P23_REPO/.venv"' in p23_runbook
+    assert "--env VIRTUAL_ENV=/opt/p23-venv" in p23_runbook
+    assert "--env PYTHONNOUSERSITE=1" in p23_runbook
+    assert "PYTHONPATH" in p23_runbook and "must" in p23_runbook
+    assert "PYTHONHOME" in p23_runbook
+    for host_evidence_mount in (
+        "src=/secure/p23-image-inspect.json,dst=/mounted-host-evidence/image-inspect.json,readonly",
+        "src=/secure/p23-running-container-inspect.json,"
+        "dst=/mounted-host-evidence/running-container-inspect.json,readonly",
+        "src=/secure/p23-running-mountinfo.txt,"
+        "dst=/mounted-host-evidence/running-mountinfo.txt,readonly",
+        "src=/secure/p23-nvidia-smi.csv,dst=/mounted-host-evidence/nvidia-smi.csv,readonly",
+    ):
+        assert host_evidence_mount in experiments
+    assert "--read-only" in p23_runbook
+    assert "--tmpfs /tmp:rw,noexec,nosuid,nodev,size=1073741824" in p23_runbook
+    assert "/proc/self/maps" in p23_runbook
+    assert "--host-running-mountinfo /mounted-host-evidence/running-mountinfo.txt" in p23_runbook
+    assert "docker inspect --format '{{.State.Pid}}' p23-acquisition" in p23_runbook
+    assert 'cat "/proc/$P23_CONTAINER_INIT_PID/mountinfo"' in p23_runbook
+    assert "cached bytecode" in p23_runbook
+    assert (
+        "/private/tmp/optimizationml-p22-data/materialized/p22_fineweb_manifest.json"
+    ) in experiments
+    assert (
+        "/Users/harry/Desktop/temp/OptimizationML/experiments/training/materialize_p22_fineweb.py"
+    ) in experiments
+    assert "P23_DATA_ROOT=/private/tmp/optimizationml-p22-data" in experiments
+    assert "P23_DATA_ROOT=/workspace/inputs/fineweb" not in experiments
+    assert 'path-root "preprocessor_alias=$P23_PREPROCESSOR_ALIAS"' in experiments
+    assert 'path-root "python_environment=$P23_PYTHON_ENVIRONMENT"' in experiments
+    for literal_path in (
+        "/private/tmp/optimizationml-p22-data/materialized/p22_fineweb_manifest.json",
+        "/Users/harry/Desktop/temp/OptimizationML/experiments/training/materialize_p22_fineweb.py",
+        "/workspace/OptimizationML",
+    ):
+        assert literal_path in prose
+    for boundary in (readme, prose, audit):
+        boundary_flat = " ".join(boundary.lower().split())
+        assert "experiment-controlled" in boundary_flat
+        assert "torch" in boundary_flat
+        assert "not individually" in boundary_flat
+    assert "twenty-six technical goals" in readme
+    assert "## 29. P23" not in results
+    assert "## C29." not in claims
