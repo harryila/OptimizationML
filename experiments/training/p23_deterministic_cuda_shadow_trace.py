@@ -3392,6 +3392,16 @@ def sanitize_complete_manifest(
             return [sanitize(item) for item in value]
         if value == PINNED_EXECUTABLE_PATH:
             return value
+        if value == PINNED_PYTHON_EXECUTABLE:
+            python_environment = roots.get("python_environment")
+            pinned_environment = Path(PINNED_PYTHON_ENVIRONMENT).resolve()
+            if python_environment != pinned_environment:
+                raise P23ProvenanceError(
+                    "the pinned Python executable requires the pinned "
+                    "python_environment sanitization root"
+                )
+            replacements += 1
+            return "python_environment:bin/python"
         if not isinstance(value, str) or not Path(value).is_absolute():
             return value
         resolved = Path(value).resolve()

@@ -1315,6 +1315,62 @@ def test_complete_manifest_sanitization_replaces_paths_without_dropping_fields(
     assert "secret" not in str(error.value)
 
 
+def test_complete_manifest_sanitization_handles_pinned_venv_python_symlink(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    python_environment = tmp_path / "p23-venv"
+    python_bin = python_environment / "bin"
+    external_bin = tmp_path / "image-python" / "bin"
+    python_bin.mkdir(parents=True)
+    external_bin.mkdir(parents=True)
+    external_python = external_bin / "python3.12"
+    external_python.write_bytes(b"pinned image Python")
+    pinned_python = python_bin / "python"
+    pinned_python.symlink_to(external_python)
+    assert pinned_python.resolve() == external_python
+
+    monkeypatch.setattr(P23, "PINNED_PYTHON_ENVIRONMENT", str(python_environment))
+    monkeypatch.setattr(P23, "PINNED_PYTHON_EXECUTABLE", str(pinned_python))
+    sanitized = P23.sanitize_complete_manifest(
+        {"python_executable": str(pinned_python)},
+        path_roots={"python_environment": python_environment},
+    )
+
+    assert sanitized["manifest"]["python_executable"] == "python_environment:bin/python"
+    assert sanitized["path_replacement_count"] == 1
+
+    wrong_environment = tmp_path / "wrong-venv"
+    wrong_environment.mkdir()
+    with pytest.raises(
+        P23.P23ProvenanceError,
+        match="requires the pinned python_environment sanitization root",
+    ):
+        P23.sanitize_complete_manifest(
+            {"python_executable": str(pinned_python)},
+            path_roots={"python_environment": wrong_environment},
+        )
+
+
+def test_complete_manifest_sanitization_rejects_unrelated_symlink_escape(
+    tmp_path: Path,
+) -> None:
+    declared_root = tmp_path / "declared"
+    external_root = tmp_path / "external"
+    declared_root.mkdir()
+    external_root.mkdir()
+    external_path = external_root / "secret"
+    external_path.write_text("not declared")
+    escaped_path = declared_root / "escaped"
+    escaped_path.symlink_to(external_path)
+
+    with pytest.raises(P23.P23ProvenanceError, match="undeclared absolute path"):
+        P23.sanitize_complete_manifest(
+            {"unrelated_path": str(escaped_path)},
+            path_roots={"declared": declared_root},
+        )
+
+
 def _module_with_files(source: Path, cache: Path | None = None) -> ModuleType:
     module = ModuleType(f"loaded_{source.stem}")
     module.__file__ = str(source)
