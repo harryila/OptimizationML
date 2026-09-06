@@ -1,0 +1,363 @@
+{
+  "schema_version": "passive-muon-p28-bundle-complete-localization-bridge-contract-v1",
+  "status": "frozen_pre_transfer_pre_container_no_training",
+  "branch": "p28-bundle-complete-localization-bridge",
+  "purpose": "Correct only P27's operator-transfer omission, prove a complete credential-free Git bundle closes in fresh empty bare repositories, and run the unchanged P27 no-training deleted-mapping localizer once in one new preregistered runtime.",
+  "claim_boundary": "This is a pre-execution transfer and localization bridge contract. It records no P28 bundle receipt, runtime, mapping observation, CUDA repeatability result, observer-noninterference result, real-gradient candidate, fidelity aggregate, shield execution, optimizer update, or training result. Fresh scientific acquisition remains unauthorized.",
+  "terminal_parent": {
+    "branch": "p27-cuda-deleted-mapping-localization",
+    "outcome_path": "results/summaries/p27_cuda_deleted_mapping_localization_outcome.json",
+    "outcome_sha256": "d87df6cc792dfa0a0d6a2a982395953ba2ef87aa2086266d9d3c59abb3427d0e",
+    "outcome_schema": "passive-muon-p27-cuda-deleted-mapping-localization-outcome-v1",
+    "outcome_status": "terminal_pre_container_missing_required_p26_checkpoint_tag",
+    "outcome_commit": "ec63550331925ded158e3f389e294e4d1f12db3a",
+    "outcome_tree": "d8efa72fda9ee41fde0b5d15b126aa87397cd48d",
+    "diagnostic_tag": "p27-cuda-deleted-mapping-localization-diagnostic",
+    "diagnostic_tag_object": "c88b98eae9be2458abde45b05d3dccfe09c0c7ed",
+    "diagnostic_peeled_commit": "ec63550331925ded158e3f389e294e4d1f12db3a",
+    "source_freeze_commit": "1071afa1b20b3e12be3dafdebf9dae63f39b0ed9",
+    "source_freeze_tree": "e32a8d89a4470c7e4ee2631c8abb16c2f0a4d923",
+    "attempt_id": "20260906-01",
+    "attempt_is_terminal": true,
+    "attempt_reuse_allowed": false,
+    "container_created": false,
+    "cuda_initialized": false,
+    "localization_invocation_consumed": false,
+    "candidate_observations": 0,
+    "root_cause": "operator_transfer_bundle_omission"
+  },
+  "unchanged_p27_authorities": {
+    "p27_contract": {
+      "path": "experiments/training/p27_cuda_deleted_mapping_localization_contract.json",
+      "sha256": "02000debea28f499ddeb3b8c6c8b0615786cd2e7858cc8a1605b04d638da4b7a"
+    },
+    "p27_contract_reconstructor": {
+      "path": "scripts/reconstruct_p27_cuda_deleted_mapping_localization.py",
+      "sha256": "0eedffa5442ce7fc3950ae74d169fa652c70794935c541028eba3d0bda20e033"
+    },
+    "p27_localizer": {
+      "path": "experiments/training/run_p27_cuda_deleted_mapping_localization.py",
+      "sha256": "86ba200d69a029c64b2218581d6b92245930d5f1e60d0176aca22ad4d6ddf65a"
+    },
+    "p27_localizer_test": {
+      "path": "tests/test_p27_cuda_deleted_mapping_localization.py",
+      "sha256": "f0cae4d3428c66687298fd5e87dd94f805e1d5dcf780ca98d982372388eb741f"
+    },
+    "p27_host_orchestrator": {
+      "path": "scripts/run_p27_cuda_deleted_mapping_localization.sh",
+      "sha256": "c80fc17b10cce7713a203ec3dc4a43bcc8357966d76b5e81d5c2644d3ea5ff0c"
+    },
+    "p27_failure_ingester": {
+      "path": "scripts/ingest_p26_trace_off_a_failure.py",
+      "sha256": "3e7769d668a8756aea7359bef4d9b8ccfc8db66da102edfbc6c5de385654cdeb"
+    },
+    "p27_p23_core": {
+      "path": "experiments/training/p23_deterministic_cuda_shadow_trace.py",
+      "sha256": "ec1037839a3de378ee7391ae815ffc29c184865c5216d30027edc460ba112fab"
+    },
+    "p27_native_sanitizer": {
+      "path": "scripts/sanitize_p27_cuda_deleted_mapping_localization.py",
+      "sha256": "3ec64cdc3681d41d70c624c6ffd26dde1a7e498bda13ddafaaced271a43dd6c4"
+    },
+    "p27_outcome_reconstructor": {
+      "path": "scripts/reconstruct_p27_cuda_deleted_mapping_localization_outcome.py",
+      "sha256": "4c77a785f91a56f58e325bd6d26f79a162dac3e53bf11f41fbeb4c4af3ed2ec1"
+    },
+    "p27_outcome_test": {
+      "path": "tests/test_p27_cuda_deleted_mapping_localization_outcome.py",
+      "sha256": "8dde864800c6119c1a44c31e30b299d4085300c3f62e5265897a3775e5c8918c"
+    },
+    "p26_checkpoint": {
+      "ref": "refs/tags/p26-permission-safe-acquisition-checkpoint",
+      "annotated_tag_object": "bacad707d3779bfa10957e18cb4c69b1a7f0cbce",
+      "peeled_commit": "5429da23ff18888daa2312c530a4587780484d8b"
+    },
+    "p26_acquisition_source": {
+      "ref": "refs/tags/p26-attempt02-acquisition-source",
+      "annotated_tag_object": "f35a7dca8f6bc39e9748e79b6712fab4a203396b",
+      "peeled_commit": "185e444afc0b44ca0a09b1bde49a6b6fa3973355"
+    }
+  },
+  "required_bundle_refs": [
+    {
+      "ref": "refs/heads/p28-bundle-complete-localization-bridge",
+      "object_rule": "equals the phase-specific reviewed P28 commit supplied to the verifier"
+    },
+    {
+      "ref": "refs/heads/p27-cuda-deleted-mapping-localization",
+      "object": "ec63550331925ded158e3f389e294e4d1f12db3a",
+      "object_type": "commit"
+    },
+    {
+      "ref": "refs/tags/p27-cuda-deleted-mapping-localization-diagnostic",
+      "object": "c88b98eae9be2458abde45b05d3dccfe09c0c7ed",
+      "object_type": "tag",
+      "peeled_commit": "ec63550331925ded158e3f389e294e4d1f12db3a"
+    },
+    {
+      "ref": "refs/tags/p26-permission-safe-acquisition-checkpoint",
+      "object": "bacad707d3779bfa10957e18cb4c69b1a7f0cbce",
+      "object_type": "tag",
+      "peeled_commit": "5429da23ff18888daa2312c530a4587780484d8b"
+    },
+    {
+      "ref": "refs/tags/p26-attempt02-acquisition-source",
+      "object": "f35a7dca8f6bc39e9748e79b6712fab4a203396b",
+      "object_type": "tag",
+      "peeled_commit": "185e444afc0b44ca0a09b1bde49a6b6fa3973355"
+    }
+  ],
+  "bundle_closure": {
+    "transport_root": "/secure/p28/transport-20260906-01",
+    "source_bundle": "/secure/p28/transport-20260906-01/p28_source.bundle",
+    "source_closure_repository": "/secure/p28/transport-20260906-01/p28_source_closure.git",
+    "source_receipt": "/secure/p28/transport-20260906-01/p28_source_bundle_receipt.json",
+    "runtime_review_bundle": "/secure/p28/transport-20260906-01/p28_runtime_review.bundle",
+    "runtime_review_closure_repository": "/secure/p28/transport-20260906-01/p28_runtime_review_closure.git",
+    "runtime_review_receipt": "/secure/p28/transport-20260906-01/p28_runtime_review_bundle_receipt.json",
+    "control_checkout": "/secure/p28/control-source",
+    "authority_checkout": "/secure/p28/authority-185e444",
+    "receipt_schema": "passive-muon-p28-control-bundle-receipt-v1",
+    "receipt_creation_cli": "--receipt-output",
+    "receipt_replay_cli": "--verify-existing-receipt plus --expected-receipt-sha256",
+    "receipt_files_are_external_and_not_committed": true,
+    "receipt_outputs_are_o_excl_no_overwrite": true,
+    "bundle_sha256_and_byte_count_are_operator_reviewed_inputs": true,
+    "bundle_is_read_once_with_o_nofollow": true,
+    "bundle_private_authenticated_read_only_copy_required": true,
+    "private_copy_required_mode": "0400",
+    "private_copy_post_use_hash_and_stat_revalidation_required": true,
+    "fresh_empty_bare_repository_required_for_each_phase": true,
+    "exact_advertised_ref_count": 5,
+    "bundle_prerequisite_count": 0,
+    "git_bundle_verify_required": true,
+    "explicit_ref_fetch_required": true,
+    "git_fsck_full_required": true,
+    "all_ref_types_objects_and_peels_must_match": true,
+    "shallow_alternates_grafts_and_replace_refs_forbidden": true,
+    "source_receipt_required_before_attempt_root_creation": true,
+    "authority_checkout_must_be_absent_until_source_receipt_reviewed": true,
+    "authority_checkout_constructed_only_from_verified_source_closure": true,
+    "authority_checkout_detached_clean_without_object_indirections": true,
+    "runtime_review_receipt_required_before_localization_marker": true,
+    "p27_reconstruction_required_check_count": 23,
+    "p27_reconstruction_required_true_count": 23,
+    "p27_reconstruction_required_false_count": 0
+  },
+  "bundle_verifier": {
+    "source_path": "scripts/verify_p28_control_bundle.py",
+    "bootstrap_execution_path": "/secure/p28/transport-20260906-01/verify_p28_control_bundle.py",
+    "checked_in_control_verifier_path": "/secure/p28/control-source/scripts/verify_p28_control_bundle.py",
+    "bootstrap_and_checked_in_verifier_sha256_must_match": true,
+    "bootstrap_copy_is_o_excl_no_overwrite": true,
+    "bootstrap_must_be_regular_nonsymlink": true,
+    "bootstrap_required_mode": "0600",
+    "bootstrap_self_authentication_cli": "--bootstrap-verifier plus --expected-verifier-sha256",
+    "receipt_binds_canonical_verifier_source_path_and_sha256": true,
+    "receipt_records_executing_verifier_self_authentication": true,
+    "receipt_does_not_bind_bootstrap_owner_or_mode": true,
+    "source_sha256": "27e2d5e89a5dcd31cc5e4f2c32953ac1232246077863f105078a5a7984c77a00",
+    "test_path": "tests/test_p28_control_bundle_verifier.py",
+    "test_sha256": "38c96730a2057ce6ae1b9863c46ccac66ed613445751debfe43c4d57daca5079",
+    "placeholders_must_be_replaced_before_source_freeze": false,
+    "allowed_phases": [
+      "source",
+      "runtime-review"
+    ],
+    "phase_receipt_statuses": {
+      "source": "source_bundle_verified_before_attempt_root_creation",
+      "runtime-review": "runtime_review_bundle_verified_before_localization"
+    },
+    "source_phase_constructs_control_checkout": true,
+    "runtime_review_phase_requires_exact_direct_child": true,
+    "runtime_review_phase_requires_exact_prepare_inventory": true,
+    "runtime_review_phase_requires_lock_and_attestation_byte_equality": true,
+    "runtime_review_phase_requires_no_localization_evidence": true,
+    "runtime_review_phase_exact_delta": [
+      "A\texperiments/training/p28_cuda_runtime_lock.json",
+      "A\texperiments/training/p28_host_attestation.json"
+    ],
+    "attempt_root_must_remain_absent_for_entire_source_verification": true,
+    "future_acquisition_authority_created": false
+  },
+  "host_orchestration": {
+    "source_path": "scripts/run_p28_bundle_complete_localization_bridge.sh",
+    "source_sha256": "2bef42ea94bfde5d9cd2c09347edad4fd15258d86df990d7137cb8b9eabefca7",
+    "test_path": "tests/test_p28_bundle_complete_localization_bridge_orchestration.py",
+    "test_sha256": "9a4976c5d8f6c2d96aff7b1da84b06c95e59d099a410b8935a102d33a50631cb",
+    "placeholders_must_be_replaced_before_source_freeze": false,
+    "allowed_phases": [
+      "prepare-runtime",
+      "run-localization"
+    ],
+    "required_environment": [
+      "P28_ATTEMPT_ID",
+      "P28_GPU_UUID",
+      "P28_AUTHORITY_REPO",
+      "P28_NANOGPT_HOST",
+      "P28_MUON_HOST",
+      "P28_DATA_HOST",
+      "P28_SOURCE_FREEZE_COMMIT",
+      "P28_SOURCE_FREEZE_TREE",
+      "P28_EXPECTED_SOURCE_BUNDLE_SHA256",
+      "P28_EXPECTED_SOURCE_BUNDLE_BYTE_COUNT",
+      "P28_EXPECTED_SOURCE_RECEIPT_SHA256",
+      "P28_EXPECTED_CONTRACT_SHA256",
+      "P28_EXPECTED_ORCHESTRATOR_SHA256",
+      "P28_EXPECTED_RECONSTRUCTOR_SHA256",
+      "P28_EXPECTED_BUNDLE_VERIFIER_SHA256",
+      "P28_EXPECTED_P27_CONTRACT_SHA256",
+      "P28_EXPECTED_P27_RECONSTRUCTOR_SHA256",
+      "P28_EXPECTED_P27_LOCALIZER_SHA256",
+      "P28_EXPECTED_INGESTER_SHA256",
+      "P28_EXPECTED_P23_CORE_SHA256",
+      "P28_EXPECTED_P27_SANITIZER_SHA256",
+      "P28_RUNTIME_REVIEW_COMMIT",
+      "P28_RUNTIME_REVIEW_TREE",
+      "P28_EXPECTED_RUNTIME_REVIEW_BUNDLE_SHA256",
+      "P28_EXPECTED_RUNTIME_REVIEW_BUNDLE_BYTE_COUNT",
+      "P28_EXPECTED_RUNTIME_REVIEW_RECEIPT_SHA256",
+      "P28_EXPECTED_RUNTIME_LOCK_SHA256",
+      "P28_EXPECTED_HOST_ATTESTATION_SHA256"
+    ],
+    "source_authorities_are_read_from_validated_contract": true,
+    "state_changing_prepare_runtime_invocations_allowed": 1,
+    "pre_root_source_receipt_replay_is_read_only_and_not_counted_as_state_changing_prepare": true,
+    "localization_invocations_allowed": 1,
+    "cleanup_resume_or_retry_phase_exists": false,
+    "source_bundle_verification_precedes_attempt_root_creation": true,
+    "runtime_review_bundle_verification_precedes_localization_marker": true,
+    "exact_bind_mount_count": 10,
+    "authority_checkout_is_only_repository_mount": true,
+    "localizer_enters_through_existing_evidence_mount": true
+  },
+  "fresh_localization_attempt": {
+    "attempt_id": "20260906-01",
+    "attempt_root": "/secure/p28/attempt-20260906-01",
+    "container_name": "p28-localization-20260906-01",
+    "transport_root": "/secure/p28/transport-20260906-01",
+    "control_checkout": "/secure/p28/control-source",
+    "root_must_not_preexist_before_verified_source_receipt": true,
+    "new_container_required": true,
+    "terminal_p26_or_p27_attempt_reuse_allowed": false,
+    "new_container_id_required": true,
+    "new_runtime_lock_required": true,
+    "new_host_attestation_required": true,
+    "localization_invocations_allowed": 1,
+    "retry_until_favorable_allowed": false,
+    "future_scientific_acquisition_attempt_id": "20260906-03",
+    "future_scientific_acquisition_is_authorized": false
+  },
+  "locked_base_runtime": {
+    "image_digest": "sha256:14dafde07ae578cc4725f452a51d4bc4c920b69f6af23125a72e27162e193ec0",
+    "gpu_uuid": "GPU-ee4c9bf9-42f5-7cdd-66d2-f638c2db549d",
+    "gpu_name": "NVIDIA A100-SXM4-40GB",
+    "network_mode": "none",
+    "root_filesystem_read_only": true,
+    "exact_bind_mount_count": 10,
+    "extra_mounts_allowed": false,
+    "tmpfs": {
+      "/tmp": "rw,noexec,nosuid,nodev,size=1073741824"
+    },
+    "authority_repository_commit": "185e444afc0b44ca0a09b1bde49a6b6fa3973355",
+    "authority_repository_tree": "24f4bdac331a57bd7c1b807747d7c7fba253ee5a",
+    "authority_git_indirection_guards_revalidated_before_every_prepare_or_run": [
+      "no shallow file",
+      "no objects/info/alternates",
+      "no info/grafts",
+      "no refs/replace",
+      "no extensions.partialClone",
+      "no remote.*.promisor"
+    ]
+  },
+  "two_phase_freeze": {
+    "phase_one": "Commit the finalized P28 transfer verifier, contract, host orchestrator, independent reconstruction, tests, workflow, and runbook before creating either source bundle receipt or the P28 attempt root.",
+    "phase_one_commit_is_selected_after_commit": true,
+    "phase_one_parent_commit": "ec63550331925ded158e3f389e294e4d1f12db3a",
+    "phase_one_must_be_direct_child_of_terminal_p27": true,
+    "phase_two": "After source-bundle closure and before localization, create and attest the fresh P28 runtime, then commit exactly the P28 runtime lock and host attestation as one direct child of phase one.",
+    "phase_two_exact_delta": [
+      "A\texperiments/training/p28_cuda_runtime_lock.json",
+      "A\texperiments/training/p28_host_attestation.json"
+    ],
+    "phase_two_runtime_review_bundle_must_be_complete": true,
+    "phase_two_runtime_review_receipt_must_be_external": true,
+    "phase_two_localization_started": false,
+    "phase_two_candidate_observations": 0,
+    "diagnostic_requires_reviewed_phase_two_commit": true,
+    "authority_repository_remains_185e444_mount": true
+  },
+  "no_training_boundary": {
+    "unchanged_p27_localizer_only": true,
+    "diagnostic_stages": [
+      "pre_cuda",
+      "post_cuda_init",
+      "post_model_move",
+      "post_optimizer"
+    ],
+    "model_construction_allowed": true,
+    "model_cuda_move_allowed": true,
+    "optimizer_construction_allowed": true,
+    "data_loading_allowed": false,
+    "forward_allowed": false,
+    "backward_allowed": false,
+    "optimizer_step_allowed": false,
+    "candidate_evaluation_allowed": false,
+    "candidate_observation_count_required": 0,
+    "gradient_observation_count_required": 0,
+    "parameter_update_count_required": 0
+  },
+  "execution_order": [
+    "independently reconstruct the terminal P27 outcome, unchanged P27 contract, and this P28 contract",
+    "create a credential-free full source bundle advertising exactly the five required refs",
+    "one-read and hash-bind the source bundle, close it in a fresh empty bare repository, reject prerequisites, and verify all objects refs tag types and peels",
+    "construct the absent clean control checkout only from the verified source closure and require P27 reconstruction 23 of 23",
+    "write and review the external source receipt while the P28 attempt root still does not exist",
+    "construct the absent detached clean 185e444 authority checkout only from the verified source closure and revalidate its commit tree and object-indirection guards",
+    "create the fresh P28 attempt root and container once from the locked runtime",
+    "freeze and review a new P28 runtime lock and host attestation without running localization",
+    "commit exactly the two runtime artifacts as a direct child of the P28 source freeze",
+    "create and independently close a second full runtime-review bundle in a second fresh empty bare repository",
+    "require the external runtime-review receipt and re-run P27 reconstruction 23 of 23 before creating a localization marker",
+    "copy the unchanged P27 localizer through the existing evidence mount with exact hash and no overwrite",
+    "ingest the terminal P26 failure with the unchanged P27 ingester and sanitizer authorities",
+    "run exactly one unchanged P27 no-training localization invocation and retain no-overwrite native logs",
+    "sanitize the native result with the unchanged P27-specific sanitizer",
+    "independently reconstruct every receipt binding and route from the exact mapping classification"
+  ],
+  "terminal_routing": {
+    "selection_precedence": [
+      "bundle_or_reconstruction_failure",
+      "sanitization_or_localization_failure",
+      "deleted_executable_or_writable_mapping",
+      "deleted_unclassifiable_or_identity_unstable_mapping",
+      "deleted_conclusively_identified_read_only_nonexecutable_mapping_set",
+      "no_deleted_mapping_reproduced"
+    ],
+    "routes": {
+      "bundle_or_reconstruction_failure": "stop before the next state-changing boundary; retain the exact receipt or failure; never create or reuse the P28 attempt root after a source-phase failure",
+      "sanitization_or_localization_failure": "stop; retain native evidence externally and record the independent failure",
+      "deleted_executable_or_writable_mapping": "stop; retain every witness; design an image or loader correction",
+      "deleted_unclassifiable_or_identity_unstable_mapping": "stop; retain every failed probe or identity transition; do not relax deleted-mapping rejection",
+      "deleted_conclusively_identified_read_only_nonexecutable_mapping_set": "stop; retain every witness; preregister a narrow provenance or device-mapping policy before scientific acquisition",
+      "no_deleted_mapping_reproduced": "record nonreproduction as the sole attempt result; do not infer safety and never rerun the same attempt to seek a favorable classification"
+    },
+    "multiple_conditions_use_first_matching_route": true,
+    "post_route_action": "freeze the exact P28 outcome and selected route",
+    "future_scientific_acquisition_authorized": false,
+    "future_scientific_acquisition_requires_separately_reviewed_contract": true
+  },
+  "forbidden_changes": [
+    "create the P28 attempt root before the source bundle receipt proves full closure and a 23-of-23 P27 reconstruction",
+    "use a bundle with a prerequisite or fewer or more than the five exact advertised refs",
+    "treat a peeled commit as a substitute for a required annotated tag object",
+    "reuse, mutate, or clean terminal P26 or P27 attempt state",
+    "change any P27 contract localizer sanitizer ingester scientific authority or classification rule",
+    "run more than one P28 localization invocation",
+    "run a forward pass backward pass optimizer step candidate evaluation candidate capture shield or training update",
+    "replace exact hashes or equality with allclose or another tolerance",
+    "commit a bundle receipt into the history it authenticates",
+    "rerun until a favorable bundle result or deleted-mapping classification appears",
+    "authorize fresh scientific acquisition attempt 20260906-03 from this bridge contract"
+  ]
+}
