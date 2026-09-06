@@ -357,6 +357,91 @@ gradient empirical gate. The frozen fixture's 144 observations, 126
 pass-throughs, and 18 activations all pass its synthetic checks; those counts
 only validate acquisition and aggregation logic.
 
+P22 freezes the first real-gradient acquisition separately. Its protocol pins
+NanoGPT commit `3adf61e154c3fe3fca428ad6bc3818b27a3b8291`, the audited Muon
+commit, GPT-2 small, FineWeb `sample-10BT` revision
+`9bb295ddab0e05d785b879661af7260fed5140fc`, `tiktoken==0.14.0`, one
+seed, 256 optimizer steps, and P21's existing 24 capture steps. The feasible
+pilot uses sequence length 128, batch one, no accumulation, weight decay zero,
+and constant Muon `eta=1/120`. The model's architectural block size remains
+1024.
+
+Run the prerequisite checker with an explicitly selected backend:
+
+```bash
+uv run --locked python experiments/training/p22_nanogpt_shadow_trace.py \
+  preflight --accelerator mps \
+  --nanogpt-root /path/to/nanoGPT \
+  --muon-source /path/to/muon.py \
+  --fineweb-manifest /path/to/materialized-fineweb.json \
+  --instrumentation-patch experiments/training/p22_observed_muon.py \
+  --output /path/to/p22-preflight.json
+```
+
+Use `--accelerator cuda` only under the CUDA-specific deterministic guard.
+MPS output is explicitly Apple-MPS evidence, not CUDA, tensor-core, native-
+kernel, or distributed parity. A blocked preflight exits nonzero and never
+starts training. The unmaterialized data template is intentionally rejected.
+
+The isolated trainer instrumentation must copy the actual stored signal and
+the mandatory actual post-aspect accelerator candidate. It also records an
+actual pre-aspect value where the pinned call boundary exposes one, but never
+reconstructs that value on CPU. It may not return the P20 shadow output to the
+optimizer. The isolated runner imports the pinned NanoGPT `model.py`; it does
+not execute or modify upstream `train.py`. Run it in three fresh processes,
+using the same explicit backend and frozen prerequisites:
+
+```bash
+uv run --locked python \
+  experiments/training/run_p22_real_gradient_shadow_trace.py run \
+  --trace-mode trace_off --accelerator mps \
+  --nanogpt-root /path/to/nanoGPT \
+  --muon-source /path/to/muon.py \
+  --fineweb-manifest /path/to/materialized-fineweb.json \
+  --instrumentation-patch experiments/training/p22_observed_muon.py \
+  --output /path/to/trace-off-a-manifest.json
+```
+
+Repeat that command in a fresh process for `trace-off-b-manifest.json`. Then
+run trace-on, adding the required raw-capture output:
+
+```bash
+uv run --locked python \
+  experiments/training/run_p22_real_gradient_shadow_trace.py run \
+  --trace-mode trace_on --accelerator mps \
+  --nanogpt-root /path/to/nanoGPT \
+  --muon-source /path/to/muon.py \
+  --fineweb-manifest /path/to/materialized-fineweb.json \
+  --instrumentation-patch experiments/training/p22_observed_muon.py \
+  --output /path/to/trace-on-manifest.json \
+  --raw-trace-output /path/to/p22-raw-trace.json
+```
+
+Use `--accelerator cuda` throughout instead only for the frozen one-CUDA-device
+profile. Never mix backends across the three runs. Once two trace-off repeats
+and one trace-on manifest exist, enforce the two exact gates in order:
+
+```bash
+uv run --locked python experiments/training/p22_nanogpt_shadow_trace.py \
+  verify-repeatability \
+  --trace-off-a /path/to/trace-off-a-manifest.json \
+  --trace-off-b /path/to/trace-off-b-manifest.json \
+  --output /path/to/p22-repeatability.json
+uv run --locked python experiments/training/p22_nanogpt_shadow_trace.py \
+  verify-noninterference \
+  --trace-off /path/to/trace-off-a-manifest.json \
+  --trace-on /path/to/trace-on-manifest.json \
+  --output /path/to/p22-noninterference.json
+```
+
+That comparison first checks baseline repeatability (off-A against off-B) and
+then observer noninterference (off-A against trace-on). It compares all 256
+batches, stored losses, and host/selected-accelerator RNG states, plus exact
+model/optimizer states initially, at all 24 capture-schedule updates, and
+finally. No tolerance is used. No P22 real trace or training-quality result is
+committed by the protocol/scaffold alone. See
+`theory/p22_real_gradient_shadow_trace_protocol.md`.
+
 The P9 separate CPU diagnostic is a native-matmul
 falsification probe against a float64, non-exact target:
 

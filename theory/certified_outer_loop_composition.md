@@ -135,7 +135,7 @@ P20 places its stored output \(T_t\) in the pointwise sector
 write
 
 \[
- \frac{T_t}{L}=\gamma p_t+K_Tv_t,qquad
+ \frac{T_t}{L}=\gamma p_t+K_Tv_t,\qquad
  \lVert v_t\rVert_F\le\lVert p_t\rVert_F.
 \tag{P21.2}
 \]

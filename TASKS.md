@@ -397,10 +397,36 @@
       zero-handling, P16/P18, and mild-intervention gates before observation;
       provide a synthetic CPU observer diagnostic that cannot be cited as
       training evidence.
-- [ ] Run the frozen real-gradient shadow trace. It is blocked on a pinned
-      trainer/instrumentation patch, dataset, tokenizer, checkpoint,
-      accelerator, and complete P20-covered model shape inventory; vanilla
-      GPT-2's fused `768 x 2304` QKV matrix is not currently certified.
+- [x] Freeze the P22 real-gradient shadow-trace protocol before inspecting any
+      real gradient: NanoGPT commit
+      `3adf61e154c3fe3fca428ad6bc3818b27a3b8291`, KellerJordan/Muon commit
+      `f98f1cacc0263b04290753e32be8d498c1efc806`, GPT-2 small, FineWeb
+      `sample-10BT` revision `9bb295ddab0e05d785b879661af7260fed5140fc`,
+      one seed, 256 steps, and the existing 24 captures.
+- [x] Freeze the M4-feasible acquisition profile: architectural block size
+      1024, training sequence length 128, batch one, no accumulation, 32,768
+      sequential training tokens, `eta=1/120`, and weight decay zero. Permit one
+      explicitly selected BF16 CUDA or MPS accelerator while labeling MPS as
+      non-CUDA and non-parity evidence.
+- [x] Add fail-closed P22 preflight, exact nested-state hashing, selected-
+      accelerator RNG preservation, and a no-tolerance 256-step off-A/off-B
+      repeatability then off-A/trace-on comparison. Require actual accelerator
+      post-aspect candidates,
+      plus pre-aspect values where the pinned call boundary exposes them;
+      never substitute a CPU recomputation or P21 synthetic data.
+- [ ] Materialize and hash the frozen FineWeb slice: 131,072 training-pool
+      tokens plus 32,768 validation tokens, complete untruncated source rows,
+      `tiktoken==0.14.0` GPT-2 assets, preprocessing source, and both binary
+      files.
+- [ ] Finish and review the isolated NanoGPT instrumentation patch. It must
+      capture the actual stored signal and mandatory post-aspect accelerator
+      candidate without changing the candidate returned to the baseline;
+      capture pre-aspect values only where the exact call boundary exposes
+      them.
+- [ ] Run two fresh P22 trace-off repeats and one trace-on acquisition on the
+      pinned accelerator. Interpret shadow activation/fidelity metrics only
+      after baseline repeatability and the exact parameter, optimizer, loss,
+      batch, and RNG noninterference comparison pass.
 - [ ] Obtain an independent human proof audit of C27, especially stored-signal
       placement, port normalization/signs, seven-shape roundoff absorption,
       all-subnormal completion, and weight-decay scope; the unsigned packet is

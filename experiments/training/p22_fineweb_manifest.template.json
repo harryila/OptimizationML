@@ -1,0 +1,71 @@
+{
+  "schema_version": "passive-muon-p22-fineweb-materialization-v1",
+  "status": "unmaterialized_template",
+  "dataset": {
+    "repository": "HuggingFaceFW/fineweb",
+    "config": "sample-10BT",
+    "split": "train",
+    "revision": "9bb295ddab0e05d785b879661af7260fed5140fc",
+    "source_record_contract": "Each source_shards entry is a captured datasets-server response with exact revision-pinned request URL, row range, path, byte_count, SHA-256, and source_kind. Every contained row must have truncated_cells=[].",
+    "source_shards": [],
+    "selection": {
+      "ordering": "Increasing row index at the pinned revision; complete untruncated text only",
+      "first_row_id": null,
+      "last_row_id_inclusive": null,
+      "row_count": null,
+      "canonical_consumed_rows_sha256": null,
+      "train_boundary": {
+        "row_id": null,
+        "token_offset_exclusive": null
+      },
+      "validation_boundary": {
+        "row_id": null,
+        "token_offset_exclusive": null
+      }
+    }
+  },
+  "tokenizer": {
+    "package": "tiktoken",
+    "version": "0.14.0",
+    "encoding": "gpt2",
+    "vocab_size": 50257,
+    "end_of_text_token_id": 50256,
+    "append_end_of_text_after_each_document": true,
+    "files": {
+      "vocab.bpe": {
+        "path": null,
+        "sha256": "1ce1664773c50f3e0cc8842619a93edc4624525b728b188a9e0be33b7726adc5",
+        "byte_count": null
+      },
+      "encoder.json": {
+        "path": null,
+        "sha256": "196139668be63f3b5d6574427317ae82f612a97c5d1cdaf36ed2256dbf636783",
+        "byte_count": null
+      }
+    }
+  },
+  "preprocessor": {
+    "path": null,
+    "sha256": null,
+    "byte_count": null,
+    "normalization": "none",
+    "document_field": "text"
+  },
+  "outputs": {
+    "train.bin": {
+      "path": null,
+      "sha256": null,
+      "byte_count": 262144,
+      "token_count": 131072,
+      "dtype": "little-endian uint16"
+    },
+    "val.bin": {
+      "path": null,
+      "sha256": null,
+      "byte_count": 65536,
+      "token_count": 32768,
+      "dtype": "little-endian uint16"
+    }
+  },
+  "notes": "Copy this file, materialize every null field, and verify all local bytes with the P22 preflight. The template itself is intentionally rejected as run evidence."
+}

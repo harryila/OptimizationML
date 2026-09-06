@@ -1,0 +1,107 @@
+from __future__ import annotations
+
+import ast
+import json
+import subprocess
+import sys
+from pathlib import Path
+
+import pytest
+
+
+def _run(root: Path, *arguments: str, check: bool = True) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        [
+            sys.executable,
+            str(root / "scripts/reconstruct_p22_scalable_shield_shape_extension.py"),
+            *arguments,
+        ],
+        cwd=root,
+        check=check,
+        capture_output=True,
+        text=True,
+    )
+
+
+def _generate(root: Path, output: Path) -> None:
+    subprocess.run(
+        [
+            sys.executable,
+            str(root / "scripts/certify_p22_scalable_shield_shape_extension.py"),
+            "--output",
+            str(output),
+        ],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+
+def test_p22_shape_extension_reconstruction_is_standard_library_only() -> None:
+    root = Path(__file__).resolve().parents[1]
+    script = root / "scripts/reconstruct_p22_scalable_shield_shape_extension.py"
+    tree = ast.parse(script.read_text(encoding="utf-8"))
+    imported: set[str] = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            imported.update(alias.name.split(".")[0] for alias in node.names)
+        elif isinstance(node, ast.ImportFrom) and node.module is not None:
+            imported.add(node.module.split(".")[0])
+    assert "passive_muon" not in imported
+    assert imported.isdisjoint({"numpy", "scipy", "sympy", "torch", "flint", "mpmath", "cvxpy"})
+
+
+def test_p22_shape_extension_reconstruction_closes_internal_checks() -> None:
+    root = Path(__file__).resolve().parents[1]
+    payload = json.loads(_run(root).stdout)
+
+    assert payload["implementation_scope"]["project_package_imported"] is False
+    assert payload["implementation_scope"]["numerical_library_imported"] is False
+    assert payload["all_internal_exact_checks_passed"]
+    assert all(payload["reconstruction"]["checks"].values())
+    fields = payload["reconstruction"]["fields"]
+    assert fields["extension"]["inward_margin"] == ("942123070212169/1152921504606846976")
+    assert fields["shape_audit"]["root_entries_upper"] == 1_331
+    assert fields["shape_audit"]["balanced_norm"]["pairwise_path_length"] == 22
+
+
+def test_p22_shape_extension_reconstruction_matches_fresh_generator(tmp_path: Path) -> None:
+    root = Path(__file__).resolve().parents[1]
+    fresh = tmp_path / "fresh-p22-shape-extension.json"
+    _generate(root, fresh)
+
+    payload = json.loads(_run(root, "--canonical", str(fresh), "--require-canonical").stdout)
+    assert payload["canonical_comparison"]["status"] == "matched"
+    assert payload["all_exact_checks_passed"]
+    assert all(payload["canonical_comparison"]["comparisons"].values())
+
+
+def test_p22_shape_extension_matches_committed_canonical_when_present() -> None:
+    root = Path(__file__).resolve().parents[1]
+    canonical = root / "results/summaries/p22_scalable_shield_shape_extension_certificate.json"
+    if not canonical.is_file():
+        pytest.skip("committed P22 shape-extension certificate has not landed yet")
+    payload = json.loads(_run(root, "--require-canonical").stdout)
+    assert payload["canonical_comparison"]["status"] == "matched"
+    assert payload["all_exact_checks_passed"]
+
+
+def test_p22_shape_extension_reconstruction_rejects_tampering(tmp_path: Path) -> None:
+    root = Path(__file__).resolve().parents[1]
+    fresh = tmp_path / "fresh-p22-shape-extension.json"
+    _generate(root, fresh)
+    payload = json.loads(fresh.read_text(encoding="utf-8"))
+    payload["reconstruction_fields"]["shape_audit"]["margin"]["inward_margin"] = "0"
+    tampered = tmp_path / "tampered-p22-shape-extension.json"
+    tampered.write_text(json.dumps(payload), encoding="utf-8")
+
+    completed = _run(
+        root,
+        "--canonical",
+        str(tampered),
+        "--require-canonical",
+        check=False,
+    )
+    assert completed.returncode != 0
+    assert "missing or mismatched" in completed.stderr

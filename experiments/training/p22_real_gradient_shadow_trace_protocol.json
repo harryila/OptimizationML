@@ -1,0 +1,169 @@
+{
+  "schema_version": "passive-muon-p22-real-gradient-shadow-trace-v1",
+  "status": "frozen_protocol_no_run",
+  "claim_boundary": {
+    "real_run_present": false,
+    "sampled_evidence": "A passing shadow trace is empirical evidence about the pinned run only. It cannot prove global passivity, global fidelity, global PL, or stability of a neural-network loss.",
+    "synthetic_exclusion": "P21 synthetic records are infrastructure tests and may not be substituted for this P22 real-gradient acquisition.",
+    "update_isolation": "The P20 output is observed only. Fresh-process trace-off-A, trace-off-B, and trace-on runs must apply the same unshielded pinned baseline update. Off-A and off-B must first pass the bitwise repeatability gate; only then may off-A and trace-on be used for the execution-specific noninterference validation."
+  },
+  "upstream": {
+    "trainer": {
+      "repository": "https://github.com/karpathy/nanoGPT",
+      "revision": "3adf61e154c3fe3fca428ad6bc3818b27a3b8291",
+      "tree": "ca93bcd9b9c9ff32d3016e1e2556644e68bef86a",
+      "train_py_blob": "de5785051050d64bbda37a4964c2c079f0739b2b",
+      "model_py_blob": "c698f8b60129d793494de058b0dd4e318c0dcb5e",
+      "dirty_checkout_allowed": false,
+      "integration": "The isolated P22 trainer imports model.py from this clean checkout, replaces stock AdamW with the pinned SingleDeviceMuonWithAuxAdam, separates architectural block size 1024 from training sequence length 128, and disables evaluation/checkpointing. Its exact source bytes and SHA-256 are mandatory run provenance.",
+      "instrumentation": "A separate isolated wrapper observes the exact module-global muon_update called by the pinned optimizer. It may clone values for a record-only hook but may not change the returned candidate. Its exact bytes and SHA-256 are mandatory run provenance."
+    },
+    "muon": {
+      "repository": "https://github.com/KellerJordan/Muon",
+      "revision": "f98f1cacc0263b04290753e32be8d498c1efc806",
+      "audited_file": "muon.py",
+      "audited_file_sha256": "2479665a90124f62e4df557816665851ca317e42fcfda2af1da02c1f44ab5f3d",
+      "optimizer": "SingleDeviceMuonWithAuxAdam",
+      "license": "MIT"
+    }
+  },
+  "run": {
+    "seed": 1337,
+    "seed_count": 1,
+    "device_count": 1,
+    "accelerator_backend": "explicitly selected cuda or mps; never cpu or automatic fallback",
+    "distributed": false,
+    "total_optimizer_steps": 256,
+    "capture_steps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      124,
+      125,
+      126,
+      127,
+      128,
+      129,
+      130,
+      131,
+      248,
+      249,
+      250,
+      251,
+      252,
+      253,
+      254,
+      255
+    ],
+    "capture_count": 24,
+    "micro_batch_size": 1,
+    "sequence_length": 128,
+    "gradient_accumulation_steps": 1,
+    "tokens_per_optimizer_step": 128,
+    "total_training_tokens": 32768,
+    "initialization": "from_scratch",
+    "evaluation_during_run": false,
+    "checkpointing_during_run": false,
+    "compile": false,
+    "gradient_clip": 0,
+    "deterministic_algorithms": true,
+    "tf32": false,
+    "autocast": "disabled; model forward/backward, parameters, gradients, EMA and Nesterov remain FP32; only the pinned five Newton-Schulz stages use BF16",
+    "cuda_only_cublas_workspace_config": ":4096:8",
+    "mps_environment": "PYTORCH_ENABLE_MPS_FALLBACK=0 is required and PYTORCH_MPS_FAST_MATH must be unset or 0.",
+    "mps_scope": "An Apple-MPS run is valid BF16-stored backend-specific shadow evidence, but it is not CUDA, GPU-kernel parity, native BF16-accumulation, or tensor-core certification."
+  },
+  "model": {
+    "family": "nanoGPT GPT-2 small",
+    "n_layer": 12,
+    "n_head": 12,
+    "n_embd": 768,
+    "block_size": 1024,
+    "vocab_size": 50257,
+    "dropout": 0.0,
+    "bias": false,
+    "tie_word_embeddings": true,
+    "muon_parameter_rule": "Every hidden two-dimensional transformer-block weight; token/position embeddings, tied language-model head, layer-normalization gains, and all vectors/scalars use the auxiliary optimizer.",
+    "intended_muon_parameter_count": 48,
+    "shape_extension": "Each of 12 fused c_attn weights has stored PyTorch shape 2304x768 and is transposed to the separately certified P22 orientation 768x2304. The P22 exact extension and independent reconstruction must pass; the frozen P20 table is not rewritten."
+  },
+  "optimizer": {
+    "muon_learning_rate": "1/120",
+    "muon_learning_rate_schedule": "constant",
+    "muon_momentum": "19/20",
+    "muon_nesterov": true,
+    "muon_weight_decay": 0,
+    "auxiliary_learning_rate": "3/5000",
+    "auxiliary_learning_rate_schedule": "constant",
+    "auxiliary_betas": ["9/10", "19/20"],
+    "auxiliary_epsilon": "1/10000000000",
+    "auxiliary_weight_decay": 0,
+    "normalization": "X/(||X||_F+1e-7), after one-time wide-matrix transpose",
+    "normalization_epsilon": "1e-7",
+    "jordan_coefficients": ["6889/2000", "-191/40", "4063/2000"],
+    "jordan_stages": 5,
+    "aspect_formula": "sqrt(max(1, rows/columns))",
+    "candidate_update_scope": "The baseline applies the literal unshielded pinned Muon candidate. P20 is shadow-only."
+  },
+  "data": {
+    "dataset_repository": "HuggingFaceFW/fineweb",
+    "dataset_config": "sample-10BT",
+    "dataset_split": "train",
+    "dataset_revision": "9bb295ddab0e05d785b879661af7260fed5140fc",
+    "row_order": "Arrow row order at the pinned dataset revision; no shuffle before tokenization.",
+    "source_rule": "Use complete text cells from the pinned revision in increasing row order. A datasets-server row is permitted only when its truncated_cells list is empty; otherwise fetch the revision-pinned source shard. Record every server response or source shard hash.",
+    "tokenizer_package": "tiktoken==0.14.0",
+    "tokenizer_encoding": "gpt2",
+    "tokenization": "tiktoken GPT-2 byte-pair encoding (vocab 50257, eot 50256), with one eot token appended after every document",
+    "tokenizer_assets": {
+      "vocab.bpe_sha256": "1ce1664773c50f3e0cc8842619a93edc4624525b728b188a9e0be33b7726adc5",
+      "encoder.json_sha256": "196139668be63f3b5d6574427317ae82f612a97c5d1cdaf36ed2256dbf636783"
+    },
+    "stream_selection": "Concatenate complete documents in pinned increasing row order. The first 131072 tokens form train.bin and the next 32768 tokens form val.bin; boundary rows and in-row token offsets are recorded.",
+    "training_window_schedule": "At optimizer step t, use train.bin[t*128:t*128+128] as input and the one-token shift as target. Record every one of the 256 starting offsets and batch hashes; no random sampler or shuffle is used.",
+    "train_pool_token_count": 131072,
+    "validation_token_count": 32768,
+    "stored_dtype": "little-endian uint16",
+    "manifest_template": "experiments/training/p22_fineweb_manifest.template.json",
+    "hash_requirements": "The full dataset revision, every datasets-server response or consumed source shard, preprocessing source, tiktoken assets, train.bin, and val.bin must be SHA-256 pinned and locally verified before accelerator work."
+  },
+  "capture": {
+    "parameter_selection": "All 48 intended Muon hidden matrices at every one of the 24 capture steps; no post-hoc parameter, layer, role, norm, or success selection.",
+    "timing": "After accumulation and before parameter update, inside the actual pinned accelerator muon_update path.",
+    "stored_signal": "The actual stored Nesterov signal consumed by the accelerator orthogonalizer.",
+    "pre_aspect_candidate": "Optional diagnostic when the pinned call boundary exposes the actual accelerator value after five BF16 Jordan stages and orientation restoration but before aspect scaling. Record null plus a reason when unavailable; never reconstruct it on CPU.",
+    "post_aspect_candidate": "The actual stored accelerator candidate after the pinned aspect multiply; this is the fidelity comparator and the candidate supplied to the CPU proof-reference P20 shadow.",
+    "shadow_output": "P20 output computed from detached contiguous CPU copies and never returned to, or read by, the baseline optimizer.",
+    "record_only": "Hashes and predeclared metrics are retained for every matrix. Raw matrices are not required to be published, but any retained raw bundle must be hashed and access-controlled before inspection."
+  },
+  "noninterference": {
+    "paired_runs": ["trace_off_a", "trace_off_b", "trace_on"],
+    "initial_state": "All three fresh processes start from byte-identical model, optimizer, deterministic sequential data schedule, and RNG state.",
+    "observer_rng_rule": "At each capture, Python, NumPy, Torch CPU, and the explicitly selected CUDA or MPS RNG state must be bitwise unchanged across the observer call; a violation restores the pre-call RNG and aborts.",
+    "per_step_equality": [
+      "input-token batch bytes",
+      "stored loss tensor bytes",
+      "Python/NumPy/Torch CPU and selected-accelerator RNG-state bytes"
+    ],
+    "state_equality_schedule": "Hash every model parameter/buffer and the complete optimizer state initially, after each of the 24 capture-schedule steps, and finally. This avoids roughly a terabyte of redundant accelerator-to-host hashing while still placing exact state checkpoints around every observer-bearing update.",
+    "final_equality": "Off-A must first match off-B, then off-A must match trace-on, for every scheduled digest and final model/optimizer/RNG digest. Tolerances and approximate floating-point comparisons are forbidden.",
+    "shadow_update_applied": false
+  },
+  "fail_closed": {
+    "required_before_run": [
+      "clean exact nanoGPT checkout and hashed instrumentation patch",
+      "exact pinned Muon source hash",
+      "materialized and locally SHA-256-verified FineWeb/tokenizer manifest",
+      "one explicitly selected BF16-capable CUDA or MPS device under the frozen deterministic settings",
+      "100% P20/P22 coverage of the 48-name GPT-2-small Muon inventory",
+      "passing trace-off-A/trace-off-B repeatability comparison followed by trace-off-A/trace-on noninterference comparison"
+    ],
+    "current_expected_status": "blocked",
+    "reason": "No materialized FineWeb bundle or complete three-run accelerator acquisition and comparison result is committed."
+  }
+}
