@@ -1,0 +1,279 @@
+{
+  "schema_version": "passive-muon-p29-permission-safe-bundle-localization-bridge-outcome-v1",
+  "status": "terminal_post_source_receipt_orchestrator_seal_source_mode_stop",
+  "attempt_id": "20260906-02",
+  "evidence_kind": "repository_authenticated_source_freeze_plus_external_source_receipt_and_operator_recorded_seal_failure",
+  "claim_boundary": "The P29 source commit, tree, parent, contract, checked-in verifier, orchestrator, runbook, and reconstructor bytes are repository-authenticated. The external source receipt is a native no-overwrite verifier artifact whose reviewed path, size, and SHA-256 are operator-recorded here; its bytes are not committed. The single source-verifier invocation authenticated the complete seven-ref bundle, constructed and checked the control checkout, replayed all four reconstruction barriers, and created the source receipt. The subsequent reviewed-orchestrator seal stopped before destination creation because the control-checkout file was uid/gid 1000/1000 mode 0600 while the frozen seal required mode 0644. The exact seal stderr and post-failure remote inventory are operator-recorded because no native seal transcript was retained. No sealed launcher, authority checkout, prepare or localization token, attempt root, execution snapshot, image inspection, GPU access, container, CUDA initialization, deleted-mapping localization, model or optimizer, gradient, candidate, optimizer update, or training observation was created. This is a cross-phase source-mode contract failure, not a source-bundle, receipt, reconstruction, CUDA, mapping, repeatability, observer-noninterference, fidelity, shield, or training result.",
+  "source_freeze": {
+    "branch": "p29-permission-safe-bundle-localization-bridge",
+    "commit": "ab62f683bf41ebb593a46267501e6aa6ba8e04c6",
+    "tree": "3a6f210b5ed4767cbfe0ac354e2f58031242064f",
+    "parent": "7274367f2b05fb3c9ed9f876a59be647703bbdc2",
+    "contract_path": "experiments/training/p29_permission_safe_bundle_localization_bridge_contract.json",
+    "contract_sha256": "54d10ab01b7d453d01931459b314fc4491b6e4317a02fb763ca9872686311b0a",
+    "verifier_path": "scripts/verify_p29_control_bundle.py",
+    "verifier_sha256": "4e1c8d23a0b770282b90ad200d5323d3d281c57bc302a6a21cd84fef636f17b9",
+    "orchestrator_path": "scripts/run_p29_permission_safe_bundle_localization_bridge.sh",
+    "orchestrator_sha256": "1653a12c2a86d307ddbff11cc5e48701e4817ee99e4674eaf6b426a8b2302cc5",
+    "runbook_path": "experiments/training/P29_PERMISSION_SAFE_BUNDLE_LOCALIZATION_BRIDGE_RUNBOOK.md",
+    "runbook_sha256": "9c8d7b9af3a5fbf1a577a282f94e01d532bcab175931f9e8edab5f6dacd4a2b9",
+    "reconstructor_path": "scripts/reconstruct_p29_permission_safe_bundle_localization_bridge.py",
+    "reconstructor_sha256": "a384bfcbc25fe9148a158a5f524170557808f8e68d07cb99474b64bbe3c10aea",
+    "source_frozen_before_namespace_creation": true
+  },
+  "source_bundle": {
+    "path": "/secure/p29/transport-20260906-02/p29_source.bundle",
+    "sha256": "5546ab07222ca5e9b1fd1959a23fd7830f68333ba073386a302343b3fe5817a9",
+    "byte_count": 3503837,
+    "owner": "ubuntu:ubuntu",
+    "uid": 1000,
+    "gid": 1000,
+    "mode": "0600",
+    "format": "v2",
+    "prerequisite_count": 0,
+    "advertised_refs": [
+      {
+        "ref": "refs/heads/p29-permission-safe-bundle-localization-bridge",
+        "object": "ab62f683bf41ebb593a46267501e6aa6ba8e04c6"
+      },
+      {
+        "ref": "refs/heads/p28-bundle-complete-localization-bridge",
+        "object": "7274367f2b05fb3c9ed9f876a59be647703bbdc2"
+      },
+      {
+        "ref": "refs/tags/p28-control-parent-permission-diagnostic",
+        "object": "f3c81a2f14f853f369015a4f81b6695b52eec74e",
+        "peeled_commit": "7274367f2b05fb3c9ed9f876a59be647703bbdc2"
+      },
+      {
+        "ref": "refs/heads/p27-cuda-deleted-mapping-localization",
+        "object": "ec63550331925ded158e3f389e294e4d1f12db3a"
+      },
+      {
+        "ref": "refs/tags/p27-cuda-deleted-mapping-localization-diagnostic",
+        "object": "c88b98eae9be2458abde45b05d3dccfe09c0c7ed",
+        "peeled_commit": "ec63550331925ded158e3f389e294e4d1f12db3a"
+      },
+      {
+        "ref": "refs/tags/p26-permission-safe-acquisition-checkpoint",
+        "object": "bacad707d3779bfa10957e18cb4c69b1a7f0cbce",
+        "peeled_commit": "5429da23ff18888daa2312c530a4587780484d8b"
+      },
+      {
+        "ref": "refs/tags/p26-attempt02-acquisition-source",
+        "object": "f35a7dca8f6bc39e9748e79b6712fab4a203396b",
+        "peeled_commit": "185e444afc0b44ca0a09b1bde49a6b6fa3973355"
+      }
+    ],
+    "exact_closed_ref_inventory_verified": true
+  },
+  "bootstrap_verifier": {
+    "path": "/secure/p29/transport-20260906-02/verify_p29_control_bundle.py",
+    "sha256": "4e1c8d23a0b770282b90ad200d5323d3d281c57bc302a6a21cd84fef636f17b9",
+    "byte_count": 138874,
+    "owner": "ubuntu:ubuntu",
+    "uid": 1000,
+    "gid": 1000,
+    "mode": "0600",
+    "stable_nofollow_self_authentication_passed": true
+  },
+  "source_verification": {
+    "phase": "source",
+    "invocations_allowed": 1,
+    "invocations_run": 1,
+    "exit_status": 0,
+    "completed_before_seal": [
+      "bootstrap_verifier_authentication",
+      "stable_source_bundle_hash_and_size_authentication",
+      "closed_v2_header_and_zero_prerequisite_validation",
+      "fresh_empty_bare_source_closure_creation",
+      "explicit_fetch_of_each_of_seven_refs",
+      "tag_type_and_peel_validation",
+      "full_strict_git_fsck",
+      "canonical_control_checkout_creation_and_validation",
+      "p29_contract_reconstruction_15_of_15",
+      "p28_contract_reconstruction_12_of_12",
+      "p28_terminal_outcome_reconstruction_10_of_10",
+      "p27_contract_reconstruction_23_of_23",
+      "private_bundle_post_use_revalidation",
+      "source_receipt_creation"
+    ],
+    "source_control_checkout_created": true,
+    "source_control_head": "ab62f683bf41ebb593a46267501e6aa6ba8e04c6",
+    "source_control_tree": "3a6f210b5ed4767cbfe0ac354e2f58031242064f",
+    "source_control_clean_at_receipt_creation": true,
+    "source_receipt_created": true
+  },
+  "source_receipt": {
+    "path": "/secure/p29/transport-20260906-02/p29_source_bundle_receipt.json",
+    "schema_version": "passive-muon-p29-control-bundle-receipt-v1",
+    "status": "source_bundle_and_permission_layout_verified_before_attempt_root_creation",
+    "sha256": "7e4b80c03ccc59049b78a1a553c087ec670ce5c4cbc5a3db6b1bda8db2b45065",
+    "byte_count": 11678,
+    "owner": "ubuntu:ubuntu",
+    "uid": 1000,
+    "gid": 1000,
+    "mode": "0600",
+    "native_external_artifact": true,
+    "committed_to_repository": false,
+    "operator_recorded_path_stat_and_digest": true,
+    "replayed_after_creation": false,
+    "reconstruction_publication_barrier": {
+      "p29_contract": "15/15",
+      "p28_terminal_outcome": "10/10",
+      "p28_contract": "12/12",
+      "p27_contract": "23/23"
+    }
+  },
+  "reviewed_orchestrator_seal": {
+    "invocations_run": 1,
+    "exit_status": 1,
+    "invocation_utc_independently_retained": false,
+    "invocation_utc": null,
+    "exact_terminal_stderr": "P29 reviewed orchestrator source authority differs",
+    "exact_terminal_stderr_with_one_lf_sha256": "6862765b73c5e2df1bc16b28d9def47b1824f9295835f8d605a017edd879f92b",
+    "exact_terminal_stderr_with_one_lf_byte_count": 51,
+    "operator_capture_only": true,
+    "remote_stdout_file_retained": false,
+    "remote_stderr_file_retained": false,
+    "source_path": "/secure/p29/transport-20260906-02/control-source/scripts/run_p29_permission_safe_bundle_localization_bridge.sh",
+    "source_sha256": "1653a12c2a86d307ddbff11cc5e48701e4817ee99e4674eaf6b426a8b2302cc5",
+    "source_byte_count": 206145,
+    "source_owner": "ubuntu:ubuntu",
+    "source_uid": 1000,
+    "source_gid": 1000,
+    "source_observed_mode": "0600",
+    "source_required_mode": "0644",
+    "source_hash_matched": true,
+    "source_owner_matched": true,
+    "source_mode_matched": false,
+    "failed_operation": "reviewed orchestrator stable-read source authority predicate before destination O_EXCL",
+    "destination_path": "/var/lib/optimizationml-p29-20260906-02/run_p29_permission_safe_bundle_localization_bridge.sh",
+    "destination_created": false
+  },
+  "retained_remote_state": {
+    "namespace_root": {
+      "path": "/secure/p29",
+      "owner": "root:root",
+      "uid": 0,
+      "gid": 0,
+      "mode": "0755"
+    },
+    "transport": {
+      "path": "/secure/p29/transport-20260906-02",
+      "owner": "ubuntu:ubuntu",
+      "uid": 1000,
+      "gid": 1000,
+      "mode": "0700"
+    },
+    "source_closure_path": "/secure/p29/transport-20260906-02/p29_source_closure.git",
+    "source_closure_created": true,
+    "control_checkout_path": "/secure/p29/transport-20260906-02/control-source",
+    "control_checkout_created": true,
+    "source_receipt_created": true,
+    "localization_ledger_root": {
+      "path": "/var/lib/optimizationml-p29-20260906-02",
+      "owner": "root:root",
+      "uid": 0,
+      "gid": 0,
+      "mode": "0700",
+      "exact_child_inventory": [
+        "deferred"
+      ]
+    },
+    "deferred_journal_path": "/var/lib/optimizationml-p29-20260906-02/deferred",
+    "sealed_orchestrator_created": false,
+    "authority_checkout_created": false,
+    "attempt_root": "/secure/p29/attempt-20260906-02",
+    "attempt_root_created": false,
+    "execution_snapshot_root": "/secure/p29/execution-20260906-02",
+    "execution_snapshot_created": false,
+    "prepare_runtime_invocation_token_created": false,
+    "localization_invocation_token_created": false,
+    "localization_authorization_token_created": false,
+    "localization_terminal_status_created": false,
+    "container_name": "p29-localization-20260906-02",
+    "container_created": false,
+    "runtime_lock_created": false,
+    "host_attestation_created": false,
+    "native_localization_artifact_created": false,
+    "sanitized_localization_artifact_created": false
+  },
+  "gate_status": {
+    "source_freeze": "completed",
+    "bootstrap_verifier_authentication": "passed",
+    "source_bundle_completeness": "passed_exact_seven_refs",
+    "fresh_source_closure": "created_and_verified",
+    "source_control_checkout": "created_and_verified",
+    "required_reconstructions": "passed_15_12_10_23",
+    "source_receipt": "created_and_reviewed",
+    "reviewed_orchestrator_seal": "failed_source_mode_mismatch",
+    "authority_checkout_creation": "not_run",
+    "prepare_runtime_invocation": "not_run",
+    "attempt_root_creation": "not_run",
+    "execution_snapshot_creation": "not_run",
+    "image_inspection": "not_run",
+    "gpu_access": "not_run",
+    "container_creation": "not_run",
+    "runtime_freeze": "not_run",
+    "cuda_initialization": "not_run",
+    "deleted_mapping_localization": "not_run",
+    "model_construction": "not_run",
+    "optimizer_construction": "not_run",
+    "forward_backward": "not_run",
+    "optimizer_steps": 0,
+    "candidate_observations": 0,
+    "training": "not_run"
+  },
+  "terminal_policy": {
+    "attempt_is_terminal": true,
+    "namespace_transport_control_closure_receipt_and_ledger_are_terminal": true,
+    "reuse_attempt_20260906_02_allowed": false,
+    "cleanup_repair_or_resume_retained_p29_state_allowed": false,
+    "retry_until_favorable_allowed": false,
+    "source_verifier_invocation_consumed": true,
+    "reviewed_orchestrator_seal_invocation_consumed": true,
+    "prepare_runtime_invocation_consumed": false,
+    "localization_invocation_consumed": false,
+    "scientific_protocol_changed": false,
+    "frozen_thresholds_changed": false
+  },
+  "theorem_status": {
+    "p18_through_p21_results_affected": false,
+    "p26_terminal_result_affected": false,
+    "p27_terminal_result_affected": false,
+    "p28_terminal_result_affected": false,
+    "deleted_mapping_identity_established": false,
+    "cuda_repeatability_established": false,
+    "observer_noninterference_established": false,
+    "real_gradient_fidelity_established": false,
+    "native_cuda_shield_certified": false
+  },
+  "root_cause": {
+    "classification": "cross_phase_reviewed_orchestrator_source_mode_contract_mismatch",
+    "exact_failure": "The P29 source verifier intentionally set umask 077 before constructing the clean control checkout. The committed orchestrator is a non-executable 100644 Git blob, so the authenticated control-checkout copy was physically mode 0600. After successful source-receipt creation, the frozen root seal required that same uid/gid-1000 source to be mode 0644 and stopped before opening the root-owned destination. The observed source mode was more restrictive than the required mode; no byte, owner, bundle, receipt, or reconstruction mismatch was observed.",
+    "source_bundle_defect_observed": false,
+    "source_receipt_defect_observed": false,
+    "reconstruction_defect_observed": false,
+    "orchestrator_byte_or_hash_defect_observed": false,
+    "source_owner_defect_observed": false,
+    "source_mode_was_more_restrictive_than_required": true,
+    "cross_phase_mode_precondition_defect_observed": true,
+    "seal_failed_closed": true,
+    "security_authority_broadened": false,
+    "cuda_or_backend_defect_observed": false,
+    "mapping_classification_observed": false
+  },
+  "route": {
+    "selected_terminal_route": "layout_bundle_or_reconstruction_failure",
+    "next_action": "freeze_this_terminal_pre_authority_outcome_then_preregister_p30_with_aligned_reviewed_orchestrator_source_mode",
+    "next_branch": "p30-umask-bound-control-seal",
+    "next_attempt_id": "20260906-03",
+    "new_namespace_bundle_receipt_and_attempt_required": true,
+    "required_contract_correction": "Align the reviewed seal with the source verifier's umask-derived mode before execution; accepting a stably authenticated uid/gid-1000 mode-0600 source is the minimal correction because it is stricter than 0644. Add an end-to-end seal preflight that starts from a verifier-created control checkout.",
+    "chmod_or_other_repair_of_retained_p29_control_allowed": false,
+    "attempt_20260906_02_may_be_reused": false,
+    "retained_p29_state_may_be_cleaned_up": false,
+    "scientific_acquisition_authorized": false
+  }
+}
