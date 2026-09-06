@@ -239,6 +239,12 @@ def test_summary_fails_coverage_when_an_intended_parameter_is_omitted() -> None:
     assert summary["coverage"]["parameter_numel_coverage"] == 0.5
     assert summary["hard_gate_checks"]["intended_muon_inventory_complete_every_capture"] is False
     assert summary["all_predeclared_checks_pass"] is False
+    assert summary["real_gradient_evidence"] is True
+    assert summary["interpretation"].startswith(
+        "These are declared real-gradient shadow observations"
+    )
+    assert "does not deeply validate" in summary["interpretation"]
+    assert "Passing synthetic gates" not in summary["interpretation"]
 
 
 def test_synthetic_runner_repeats_decisions_for_same_seed(

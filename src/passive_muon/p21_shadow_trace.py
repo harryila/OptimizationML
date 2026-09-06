@@ -5,10 +5,11 @@ five-stage BF16 Muon candidate.  It applies the pinned upstream aspect factor
 *before* the P20 shield, records scale and fidelity diagnostics, and aggregates
 the predeclared P21 trace gates.
 
-Nothing here is a neural-training result.  The synthetic runner exercises the
-observer on deterministic CPU tensors only.  A future real-gradient run must
-use an externally pinned trainer and must copy the candidate actually computed
-by that trainer; recomputing a CPU candidate is not backend parity.
+The synthetic runner exercises the observer on deterministic CPU tensors only.
+A real-gradient acquisition must use an externally pinned trainer and copy the
+candidate actually computed by that trainer; recomputing a CPU candidate is not
+backend parity.  In either mode the observer is shadow-only and does not make
+the shielded output drive training.
 """
 
 from __future__ import annotations
@@ -762,6 +763,11 @@ def summarize_shadow_trace(
         "interpretation": (
             "Passing synthetic gates tests the observer and decision logic only. It cannot "
             "satisfy or predict the blocked real-gradient trace gate."
+            if evidence_kind == "synthetic_cpu_diagnostic"
+            else "These are declared real-gradient shadow observations. Passing evaluates "
+            "the frozen fidelity gates for this acquisition only; this summary alone does "
+            "not deeply validate their acquisition provenance, and the shield output did "
+            "not update training parameters."
         ),
         "observations": [dict(observation) for observation in observations],
     }

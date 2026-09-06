@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import hashlib
 import importlib.util
 import json
@@ -1959,3 +1960,428 @@ def test_path_root_parser_is_explicit_and_unique(tmp_path: Path) -> None:
         RUNNER._path_roots([*values[:-1], "native=relative"])
     with pytest.raises(RUNNER.P23AcquisitionError, match="exactly"):
         RUNNER._path_roots(values[:-1])
+
+
+def test_native_failure_output_must_be_fresh_external_and_nonaliasing(tmp_path: Path) -> None:
+    fresh = tmp_path / "native" / "failure.json"
+    RUNNER._assert_failure_output_path(
+        fresh,
+        other_paths={"run output": tmp_path / "native" / "run.json"},
+        native_evidence_root=tmp_path / "native",
+        protected_roots={"inputs": tmp_path / "inputs"},
+    )
+
+    existing = tmp_path / "existing.json"
+    existing.write_text("{}\n", encoding="utf-8")
+    with pytest.raises(RUNNER.P23AcquisitionError, match="already exists"):
+        RUNNER._assert_failure_output_path(
+            existing,
+            other_paths={},
+            native_evidence_root=tmp_path,
+            protected_roots={},
+        )
+    with pytest.raises(RUNNER.P23AcquisitionError, match="aliases run output"):
+        RUNNER._assert_failure_output_path(
+            tmp_path / "run.json",
+            other_paths={"run output": tmp_path / "run.json"},
+            native_evidence_root=tmp_path,
+            protected_roots={},
+        )
+    with pytest.raises(RUNNER.P23AcquisitionError, match="outside the repository"):
+        RUNNER._assert_failure_output_path(
+            ROOT / "must-not-be-created.json",
+            other_paths={},
+            native_evidence_root=ROOT,
+            protected_roots={},
+        )
+    with pytest.raises(RUNNER.P23AcquisitionError, match="designated evidence root"):
+        RUNNER._assert_failure_output_path(
+            tmp_path / "elsewhere" / "failure.json",
+            other_paths={},
+            native_evidence_root=tmp_path / "native",
+            protected_roots={},
+        )
+    with pytest.raises(RUNNER.P23AcquisitionError, match="protected FineWeb"):
+        RUNNER._assert_failure_output_path(
+            tmp_path / "native" / "data" / "failure.json",
+            other_paths={},
+            native_evidence_root=tmp_path / "native",
+            protected_roots={"FineWeb tree": tmp_path / "native" / "data"},
+        )
+
+
+def test_failure_time_repository_snapshot_accepts_dirty_but_prepared_does_not(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    dirty_repository = {
+        "head": "a" * 40,
+        "tree": "b" * 40,
+        "origin": "https://example.invalid/repository.git",
+        "clean": False,
+        "status_porcelain_v1_z_sha256": _digest("dirty"),
+        "submodule_status_sha256": _digest("submodules"),
+        "tracked_file_count": 10,
+        "tracked_files_sha256": _digest("tracked"),
+    }
+    monkeypatch.setattr(
+        RUNNER.P23,
+        "collect_git_provenance",
+        lambda path: (_ for _ in ()).throw(RUNNER.P23.P23ProvenanceError("dirty")),
+    )
+    monkeypatch.setattr(
+        RUNNER,
+        "_collect_relaxed_git_provenance",
+        lambda: dirty_repository,
+    )
+    snapshot = RUNNER._collect_failure_time_repository_snapshot()
+
+    assert snapshot["collection_status"] == "recollected_at_failure"
+    assert snapshot["clean"] is False
+    RUNNER._validate_repository_snapshot(
+        snapshot,
+        expected_status="recollected_at_failure",
+        label="failure-time repository snapshot",
+        require_clean=False,
+    )
+    with pytest.raises(RUNNER.P23AcquisitionError, match="Git record"):
+        RUNNER._validate_repository_snapshot(
+            snapshot,
+            expected_status="recollected_at_failure",
+            label="prepared repository snapshot",
+            require_clean=True,
+        )
+
+
+def test_run_cli_writes_atomic_stage_aware_native_failure_manifest(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    paths = _common_paths(tmp_path)
+    paths["nanogpt_root"].mkdir(parents=True)
+    for name, path in paths.items():
+        if name == "nanogpt_root" or name == "addendum_path":
+            continue
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(f"{name}\n", encoding="utf-8")
+    output = tmp_path / "native" / "trace-off-a.json"
+    failure_output = tmp_path / "native" / "trace-off-a-failure.json"
+    args = RUNNER.argparse.Namespace(
+        command="run",
+        role="trace_off_a",
+        nanogpt_root=paths["nanogpt_root"],
+        muon_source=paths["muon_source"],
+        fineweb_manifest=paths["data_manifest"],
+        instrumentation_patch=paths["instrumentation_patch"],
+        runtime_lock=paths["runtime_lock_path"],
+        host_attestation=paths["host_attestation_path"],
+        output=output,
+        failure_output=failure_output,
+        raw_trace_output=None,
+        trace_off_a=None,
+        trace_off_b=None,
+        repeatability_report=None,
+    )
+    repository = {
+        "head": "a" * 40,
+        "tree": "b" * 40,
+        "origin": "https://example.invalid/repository.git",
+        "clean": True,
+        "status_porcelain_v1_z_sha256": _digest("clean"),
+        "submodule_status_sha256": _digest("submodules"),
+        "tracked_file_count": 10,
+        "tracked_files_sha256": _digest("tracked"),
+    }
+
+    def blocked_acquisition(**kwargs: object) -> dict[str, object]:
+        RUNNER._begin_failure_tracking(str(kwargs["role"]))
+        RUNNER._record_failure_context(
+            {
+                "repository": repository,
+                "runtime": {"backend": "cuda", "gpu": "A100"},
+                "static_contract": {"seed": 1337, "optimizer_steps": 256},
+            }
+        )
+        RUNNER._set_failure_phase("p22_run_trace")
+        raise ValueError("executable origin lies on a writable mount")
+
+    monkeypatch.setattr(RUNNER, "_parse_args", lambda: args)
+    monkeypatch.setattr(RUNNER, "acquire_run", blocked_acquisition)
+
+    assert RUNNER.main() == 2
+    captured = capsys.readouterr()
+    assert "P23 native failure artifact" in captured.err
+    assert "P23 blocked: executable origin" in captured.err
+    assert not output.exists()
+    payload = json.loads(failure_output.read_text(encoding="utf-8"))
+    RUNNER._validate_native_failure_manifest(payload)
+    assert payload["acquisition_role"] == "trace_off_a"
+    assert payload["failure"]["phase"] == "p22_run_trace"
+    assert payload["failure"]["error_class"] == "builtins.ValueError"
+    assert payload["failure"]["error_message"] == ("executable origin lies on a writable mount")
+    assert payload["failure"]["traceback"].startswith("Traceback (most recent call last):")
+    assert (
+        "ValueError: executable origin lies on a writable mount" in payload["failure"]["traceback"]
+    )
+    assert payload["process_instance"]["nonce"] == RUNNER._PROCESS_INSTANCE["nonce"]
+    repository_record = payload["provenance"]["repository"]
+    assert repository_record["prepared_snapshot"]["head"] == "a" * 40
+    assert repository_record["failure_time_snapshot"]["collection_status"] in {
+        "recollected_at_failure",
+        "unavailable",
+    }
+    assert payload["provenance"]["prepared_runtime"]["gpu"] == "A100"
+    assert payload["provenance"]["prepared_runtime_sha256"] == (
+        RUNNER.P23.canonical_json_sha256(payload["provenance"]["prepared_runtime"])
+    )
+    assert payload["provenance"]["prepared_static_contract_sha256"] == (
+        RUNNER.P23.canonical_json_sha256(payload["provenance"]["prepared_static_contract"])
+    )
+    bindings = payload["provenance"]["input_bindings"]
+    assert (
+        bindings["runtime_lock"]["sha256"]
+        == hashlib.sha256(paths["runtime_lock_path"].read_bytes()).hexdigest()
+    )
+    assert bindings["runner"]["sha256"] == hashlib.sha256(SCRIPT.read_bytes()).hexdigest()
+
+    with pytest.raises(FileExistsError):
+        RUNNER._write_json_atomic_new(failure_output, payload)
+
+    mutations = [
+        (
+            "unknown phase",
+            lambda value: value["failure"].__setitem__("phase", "unknown"),
+        ),
+        (
+            "phase order",
+            lambda value: value["failure"]["phase_history"].__setitem__(
+                0,
+                {
+                    "phase": "p22_run_trace",
+                    "time_ns": value["failure"]["phase_history"][0]["time_ns"],
+                },
+            ),
+        ),
+        (
+            "phase timestamp",
+            lambda value: value["failure"]["phase_history"][0].__setitem__(
+                "time_ns", "not-an-integer"
+            ),
+        ),
+        (
+            "failure time",
+            lambda value: value["timing"].__setitem__("failure_time_ns", 0),
+        ),
+        (
+            "failure UTC",
+            lambda value: value["timing"].__setitem__("failure_utc", "2000-01-01T00:00:00Z"),
+        ),
+        (
+            "empty traceback",
+            lambda value: value["failure"].__setitem__("traceback", ""),
+        ),
+        (
+            "raw trace type",
+            lambda value: value["requested_outputs"].__setitem__("raw_trace", False),
+        ),
+        (
+            "run output existence",
+            lambda value: value["requested_outputs"].__setitem__("run_manifest_exists", True),
+        ),
+        (
+            "runtime canonical hash",
+            lambda value: value["provenance"].__setitem__("prepared_runtime_sha256", "0" * 64),
+        ),
+        (
+            "static canonical hash",
+            lambda value: value["provenance"].__setitem__(
+                "prepared_static_contract_sha256", "0" * 64
+            ),
+        ),
+        (
+            "prepared repository canonical hash",
+            lambda value: value["provenance"]["repository"]["prepared_snapshot"].__setitem__(
+                "canonical_sha256", "0" * 64
+            ),
+        ),
+        (
+            "unsafe repository origin",
+            lambda value: (
+                value["provenance"]["repository"]["prepared_snapshot"].__setitem__(
+                    "origin", "https://user:secret@example.invalid/repository.git"
+                ),
+                value["provenance"]["repository"]["prepared_snapshot"].__setitem__(
+                    "canonical_sha256",
+                    RUNNER.P23.canonical_json_sha256(
+                        {
+                            key: item
+                            for key, item in value["provenance"]["repository"][
+                                "prepared_snapshot"
+                            ].items()
+                            if key != "canonical_sha256"
+                        }
+                    ),
+                ),
+            ),
+        ),
+        (
+            "repository match flag",
+            lambda value: value["provenance"]["repository"].__setitem__(
+                "snapshots_match",
+                not bool(value["provenance"]["repository"]["snapshots_match"]),
+            ),
+        ),
+        (
+            "process nonce",
+            lambda value: value["process_instance"].__setitem__("nonce", "short"),
+        ),
+        ("extra top-level field", lambda value: value.__setitem__("extra", True)),
+        ("missing top-level field", lambda value: value.pop("claim_boundary")),
+    ]
+    for _label, mutate in mutations:
+        changed = copy.deepcopy(payload)
+        mutate(changed)
+        with pytest.raises(RUNNER.P23AcquisitionError):
+            RUNNER._validate_native_failure_manifest(changed)
+
+    for label, record in bindings.items():
+        if label == "nanogpt_root" or record["is_file"] is not True:
+            continue
+        changed = copy.deepcopy(payload)
+        changed["provenance"]["input_bindings"][label]["sha256"] = "0" * 64
+        with pytest.raises(RUNNER.P23AcquisitionError, match=label.replace("_", ".*")):
+            RUNNER._validate_native_failure_manifest(changed)
+
+    changed = copy.deepcopy(payload)
+    changed["provenance"]["input_bindings"]["nanogpt_root"]["exists"] = False
+    with pytest.raises(RUNNER.P23AcquisitionError, match="nanoGPT"):
+        RUNNER._validate_native_failure_manifest(changed)
+
+    # An invalid input that is a directory rather than a file must still be
+    # faithfully recordable; failure evidence cannot depend on input validity.
+    changed = copy.deepcopy(payload)
+    changed["provenance"]["input_bindings"]["muon_source"] = {
+        "path": str(paths["nanogpt_root"].resolve()),
+        "exists": True,
+        "is_file": False,
+        "sha256": None,
+        "byte_count": None,
+    }
+    RUNNER._validate_native_failure_manifest(changed)
+
+
+def test_failure_path_protection_survives_unparseable_data_inventory(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    paths = _common_paths(tmp_path)
+    args = RUNNER.argparse.Namespace(
+        nanogpt_root=paths["nanogpt_root"],
+        muon_source=paths["muon_source"],
+        fineweb_manifest=paths["data_manifest"],
+        instrumentation_patch=paths["instrumentation_patch"],
+        runtime_lock=paths["runtime_lock_path"],
+        host_attestation=paths["host_attestation_path"],
+    )
+    monkeypatch.setattr(
+        RUNNER,
+        "_declared_data_paths",
+        lambda path: (_ for _ in ()).throw(ValueError("malformed inventory")),
+    )
+
+    roots = RUNNER._failure_protected_roots(args)
+
+    assert roots["FineWeb manifest parent"] == paths["data_manifest"].resolve().parent
+    assert roots["declared FineWeb path 0 parent"] == paths["data_manifest"].resolve().parent
+
+
+def test_run_cli_requires_a_native_failure_output(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(
+        RUNNER.sys,
+        "argv",
+        [
+            str(SCRIPT),
+            "run",
+            "--role",
+            "trace_off_a",
+            "--nanogpt-root",
+            "/inputs/nanoGPT",
+            "--muon-source",
+            "/inputs/muon.py",
+            "--fineweb-manifest",
+            "/inputs/data.json",
+            "--instrumentation-patch",
+            "/inputs/observer.py",
+            "--runtime-lock",
+            "/inputs/runtime-lock.json",
+            "--host-attestation",
+            "/inputs/attestation.json",
+            "--output",
+            "/evidence/off-a.json",
+        ],
+    )
+    with pytest.raises(SystemExit) as error:
+        RUNNER._parse_args()
+    assert error.value.code == 2
+
+
+def test_trace_on_argument_failure_still_emits_native_failure_evidence(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    paths = _common_paths(tmp_path)
+    output = tmp_path / "native" / "trace-on.json"
+    failure_output = tmp_path / "native" / "trace-on-failure.json"
+    args = RUNNER.argparse.Namespace(
+        command="run",
+        role="trace_on",
+        nanogpt_root=paths["nanogpt_root"],
+        muon_source=paths["muon_source"],
+        fineweb_manifest=paths["data_manifest"],
+        instrumentation_patch=paths["instrumentation_patch"],
+        runtime_lock=paths["runtime_lock_path"],
+        host_attestation=paths["host_attestation_path"],
+        output=output,
+        failure_output=failure_output,
+        raw_trace_output=None,
+        trace_off_a=None,
+        trace_off_b=None,
+        repeatability_report=None,
+    )
+    monkeypatch.setattr(RUNNER, "_parse_args", lambda: args)
+    monkeypatch.setattr(
+        RUNNER,
+        "_collect_failure_time_repository_snapshot",
+        lambda: RUNNER._unavailable_repository_snapshot(RuntimeError("not collected")),
+    )
+
+    assert RUNNER.main() == 2
+
+    payload = json.loads(failure_output.read_text(encoding="utf-8"))
+    assert payload["failure"]["phase"] == "argument_validation"
+    assert payload["requested_outputs"]["raw_trace"] is None
+    assert "trace_on requires raw output" in payload["failure"]["error_message"]
+    RUNNER._validate_native_failure_manifest(payload)
+
+
+def test_failure_manifest_is_a_sanitizable_native_artifact(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    calls: list[str] = []
+    monkeypatch.setattr(RUNNER.P23, "load_and_validate_addendum", lambda *args, **kwargs: {})
+    monkeypatch.setattr(RUNNER, "_validate_frozen_fidelity_gate_constants", lambda **kwargs: None)
+    monkeypatch.setattr(
+        RUNNER,
+        "_validate_frozen_p22_acquisition_constants",
+        lambda **kwargs: None,
+    )
+    monkeypatch.setattr(
+        RUNNER,
+        "_validate_native_failure_manifest",
+        lambda value: calls.append("failure"),
+    )
+
+    RUNNER._validate_sanitizable_artifact(
+        {"schema_version": RUNNER.P23_NATIVE_FAILURE_MANIFEST_SCHEMA}
+    )
+    assert calls == ["failure"]

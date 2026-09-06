@@ -19,6 +19,7 @@ import secrets
 import sys
 import tempfile
 import time
+import traceback
 from collections.abc import Mapping
 from fractions import Fraction
 from pathlib import Path
@@ -151,7 +152,23 @@ P23_AGGREGATE_SCHEMA: Final = "passive-muon-p23-cuda-shadow-trace-aggregate-v1"
 P23_GATE_REPORT_BINDING_SCHEMA: Final = "passive-muon-p23-gate-report-binding-v1"
 P23_PROCESS_INSTANCE_SCHEMA: Final = "passive-muon-p23-process-instance-v1"
 P23_P22_ACQUISITION_BINDING_SCHEMA: Final = "passive-muon-p23-p22-acquisition-binding-v1"
+P23_NATIVE_FAILURE_MANIFEST_SCHEMA: Final = "passive-muon-p23-native-failure-manifest-v1"
 RUN_ROLES: Final = ("trace_off_a", "trace_off_b", "trace_on")
+_FAILURE_PHASES: Final = (
+    "argument_validation",
+    "native_path_validation",
+    "trace_on_prerequisite_validation",
+    "context_preparation",
+    "p22_run_trace",
+    "p22_initialized",
+    "p22_completed",
+    "p22_manifest_validation",
+    "execution_identity_construction",
+    "manifest_enrichment_and_validation",
+    "success_artifact_write",
+    "completed",
+)
+_FAILURE_PHASE_INDEX: Final = {phase: index for index, phase in enumerate(_FAILURE_PHASES)}
 _SHA256: Final = re.compile(r"^[0-9a-f]{64}$")
 METRIC_RECONSTRUCTION_SCOPE: Final = (
     "P23 validates the exact observation schema, frozen metadata, tensor-hash formats, "
@@ -165,10 +182,48 @@ _PROCESS_INSTANCE: Final = {
     "pid": os.getpid(),
     "created_time_ns": time.time_ns(),
 }
+_FAILURE_STATE: dict[str, object] = {
+    "role": None,
+    "phase": None,
+    "phase_history": [],
+    "prepared_context": None,
+}
 
 
 class P23AcquisitionError(RuntimeError):
     """Raised when orchestration cannot honor the frozen P23 acquisition."""
+
+
+def _begin_failure_tracking(role: str) -> None:
+    """Start one process-local acquisition phase ledger for native failure evidence."""
+
+    _FAILURE_STATE.clear()
+    _FAILURE_STATE.update(
+        {
+            "role": role,
+            "phase": None,
+            "phase_history": [],
+            "prepared_context": None,
+        }
+    )
+    _set_failure_phase("argument_validation")
+
+
+def _set_failure_phase(phase: str) -> None:
+    if phase not in _FAILURE_PHASE_INDEX:
+        raise ValueError(f"unknown failure-evidence phase: {phase!r}")
+    history = _FAILURE_STATE.setdefault("phase_history", [])
+    if not isinstance(history, list):
+        raise RuntimeError("failure-evidence phase ledger is malformed")
+    previous = _FAILURE_STATE.get("phase")
+    if isinstance(previous, str) and _FAILURE_PHASE_INDEX[phase] < _FAILURE_PHASE_INDEX[previous]:
+        raise RuntimeError("failure-evidence phase order regressed")
+    _FAILURE_STATE["phase"] = phase
+    history.append({"phase": phase, "time_ns": time.time_ns()})
+
+
+def _record_failure_context(context: Mapping[str, object]) -> None:
+    _FAILURE_STATE["prepared_context"] = context
 
 
 def _validate_frozen_fidelity_gate_constants(
@@ -730,6 +785,699 @@ def _assert_native_output_paths(
             raise P23AcquisitionError(
                 f"native {name} output lies inside a protected source or data tree"
             )
+
+
+def _assert_failure_output_path(
+    failure_output: Path,
+    *,
+    other_paths: Mapping[str, Path | None],
+    native_evidence_root: Path,
+    protected_roots: Mapping[str, Path],
+) -> None:
+    """Require one fresh path inside evidence and outside every protected tree."""
+
+    resolved = failure_output.resolve()
+    if _is_within(resolved, REPOSITORY_ROOT):
+        raise P23AcquisitionError("native failure output must remain outside the repository")
+    if failure_output.is_symlink() or resolved.exists():
+        raise P23AcquisitionError("native failure output already exists")
+    if not _is_within(resolved, native_evidence_root.resolve()):
+        raise P23AcquisitionError("native failure output must lie in the designated evidence root")
+    for label, root in protected_roots.items():
+        if _is_within(resolved, root.resolve()):
+            raise P23AcquisitionError(f"native failure output lies inside protected {label}")
+    for label, path in other_paths.items():
+        if path is not None and resolved == path.resolve():
+            raise P23AcquisitionError(f"native failure output aliases {label}")
+
+
+def _native_failure_file_binding(path: Path) -> dict[str, object]:
+    """Hash one provenance input from a single retained byte read."""
+
+    resolved = path.resolve()
+    result: dict[str, object] = {
+        "path": str(resolved),
+        "exists": resolved.exists(),
+        "is_file": resolved.is_file(),
+        "sha256": None,
+        "byte_count": None,
+    }
+    if resolved.is_file():
+        raw = resolved.read_bytes()
+        result.update(
+            {
+                "sha256": hashlib.sha256(raw).hexdigest(),
+                "byte_count": len(raw),
+            }
+        )
+    return result
+
+
+def _canonical_record(value: Mapping[str, object]) -> dict[str, object]:
+    record = copy.deepcopy(dict(value))
+    record["canonical_sha256"] = P23.canonical_json_sha256(record)
+    return record
+
+
+def _repository_snapshot(
+    repository: Mapping[str, object], *, collection_status: str
+) -> dict[str, object]:
+    return _canonical_record(
+        {
+            "path": str(REPOSITORY_ROOT.resolve()),
+            "collection_status": collection_status,
+            **{
+                name: copy.deepcopy(repository.get(name))
+                for name in (
+                    "head",
+                    "tree",
+                    "origin",
+                    "clean",
+                    "status_porcelain_v1_z_sha256",
+                    "submodule_status_sha256",
+                    "tracked_file_count",
+                    "tracked_files_sha256",
+                )
+            },
+        }
+    )
+
+
+def _unavailable_repository_snapshot(error: BaseException) -> dict[str, object]:
+    return _canonical_record(
+        {
+            "path": str(REPOSITORY_ROOT.resolve()),
+            "collection_status": "unavailable",
+            "collection_error_class": (f"{type(error).__module__}.{type(error).__qualname__}"),
+            "collection_error_message": str(error),
+        }
+    )
+
+
+def _failure_repository_record() -> dict[str, object]:
+    """Retain both the prepared snapshot and a distinct failure-time recollection."""
+
+    context = _FAILURE_STATE.get("prepared_context")
+    prepared = context.get("repository") if isinstance(context, Mapping) else None
+    prepared_snapshot = (
+        _repository_snapshot(prepared, collection_status="prepared_context_validated")
+        if isinstance(prepared, Mapping)
+        else None
+    )
+    failure_snapshot = _collect_failure_time_repository_snapshot()
+    comparable = (
+        "head",
+        "tree",
+        "origin",
+        "clean",
+        "status_porcelain_v1_z_sha256",
+        "submodule_status_sha256",
+        "tracked_file_count",
+        "tracked_files_sha256",
+    )
+    snapshots_match = (
+        all(prepared_snapshot.get(name) == failure_snapshot.get(name) for name in comparable)
+        if prepared_snapshot is not None
+        and failure_snapshot.get("collection_status") != "unavailable"
+        else None
+    )
+    return {
+        "prepared_snapshot": prepared_snapshot,
+        "failure_time_snapshot": failure_snapshot,
+        "snapshots_match": snapshots_match,
+    }
+
+
+def _collect_relaxed_git_provenance() -> dict[str, object]:
+    """Capture a stable Git snapshot without rejecting a dirty failure-time tree."""
+
+    root = REPOSITORY_ROOT.resolve()
+
+    def git(*arguments: str) -> bytes:
+        return P23._default_command_runner(("git", *arguments), root)
+
+    top_level = Path(git("rev-parse", "--show-toplevel").decode().strip()).resolve()
+    if top_level != root:
+        raise P23.P23ProvenanceError("failure-time repository root differs from Git")
+    head = git("rev-parse", "HEAD").decode().strip()
+    tree = git("rev-parse", "HEAD^{tree}").decode().strip()
+    origin = P23._credential_safe_git_origin(git("remote", "get-url", "origin").decode())
+    status = git("status", "--porcelain=v1", "--untracked-files=all", "-z")
+    submodules = git("submodule", "status", "--recursive")
+    tracked_raw = git("ls-files", "-z")
+    tracked_names = [
+        item.decode(errors="surrogateescape") for item in tracked_raw.split(b"\0") if item
+    ]
+    if (
+        re.fullmatch(r"[0-9a-f]{40}", head) is None
+        or re.fullmatch(r"[0-9a-f]{40}", tree) is None
+        or not tracked_names
+        or tracked_names != sorted(tracked_names)
+    ):
+        raise P23.P23ProvenanceError("failure-time Git identity/inventory is malformed")
+    tracked_files = P23._hash_tracked_files(root, tracked_names)
+
+    # Recollect every identity-bearing stream so the snapshot is not a blend of
+    # two repository states.  A concurrent mutation yields an unavailable
+    # failure-time snapshot rather than deceptively precise provenance.
+    if (
+        git("rev-parse", "HEAD").decode().strip() != head
+        or git("rev-parse", "HEAD^{tree}").decode().strip() != tree
+        or git("status", "--porcelain=v1", "--untracked-files=all", "-z") != status
+        or git("submodule", "status", "--recursive") != submodules
+        or git("ls-files", "-z") != tracked_raw
+        or P23._hash_tracked_files(root, tracked_names) != tracked_files
+    ):
+        raise P23.P23ProvenanceError("failure-time Git state changed during collection")
+    return {
+        "head": head,
+        "tree": tree,
+        "origin": origin,
+        "clean": not status
+        and not any(line.startswith((b"-", b"+", b"U")) for line in submodules.splitlines()),
+        "status_porcelain_v1_z_sha256": hashlib.sha256(status).hexdigest(),
+        "submodule_status_sha256": hashlib.sha256(submodules).hexdigest(),
+        "tracked_file_count": len(tracked_files),
+        "tracked_files_sha256": P23.canonical_json_sha256(tracked_files),
+    }
+
+
+def _collect_failure_time_repository_snapshot() -> dict[str, object]:
+    try:
+        repository = P23.collect_git_provenance(REPOSITORY_ROOT)
+    except (OSError, RuntimeError, P23.P23ProvenanceError):
+        try:
+            repository = _collect_relaxed_git_provenance()
+        except (OSError, RuntimeError, P23.P23ProvenanceError) as error:
+            return _unavailable_repository_snapshot(error)
+    return _repository_snapshot(repository, collection_status="recollected_at_failure")
+
+
+def _native_failure_manifest(
+    *,
+    error: BaseException,
+    role: str,
+    output: Path,
+    raw_trace_output: Path | None,
+    nanogpt_root: Path,
+    muon_source: Path,
+    data_manifest: Path,
+    instrumentation_patch: Path,
+    runtime_lock_path: Path,
+    host_attestation_path: Path,
+    addendum_path: Path,
+    traceback_text: str,
+) -> dict[str, object]:
+    """Build one native, pathful failure record without obscuring the cause."""
+
+    if _FAILURE_STATE.get("role") != role:
+        raise P23AcquisitionError("failure-evidence role differs from acquisition role")
+    context = _FAILURE_STATE.get("prepared_context")
+    runtime = context.get("runtime") if isinstance(context, Mapping) else None
+    static_contract = context.get("static_contract") if isinstance(context, Mapping) else None
+    phase = _FAILURE_STATE.get("phase")
+    history = _FAILURE_STATE.get("phase_history")
+    failure_time_ns = time.time_ns()
+    payload: dict[str, object] = {
+        "schema_version": P23_NATIVE_FAILURE_MANIFEST_SCHEMA,
+        "status": "blocked_before_success_artifact",
+        "command": "run",
+        "acquisition_role": role,
+        "exit_code": 2,
+        "failure": {
+            "phase": phase,
+            "phase_history": copy.deepcopy(history),
+            "error_class": f"{type(error).__module__}.{type(error).__qualname__}",
+            "error_message": str(error),
+            "traceback": traceback_text,
+        },
+        "process_instance": _new_process_instance(),
+        "timing": {
+            "failure_time_ns": failure_time_ns,
+            "failure_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(failure_time_ns / 1e9)),
+        },
+        "requested_outputs": {
+            "run_manifest": str(output.resolve()),
+            "raw_trace": str(raw_trace_output.resolve()) if raw_trace_output else None,
+            "run_manifest_exists": output.resolve().exists(),
+            "raw_trace_exists": raw_trace_output.resolve().exists() if raw_trace_output else False,
+        },
+        "provenance": {
+            "repository": _failure_repository_record(),
+            "prepared_runtime": copy.deepcopy(runtime),
+            "prepared_runtime_sha256": (
+                P23.canonical_json_sha256(runtime) if isinstance(runtime, Mapping) else None
+            ),
+            "prepared_static_contract": copy.deepcopy(static_contract),
+            "prepared_static_contract_sha256": (
+                P23.canonical_json_sha256(static_contract)
+                if isinstance(static_contract, Mapping)
+                else None
+            ),
+            "input_bindings": {
+                "runner": _native_failure_file_binding(Path(__file__)),
+                "runtime_lock": _native_failure_file_binding(runtime_lock_path),
+                "host_attestation": _native_failure_file_binding(host_attestation_path),
+                "addendum": _native_failure_file_binding(addendum_path),
+                "fineweb_manifest": _native_failure_file_binding(data_manifest),
+                "muon_source": _native_failure_file_binding(muon_source),
+                "instrumentation_patch": _native_failure_file_binding(instrumentation_patch),
+                "nanogpt_root": {
+                    "path": str(nanogpt_root.resolve()),
+                    "exists": nanogpt_root.resolve().is_dir(),
+                    "is_directory": nanogpt_root.resolve().is_dir(),
+                },
+            },
+        },
+        "claim_boundary": (
+            "This native artifact records a failed acquisition process and its bound inputs. "
+            "It is not a successful trace, a repeatability result, a noninterference result, "
+            "or real-gradient fidelity evidence."
+        ),
+    }
+    _validate_native_failure_manifest(payload)
+    return payload
+
+
+def _validate_canonical_record(value: Mapping[str, object], label: str) -> None:
+    stored = value.get("canonical_sha256")
+    body = {name: copy.deepcopy(item) for name, item in value.items() if name != "canonical_sha256"}
+    if _SHA256.fullmatch(str(stored)) is None or stored != P23.canonical_json_sha256(body):
+        raise P23AcquisitionError(f"{label} canonical hash is inconsistent")
+
+
+def _validate_repository_snapshot(
+    value: object,
+    *,
+    expected_status: str,
+    label: str,
+    require_clean: bool,
+) -> None:
+    if expected_status == "unavailable":
+        record = _require_exact_keys(
+            value,
+            {
+                "path",
+                "collection_status",
+                "collection_error_class",
+                "collection_error_message",
+                "canonical_sha256",
+            },
+            label,
+        )
+        if not isinstance(record.get("collection_error_class"), str) or not isinstance(
+            record.get("collection_error_message"), str
+        ):
+            raise P23AcquisitionError(f"{label} error record is malformed")
+    else:
+        record = _require_exact_keys(
+            value,
+            {
+                "path",
+                "collection_status",
+                "head",
+                "tree",
+                "origin",
+                "clean",
+                "status_porcelain_v1_z_sha256",
+                "submodule_status_sha256",
+                "tracked_file_count",
+                "tracked_files_sha256",
+                "canonical_sha256",
+            },
+            label,
+        )
+        if (
+            re.fullmatch(r"[0-9a-f]{40}", str(record.get("head"))) is None
+            or re.fullmatch(r"[0-9a-f]{40}", str(record.get("tree"))) is None
+            or not isinstance(record.get("origin"), str)
+            or not isinstance(record.get("clean"), bool)
+            or (require_clean and record.get("clean") is not True)
+            or _SHA256.fullmatch(str(record.get("status_porcelain_v1_z_sha256"))) is None
+            or _SHA256.fullmatch(str(record.get("submodule_status_sha256"))) is None
+            or not isinstance(record.get("tracked_file_count"), int)
+            or isinstance(record.get("tracked_file_count"), bool)
+            or int(record.get("tracked_file_count", 0)) <= 0
+            or _SHA256.fullmatch(str(record.get("tracked_files_sha256"))) is None
+        ):
+            raise P23AcquisitionError(f"{label} Git record is malformed")
+        try:
+            safe_origin = P23._credential_safe_git_origin(str(record["origin"]))
+        except P23.P23ProvenanceError as error:
+            raise P23AcquisitionError(f"{label} Git origin is unsafe") from error
+        if safe_origin != record.get("origin"):
+            raise P23AcquisitionError(f"{label} Git origin is not canonical")
+    if (
+        not isinstance(record.get("path"), str)
+        or not Path(str(record.get("path"))).is_absolute()
+        or Path(str(record.get("path"))).resolve() != REPOSITORY_ROOT.resolve()
+        or record.get("collection_status") != expected_status
+    ):
+        raise P23AcquisitionError(f"{label} path/status is malformed")
+    _validate_canonical_record(record, label)
+
+
+def _validate_native_failure_file_binding(
+    value: object,
+    *,
+    label: str,
+    required: bool,
+) -> None:
+    record = _require_exact_keys(
+        value,
+        {"path", "exists", "is_file", "sha256", "byte_count"},
+        f"native failure {label} binding",
+    )
+    if (
+        not isinstance(record.get("path"), str)
+        or not Path(str(record.get("path"))).is_absolute()
+        or not isinstance(record.get("exists"), bool)
+        or not isinstance(record.get("is_file"), bool)
+    ):
+        raise P23AcquisitionError(f"native failure {label} binding is malformed")
+    is_file = record.get("is_file") is True
+    if is_file and record.get("exists") is not True:
+        raise P23AcquisitionError(f"native failure {label} existence fields disagree")
+    if is_file:
+        if (
+            _SHA256.fullmatch(str(record.get("sha256"))) is None
+            or not isinstance(record.get("byte_count"), int)
+            or isinstance(record.get("byte_count"), bool)
+            or int(record.get("byte_count", -1)) < 0
+        ):
+            raise P23AcquisitionError(f"native failure {label} digest is malformed")
+        resolved = Path(str(record["path"])).resolve()
+        if not resolved.is_file():
+            raise P23AcquisitionError(f"native failure {label} file is no longer available")
+        raw = resolved.read_bytes()
+        if len(raw) != record.get("byte_count") or hashlib.sha256(raw).hexdigest() != record.get(
+            "sha256"
+        ):
+            raise P23AcquisitionError(f"native failure {label} bytes changed")
+    elif record.get("sha256") is not None or record.get("byte_count") is not None:
+        raise P23AcquisitionError(f"absent native failure {label} has a digest")
+    if required and not is_file:
+        raise P23AcquisitionError(f"native failure {label} binding must be retained")
+
+
+def _validate_native_failure_manifest(payload: Mapping[str, object]) -> None:
+    expected = {
+        "schema_version",
+        "status",
+        "command",
+        "acquisition_role",
+        "exit_code",
+        "failure",
+        "process_instance",
+        "timing",
+        "requested_outputs",
+        "provenance",
+        "claim_boundary",
+    }
+    if set(payload) != expected:
+        raise P23AcquisitionError("native failure manifest field set changed")
+    if (
+        payload.get("schema_version") != P23_NATIVE_FAILURE_MANIFEST_SCHEMA
+        or payload.get("status") != "blocked_before_success_artifact"
+        or payload.get("command") != "run"
+        or payload.get("acquisition_role") not in RUN_ROLES
+        or payload.get("exit_code") != 2
+    ):
+        raise P23AcquisitionError("native failure manifest header is malformed")
+    failure = _require_exact_keys(
+        payload.get("failure"),
+        {"phase", "phase_history", "error_class", "error_message", "traceback"},
+        "native failure",
+    )
+    history = failure.get("phase_history")
+    phase_names = (
+        [record.get("phase") for record in history if isinstance(record, Mapping)]
+        if isinstance(history, list)
+        else []
+    )
+    phase_times = (
+        [record.get("time_ns") for record in history if isinstance(record, Mapping)]
+        if isinstance(history, list)
+        else []
+    )
+    if (
+        not isinstance(failure.get("phase"), str)
+        or failure.get("phase") not in _FAILURE_PHASE_INDEX
+        or not isinstance(history, list)
+        or not history
+        or not all(
+            isinstance(record, Mapping)
+            and set(record) == {"phase", "time_ns"}
+            and isinstance(record.get("phase"), str)
+            and record.get("phase") in _FAILURE_PHASE_INDEX
+            and isinstance(record.get("time_ns"), int)
+            and not isinstance(record.get("time_ns"), bool)
+            for record in history
+        )
+        or history[-1].get("phase") != failure.get("phase")
+        or history[0].get("phase") != "argument_validation"
+        or phase_names != sorted(phase_names, key=lambda name: _FAILURE_PHASE_INDEX[str(name)])
+        or phase_times != sorted(phase_times)
+        or not isinstance(failure.get("error_class"), str)
+        or not failure.get("error_class")
+        or not isinstance(failure.get("error_message"), str)
+        or not isinstance(failure.get("traceback"), str)
+        or not failure.get("traceback")
+    ):
+        raise P23AcquisitionError("native failure phase/error record is malformed")
+    process = _require_exact_keys(
+        payload.get("process_instance"),
+        {"schema_version", "nonce", "pid", "created_time_ns"},
+        "native failure process instance",
+    )
+    if (
+        process.get("schema_version") != P23_PROCESS_INSTANCE_SCHEMA
+        or _SHA256.fullmatch(str(process.get("nonce"))) is None
+        or not isinstance(process.get("pid"), int)
+        or isinstance(process.get("pid"), bool)
+        or int(process.get("pid", 0)) <= 0
+        or not isinstance(process.get("created_time_ns"), int)
+        or isinstance(process.get("created_time_ns"), bool)
+        or int(process.get("created_time_ns", 0)) <= 0
+    ):
+        raise P23AcquisitionError("native failure process instance is malformed")
+    timing = _require_exact_keys(
+        payload.get("timing"), {"failure_time_ns", "failure_utc"}, "native failure timing"
+    )
+    if (
+        not isinstance(timing.get("failure_time_ns"), int)
+        or isinstance(timing.get("failure_time_ns"), bool)
+        or re.fullmatch(
+            r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z",
+            str(timing.get("failure_utc")),
+        )
+        is None
+        or timing.get("failure_utc")
+        != time.strftime(
+            "%Y-%m-%dT%H:%M:%SZ",
+            time.gmtime(int(timing.get("failure_time_ns", 0)) / 1e9),
+        )
+        or timing.get("failure_time_ns", -1) < process.get("created_time_ns", 0)
+        or timing.get("failure_time_ns", -1) < phase_times[-1]
+        or process.get("created_time_ns", -1) > phase_times[0]
+    ):
+        raise P23AcquisitionError("native failure timing is malformed")
+    requested = _require_exact_keys(
+        payload.get("requested_outputs"),
+        {"run_manifest", "raw_trace", "run_manifest_exists", "raw_trace_exists"},
+        "native failure requested outputs",
+    )
+    if (
+        not isinstance(requested.get("run_manifest"), str)
+        or not Path(str(requested.get("run_manifest"))).is_absolute()
+        or (
+            requested.get("raw_trace") is not None
+            and (
+                not isinstance(requested.get("raw_trace"), str)
+                or not Path(str(requested.get("raw_trace"))).is_absolute()
+            )
+        )
+        or (
+            failure.get("phase") != "argument_validation"
+            and payload.get("acquisition_role") == "trace_on"
+            and not isinstance(requested.get("raw_trace"), str)
+        )
+        or (
+            failure.get("phase") != "argument_validation"
+            and payload.get("acquisition_role") != "trace_on"
+            and requested.get("raw_trace") is not None
+        )
+        or not isinstance(requested.get("run_manifest_exists"), bool)
+        or not isinstance(requested.get("raw_trace_exists"), bool)
+    ):
+        raise P23AcquisitionError("native failure requested-output record is malformed")
+    run_manifest_path = Path(str(requested["run_manifest"])).resolve()
+    raw_trace_path = (
+        Path(str(requested["raw_trace"])).resolve()
+        if isinstance(requested.get("raw_trace"), str)
+        else None
+    )
+    if requested.get("run_manifest_exists") is not run_manifest_path.exists() or (
+        requested.get("raw_trace_exists")
+        is not (raw_trace_path.exists() if raw_trace_path is not None else False)
+    ):
+        raise P23AcquisitionError("native failure requested-output existence changed")
+    provenance = _require_exact_keys(
+        payload.get("provenance"),
+        {
+            "repository",
+            "prepared_runtime",
+            "prepared_runtime_sha256",
+            "prepared_static_contract",
+            "prepared_static_contract_sha256",
+            "input_bindings",
+        },
+        "native failure provenance",
+    )
+    repository = _require_exact_keys(
+        provenance.get("repository"),
+        {"prepared_snapshot", "failure_time_snapshot", "snapshots_match"},
+        "native failure repository provenance",
+    )
+    prepared_repository = repository.get("prepared_snapshot")
+    failure_repository = repository.get("failure_time_snapshot")
+    if prepared_repository is not None:
+        _validate_repository_snapshot(
+            prepared_repository,
+            expected_status="prepared_context_validated",
+            label="prepared repository snapshot",
+            require_clean=True,
+        )
+    if not isinstance(failure_repository, Mapping):
+        raise P23AcquisitionError("failure-time repository snapshot is malformed")
+    failure_status = failure_repository.get("collection_status")
+    if failure_status not in {"recollected_at_failure", "unavailable"}:
+        raise P23AcquisitionError("failure-time repository collection status is malformed")
+    _validate_repository_snapshot(
+        failure_repository,
+        expected_status=str(failure_status),
+        label="failure-time repository snapshot",
+        require_clean=False,
+    )
+    comparable = (
+        "head",
+        "tree",
+        "origin",
+        "clean",
+        "status_porcelain_v1_z_sha256",
+        "submodule_status_sha256",
+        "tracked_file_count",
+        "tracked_files_sha256",
+    )
+    expected_match = (
+        all(prepared_repository.get(name) == failure_repository.get(name) for name in comparable)
+        if isinstance(prepared_repository, Mapping) and failure_status == "recollected_at_failure"
+        else None
+    )
+    if repository.get("snapshots_match") is not expected_match:
+        raise P23AcquisitionError("repository snapshot comparison is inconsistent")
+    runtime = provenance.get("prepared_runtime")
+    runtime_sha256 = provenance.get("prepared_runtime_sha256")
+    static_contract = provenance.get("prepared_static_contract")
+    static_contract_sha256 = provenance.get("prepared_static_contract_sha256")
+    if (
+        (runtime is None) != (runtime_sha256 is None)
+        or (runtime is not None and _SHA256.fullmatch(str(runtime_sha256)) is None)
+        or (isinstance(runtime, Mapping) and runtime_sha256 != P23.canonical_json_sha256(runtime))
+    ):
+        raise P23AcquisitionError("prepared runtime canonical hash is inconsistent")
+    if (
+        (static_contract is None) != (static_contract_sha256 is None)
+        or (static_contract is not None and _SHA256.fullmatch(str(static_contract_sha256)) is None)
+        or (
+            isinstance(static_contract, Mapping)
+            and static_contract_sha256 != P23.canonical_json_sha256(static_contract)
+        )
+    ):
+        raise P23AcquisitionError("prepared static-contract canonical hash is inconsistent")
+    if (runtime is not None and not isinstance(runtime, Mapping)) or (
+        static_contract is not None and not isinstance(static_contract, Mapping)
+    ):
+        raise P23AcquisitionError("prepared runtime/static contract has invalid type")
+    if _FAILURE_PHASE_INDEX[str(failure.get("phase"))] >= _FAILURE_PHASE_INDEX[
+        "p22_run_trace"
+    ] and (
+        not isinstance(runtime, Mapping)
+        or not isinstance(static_contract, Mapping)
+        or not isinstance(prepared_repository, Mapping)
+    ):
+        raise P23AcquisitionError(
+            "post-context failure omits prepared repository/runtime/static-contract provenance"
+        )
+    bindings = provenance.get("input_bindings")
+    if not isinstance(bindings, Mapping) or set(bindings) != {
+        "runner",
+        "runtime_lock",
+        "host_attestation",
+        "addendum",
+        "fineweb_manifest",
+        "muon_source",
+        "instrumentation_patch",
+        "nanogpt_root",
+    }:
+        raise P23AcquisitionError("native failure input-binding inventory changed")
+    for label in (
+        "runner",
+        "runtime_lock",
+        "host_attestation",
+        "addendum",
+        "fineweb_manifest",
+        "muon_source",
+        "instrumentation_patch",
+    ):
+        _validate_native_failure_file_binding(
+            bindings.get(label),
+            label=label,
+            required=label == "runner",
+        )
+    nanogpt = _require_exact_keys(
+        bindings.get("nanogpt_root"),
+        {"path", "exists", "is_directory"},
+        "native failure nanoGPT binding",
+    )
+    if (
+        not isinstance(nanogpt.get("path"), str)
+        or not Path(str(nanogpt.get("path"))).is_absolute()
+        or not isinstance(nanogpt.get("exists"), bool)
+        or not isinstance(nanogpt.get("is_directory"), bool)
+        or (nanogpt.get("is_directory") is True and nanogpt.get("exists") is not True)
+    ):
+        raise P23AcquisitionError("native failure nanoGPT binding is malformed")
+    nanogpt_path = Path(str(nanogpt["path"])).resolve()
+    if nanogpt.get("exists") is not nanogpt_path.exists() or (
+        nanogpt.get("is_directory") is not nanogpt_path.is_dir()
+    ):
+        raise P23AcquisitionError("native failure nanoGPT binding changed")
+    if not isinstance(payload.get("claim_boundary"), str) or "not a successful trace" not in str(
+        payload.get("claim_boundary")
+    ):
+        raise P23AcquisitionError("native failure claim boundary is malformed")
+
+
+def _write_json_atomic_new(path: Path, payload: Mapping[str, object]) -> None:
+    """Atomically publish JSON while refusing to replace any existing path."""
+
+    resolved = path.resolve()
+    resolved.parent.mkdir(parents=True, exist_ok=True)
+    rendered = json.dumps(payload, indent=2, sort_keys=True, allow_nan=False) + "\n"
+    temporary: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w", encoding="utf-8", dir=resolved.parent, delete=False
+        ) as handle:
+            handle.write(rendered)
+            handle.flush()
+            os.fsync(handle.fileno())
+            temporary = Path(handle.name)
+        os.link(temporary, resolved)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
 
 
 def _assert_sanitize_output_path(
@@ -1846,6 +2594,7 @@ def acquire_run(
 ) -> dict[str, object]:
     """Acquire one role, with trace-on gated before its first training step."""
 
+    _begin_failure_tracking(role)
     if role not in RUN_ROLES:
         raise P23AcquisitionError(f"invalid P23 run role: {role!r}")
     trace_on = role == "trace_on"
@@ -1877,6 +2626,7 @@ def acquire_run(
         native_inputs["trace-off B"] = trace_off_b_path
     if repeatability_report_path is not None:
         native_inputs["repeatability report"] = repeatability_report_path
+    _set_failure_phase("native_path_validation")
     _assert_native_output_paths(
         outputs=native_outputs,
         inputs=native_inputs,
@@ -1889,6 +2639,7 @@ def acquire_run(
     # callback below then repeats the complete check against live source,
     # repository, runtime, and static-contract maps before the first step.
     if trace_on:
+        _set_failure_phase("trace_on_prerequisite_validation")
         assert trace_off_a_path is not None
         assert trace_off_b_path is not None
         assert repeatability_report_path is not None
@@ -1915,6 +2666,7 @@ def acquire_run(
             },
         )
 
+    _set_failure_phase("context_preparation")
     context = _prepare_context(
         nanogpt_root=nanogpt_root,
         muon_source=muon_source,
@@ -1924,6 +2676,7 @@ def acquire_run(
         host_attestation_path=host_attestation_path,
         addendum_path=addendum_path,
     )
+    _record_failure_context(context)
     initial_sources: dict[str, dict[str, object]] | None = None
     final_sources: dict[str, dict[str, object]] | None = None
     initial_loaded_files: dict[str, object] | None = None
@@ -1934,6 +2687,7 @@ def acquire_run(
         nonlocal initial_sources, final_sources
         nonlocal initial_loaded_files, final_loaded_files, loaded_file_closure
         if phase == "initialized":
+            _set_failure_phase("p22_initialized")
             if initial_sources is not None or initial_loaded_files is not None:
                 raise P23AcquisitionError("duplicate initialized lifecycle event")
             initial_sources = _collect_source_modules(context)
@@ -1965,6 +2719,7 @@ def acquire_run(
                     gate="trace_on",
                 )
         elif phase == "completed":
+            _set_failure_phase("p22_completed")
             if (
                 initial_sources is None
                 or initial_loaded_files is None
@@ -2001,6 +2756,7 @@ def acquire_run(
         temporary_root = Path(temporary)
         p22_manifest_path = temporary_root / "p22-manifest.json"
         p22_raw_path = temporary_root / "p22-raw-trace.json" if trace_on else None
+        _set_failure_phase("p22_run_trace")
         p22_payload = P22_RUNNER.run_trace(
             trace_mode=trace_mode,
             nanogpt_root=nanogpt_root.resolve(),
@@ -2012,6 +2768,7 @@ def acquire_run(
             raw_trace_output=p22_raw_path,
             _lifecycle_callback=lifecycle,
         )
+        _set_failure_phase("p22_manifest_validation")
         validated_p22_payload = P22_CORE._load_run_manifest(p22_manifest_path, trace_mode)
         if validated_p22_payload != p22_payload:
             raise P23AcquisitionError(
@@ -2025,6 +2782,7 @@ def acquire_run(
             or loaded_file_closure is None
         ):
             raise P23AcquisitionError("P22 runner did not complete both lifecycle events")
+        _set_failure_phase("execution_identity_construction")
         execution_identity = P23.build_execution_identity(
             addendum_path=addendum,
             repository=repository,
@@ -2034,6 +2792,7 @@ def acquire_run(
             static_contract=static_contract,
             repository_root=REPOSITORY_ROOT,
         )
+        _set_failure_phase("manifest_enrichment_and_validation")
         manifest = _enrich_p22_payload(
             p22_payload,
             role=role,
@@ -2064,7 +2823,9 @@ def acquire_run(
             }
             _validate_raw_trace_binding(manifest)
             P23.validate_run_manifest(manifest, trace_mode)
+        _set_failure_phase("success_artifact_write")
         P22_CORE.write_json_atomic(output, manifest)
+    _set_failure_phase("completed")
     return manifest
 
 
@@ -2857,7 +3618,10 @@ def _validate_sanitizable_artifact(payload: Mapping[str, object]) -> None:
     if schema == P21_TRACE.P21_SHADOW_TRACE_SCHEMA_VERSION and "p23" in payload:
         _validate_aggregate_payload(payload)
         return
-    raise P23AcquisitionError("sanitize accepts only one of the seven native P23 artifacts")
+    if schema == P23_NATIVE_FAILURE_MANIFEST_SCHEMA:
+        _validate_native_failure_manifest(payload)
+        return
+    raise P23AcquisitionError("sanitize accepts only a declared native P23 artifact")
 
 
 def _validate_raw_trace_binding(
@@ -3100,6 +3864,7 @@ def _parse_args() -> argparse.Namespace:
     run.add_argument("--role", choices=RUN_ROLES, required=True)
     _add_common_environment_arguments(run)
     run.add_argument("--output", type=Path, required=True)
+    run.add_argument("--failure-output", type=Path, required=True)
     run.add_argument("--raw-trace-output", type=Path)
     run.add_argument("--trace-off-a", type=Path)
     run.add_argument("--trace-off-b", type=Path)
@@ -3173,8 +3938,39 @@ def _environment_kwargs(args: argparse.Namespace) -> dict[str, Path]:
     }
 
 
+def _failure_protected_roots(args: argparse.Namespace) -> dict[str, Path]:
+    data_manifest = args.fineweb_manifest.resolve()
+    try:
+        declared_data = _declared_data_paths(data_manifest)
+    except (OSError, RecursionError, ValueError):
+        # Output-path safety must not depend on successfully interpreting an
+        # untrusted or malformed experiment input.  Its known parent remains
+        # protected, and acquisition will preserve the parsing error itself.
+        declared_data = {data_manifest}
+    roots: dict[str, Path] = {
+        "repository": REPOSITORY_ROOT.resolve(),
+        "nanoGPT tree": args.nanogpt_root.resolve(),
+        "nanoGPT input parent": args.nanogpt_root.resolve().parent,
+        "Muon input parent": args.muon_source.resolve().parent,
+        "FineWeb manifest parent": data_manifest.parent,
+        "observer input parent": args.instrumentation_patch.resolve().parent,
+        "runtime-lock input parent": args.runtime_lock.resolve().parent,
+        "host-attestation input parent": args.host_attestation.resolve().parent,
+        "addendum input parent": P23.DEFAULT_ADDENDUM_PATH.resolve().parent,
+    }
+    if len(data_manifest.parents) >= 2:
+        roots["FineWeb data root"] = data_manifest.parents[1]
+    for index, declared in enumerate(sorted(declared_data, key=str)):
+        roots[f"declared FineWeb path {index} parent"] = (
+            declared if declared.is_dir() else declared.parent
+        )
+    return roots
+
+
 def main() -> int:
     args = _parse_args()
+    failure_output: Path | None = None
+    failure_output_validated = False
     try:
         if args.command == "freeze-runtime":
             payload = P23.freeze_runtime_artifacts(
@@ -3191,6 +3987,26 @@ def main() -> int:
                 addendum_path=P23.DEFAULT_ADDENDUM_PATH.resolve(),
             )
         elif args.command == "run":
+            failure_output = args.failure_output.resolve()
+            _assert_failure_output_path(
+                failure_output,
+                other_paths={
+                    "run manifest output": args.output,
+                    "raw trace output": args.raw_trace_output,
+                    "trace-off A": args.trace_off_a,
+                    "trace-off B": args.trace_off_b,
+                    "repeatability report": args.repeatability_report,
+                    "nanoGPT": args.nanogpt_root,
+                    "Muon": args.muon_source,
+                    "FineWeb manifest": args.fineweb_manifest,
+                    "observer": args.instrumentation_patch,
+                    "runtime lock": args.runtime_lock,
+                    "host attestation": args.host_attestation,
+                },
+                native_evidence_root=args.output.resolve().parent,
+                protected_roots=_failure_protected_roots(args),
+            )
+            failure_output_validated = True
             payload = acquire_run(
                 role=args.role,
                 **_environment_kwargs(args),
@@ -3235,7 +4051,38 @@ def main() -> int:
                 output=args.output.resolve(),
                 path_roots=_path_roots(args.path_root),
             )
-    except (P23AcquisitionError, P23.P23ProvenanceError, P22_RUNNER.P22RunError) as error:
+    except Exception as error:
+        if args.command == "run" and failure_output is not None and failure_output_validated:
+            try:
+                failure = _native_failure_manifest(
+                    error=error,
+                    role=args.role,
+                    output=args.output.resolve(),
+                    raw_trace_output=(
+                        args.raw_trace_output.resolve() if args.raw_trace_output else None
+                    ),
+                    nanogpt_root=args.nanogpt_root.resolve(),
+                    muon_source=args.muon_source.resolve(),
+                    data_manifest=args.fineweb_manifest.resolve(),
+                    instrumentation_patch=args.instrumentation_patch.resolve(),
+                    runtime_lock_path=args.runtime_lock.resolve(),
+                    host_attestation_path=args.host_attestation.resolve(),
+                    addendum_path=P23.DEFAULT_ADDENDUM_PATH.resolve(),
+                    traceback_text=traceback.format_exc(),
+                )
+                _write_json_atomic_new(failure_output, failure)
+                print(
+                    "P23 native failure artifact: "
+                    f"{failure_output} sha256={P23.sha256_file(failure_output)}",
+                    file=sys.stderr,
+                )
+            except (OSError, TypeError, ValueError, P23AcquisitionError) as evidence_error:
+                print(
+                    "P23 failure-artifact write also blocked: "
+                    f"{type(evidence_error).__module__}."
+                    f"{type(evidence_error).__qualname__}: {evidence_error}",
+                    file=sys.stderr,
+                )
         print(f"P23 blocked: {error}", file=sys.stderr)
         return 2
 

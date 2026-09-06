@@ -1,0 +1,323 @@
+{
+  "schema_version": "passive-muon-p24-cuda-executable-origin-contract-v1",
+  "status": "frozen_pre_remediation_build_and_pre_acquisition",
+  "authority": "This contract governs P24 image remediation, native executable-origin diagnostics, runtime replacement, and the unchanged P23 CUDA acquisition. It records no P24 CUDA result.",
+  "provenance_parent": {
+    "branch": "p23-deterministic-cuda-shadow-trace",
+    "outcome_commit": "3a1454e29edc022e92f2848e216c790d4ea8434a",
+    "outcome_tree": "1c416653c568eb1f883b3b7ec1b5c760b8ace878",
+    "outcome_tag": "p23-deterministic-cuda-shadow-trace-diagnostic",
+    "annotated_tag_object": "1bd95bc7ba4aca6522e1944589ff9afe14618c85",
+    "tag_target_commit": "3a1454e29edc022e92f2848e216c790d4ea8434a",
+    "outcome": {
+      "path": "results/summaries/p23_cuda_shadow_trace_outcome.json",
+      "sha256": "03a68af24ca705add13f11d7574f774841e2a1602edfd04304b20f9bc2532336",
+      "evidence_scope": "operator-recorded pretraining stop; not a native failure manifest"
+    }
+  },
+  "unchanged_authorities": {
+    "p21_fidelity_gates": {
+      "path": "experiments/training/p21_shadow_trace_protocol.json",
+      "sha256": "ca40ef0aef676971ca4464c3f838c6bd956ecc9806c2023af0d4ea699375315a",
+      "mutation_allowed": false
+    },
+    "p22_protocol": {
+      "path": "experiments/training/p22_real_gradient_shadow_trace_protocol.json",
+      "sha256": "f88eda60b366b561d277e41335b02c3fb9861a2604a947f8dd5c28fb54bedeac",
+      "mutation_allowed": false
+    },
+    "p22_erratum": {
+      "path": "theory/p22_real_gradient_shadow_trace_protocol_erratum.md",
+      "sha256": "42dc57bd8fb03b619c0de75c58570991ca520131ab7d1660b4f9373fd756a2cd",
+      "mutation_allowed": false
+    },
+    "p22_fused_qkv_certificate": {
+      "path": "results/summaries/p22_scalable_shield_shape_extension_certificate.json",
+      "sha256": "9480525384a57bb09869a55c878251f44f170930f3050a1ad50b4d934dcb7450",
+      "mutation_allowed": false
+    },
+    "p23_addendum": {
+      "path": "experiments/training/p23_deterministic_cuda_shadow_trace_addendum.json",
+      "sha256": "ad29a15e3b027250a35b6c3af6ce214cc98d664cad7d9821730e7e0cdaab9e3a",
+      "mutation_allowed": false
+    }
+  },
+  "execution_sources": {
+    "native_executable_origin_diagnostic": {
+      "path": "experiments/training/run_p24_executable_origin_diagnostic.py",
+      "sha256": "5e3fe58a394ad98ab8f2d03f5992cabeb417110b7d2b05e86fbbf61b5f241afb",
+      "mutation_allowed_after_freeze": false
+    },
+    "native_executable_origin_sanitizer": {
+      "path": "scripts/sanitize_p24_executable_origin_diagnostic.py",
+      "sha256": "b432e06f899c85a8bcbcfa584f91e6ae8472902389a89aafc07c2840a31f7616",
+      "mutation_allowed_after_freeze": false
+    },
+    "cuda_acquisition_runner": {
+      "path": "experiments/training/run_p23_deterministic_cuda_shadow_trace.py",
+      "sha256": "a2b4bb5b686b7f681958d09be1d465917b40e34d45e4d3503efef0f35e7ae8cb",
+      "mutation_allowed_after_freeze": false
+    },
+    "stored_computation_and_shadow_semantics": {
+      "path": "src/passive_muon/p21_shadow_trace.py",
+      "sha256": "020debed7a12d6f538ef9093fcdfbcafbf571ea162fb868ccf0a49b5bebb0825",
+      "mutation_allowed_after_freeze": false
+    }
+  },
+  "frozen_p23_gates": {
+    "thresholds_may_change": false,
+    "numeric_tolerance": null,
+    "allclose_allowed": false,
+    "repeatability_required_mismatches": 0,
+    "noninterference_required_mismatches": 0,
+    "trace_on_observations": 1152,
+    "actual_post_aspect_cuda_candidates": 1152,
+    "shape_inventory": "48/48 Muon parameters and 84934656/84934656 elements",
+    "fidelity_gates": "unchanged frozen P21/P22 activation, correction, cosine, amplitude, P16, P18, and mild-intervention gates",
+    "state_and_rng_schedule": "unchanged from P22"
+  },
+  "p23_blocker": {
+    "classification": "executable_origin_on_writable_tmpfs_before_step_zero",
+    "recorded_stderr": "P23 blocked: executable origin lies on a writable mount: tmpfs:tmp1s2eyibl/_remote_module_non_scriptable.py\n",
+    "failure_phase": "initialized_loaded_file_closure_before_initial_state_hash_and_step_zero",
+    "native_failure_manifest_present": false,
+    "remediation_scope": "reproduce and localize with native hash-bound diagnostics before treating the PyTorch generated-module path as established cause",
+    "not_exonerated": [
+      "nanoGPT forward/backward CUDA operations",
+      "Muon BF16 candidate generation",
+      "trace observer noninterference",
+      "CUDA repeatability",
+      "fidelity gates"
+    ]
+  },
+  "remediation_design": {
+    "strategy": "pre-generate the exact PyTorch non-scriptable remote-module source in the image and patch the instantiator to verify and load that exact immutable image path without sys.path resolution",
+    "torch_version": "2.7.0+cu128",
+    "python_major_minor": "3.12",
+    "installed_instantiator": "/opt/p23-venv/lib/python3.12/site-packages/torch/distributed/nn/jit/instantiator.py",
+    "generated_directory": "/opt/p23-venv/lib/python3.12/site-packages/torch/_p24_generated_remote_modules",
+    "generated_module": "/opt/p23-venv/lib/python3.12/site-packages/torch/_p24_generated_remote_modules/_remote_module_non_scriptable.py",
+    "generated_directory_mode": "0555",
+    "generated_module_mode": "0444",
+    "image_manifest": "/opt/p24-immutable-remote-module-manifest.json",
+    "source_hashes": {
+      "instantiator_before_sha256": "567d1314ee27ff0b3bd22e7c4d1157246469de25e7a3183d96debe167b193615",
+      "instantiator_after_sha256": "1ecc8ae1ac4a517511914fff6e01c78ed3ad828bbe8a07b02079c206ee56bceb",
+      "remote_module_sha256": "f9bb2f5c5438791581d399e38a27606e123bdbeb3c6cb53683318a06060439c1",
+      "remote_module_template_sha256": "0ff1856bbd031b5298d46c06c0502abc20bd804f42c1949ed4127e8c773660cc",
+      "generated_module_sha256": "8205b16956fb264841ecd8644784a0d157f87df79b17c16825dc1163433ce5d8"
+    },
+    "source_byte_counts": {
+      "instantiator_before": 5510,
+      "instantiator_after": 6438,
+      "remote_module": 31251,
+      "remote_module_template": 3463,
+      "generated_module": 2355
+    },
+    "build_patch": {
+      "path": "experiments/training/prepare_p24_immutable_remote_module.py",
+      "sha256": "97a4a730aadd11de1aa1b23107cef53f95c3348bde905932571eb6a68d512bef",
+      "mutation_allowed_after_freeze": false,
+      "fail_on_preimage_mismatch": true,
+      "fail_on_generated_content_mismatch": true,
+      "fail_on_postimage_mismatch": true
+    },
+    "image_recipe": {
+      "path": "experiments/training/p24_runtime.Dockerfile",
+      "sha256": "c1ccf0783b10f9e79795fa575398a58a7e6d7a9f2abe47a3a0650b213978e2f9",
+      "base_image": "localhost:5000/p23-runtime@sha256:44ef23717780b1cbf112b183e7988b1319ddfed6b1d224efaa33e1e6d96de4c1",
+      "mutation_allowed_after_freeze": false
+    },
+    "runtime_policy": {
+      "pre_generated_at_image_build": true,
+      "exact_existing_content_required": true,
+      "generated_module_loaded_by_exact_path_spec": true,
+      "generated_module_sys_path_resolution_allowed": false,
+      "loaded_module_file_must_equal_exact_generated_path": true,
+      "unexpected_runtime_generation": "patched verifier rejects unexpected paths or content, and the acquisition image root is read-only",
+      "generated_directory_writable_in_acquisition": false,
+      "writable_executable_origin_rejection_unchanged": true,
+      "tmp_allowlist_added": false,
+      "dev_shm_allowlist_added": false,
+      "tmp_remains_writable_noexec_tmpfs": true
+    }
+  },
+  "native_diagnostic_contract": {
+    "runner": "experiments/training/run_p24_executable_origin_diagnostic.py",
+    "schema_version": "passive-muon-p24-executable-origin-diagnostic-v1",
+    "modes": [
+      "baseline",
+      "remediated"
+    ],
+    "status_values": [
+      "passes",
+      "fails",
+      "error"
+    ],
+    "success_top_level_fields": [
+      "schema_version",
+      "mode",
+      "status",
+      "scope",
+      "seed",
+      "seed_semantics",
+      "process",
+      "repository",
+      "artifacts",
+      "contract_binding",
+      "runtime_lock_binding",
+      "host_attestation_binding",
+      "live_runtime",
+      "pinned_sources",
+      "trigger",
+      "file_backed_module_closure",
+      "checks",
+      "claim_boundary",
+      "passes"
+    ],
+    "error_top_level_fields": [
+      "schema_version",
+      "mode",
+      "status",
+      "scope",
+      "seed",
+      "seed_semantics",
+      "process",
+      "repository",
+      "artifacts",
+      "contract_binding",
+      "runtime_lock_binding",
+      "host_attestation_binding",
+      "live_runtime",
+      "pinned_sources",
+      "trigger",
+      "file_backed_module_closure",
+      "checks",
+      "error",
+      "claim_boundary",
+      "passes"
+    ],
+    "required_expected_bindings": [
+      "contract_sha256",
+      "runtime_lock_sha256",
+      "host_attestation_sha256",
+      "repository_head",
+      "repository_tree"
+    ],
+    "contract_source_record_scope": "rehash every unchanged authority, execution source, build helper and image recipe from the clean expected repository HEAD before Torch import and again after the trigger",
+    "runtime_lock_validation": "exact schema, status, expected artifact SHA-256, complete retained content, host-attestation backlink, full container/GPU agreement, repository HEAD/tree, read-only rootfs, mountinfo, Python and complete process environment",
+    "rule_7_provenance_required": true,
+    "source_hashes_required": [
+      "instantiator_sha256",
+      "remote_module_sha256",
+      "remote_module_template_sha256",
+      "generated_module_sha256"
+    ],
+    "generated_module_observation_required": [
+      "path",
+      "sha256",
+      "byte_count",
+      "effective_mount"
+    ],
+    "effective_mount_required": [
+      "mount_point",
+      "mount_id",
+      "filesystem_type",
+      "mount_options",
+      "super_options",
+      "writable"
+    ],
+    "baseline_acceptance": "native diagnostic passes only as a reproduction of the generated module on a writable origin; it is not an acquisition pass",
+    "remediated_acceptance": "native diagnostic constructs the optimizer, observes the exact generated module at the image-layer path and hash, proves the effective mount read-only, and returns pass",
+    "offline_sanitizer": {
+      "runner": "scripts/sanitize_p24_executable_origin_diagnostic.py",
+      "schema_version": "passive-muon-p24-sanitized-executable-origin-diagnostic-v1",
+      "required_logical_roots": [
+        "data",
+        "muon",
+        "nanogpt",
+        "native",
+        "preprocessor_alias",
+        "python_environment",
+        "python_standard_library",
+        "repository",
+        "temporary"
+      ],
+      "native_sha256_and_byte_count_required": true,
+      "full_semantic_manifest_retained": true,
+      "exact_logical_root_substitution": true,
+      "native_and_sanitized_artifacts_retained": true,
+      "overwrite_allowed": false,
+      "applies_to_statuses": [
+        "passes",
+        "fails",
+        "error"
+      ]
+    },
+    "diagnostic_is_not_gradient_acquisition": true
+  },
+  "replacement_runtime": {
+    "new_oci_digest_required": true,
+    "new_running_container_required": true,
+    "new_runtime_lock_required": true,
+    "new_host_attestation_required": true,
+    "old_p23_image_allowed_for_acquisition": false,
+    "old_p23_runtime_lock_allowed_for_acquisition": false,
+    "old_p23_host_attestation_allowed_for_acquisition": false,
+    "lock_review_and_commit_before_remediated_diagnostic": true,
+    "lock_review_and_commit_before_trace_off_a": true,
+    "diagnostic_to_acquisition_commit_bridge_required": true,
+    "bridge_delta_scope": "only the two sanitized diagnostic wrappers and explicit result-binding metadata; every frozen execution-source hash remains unchanged",
+    "remediated_diagnostic_rerun_after_bridge_allowed": false,
+    "root_filesystem_read_only": true,
+    "network_mode": "none",
+    "gpu_contract": "one pinned full-GPU BF16 CUDA device; no CPU, MPS, MIG, or ordinal substitution",
+    "mount_contract": "unchanged P23 destination and mode allowlist; only the immutable image contents differ"
+  },
+  "ordered_execution": [
+    "run and retain the native baseline executable-origin diagnostic in the old P23 image",
+    "independently compute the baseline native-byte SHA-256, sanitize offline against that digest, and retain both artifacts",
+    "build the remediation image from the exact preimage and verify all three source hashes",
+    "launch a new read-only-root container with the unchanged P23 mount and GPU contract",
+    "freeze and sanitize a new runtime lock and host attestation",
+    "review and commit the new image digest, runtime lock, host attestation, and complete source tree",
+    "run and retain the native remediated executable-origin diagnostic against that exact committed lock and tree",
+    "independently compute the remediated native-byte SHA-256, sanitize offline against that digest, and retain both artifacts",
+    "review and commit both diagnostic bindings and sanitized copies before acquisition",
+    "trace_off_a",
+    "trace_off_b",
+    "verify_repeatability",
+    "trace_on only after exact repeatability passes",
+    "verify_noninterference",
+    "aggregate_fidelity only after exact repeatability and noninterference pass",
+    "sanitize every P23 acquisition artifact with the unchanged P23 sanitizer and retain every native artifact and hash"
+  ],
+  "failure_policy": {
+    "no_favorable_reruns": true,
+    "native_acquisition_failure_manifest_schema": "passive-muon-p23-native-failure-manifest-v1",
+    "failure_output_required_for_every_acquisition_run": true,
+    "failure_output_must_be_fresh_external_and_nonaliasing": true,
+    "any_preflight_or_diagnostic_mismatch": "stop before gradient acquisition and record the first failure",
+    "trace_off_a_failure": "stop before trace_off_b and retain native failure evidence",
+    "trace_off_repeatability_failure": "trace_on remains mechanically barred",
+    "trace_on_failure": "do not aggregate fidelity",
+    "nonfinite_or_unrooted_executable_origin": "fail closed",
+    "runtime_big_integer_or_exact_fraction_check_added": false
+  },
+  "claim_boundary": {
+    "pre_acquisition_contract_only": true,
+    "p24_cuda_result_present": false,
+    "theorem_effect": "P18-P21 exact and finite-precision theorems are unchanged",
+    "not_claimed": [
+      "that the operator-recorded P23 transcript is a native failure manifest",
+      "that the PyTorch generated module is the only possible blocker before the native diagnostics pass",
+      "CUDA repeatability",
+      "observer noninterference",
+      "real-gradient fidelity",
+      "native CUDA sector-shield correctness",
+      "training-quality or throughput parity",
+      "global PL for the neural loss",
+      "global stability of unrepaired upstream Muon"
+    ]
+  }
+}

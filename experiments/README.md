@@ -813,14 +813,52 @@ P23_COMMON=(
 Run trace-off A and trace-off B in two fresh processes:
 
 ```bash
-"${P23_PYTHON[@]}" "$P23_RUNNER" run \
+if ! "${P23_PYTHON[@]}" "$P23_RUNNER" run \
   --role trace_off_a "${P23_COMMON[@]}" \
-  --output "$P23_NATIVE/trace-off-a.json"
+  --output "$P23_NATIVE/trace-off-a.json" \
+  --failure-output "$P23_NATIVE/trace-off-a-failure.json"
+then
+  "${P23_PYTHON[@]}" "$P23_RUNNER" sanitize \
+    --manifest "$P23_NATIVE/trace-off-a-failure.json" \
+    --path-root "repository=$P23_REPO" \
+    --path-root "nanogpt=$P23_NANOGPT" \
+    --path-root "muon=$P23_MUON_ROOT" \
+    --path-root "data=$P23_DATA_ROOT" \
+    --path-root "preprocessor_alias=$P23_PREPROCESSOR_ALIAS" \
+    --path-root "python_environment=$P23_PYTHON_ENVIRONMENT" \
+    --path-root "native=$P23_NATIVE" \
+    --output "$P23_NATIVE/sanitized-trace-off-a-failure.json"
+  exit 1
+fi
+test ! -e "$P23_NATIVE/trace-off-a-failure.json"
 
-"${P23_PYTHON[@]}" "$P23_RUNNER" run \
+if ! "${P23_PYTHON[@]}" "$P23_RUNNER" run \
   --role trace_off_b "${P23_COMMON[@]}" \
-  --output "$P23_NATIVE/trace-off-b.json"
+  --output "$P23_NATIVE/trace-off-b.json" \
+  --failure-output "$P23_NATIVE/trace-off-b-failure.json"
+then
+  "${P23_PYTHON[@]}" "$P23_RUNNER" sanitize \
+    --manifest "$P23_NATIVE/trace-off-b-failure.json" \
+    --path-root "repository=$P23_REPO" \
+    --path-root "nanogpt=$P23_NANOGPT" \
+    --path-root "muon=$P23_MUON_ROOT" \
+    --path-root "data=$P23_DATA_ROOT" \
+    --path-root "preprocessor_alias=$P23_PREPROCESSOR_ALIAS" \
+    --path-root "python_environment=$P23_PYTHON_ENVIRONMENT" \
+    --path-root "native=$P23_NATIVE" \
+    --output "$P23_NATIVE/sanitized-trace-off-b-failure.json"
+  exit 1
+fi
+test ! -e "$P23_NATIVE/trace-off-b-failure.json"
 ```
+
+Each native `run` starts with a distinct, fresh `--failure-output` path. A
+successful run leaves that path absent. On the first failure, the runner
+atomically retains the native failure manifest, the guarded block creates its
+complete path-sanitized copy, and `exit 1` halts the sequence before the next
+role. Do not delete either copy or continue from the same attempt. If even the
+failure-manifest write is blocked, retain the complete stderr and host
+evidence and stop; a missing failure manifest never authorizes a retry.
 
 Verify exact baseline repeatability before creating any trace-on process:
 
@@ -836,13 +874,28 @@ Only a zero-mismatch report permits the trace-on command.  Its prerequisite
 arguments are revalidated before model allocation and again before step zero:
 
 ```bash
-"${P23_PYTHON[@]}" "$P23_RUNNER" run \
+if ! "${P23_PYTHON[@]}" "$P23_RUNNER" run \
   --role trace_on "${P23_COMMON[@]}" \
   --trace-off-a "$P23_NATIVE/trace-off-a.json" \
   --trace-off-b "$P23_NATIVE/trace-off-b.json" \
   --repeatability-report "$P23_NATIVE/repeatability.json" \
   --raw-trace-output "$P23_NATIVE/raw-trace.json" \
-  --output "$P23_NATIVE/trace-on.json"
+  --output "$P23_NATIVE/trace-on.json" \
+  --failure-output "$P23_NATIVE/trace-on-failure.json"
+then
+  "${P23_PYTHON[@]}" "$P23_RUNNER" sanitize \
+    --manifest "$P23_NATIVE/trace-on-failure.json" \
+    --path-root "repository=$P23_REPO" \
+    --path-root "nanogpt=$P23_NANOGPT" \
+    --path-root "muon=$P23_MUON_ROOT" \
+    --path-root "data=$P23_DATA_ROOT" \
+    --path-root "preprocessor_alias=$P23_PREPROCESSOR_ALIAS" \
+    --path-root "python_environment=$P23_PYTHON_ENVIRONMENT" \
+    --path-root "native=$P23_NATIVE" \
+    --output "$P23_NATIVE/sanitized-trace-on-failure.json"
+  exit 1
+fi
+test ! -e "$P23_NATIVE/trace-on-failure.json"
 ```
 
 Then verify observer noninterference and aggregate the unchanged frozen gates:
@@ -923,6 +976,160 @@ schema, provenance, fail-closed comparison, sanitization, CPU fixtures, and
 committed outcome fields, but it cannot reproduce the remote CUDA process.
 P24 requires a newly digest-pinned and refrozen image; the existing lock must
 not be reused after changing the executable-origin behavior.
+
+### P24 executable-origin image and diagnostic order
+
+P24 freezes this order: baseline diagnostic, image build, replacement launch
+and lock, then remediated diagnostic. Run the baseline in the still-locked P23
+container from the clean, reviewed P24 contract commit. The five expected
+values below are review inputs, not values to infer from a dirty tree:
+
+```bash
+P24_DIAGNOSTIC="$P23_REPO/experiments/training/run_p24_executable_origin_diagnostic.py"
+P24_CONTRACT="$P23_REPO/experiments/training/p24_cuda_executable_origin_contract.json"
+P24_SANITIZER="$P23_REPO/scripts/sanitize_p24_executable_origin_diagnostic.py"
+P24_PYTHON_STANDARD_LIBRARY=/usr/local/lib/python3.12
+P24_TEMPORARY=/tmp
+: "${P24_EXPECTED_CONTRACT_SHA256:?set reviewed contract SHA-256}"
+: "${P24_EXPECTED_P23_LOCK_SHA256:?set reviewed P23 lock SHA-256}"
+: "${P24_EXPECTED_P23_ATTESTATION_SHA256:?set reviewed P23 attestation SHA-256}"
+: "${P24_BASELINE_HEAD:?set reviewed baseline repository HEAD}"
+: "${P24_BASELINE_TREE:?set reviewed baseline repository tree}"
+
+P24_BASELINE_STATUS=0
+"${P23_PYTHON[@]}" "$P24_DIAGNOSTIC" \
+  --mode baseline --repository "$P23_REPO" \
+  --runtime-lock "$P23_LOCK" --host-attestation "$P23_ATTESTATION" \
+  --contract "$P24_CONTRACT" \
+  --expected-contract-sha256 "$P24_EXPECTED_CONTRACT_SHA256" \
+  --expected-runtime-lock-sha256 "$P24_EXPECTED_P23_LOCK_SHA256" \
+  --expected-host-attestation-sha256 "$P24_EXPECTED_P23_ATTESTATION_SHA256" \
+  --expected-repository-head "$P24_BASELINE_HEAD" \
+  --expected-repository-tree "$P24_BASELINE_TREE" \
+  --output "$P23_NATIVE/p24-baseline-executable-origin.native.json" \
+  || P24_BASELINE_STATUS=$?
+P24_BASELINE_NATIVE_SHA256="$(
+  "${P23_PYTHON[@]}" -c \
+    'import hashlib, pathlib, sys; print(hashlib.sha256(pathlib.Path(sys.argv[1]).read_bytes()).hexdigest())' \
+    "$P23_NATIVE/p24-baseline-executable-origin.native.json"
+)"
+if ! [[ "$P24_BASELINE_NATIVE_SHA256" =~ ^[0-9a-f]{64}$ ]]; then
+  echo "invalid P24 baseline native SHA-256" >&2
+  exit 1
+fi
+"${P23_PYTHON[@]}" "$P24_SANITIZER" \
+  --native "$P23_NATIVE/p24-baseline-executable-origin.native.json" \
+  --expected-native-sha256 "$P24_BASELINE_NATIVE_SHA256" \
+  --path-root "repository=$P23_REPO" \
+  --path-root "nanogpt=$P23_NANOGPT" \
+  --path-root "muon=$P23_MUON_ROOT" \
+  --path-root "data=$P23_DATA_ROOT" \
+  --path-root "preprocessor_alias=$P23_PREPROCESSOR_ALIAS" \
+  --path-root "python_environment=$P23_PYTHON_ENVIRONMENT" \
+  --path-root "python_standard_library=$P24_PYTHON_STANDARD_LIBRARY" \
+  --path-root "temporary=$P24_TEMPORARY" \
+  --path-root "native=$P23_NATIVE" \
+  --output "$P23_NATIVE/p24-baseline-executable-origin.sanitized.json"
+if (( P24_BASELINE_STATUS != 0 )); then
+  exit "$P24_BASELINE_STATUS"
+fi
+```
+
+Retain that result, then build the exact recipe from its training-directory
+context and select the pushed digest from BuildKit's metadata:
+
+```bash
+set -euo pipefail
+export P24_IMAGE_TAG=registry.example/project/p24-runtime:origin-hardening-1
+mkdir -p /secure/p24
+docker buildx build --platform linux/amd64 \
+  --file experiments/training/p24_runtime.Dockerfile \
+  --tag "$P24_IMAGE_TAG" \
+  --metadata-file /secure/p24/p24-build-metadata.json \
+  --push experiments/training
+P24_IMAGE_DIGEST="$(
+  jq --exit-status --raw-output '."containerimage.digest"' \
+    /secure/p24/p24-build-metadata.json
+)"
+if ! [[ "$P24_IMAGE_DIGEST" =~ ^sha256:[0-9a-f]{64}$ ]]; then
+  echo "failed to obtain the built P24 image digest" >&2
+  exit 1
+fi
+P24_IMAGE="${P24_IMAGE_TAG%:*}@$P24_IMAGE_DIGEST"
+export P24_IMAGE
+docker pull "$P24_IMAGE"
+docker image inspect "$P24_IMAGE"
+```
+
+Launch `p24-acquisition` by replaying the complete P23 host-inspection and
+`docker run` blocks above with only these substitutions: `P24_IMAGE`, the
+container name `p24-acquisition`, fresh `/secure/p24` host-evidence and native
+evidence files, and `P24_PYTHON=(docker exec p24-acquisition
+/opt/p23-venv/bin/python)`. Preserve every destination path, environment
+value, mount mode, GPU UUID, `--network none`, read-only root, and `/tmp`
+tmpfs option. Run `freeze-runtime` in that replacement container, sanitize,
+review, and commit its new runtime lock and host attestation. Never pass the
+old P23 lock or attestation to the replacement container.
+
+Only then run the remediated diagnostic against those new committed artifacts
+and the clean reviewed repository HEAD and tree:
+
+```bash
+: "${P24_LOCK:?set new committed runtime-lock path}"
+: "${P24_ATTESTATION:?set new committed host-attestation path}"
+: "${P24_EXPECTED_LOCK_SHA256:?set reviewed replacement lock SHA-256}"
+: "${P24_EXPECTED_ATTESTATION_SHA256:?set reviewed replacement attestation SHA-256}"
+: "${P24_REMEDIATED_HEAD:?set reviewed remediated repository HEAD}"
+: "${P24_REMEDIATED_TREE:?set reviewed remediated repository tree}"
+P24_PYTHON=(docker exec p24-acquisition /opt/p23-venv/bin/python)
+
+P24_REMEDIATED_STATUS=0
+"${P24_PYTHON[@]}" "$P24_DIAGNOSTIC" \
+  --mode remediated --repository "$P23_REPO" \
+  --runtime-lock "$P24_LOCK" --host-attestation "$P24_ATTESTATION" \
+  --contract "$P24_CONTRACT" \
+  --expected-contract-sha256 "$P24_EXPECTED_CONTRACT_SHA256" \
+  --expected-runtime-lock-sha256 "$P24_EXPECTED_LOCK_SHA256" \
+  --expected-host-attestation-sha256 "$P24_EXPECTED_ATTESTATION_SHA256" \
+  --expected-repository-head "$P24_REMEDIATED_HEAD" \
+  --expected-repository-tree "$P24_REMEDIATED_TREE" \
+  --output "$P23_NATIVE/p24-remediated-executable-origin.native.json" \
+  || P24_REMEDIATED_STATUS=$?
+P24_REMEDIATED_NATIVE_SHA256="$(
+  "${P24_PYTHON[@]}" -c \
+    'import hashlib, pathlib, sys; print(hashlib.sha256(pathlib.Path(sys.argv[1]).read_bytes()).hexdigest())' \
+    "$P23_NATIVE/p24-remediated-executable-origin.native.json"
+)"
+if ! [[ "$P24_REMEDIATED_NATIVE_SHA256" =~ ^[0-9a-f]{64}$ ]]; then
+  echo "invalid P24 remediated native SHA-256" >&2
+  exit 1
+fi
+"${P24_PYTHON[@]}" "$P24_SANITIZER" \
+  --native "$P23_NATIVE/p24-remediated-executable-origin.native.json" \
+  --expected-native-sha256 "$P24_REMEDIATED_NATIVE_SHA256" \
+  --path-root "repository=$P23_REPO" \
+  --path-root "nanogpt=$P23_NANOGPT" \
+  --path-root "muon=$P23_MUON_ROOT" \
+  --path-root "data=$P23_DATA_ROOT" \
+  --path-root "preprocessor_alias=$P23_PREPROCESSOR_ALIAS" \
+  --path-root "python_environment=$P23_PYTHON_ENVIRONMENT" \
+  --path-root "python_standard_library=$P24_PYTHON_STANDARD_LIBRARY" \
+  --path-root "temporary=$P24_TEMPORARY" \
+  --path-root "native=$P23_NATIVE" \
+  --output "$P23_NATIVE/p24-remediated-executable-origin.sanitized.json"
+if (( P24_REMEDIATED_STATUS != 0 )); then
+  exit "$P24_REMEDIATED_STATUS"
+fi
+```
+
+Retain each `.native.json`, its independently computed native SHA-256, and its
+`.sanitized.json` wrapper regardless of the diagnostic's pass value. The
+sanitizer verifies that SHA before reading the complete manifest and requires
+exactly the nine named roots shown above. A nonzero diagnostic or binding
+mismatch is sanitized first and then halts before gradient acquisition. Only
+a passing remediated artifact bound to the new digest, lock, attestation,
+clean HEAD, and tree permits the failure-output-guarded acquisition sequence
+above.
 
 Replay the committed early-stop record's static source/runtime bindings with:
 

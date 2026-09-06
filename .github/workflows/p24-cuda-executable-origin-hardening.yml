@@ -1,0 +1,71 @@
+name: P24 CUDA executable-origin hardening contract replay
+
+on:
+  push:
+    branches:
+      - main
+      - p24-cuda-executable-origin-hardening
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  preregistration-contract:
+    name: CPU static contract and negative controls (Python 3.12)
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    steps:
+      - name: Check out repository with frozen P23 history and tags
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          enable-cache: true
+
+      - name: Install the locked environment
+        run: uv sync --locked
+
+      - name: Reconstruct the frozen P23 outcome boundary
+        run: >-
+          uv run --locked python
+          scripts/reconstruct_p23_cuda_shadow_trace_outcome.py
+
+      - name: Independently reconstruct the P24 static contract
+        run: >-
+          python
+          scripts/reconstruct_p24_cuda_executable_origin.py
+
+      - name: Run P24 contract, image-design, diagnostic, and sanitizer fixtures
+        run: >-
+          uv run --locked pytest -q
+          tests/test_p24_cuda_executable_origin_hardening.py
+          tests/test_p24_executable_origin_diagnostic.py
+          tests/test_p24_runtime_recipe.py
+          tests/test_p23_runtime_recipe.py
+          tests/test_p23_cuda_shadow_trace_outcome.py
+          tests/test_current_research_index.py
+
+      - name: Check formatting, lint, and branch whitespace
+        run: |
+          uv run --locked ruff format --check src scripts experiments tests
+          uv run --locked ruff check src scripts experiments tests
+          git diff --check p23-deterministic-cuda-shadow-trace-diagnostic...HEAD
+
+      - name: State the evidence boundary
+        run: >-
+          echo "This CPU job validates only the frozen P24 image-remediation
+          design, inherited P23 gates, native-diagnostic and offline-sanitizer
+          schemas, and negative controls.
+          It supplies no native diagnostic result, CUDA acquisition,
+          real-gradient fidelity evidence, or
+          training evidence."

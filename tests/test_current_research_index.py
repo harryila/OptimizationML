@@ -889,6 +889,52 @@ def test_p23_records_locked_cuda_pretraining_provenance_stop() -> None:
     assert "/usr/bin/cat /proc/self/mountinfo" in p23_runbook
     assert 'cat "/proc/$P23_CONTAINER_INIT_PID/mountinfo"' not in p23_runbook
     assert "cached bytecode" in p23_runbook
+    for failure_name in (
+        "trace-off-a-failure.json",
+        "trace-off-b-failure.json",
+        "trace-on-failure.json",
+    ):
+        assert f'--failure-output "$P23_NATIVE/{failure_name}"' in p23_runbook
+        assert f'--manifest "$P23_NATIVE/{failure_name}"' in p23_runbook
+        assert f'--output "$P23_NATIVE/sanitized-{failure_name}"' in p23_runbook
+        assert f'test ! -e "$P23_NATIVE/{failure_name}"' in p23_runbook
+    assert p23_runbook.count('--failure-output "$P23_NATIVE/') == 3
+    p23_runbook_flat = " ".join(p23_runbook.split())
+    assert "A successful run leaves that path absent" in p23_runbook_flat
+    assert "On the first failure" in p23_runbook_flat
+    p24_order = (
+        "--mode baseline",
+        "p24_runtime.Dockerfile",
+        "Launch `p24-acquisition`",
+        "freeze-runtime",
+        "--mode remediated",
+        "halts before gradient acquisition",
+    )
+    p24_runbook = p23_runbook[p23_runbook.index("### P24 executable-origin") :]
+    p24_positions = [p24_runbook.index(marker) for marker in p24_order]
+    assert p24_positions == sorted(p24_positions)
+    assert 'P24_IMAGE="${P24_IMAGE_TAG%:*}@$P24_IMAGE_DIGEST"' in p24_runbook
+    assert "Never pass the old P23 lock or attestation" in " ".join(p24_runbook.split())
+    assert "sanitize_p24_executable_origin_diagnostic.py" in p24_runbook
+    for mode in ("baseline", "remediated"):
+        native = f"p24-{mode}-executable-origin.native.json"
+        sanitized = f"p24-{mode}-executable-origin.sanitized.json"
+        assert native in p24_runbook
+        assert sanitized in p24_runbook
+    assert p24_runbook.count("--expected-native-sha256") == 2
+    for root_label in (
+        "repository",
+        "nanogpt",
+        "muon",
+        "data",
+        "preprocessor_alias",
+        "python_environment",
+        "python_standard_library",
+        "temporary",
+        "native",
+    ):
+        assert p24_runbook.count(f'--path-root "{root_label}=') == 2
+    assert "independently computed native SHA-256" in " ".join(p24_runbook.split())
     assert (
         "/private/tmp/optimizationml-p22-data/materialized/p22_fineweb_manifest.json"
     ) in experiments
