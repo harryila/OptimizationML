@@ -44,14 +44,19 @@ P23_RUN_MANIFEST_SCHEMA: Final = "passive-muon-p23-cuda-run-manifest-v1"
 P23_REPEATABILITY_SCHEMA: Final = "passive-muon-p23-cuda-repeatability-v1"
 P23_NONINTERFERENCE_SCHEMA: Final = "passive-muon-p23-cuda-noninterference-v1"
 P23_SANITIZED_MANIFEST_SCHEMA: Final = "passive-muon-p23-sanitized-complete-manifest-v1"
-P23_RUNTIME_LOCK_SCHEMA: Final = "passive-muon-p23-cuda-runtime-lock-v2"
-P23_HOST_ATTESTATION_SCHEMA: Final = "passive-muon-p23-host-attestation-v2"
+P23_RUNTIME_LOCK_SCHEMA: Final = "passive-muon-p23-cuda-runtime-lock-v3"
+P23_HOST_ATTESTATION_SCHEMA: Final = "passive-muon-p23-host-attestation-v3"
 P23_LOADED_FILE_CLOSURE_SCHEMA: Final = "passive-muon-p23-loaded-file-closure-v1"
 P23_LOADED_FILE_SNAPSHOT_SCHEMA: Final = "passive-muon-p23-loaded-file-snapshot-v1"
 
 PINNED_PYTHON_ENVIRONMENT: Final = "/opt/p23-venv"
 PINNED_PYTHON_EXECUTABLE: Final = f"{PINNED_PYTHON_ENVIRONMENT}/bin/python"
+PINNED_PYTHON_MAJOR_MINOR: Final = (3, 12)
+PINNED_EXECUTABLE_PATH: Final = (
+    "/opt/p23-venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+)
 PINNED_CONTAINER_NETWORK_MODE: Final = "none"
+DOCKER_GPU_SELECTION_MECHANISM: Final = "docker_device_request_single_full_gpu"
 FROZEN_PYTHON_FLAGS: Final = {
     "debug": 0,
     "inspect": 0,
@@ -353,6 +358,103 @@ def _validate_running_container_mounts(value: object) -> dict[str, object]:
     return copy.deepcopy(_SANITIZED_MOUNT_CONTRACT)
 
 
+def _container_environment_value(value: object, name: str) -> str:
+    """Return one exact value from Docker's inspected ``Config.Env`` list."""
+
+    if not isinstance(value, list) or any(not isinstance(item, str) for item in value):
+        raise P23ProvenanceError("running-container inspection has no canonical environment list")
+    prefix = f"{name}="
+    matches = [item[len(prefix) :] for item in value if item.startswith(prefix)]
+    if len(matches) != 1:
+        raise P23ProvenanceError(
+            f"running-container inspection must contain exactly one {name} entry"
+        )
+    return matches[0]
+
+
+def _validate_running_container_gpu_selection(
+    config: Mapping[str, object], host_config: Mapping[str, object]
+) -> dict[str, object]:
+    """Validate Docker's host-side one-full-GPU request before trusting CUDA.
+
+    Docker 29's native CDI path retains the requested UUID in ``Config.Env``
+    and ``HostConfig.DeviceRequests``. The long-lived container's PID 1 may
+    receive an implementation-internal ``NVIDIA_VISIBLE_DEVICES=void``, but
+    every P23 evidence role is a fresh ``docker exec`` process and receives
+    the inspected UUID-valued configuration. The separately collected CUDA
+    identity must agree with the request exactly.
+    """
+
+    cuda_visible = _container_environment_value(config.get("Env"), "CUDA_VISIBLE_DEVICES")
+    nvidia_visible = _container_environment_value(config.get("Env"), "NVIDIA_VISIBLE_DEVICES")
+    if _GPU_UUID.fullmatch(cuda_visible) is None or nvidia_visible != cuda_visible:
+        raise P23ProvenanceError(
+            "running-container configuration must request one identical full GPU UUID"
+        )
+    requests = host_config.get("DeviceRequests")
+    if not isinstance(requests, list) or len(requests) != 1:
+        raise P23ProvenanceError("running container must have exactly one GPU DeviceRequest")
+    request = requests[0]
+    expected_request: dict[str, object] = {
+        "Driver": "",
+        "Count": 0,
+        "DeviceIDs": [cuda_visible],
+        "Capabilities": [["gpu"]],
+        "Options": {},
+    }
+    if (
+        not isinstance(request, Mapping)
+        or type(request.get("Count")) is not int
+        or dict(request) != expected_request
+    ):
+        raise P23ProvenanceError(
+            "running-container GPU DeviceRequest does not pin the declared full GPU UUID"
+        )
+    return {
+        "mechanism": DOCKER_GPU_SELECTION_MECHANISM,
+        "requested_full_gpu_uuid": cuda_visible,
+        "device_request": copy.deepcopy(expected_request),
+        "container_config_cuda_visible_devices": cuda_visible,
+        "container_config_nvidia_visible_devices": nvidia_visible,
+    }
+
+
+def _validate_gpu_selection_record(value: object) -> dict[str, object]:
+    """Validate the sanitized Docker/CDI GPU-selection record."""
+
+    expected_fields = {
+        "mechanism",
+        "requested_full_gpu_uuid",
+        "device_request",
+        "container_config_cuda_visible_devices",
+        "container_config_nvidia_visible_devices",
+    }
+    if not isinstance(value, Mapping) or set(value) != expected_fields:
+        raise P23ProvenanceError("container GPU-selection fields do not match the frozen schema")
+    result = copy.deepcopy(dict(value))
+    uuid = result.get("requested_full_gpu_uuid")
+    if _GPU_UUID.fullmatch(str(uuid)) is None:
+        raise P23ProvenanceError("container GPU selection has no canonical full GPU UUID")
+    expected_request = {
+        "Driver": "",
+        "Count": 0,
+        "DeviceIDs": [uuid],
+        "Capabilities": [["gpu"]],
+        "Options": {},
+    }
+    device_request = result.get("device_request")
+    if (
+        result.get("mechanism") != DOCKER_GPU_SELECTION_MECHANISM
+        or not isinstance(device_request, Mapping)
+        or type(device_request.get("Count")) is not int
+        or device_request != expected_request
+        or result.get("container_config_cuda_visible_devices") != uuid
+        or result.get("container_config_nvidia_visible_devices") != uuid
+    ):
+        raise P23ProvenanceError("container GPU selection is not the pinned Docker/CDI request")
+    return result
+
+
 def _validate_container_identity(
     value: object,
     *,
@@ -368,6 +470,7 @@ def _validate_container_identity(
         "default_hostname",
         "rootfs_read_only",
         "network_mode",
+        "gpu_selection",
         "mountinfo_sha256",
         "mount_contract",
         "tmpfs_contract",
@@ -401,6 +504,7 @@ def _validate_container_identity(
         raise P23ProvenanceError("container root filesystem is not read-only")
     if result.get("network_mode") != PINNED_CONTAINER_NETWORK_MODE:
         raise P23ProvenanceError("container network mode is not disabled")
+    _validate_gpu_selection_record(result.get("gpu_selection"))
     if result.get("attestation_scope") != CONTAINER_ATTESTATION_SCOPE:
         raise P23ProvenanceError("container identity overstates the procedural attestation scope")
     _validate_mount_contract_record(result.get("mount_contract"))
@@ -523,10 +627,22 @@ def load_and_validate_addendum(
         or cuda.get("network_mode") != PINNED_CONTAINER_NETWORK_MODE
     ):
         raise P23ProvenanceError("P23 requires exactly one visible CUDA device")
+    if cuda.get("docker_gpu_selection") != (
+        "host inspection must show exactly one DeviceRequest with Driver empty, Count 0, "
+        "DeviceIDs containing only the same full-GPU UUID, Capabilities exactly [[gpu]], "
+        "and Options empty"
+    ) or cuda.get("docker_exec_visibility") != (
+        "every freeze, acquisition, verifier, and aggregation role runs through docker exec "
+        "and must observe CUDA_VISIBLE_DEVICES and NVIDIA_VISIBLE_DEVICES equal to the requested "
+        "full-GPU UUID; the long-lived shell PID 1 is not an evidence role"
+    ):
+        raise P23ProvenanceError("P23 Docker GPU-selection contract changed")
     expected_python_contract = {
         "python_executable": PINNED_PYTHON_EXECUTABLE,
         "python_executable_sha256": "required in the populated runtime lock",
+        "python_major_minor": "3.12",
         "virtual_environment": PINNED_PYTHON_ENVIRONMENT,
+        "path": PINNED_EXECUTABLE_PATH,
         "python_no_user_site": "1",
         "python_dont_write_bytecode": "1",
         "python_optimize": None,
@@ -1599,6 +1715,12 @@ def load_and_validate_host_attestation(
         raise P23ProvenanceError("host attestation has invalid numeric GPU identity fields")
     if str(gpu["uuid"]).startswith("MIG-") or gpu.get("mig_mode") != "disabled":
         raise P23ProvenanceError("P23 host attestation must identify a non-MIG GPU")
+    selection = container["gpu_selection"]
+    assert isinstance(selection, Mapping)
+    if selection.get("requested_full_gpu_uuid") != gpu.get("uuid"):
+        raise P23ProvenanceError(
+            "host-attested Docker GPU request differs from the live full-GPU UUID"
+        )
     evidence = payload.get("evidence")
     expected_evidence = {
         "image_inspection_sha256",
@@ -1668,12 +1790,20 @@ def load_runtime_lock(
         raise P23ProvenanceError("CUDA runtime-lock template is not valid for acquisition")
     if payload.get("p23_addendum_sha256") != sha256_file(addendum_path.resolve()):
         raise P23ProvenanceError("CUDA runtime lock does not bind the current P23 addendum")
-    _validate_container_identity(payload.get("container"), require_host_attestation_sha256=True)
+    container = _validate_container_identity(
+        payload.get("container"), require_host_attestation_sha256=True
+    )
     gpu = payload.get("gpu")
     if not isinstance(gpu, dict) or _GPU_UUID.fullmatch(str(gpu.get("uuid"))) is None:
         raise P23ProvenanceError("CUDA runtime lock has no full-GPU UUID")
     if str(gpu.get("uuid", "")).startswith("MIG-") or gpu.get("mig_mode") != "disabled":
         raise P23ProvenanceError("P23 forbids MIG acquisition")
+    selection = container["gpu_selection"]
+    assert isinstance(selection, Mapping)
+    if selection.get("requested_full_gpu_uuid") != gpu.get("uuid"):
+        raise P23ProvenanceError(
+            "runtime-lock Docker GPU request differs from the live full-GPU UUID"
+        )
     required_gpu = (
         "pci_bus_id",
         "name",
@@ -1739,6 +1869,8 @@ def load_runtime_lock(
         raise P23ProvenanceError("CUDA runtime lock has an invalid Torch configuration digest")
     if software.get("python_executable") != PINNED_PYTHON_EXECUTABLE:
         raise P23ProvenanceError("CUDA runtime lock does not use the pinned Python executable")
+    if not _is_pinned_python_version_string(software.get("python")):
+        raise P23ProvenanceError("CUDA runtime lock does not use Python 3.12")
     if not _is_sha256(software.get("python_executable_sha256")):
         raise P23ProvenanceError("CUDA runtime lock has an invalid Python executable digest")
     python_flags = software.get("python_flags")
@@ -1801,6 +1933,7 @@ def load_runtime_lock(
     if payload.get("determinism") != expected_determinism:
         raise P23ProvenanceError("CUDA runtime-lock determinism map is not exactly pinned")
     if payload.get("loader_environment") != {
+        "PATH": PINNED_EXECUTABLE_PATH,
         "LD_PRELOAD": None,
         "LD_LIBRARY_PATH": None,
         "LD_AUDIT": None,
@@ -1845,6 +1978,25 @@ def collect_python_interpreter_flags(flags: object | None = None) -> dict[str, o
     return {name: getattr(active, name, None) for name in FROZEN_PYTHON_FLAGS}
 
 
+def _is_pinned_python_version_string(value: object) -> bool:
+    """Return whether a full ``sys.version`` string identifies Python 3.12."""
+
+    return isinstance(value, str) and re.match(r"^3\.12(?:\.|\s|$)", value) is not None
+
+
+def _validate_python_major_minor(version_info: object | None = None) -> None:
+    active = sys.version_info if version_info is None else version_info
+    try:
+        observed = tuple(active[:2])  # type: ignore[index]
+    except (TypeError, AttributeError) as error:
+        raise P23ProvenanceError("P23 cannot determine the Python major/minor version") from error
+    if observed != PINNED_PYTHON_MAJOR_MINOR:
+        raise P23ProvenanceError(
+            "P23 requires Python 3.12; "
+            f"observed {'.'.join(str(component) for component in observed)}"
+        )
+
+
 def _python_flag_mapping_is_frozen(observed: Mapping[str, object]) -> bool:
     return set(observed) == set(FROZEN_PYTHON_FLAGS) and all(
         type(observed[name]) is type(expected) and observed[name] == expected
@@ -1852,9 +2004,12 @@ def _python_flag_mapping_is_frozen(observed: Mapping[str, object]) -> bool:
     )
 
 
-def validate_python_interpreter_flags(flags: object | None = None) -> dict[str, object]:
+def validate_python_interpreter_flags(
+    flags: object | None = None, *, version_info: object | None = None
+) -> dict[str, object]:
     """Reject optimized, isolated, or environment-ignoring Python processes."""
 
+    _validate_python_major_minor(version_info)
     observed = collect_python_interpreter_flags(flags)
     if not _python_flag_mapping_is_frozen(observed):
         raise P23ProvenanceError(f"P23 Python interpreter flags are not exactly pinned: {observed}")
@@ -1878,6 +2033,7 @@ def configure_cuda_determinism(
     env = os.environ if environ is None else environ
     validate_python_interpreter_flags(python_flags)
     expected_environment = {
+        "PATH": PINNED_EXECUTABLE_PATH,
         "CUBLAS_WORKSPACE_CONFIG": ":4096:8",
         "PYTHONHASHSEED": "1337",
         "NVIDIA_TF32_OVERRIDE": "0",
@@ -2200,6 +2356,7 @@ def _collect_cuda_runtime_components(
         "environment": {
             name: env.get(name)
             for name in (
+                "PATH",
                 "CUDA_VISIBLE_DEVICES",
                 "NVIDIA_VISIBLE_DEVICES",
                 "CUBLAS_WORKSPACE_CONFIG",
@@ -2317,6 +2474,8 @@ def validate_cuda_runtime_map(runtime: Mapping[str, object]) -> None:
         raise P23ProvenanceError("P23 torch configuration digest is invalid")
     if runtime.get("python_executable") != PINNED_PYTHON_EXECUTABLE:
         raise P23ProvenanceError("P23 runtime does not use the pinned Python executable")
+    if not _is_pinned_python_version_string(runtime.get("python_version")):
+        raise P23ProvenanceError("P23 runtime does not use Python 3.12")
     if not _is_sha256(runtime.get("python_executable_sha256")):
         raise P23ProvenanceError("P23 Python executable digest is invalid")
     python_flags = runtime.get("python_flags")
@@ -2422,6 +2581,7 @@ def validate_cuda_runtime_map(runtime: Mapping[str, object]) -> None:
         raise P23ProvenanceError("P23 runtime has no environment map")
     uuid = str(gpu["uuid"])
     exact_environment: dict[str, object] = {
+        "PATH": PINNED_EXECUTABLE_PATH,
         "CUDA_VISIBLE_DEVICES": uuid,
         "NVIDIA_VISIBLE_DEVICES": uuid,
         "CUBLAS_WORKSPACE_CONFIG": ":4096:8",
@@ -2648,6 +2808,7 @@ def freeze_runtime_artifacts(
         raise P23ProvenanceError("running container network mode is not disabled")
     if host_config.get("Tmpfs") != REQUIRED_CONTAINER_TMPFS:
         raise P23ProvenanceError("running-container tmpfs map differs from the exact allowlist")
+    gpu_selection = _validate_running_container_gpu_selection(config, host_config)
     mount_contract = _validate_running_container_mounts(running_record.get("Mounts"))
     if not nvidia_bytes:
         raise P23ProvenanceError("host nvidia-smi evidence is empty")
@@ -2700,6 +2861,10 @@ def freeze_runtime_artifacts(
         "nvidia_smi_memory_total_mib": gpu.get("nvidia_smi_memory_total_mib"),
         "mig_mode": gpu.get("mig_mode"),
     }
+    if gpu_selection["requested_full_gpu_uuid"] != stable_gpu["uuid"]:
+        raise P23ProvenanceError(
+            "host-inspected Docker GPU request differs from the live CUDA identity"
+        )
     try:
         rows = [
             [field.strip() for field in row]
@@ -2737,6 +2902,7 @@ def freeze_runtime_artifacts(
             "default_hostname": True,
             "rootfs_read_only": True,
             "network_mode": PINNED_CONTAINER_NETWORK_MODE,
+            "gpu_selection": copy.deepcopy(gpu_selection),
             "mountinfo_sha256": mountinfo_sha256,
             "mount_contract": mount_contract,
             "tmpfs_contract": copy.deepcopy(_SANITIZED_TMPFS_CONTRACT),
@@ -2797,6 +2963,7 @@ def freeze_runtime_artifacts(
             "default_hostname": True,
             "rootfs_read_only": True,
             "network_mode": PINNED_CONTAINER_NETWORK_MODE,
+            "gpu_selection": copy.deepcopy(gpu_selection),
             "mountinfo_sha256": mountinfo_sha256,
             "mount_contract": mount_contract,
             "tmpfs_contract": copy.deepcopy(_SANITIZED_TMPFS_CONTRACT),
@@ -2824,6 +2991,7 @@ def freeze_runtime_artifacts(
             "interop_threads": 1,
         },
         "loader_environment": {
+            "PATH": PINNED_EXECUTABLE_PATH,
             "LD_PRELOAD": None,
             "LD_LIBRARY_PATH": None,
             "LD_AUDIT": None,
@@ -3222,6 +3390,8 @@ def sanitize_complete_manifest(
             return [sanitize(item) for item in value]
         if isinstance(value, tuple):
             return [sanitize(item) for item in value]
+        if value == PINNED_EXECUTABLE_PATH:
+            return value
         if not isinstance(value, str) or not Path(value).is_absolute():
             return value
         resolved = Path(value).resolve()
@@ -3255,6 +3425,7 @@ def sanitize_complete_manifest(
 __all__ = [
     "CONTAINER_ATTESTATION_SCOPE",
     "DEFAULT_ADDENDUM_PATH",
+    "DOCKER_GPU_SELECTION_MECHANISM",
     "EXPECTED_CAPTURE_STEPS",
     "EXPECTED_OBSERVATION_COUNT",
     "FROZEN_PYTHON_FLAGS",
@@ -3269,8 +3440,10 @@ __all__ = [
     "P23_RUN_MANIFEST_SCHEMA",
     "P23_SANITIZED_MANIFEST_SCHEMA",
     "PINNED_CONTAINER_NETWORK_MODE",
+    "PINNED_EXECUTABLE_PATH",
     "PINNED_PYTHON_ENVIRONMENT",
     "PINNED_PYTHON_EXECUTABLE",
+    "PINNED_PYTHON_MAJOR_MINOR",
     "REQUIRED_CONTAINER_MOUNTS",
     "REQUIRED_CONTAINER_TMPFS",
     "TRACE_OFF_OBSERVATION",

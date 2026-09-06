@@ -1807,6 +1807,7 @@ def test_pre_torch_bootstrap_requires_image_interpreter_and_clean_import_path(
     nanogpt.mkdir()
     muon.mkdir()
     environment = {
+        "PATH": RUNNER._PINNED_EXECUTABLE_PATH,
         "CUDA_VISIBLE_DEVICES": "GPU-aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
         "NVIDIA_VISIBLE_DEVICES": "GPU-aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
         "VIRTUAL_ENV": "/opt/p23-venv",
@@ -1843,6 +1844,17 @@ def test_pre_torch_bootstrap_requires_image_interpreter_and_clean_import_path(
         RUNNER._assert_pre_torch_process_contract()
 
     monkeypatch.setattr(RUNNER.sys, "executable", "/opt/p23-venv/bin/python")
+    RUNNER._assert_pre_torch_process_contract()
+
+    monkeypatch.setenv("PATH", "/workspace/evidence/p23:/usr/bin")
+    with pytest.raises(RuntimeError, match="process-start environment mismatch"):
+        RUNNER._assert_pre_torch_process_contract()
+    monkeypatch.setenv("PATH", RUNNER._PINNED_EXECUTABLE_PATH)
+
+    monkeypatch.setattr(RUNNER.sys, "version_info", (3, 11, 13))
+    with pytest.raises(RuntimeError, match=r"requires Python 3\.12"):
+        RUNNER._assert_pre_torch_process_contract()
+    monkeypatch.setattr(RUNNER.sys, "version_info", (3, 12, 14))
     RUNNER._assert_pre_torch_process_contract()
 
     monkeypatch.setenv("PYTHONPATH", "/shadow")
@@ -1890,6 +1902,7 @@ def test_pre_torch_bootstrap_rejects_controlled_root_bytecode(
     cache.mkdir()
     (cache / "model.cpython-312.pyc").write_bytes(b"stale")
     environment = {
+        "PATH": RUNNER._PINNED_EXECUTABLE_PATH,
         "CUDA_VISIBLE_DEVICES": "GPU-aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
         "NVIDIA_VISIBLE_DEVICES": "GPU-aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
         "VIRTUAL_ENV": "/opt/p23-venv",

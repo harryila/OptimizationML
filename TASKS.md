@@ -443,10 +443,17 @@
 - [ ] Populate and commit the P23 runtime lock before acquisition: one
       explicitly selected non-MIG BF16 NVIDIA GPU, exact UUID/PCI/device/VBIOS,
       driver and CUDA/PyTorch stack, host-attested OCI repository digest,
-      image-resident `/opt/p23-venv/bin/python` path and executable SHA-256,
+      image-resident `/opt/p23-venv/bin/python` invocation path and
+      resolved-target executable SHA-256, exact Python major/minor `3.12`, the
+      frozen safe
+      `PATH=/opt/p23-venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin`,
       math-only SDPA, and every frozen deterministic environment/runtime
       setting, Docker network mode `none`, and the complete nonoptimized Python
       3.12 interpreter-flag map. Bind a retained host
+      inspection of one exact full-GPU `DeviceRequests` entry and matching
+      UUID-valued `Config.Env` visibility entries to the live one-device CUDA
+      and `nvidia-smi` identities; ordinals, MIG, `all`, and multiple requests
+      fail closed. Bind a retained host
       `/proc/<State.Pid>/mountinfo` snapshot to
       `/proc/self/mountinfo` in every live evidence process. No repository
       `.venv` or runtime dependency sync is allowed.

@@ -488,10 +488,13 @@ checked-in `p23_cuda_runtime_lock.template.json` is intentionally invalid for
 acquisition: every host, container, GPU, driver, CUDA/PyTorch, and
 deterministic-runtime field must be populated and committed from the selected
 CUDA host before model allocation or data collection.  The interpreter is
-fixed at `/opt/p23-venv/bin/python`; its resolved path, executable SHA-256,
-and complete Python 3.12 `sys.flags` map are runtime-lock fields.  Optimized,
-isolated, environment-ignoring, and otherwise flag-divergent invocations are
-rejected.  The separate
+fixed at `/opt/p23-venv/bin/python`; that invocation path, the resolved
+target's executable SHA-256, exact Python `3.12` major/minor version, and
+complete `sys.flags` map are
+runtime-lock fields. The executable search path is fixed at
+`/opt/p23-venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin`;
+optimized, isolated, environment-ignoring, version-divergent, and PATH-divergent
+invocations are rejected. The separate
 `p23_host_attestation.template.json` is also intentionally invalid. Every P23
 acquisition, verifier, and aggregation command requires a populated
 `--host-attestation`; both artifacts must be tracked and committed before
@@ -499,6 +502,57 @@ acquisition. Offline sanitization consumes only a retained native artifact and
 its declared path roots. The runtime lock binds the
 attestation's exact bytes; the validator also compares their container and GPU
 maps field by field.
+
+The checked-in `p23_runtime.Dockerfile`,
+`p23_runtime_requirements.txt`, and `p23_repository_source_path.txt` are the
+reviewed bootstrap recipe for the acquisition image. Build it for
+`linux/amd64` before acquisition, without overriding either build argument,
+publish it to the selected registry, capture the build result's immutable
+repository digest, and pull that digest on the acquisition host:
+
+```bash
+set -euo pipefail
+export P23_IMAGE_TAG=registry.example/project/p23-runtime:recipe-1
+mkdir -p /secure/p23
+
+docker buildx build --platform linux/amd64 \
+  --file experiments/training/p23_runtime.Dockerfile \
+  --tag "$P23_IMAGE_TAG" \
+  --metadata-file /secure/p23/p23-build-metadata.json \
+  --push experiments/training
+P23_IMAGE_DIGEST="$(
+  jq --exit-status --raw-output '."containerimage.digest"' \
+    /secure/p23/p23-build-metadata.json
+)"
+if ! [[ "$P23_IMAGE_DIGEST" =~ ^sha256:[0-9a-f]{64}$ ]]; then
+  echo "failed to obtain the built P23 image digest" >&2
+  exit 1
+fi
+P23_IMAGE="${P23_IMAGE_TAG%:*}@$P23_IMAGE_DIGEST"
+export P23_IMAGE
+docker pull "$P23_IMAGE"
+docker image inspect "$P23_IMAGE"
+```
+
+Replace the example registry and tag before use, and retain the BuildKit
+metadata file. Deriving `P23_IMAGE` from the build result rather than resolving
+the mutable tag after publication closes that tag-resolution race. The host
+requires `docker buildx` and `jq` for this pre-acquisition step. The recipe pins its base
+image reference, Python `3.12.14`, Torch `2.7.0+cu128`, and an explicit
+binary-wheel dependency closure; both pip installs use `--no-deps` and
+`--only-binary=:all:` and finish with `pip check`. It deliberately does not
+claim byte-for-byte rebuild reproducibility: Debian package indexes and wheel
+downloads are not independently content-hash locked. The published
+`repo@sha256:...` value, host image inspection, image ID, and loaded-file
+closure are the acquisition identity. A rebuilt image is a new candidate and
+must receive a new digest, populated runtime lock, and host attestation.
+Image construction may use a network; every acquisition process remains in
+the later `--network none` container.
+The launch contract intentionally runs as the image's root user. Because the
+three read-only source binds may be owned by a different host UID, the image
+sets system-level Git `safe.directory` entries for exactly
+`/workspace/OptimizationML`, `/workspace/inputs/nanoGPT`, and
+`/workspace/inputs/muon`. A wildcard safe-directory exception is forbidden.
 
 There is no hand-authored acquisition JSON. P23 uses one long-lived,
 host-inspected CUDA container and launches every role as a separate fresh
@@ -511,7 +565,7 @@ its live mount-namespace snapshot:
 ```bash
 set -euo pipefail
 mkdir -p /secure/p23/evidence
-docker image inspect registry.example/project@sha256:... \
+docker image inspect "$P23_IMAGE" \
   > /secure/p23-image-inspect.json
 nvidia-smi --id=GPU-... \
   --query-gpu=uuid,pci.bus_id,name,driver_version,vbios_version,memory.total,mig.mode.current \
@@ -529,7 +583,7 @@ root, another bind, or another tmpfs:
 
 ```bash
 set -euo pipefail
-export P23_IMAGE=registry.example/project@sha256:...
+: "${P23_IMAGE:?set P23_IMAGE to the pulled repo@sha256 digest above}"
 export P23_GPU_UUID=GPU-00000000-0000-0000-0000-000000000000
 
 docker run --detach --name p23-acquisition \
@@ -537,6 +591,7 @@ docker run --detach --name p23-acquisition \
   --network none \
   --read-only \
   --tmpfs /tmp:rw,noexec,nosuid,nodev,size=1073741824 \
+  --env PATH=/opt/p23-venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
   --env VIRTUAL_ENV=/opt/p23-venv \
   --env PYTHONNOUSERSITE=1 \
   --env PYTHONDONTWRITEBYTECODE=1 \
@@ -585,7 +640,16 @@ granting the container write access.
 
 The inspected record must be running, use network mode `none`, use the default hostname (the first 12
 characters of its full 64-hex ID), link by immutable image ID to the separately
-inspected image, and contain exactly the ten frozen mounts. The retained host
+inspected image, and contain exactly the ten frozen mounts. It must also retain
+both UUID-valued visibility entries in `Config.Env` and exactly one
+`HostConfig.DeviceRequests` record with empty driver, zero count, the same
+singleton UUID, capabilities exactly `[["gpu"]]`, and empty options. The P23
+freezer validates these fields semantically rather than relying only on the
+inspection-file hash. An ordinal, `all`, MIG UUID, missing request, or second
+request fails closed. On Docker 29's native-CDI path, the long-lived shell PID
+1 may internally report `NVIDIA_VISIBLE_DEVICES=void`; PID 1 is not an evidence
+role. Every fresh `docker exec` command below must instead receive the two
+inspected UUID values and expose exactly one matching CUDA device. The retained host
 `/proc/<State.Pid>/mountinfo` bytes must equal `/proc/self/mountinfo` in every
 evidence process; this independently checks the live read-only/read-write view
 rather than trusting Docker's host metadata alone. Freeze,
@@ -601,8 +665,8 @@ container ID.  The required variables were fixed in the `docker run` command.
 Because there is no intervening shell that repairs the environment,
 `PYTHONPATH`, `PYTHONHOME`, `PYTHONOPTIMIZE`, `LD_PRELOAD`, `LD_LIBRARY_PATH`,
 and `LD_AUDIT` must also be absent from the selected image's `Config.Env`; the
-pre-Torch bootstrap checks that absence and the complete frozen Python 3.12
-interpreter-flag map on every invocation.
+pre-Torch bootstrap checks that absence, exact Python `3.12`, the exact safe
+`PATH`, and the complete frozen interpreter-flag map on every invocation.
 
 Replace both placeholders below with the attested digest and full GPU UUID:
 
@@ -671,9 +735,9 @@ command may run during `freeze-runtime`, acquisition, verification, or
 aggregation. Sanitization is a later offline byte transformation, not another
 runtime measurement. The OCI digest identifies the image layers, the
 actual-running-container record binds the immutable image ID and mount modes,
-and the runtime lock separately binds the resolved interpreter path and
-executable SHA-256. Use the same absolute container paths and mounts
-for every invocation; do not rewrite the frozen manifests between roles.  In
+and the runtime lock separately binds the interpreter invocation path and the
+resolved target's executable SHA-256. Use the same absolute container paths
+and mounts for every invocation; do not rewrite the frozen manifests between roles.  In
 particular:
 
 - mount the clean P23 repository, including its `.git` directory, at
@@ -797,7 +861,8 @@ Then verify observer noninterference and aggregate the unchanged frozen gates:
 
 Finally retain every native artifact and create a path-sanitized complete copy
 of each JSON.  This loop names every required artifact explicitly rather than
-using a filesystem glob:
+using a filesystem glob. The frozen safe `PATH` is retained verbatim as a
+semantic runtime value rather than misparsed as one machine-local path:
 
 ```bash
 for P23_JSON in \

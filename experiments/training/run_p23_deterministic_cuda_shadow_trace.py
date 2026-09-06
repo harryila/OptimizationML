@@ -27,6 +27,10 @@ from typing import Any, Final
 SCRIPT_DIR: Final = Path(__file__).resolve().parent
 REPOSITORY_ROOT: Final = SCRIPT_DIR.parents[1]
 REPOSITORY_SOURCE_ROOT: Final = REPOSITORY_ROOT / "src"
+_PINNED_PYTHON_MAJOR_MINOR: Final = (3, 12)
+_PINNED_EXECUTABLE_PATH: Final = (
+    "/opt/p23-venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+)
 _FROZEN_PREIMPORT_PYTHON_FLAGS: Final = {
     "debug": 0,
     "inspect": 0,
@@ -57,6 +61,7 @@ def _assert_pre_torch_process_contract() -> None:
     """Reject a non-image interpreter or shadowing environment before Torch import."""
 
     expected = {
+        "PATH": _PINNED_EXECUTABLE_PATH,
         "VIRTUAL_ENV": "/opt/p23-venv",
         "PYTHONNOUSERSITE": "1",
         "PYTHONDONTWRITEBYTECODE": "1",
@@ -74,6 +79,11 @@ def _assert_pre_torch_process_contract() -> None:
     }
     if sys.executable != "/opt/p23-venv/bin/python":
         raise RuntimeError("P23 must use /opt/p23-venv/bin/python before importing Torch")
+    if tuple(sys.version_info[:2]) != _PINNED_PYTHON_MAJOR_MINOR:
+        raise RuntimeError(
+            "P23 requires Python 3.12 before importing Torch; "
+            f"observed {sys.version_info[0]}.{sys.version_info[1]}"
+        )
     mismatches = {
         name: {"expected": value, "observed": os.environ.get(name)}
         for name, value in expected.items()

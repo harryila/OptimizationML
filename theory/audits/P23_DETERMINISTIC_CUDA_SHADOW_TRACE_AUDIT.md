@@ -13,6 +13,8 @@ evidence.
 - `theory/p23_deterministic_cuda_shadow_trace_addendum.md`;
 - `experiments/training/p23_cuda_runtime_lock.template.json`;
 - `experiments/training/p23_host_attestation.template.json`;
+- `experiments/training/p23_runtime.Dockerfile`, its exact-version
+  requirements, and its path-only repository hook;
 - the P23 runner, provenance, verifier, and evidence code named by the final
   source snapshot;
 - the unchanged P22 protocol and arithmetic erratum; and
@@ -47,21 +49,41 @@ Reviewer notes:
 - [ ] Independently verify driver, compiled/runtime CUDA, cuDNN, PyTorch build
       SHA/configuration, Python, NumPy, OS, kernel, CPU, and architecture.
 - [ ] Verify every freeze/acquisition/verifier/aggregation command directly used
-      `/opt/p23-venv/bin/python`, its resolved path and executable SHA-256
-      match the runtime lock, and the clean repository contains no `.venv`.
-      Confirm `VIRTUAL_ENV=/opt/p23-venv`, `PYTHONNOUSERSITE=1`, and absent
+      `/opt/p23-venv/bin/python`, that invocation path and the resolved target's
+      SHA-256 match the runtime lock, and the clean repository contains no `.venv`.
+      Confirm exact Python major/minor `3.12`, the frozen safe
+      `PATH=/opt/p23-venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin`,
+      `VIRTUAL_ENV=/opt/p23-venv`, `PYTHONNOUSERSITE=1`, and absent
       `PYTHONPATH`/`PYTHONHOME`/`PYTHONOPTIMIZE` were enforced before Torch
       import. Reconstruct and match the complete frozen Python 3.12 `sys.flags`
-      map; optimized, isolated, or environment-ignoring invocations must fail.
+      map; version-divergent, PATH-divergent, optimized, isolated, or
+      environment-ignoring invocations must fail.
       Confirm no `uv`, `pip`, dependency sync, or package installation ran
       during the CUDA evidence chain. Treat sanitization only as an offline,
       byte-bound transformation; do not infer a live CUDA measurement from it.
 - [ ] Verify the running OCI image against the host-attested immutable
       repository digest; an image tag or in-container assertion alone is
       insufficient.
+- [ ] Verify the reviewed `linux/amd64` runtime recipe was built without build-argument
+      overrides, both pip operations admitted binary wheels only and resolved no
+      undeclared dependencies, and `pip check` passed. Treat the final published
+      repository digest as authoritative; do not infer byte-reproducible rebuilds
+      from the recipe's unhashed apt indexes or wheel downloads.
+- [ ] Confirm the root-run image has exact system Git `safe.directory` entries
+      for only the three frozen read-only source roots. Reject a wildcard or an
+      entry covering the writable evidence, data, or temporary roots.
 - [ ] Confirm the retained running-container inspection has
       `HostConfig.NetworkMode=none` and the sanitized container identity binds
       the same disabled-network mode.
+- [ ] Confirm the retained inspection has exactly one GPU
+      `HostConfig.DeviceRequests` entry: empty driver, zero count, only the
+      locked full-GPU UUID in `DeviceIDs`, capabilities exactly `[["gpu"]]`,
+      and empty options. Confirm `Config.Env` contains exactly one matching
+      UUID-valued `CUDA_VISIBLE_DEVICES` and `NVIDIA_VISIBLE_DEVICES` entry,
+      and every fresh evidence process sees those same values. Cross-check the
+      requested UUID against the sole live CUDA device and the non-MIG
+      `nvidia-smi` identity; do not treat the long-lived shell PID 1 as an
+      evidence process.
 - [ ] Re-obtain the running-container init PID from the retained Docker
       `State.Pid`, rehash the retained host
       `/proc/<State.Pid>/mountinfo` bytes, and confirm every freeze,
@@ -110,8 +132,9 @@ Reviewer notes:
 - [ ] Audit sanitization: the declared logical roots include the historical
       preprocessor alias and image-resident Python environment, no private
       absolute path remains, and no semantic field or unequal witness was
-      removed.  Match every sanitized wrapper to the retained native byte
-      count and SHA-256.
+      removed. Confirm the exact safe colon-separated `PATH` is retained
+      verbatim rather than treated as one absolute path. Match every sanitized
+      wrapper to the retained native byte count and SHA-256.
 
 Reviewer notes:
 

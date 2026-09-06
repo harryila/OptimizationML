@@ -1,5 +1,5 @@
 {
-  "schema_version": "passive-muon-p23-host-attestation-v2",
+  "schema_version": "passive-muon-p23-host-attestation-v3",
   "status": "template_not_valid_for_acquisition",
   "container": {
     "image": null,
@@ -11,6 +11,19 @@
     "default_hostname": true,
     "rootfs_read_only": true,
     "network_mode": "none",
+    "gpu_selection": {
+      "mechanism": "docker_device_request_single_full_gpu",
+      "requested_full_gpu_uuid": null,
+      "device_request": {
+        "Driver": "",
+        "Count": 0,
+        "DeviceIDs": [],
+        "Capabilities": [["gpu"]],
+        "Options": {}
+      },
+      "container_config_cuda_visible_devices": null,
+      "container_config_nvidia_visible_devices": null
+    },
     "mountinfo_sha256": null,
     "mount_contract": {
       "sha256": null,

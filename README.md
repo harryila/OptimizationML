@@ -756,6 +756,10 @@ initialization and completion, and field-by-field reconstruction of run
 identity. A retained host `/proc/<State.Pid>/mountinfo` snapshot must also
 match `/proc/self/mountinfo` in every live evidence process, independently
 binding the process-visible mount modes. The
+host inspection must also contain one exact singleton full-GPU Docker
+`DeviceRequests` record and matching UUID-valued visibility configuration;
+every fresh evidence role cross-checks that request against one live CUDA
+device and the same non-MIG `nvidia-smi` identity. The
 module closure covers `__file__`, spec origin, existing cached
 bytecode, and source when available across the complete loaded module set;
 mapped shared objects, including mapped driver libraries, are hashed directly.
@@ -768,8 +772,11 @@ other third-party image dependencies are covered by the complete loaded-file
 closure and image/runtime evidence, not individually claimed as
 Git-controlled sources.
 All P23 processes directly use the image-resident
-`/opt/p23-venv/bin/python`, whose path and executable hash are locked; no
-repository `.venv` or acquisition-time dependency sync is permitted.  P23
+`/opt/p23-venv/bin/python`, whose invocation path and resolved-target
+executable hash are locked. Python major/minor is exactly `3.12`, and `PATH`
+is fixed to
+`/opt/p23-venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin`;
+no repository `.venv` or acquisition-time dependency sync is permitted. P23
 also moves the model to CUDA before constructing the optimizer and
 distinguishes a CUDA candidate that is executed from one that is actually
 observed: trace-off records
@@ -778,7 +785,8 @@ observed: trace-off records
 
 P23 is currently **protocol-ready and runtime-lock-pending**. Its acquisition
 contract requires Docker network mode `none` and freezes the complete Python
-3.12 interpreter-flag map in addition to the executable bytes. No CUDA run or
+3.12 interpreter-flag map and safe executable search path in addition to the
+executable bytes. No CUDA run or
 P23 fidelity result exists, and the local host has no CUDA device.  Trace-on
 remains mechanically barred until fresh-process CUDA off-A/off-B manifests
 match with zero exact differences; `allclose` is not an alternative.  See

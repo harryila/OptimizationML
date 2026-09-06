@@ -28,7 +28,13 @@ must be reviewed and committed before acquisition.  The checked-in
 `p23_cuda_runtime_lock.template.json` contains null identity fields and is
 deliberately invalid for a run.  Its software contract fixes
 `python_executable` to `/opt/p23-venv/bin/python` and requires a populated
-`python_executable_sha256`.  The separate
+`python_executable_sha256`, exact Python major/minor `3.12`, and the executable
+search path
+`/opt/p23-venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin`.
+This exact-field tightening occurred before any valid P23 runtime lock or
+acquisition existed, so there is no earlier populated v2 artifact with which
+compatibility is claimed.
+The separate
 `p23_host_attestation.template.json` is likewise non-executable: a populated,
 sanitized host artifact and its populated runtime lock must both be reviewed,
 tracked, and committed before acquisition.  Every acquisition, verifier, and
@@ -57,14 +63,26 @@ Every freeze, acquisition, verifier, and aggregation process in the CUDA
 evidence chain invokes the image-resident `/opt/p23-venv/bin/python` directly.
 Sanitization is an offline, byte-bound transformation of already retained
 artifacts; it does not assert a fresh CUDA/runtime measurement.  The Python
-environment is built before the OCI repository digest is frozen. Its complete
-Python 3.12 `sys.flags` map is frozen to the ordinary nonoptimized,
-nonisolated, environment-honoring invocation. A repository
+environment is built before the OCI repository digest is frozen. The checked-in
+`experiments/training/p23_runtime.Dockerfile`, exact-version requirements, and
+path-only repository hook are the reviewed bootstrap recipe. They pin the base
+image reference, Python `3.12.14`, Torch `2.7.0+cu128`, and the declared binary
+wheel closure, but do not claim byte-identical rebuilds: Debian indexes and
+downloaded wheels are not separately content-hash locked. The built and
+published `repo@sha256:...` image digest is authoritative, and any rebuild
+requires a new runtime lock and host attestation. Its complete
+Python 3.12 `sys.flags` map and major/minor version are frozen to the ordinary
+nonoptimized, nonisolated, environment-honoring invocation. A repository
 `.venv`, any invocation through `uv`, runtime dependency synchronization, and
 package installation are forbidden on the read-only acquisition mount.  The OCI
 digest identifies the image layers, while the host-inspected mount table and
 frozen process environment delimit allowed external influence.  The populated
-runtime lock additionally records the interpreter's resolved path and SHA-256.
+runtime lock additionally records the interpreter invocation path and the
+resolved target's SHA-256.
+The acquisition container intentionally runs as root. The image admits the
+three possibly host-UID-owned read-only source binds through exact system Git
+`safe.directory` entries for their frozen container paths; no wildcard
+exception is permitted.
 This is procedural host inspection, not cryptographic remote attestation and
 not protection against a malicious or compromised host.
 
@@ -77,12 +95,17 @@ runtime requires that timing:
 - `NVIDIA_VISIBLE_DEVICES` names that identical full-GPU UUID;
 - `CUBLAS_WORKSPACE_CONFIG=:4096:8`;
 - `PYTHONHASHSEED=1337`;
+- `PATH=/opt/p23-venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin`,
+  so a writable evidence, data, or temporary directory cannot directly shadow
+  `git`, `nvidia-smi`, or another bare executable name through search order;
 - `VIRTUAL_ENV=/opt/p23-venv`, `PYTHONNOUSERSITE=1`, and
   `PYTHONDONTWRITEBYTECODE=1`;
 - `PYTHONOPTIMIZE` is absent and the complete frozen interpreter-flag map is
   checked before Torch import;
-- `PYTHONPATH` and `PYTHONHOME` are absent, so mounted or user-controlled
-  packages cannot shadow the image-resident environment;
+- `PYTHONPATH` and `PYTHONHOME` are absent, so arbitrary mounted or
+  user-controlled packages cannot shadow the image-resident environment; the
+  image-pinned path-only `.pth` adds only the declared read-only OptimizationML
+  `src` root;
 - `LD_PRELOAD`, `LD_LIBRARY_PATH`, and `LD_AUDIT` are absent, so the declared
   image-library boundary is not silently replaced by loader overrides;
 - deterministic algorithms and deterministic debug mode `error`;
@@ -90,6 +113,18 @@ runtime requires that timing:
 - cuDNN benchmarking disabled and deterministic mode enabled;
 - FP32 matmul precision `highest`, no autocast, and no compilation; and
 - one CPU intra-op and one inter-op thread.
+
+The host-side running-container inspection also has to show exactly one
+`HostConfig.DeviceRequests` entry with empty `Driver`, zero `Count`, that same
+single full-GPU UUID in `DeviceIDs`, capabilities exactly `[["gpu"]]`, and an
+empty `Options` map. The inspected `Config.Env` must retain exactly one copy of
+each UUID-valued visibility variable. This is the locked Docker 29 native-CDI
+selection path; an ordinal, `all`, a second request, a MIG identifier, or an
+environment-only selection fails closed. The detached shell used to keep the
+container alive is not evidence. Every freeze/acquisition/verifier/aggregation
+role is a fresh `docker exec` process and must observe both visibility variables
+as the UUID before importing Torch; its one-device CUDA and `nvidia-smi`
+identities are then cross-checked against the host request.
 
 A missing or unequal runtime-lock field blocks before model allocation.  A
 passing run is evidence only for that exact inspected container, device,
@@ -125,7 +160,9 @@ equal the frozen ten-entry allowlist. The host-captured mountinfo digest must
 also match `/proc/self/mountinfo` in every evidence process, so Docker's host
 metadata is not the sole evidence for the read-only/read-write view. It also
 requires `ReadonlyRootfs=true`
-and the exact `/tmp` tmpfs map. It cross-checks the GPU row against the
+and the exact `/tmp` tmpfs map. It also requires the exact singleton full-GPU
+Docker `DeviceRequests`/`Config.Env` binding described above, records that
+binding in both sanitized artifacts, and cross-checks the GPU row against the
 live CUDA device, requires `Disabled`, calls `cudaRuntimeGetVersion`, validates
 the completed artifacts, and refuses existing or `.template.json` outputs. The
 runtime lock binds the exact host-attestation bytes; no reverse hash is claimed
@@ -210,7 +247,8 @@ semantic field needed to replay the exact decisions.  The historical
 preprocessor alias is declared as its own logical sanitization root because it
 is outside both the clean `/workspace/OptimizationML` repository mount and the
 `/private/tmp/optimizationml-p22-data` tree.  Raw local artifacts remain
-separately hash-bound.
+separately hash-bound. The exact safe `PATH` is a frozen semantic value, not a
+machine-local path, and is therefore retained verbatim by sanitization.
 
 ## Model and optimizer binding
 

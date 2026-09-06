@@ -50,6 +50,23 @@ def _cpu_identity() -> dict[str, object]:
     }
 
 
+def _gpu_selection() -> dict[str, object]:
+    uuid = "GPU-aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+    return {
+        "mechanism": P23.DOCKER_GPU_SELECTION_MECHANISM,
+        "requested_full_gpu_uuid": uuid,
+        "device_request": {
+            "Driver": "",
+            "Count": 0,
+            "DeviceIDs": [uuid],
+            "Capabilities": [["gpu"]],
+            "Options": {},
+        },
+        "container_config_cuda_visible_devices": uuid,
+        "container_config_nvidia_visible_devices": uuid,
+    }
+
+
 def _container_identity(*, include_attestation_hash: bool = True) -> dict[str, object]:
     identity: dict[str, object] = {
         "image": "registry.example/p23@sha256:" + "1" * 64,
@@ -61,6 +78,7 @@ def _container_identity(*, include_attestation_hash: bool = True) -> dict[str, o
         "default_hostname": True,
         "rootfs_read_only": True,
         "network_mode": P23.PINNED_CONTAINER_NETWORK_MODE,
+        "gpu_selection": _gpu_selection(),
         "mountinfo_sha256": hashlib.sha256(_READ_ONLY_MOUNTINFO).hexdigest(),
         "mount_contract": copy.deepcopy(P23._SANITIZED_MOUNT_CONTRACT),
         "tmpfs_contract": copy.deepcopy(P23._SANITIZED_TMPFS_CONTRACT),
@@ -103,7 +121,7 @@ def _valid_runtime_lock() -> dict[str, object]:
             "mig_mode": "disabled",
         },
         "software": {
-            "python": "3.12-test",
+            "python": "3.12.14 (main, pinned build)",
             "python_executable": P23.PINNED_PYTHON_EXECUTABLE,
             "python_executable_sha256": "8" * 64,
             "python_flags": copy.deepcopy(P23.FROZEN_PYTHON_FLAGS),
@@ -143,6 +161,7 @@ def _valid_runtime_lock() -> dict[str, object]:
             "interop_threads": 1,
         },
         "loader_environment": {
+            "PATH": P23.PINNED_EXECUTABLE_PATH,
             "LD_PRELOAD": None,
             "LD_LIBRARY_PATH": None,
             "LD_AUDIT": None,
@@ -159,7 +178,7 @@ def _valid_runtime() -> dict[str, object]:
         "backend": "cuda",
         "live_hostname": "a" * 12,
         "live_mountinfo_sha256": hashlib.sha256(_READ_ONLY_MOUNTINFO).hexdigest(),
-        "python_version": "3.12-test",
+        "python_version": "3.12.14 (main, pinned build)",
         "python_executable": P23.PINNED_PYTHON_EXECUTABLE,
         "python_executable_sha256": "8" * 64,
         "python_flags": copy.deepcopy(P23.FROZEN_PYTHON_FLAGS),
@@ -216,6 +235,7 @@ def _valid_runtime() -> dict[str, object]:
             "torch_num_interop_threads": 1,
         },
         "environment": {
+            "PATH": P23.PINNED_EXECUTABLE_PATH,
             "CUDA_VISIBLE_DEVICES": "GPU-aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
             "NVIDIA_VISIBLE_DEVICES": "GPU-aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
             "CUBLAS_WORKSPACE_CONFIG": ":4096:8",
@@ -387,6 +407,22 @@ def test_addendum_rejects_changed_process_isolation_contract(tmp_path: Path) -> 
     changed = tmp_path / "changed-addendum.json"
     changed.write_text(json.dumps(payload))
     with pytest.raises(P23.P23ProvenanceError, match="process-isolation"):
+        P23.load_and_validate_addendum(changed)
+
+
+def test_addendum_rejects_changed_python_or_path_contract(tmp_path: Path) -> None:
+    payload = json.loads(P23.DEFAULT_ADDENDUM_PATH.read_text())
+    payload["cuda_environment"]["python_major_minor"] = "3.11"
+    changed = tmp_path / "changed-python-addendum.json"
+    changed.write_text(json.dumps(payload))
+    with pytest.raises(P23.P23ProvenanceError, match="Python contract"):
+        P23.load_and_validate_addendum(changed)
+
+    payload = json.loads(P23.DEFAULT_ADDENDUM_PATH.read_text())
+    payload["cuda_environment"]["path"] = "/workspace/evidence/p23:/usr/bin"
+    changed = tmp_path / "changed-path-addendum.json"
+    changed.write_text(json.dumps(payload))
+    with pytest.raises(P23.P23ProvenanceError, match="Python contract"):
         P23.load_and_validate_addendum(changed)
 
 
@@ -643,6 +679,18 @@ def test_runtime_lock_template_fails_and_populated_lock_binds_addendum(tmp_path:
     assert loaded["container"]["repository_digest"] == "sha256:" + "1" * 64
     assert loaded["runtime_lock_sha256"] == P23.sha256_file(path)
 
+    bad = copy.deepcopy(lock)
+    bad["software"]["python"] = "3.11.13 (main, unpinned build)"
+    path.write_text(json.dumps(bad))
+    with pytest.raises(P23.P23ProvenanceError, match=r"Python 3\.12"):
+        P23.load_runtime_lock(path, host_attestation_path=attestation_path)
+
+    bad = copy.deepcopy(lock)
+    bad["loader_environment"]["PATH"] = "/workspace/evidence/p23:/usr/bin"
+    path.write_text(json.dumps(bad))
+    with pytest.raises(P23.P23ProvenanceError, match="loader environment"):
+        P23.load_runtime_lock(path, host_attestation_path=attestation_path)
+
 
 def test_sanitized_host_attestation_is_hash_bound_to_runtime_lock(tmp_path: Path) -> None:
     lock = _valid_runtime_lock()
@@ -700,6 +748,14 @@ def test_cuda_runtime_validation_is_injectable_and_rejects_backend_drift() -> No
     bad["environment"]["LD_LIBRARY_PATH"] = "/shadow"
     with pytest.raises(P23.P23ProvenanceError, match="environment map"):
         P23.validate_cuda_runtime_map(bad)
+    bad = copy.deepcopy(runtime)
+    bad["environment"]["PATH"] = "/workspace/evidence/p23:/usr/bin"
+    with pytest.raises(P23.P23ProvenanceError, match="environment map"):
+        P23.validate_cuda_runtime_map(bad)
+    bad = copy.deepcopy(runtime)
+    bad["python_version"] = "3.11.13 (main, unpinned build)"
+    with pytest.raises(P23.P23ProvenanceError, match=r"Python 3\.12"):
+        P23.validate_cuda_runtime_map(bad)
 
 
 def test_cuda_runtime_version_uses_runtime_api(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -732,11 +788,19 @@ def test_freeze_runtime_builds_both_valid_artifacts_without_hand_authored_json(
                 "Id": "a" * 64,
                 "Image": image_id,
                 "State": {"Running": True, "Pid": 1234},
-                "Config": {"Hostname": "a" * 12, "Image": image},
+                "Config": {
+                    "Hostname": "a" * 12,
+                    "Image": image,
+                    "Env": [
+                        "CUDA_VISIBLE_DEVICES=GPU-aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+                        "NVIDIA_VISIBLE_DEVICES=GPU-aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+                    ],
+                },
                 "HostConfig": {
                     "ReadonlyRootfs": True,
                     "NetworkMode": P23.PINNED_CONTAINER_NETWORK_MODE,
                     "Tmpfs": copy.deepcopy(P23.REQUIRED_CONTAINER_TMPFS),
+                    "DeviceRequests": [copy.deepcopy(_gpu_selection()["device_request"])],
                 },
                 "Mounts": _running_mounts(),
             }
@@ -821,6 +885,40 @@ def test_freeze_runtime_builds_both_valid_artifacts_without_hand_authored_json(
     networked = copy.deepcopy(original_running)
     networked["HostConfig"]["NetworkMode"] = "default"
     reject_running_inspection(networked, label="networked", message="network mode")
+
+    missing_request = copy.deepcopy(original_running)
+    missing_request["HostConfig"]["DeviceRequests"] = []
+    reject_running_inspection(
+        missing_request, label="missing-device-request", message="exactly one GPU DeviceRequest"
+    )
+
+    ordinal_request = copy.deepcopy(original_running)
+    ordinal_request["HostConfig"]["DeviceRequests"][0]["DeviceIDs"] = ["0"]
+    reject_running_inspection(
+        ordinal_request, label="ordinal-device-request", message="does not pin"
+    )
+
+    boolean_count = copy.deepcopy(original_running)
+    boolean_count["HostConfig"]["DeviceRequests"][0]["Count"] = False
+    reject_running_inspection(boolean_count, label="boolean-device-count", message="does not pin")
+
+    extra_request = copy.deepcopy(original_running)
+    extra_request["HostConfig"]["DeviceRequests"].append(
+        copy.deepcopy(_gpu_selection()["device_request"])
+    )
+    reject_running_inspection(
+        extra_request, label="extra-device-request", message="exactly one GPU DeviceRequest"
+    )
+
+    mismatched_config_uuid = copy.deepcopy(original_running)
+    mismatched_config_uuid["Config"]["Env"][1] = (
+        "NVIDIA_VISIBLE_DEVICES=GPU-bbbbbbbb-bbbb-cccc-dddd-eeeeeeeeeeee"
+    )
+    reject_running_inspection(
+        mismatched_config_uuid,
+        label="mismatched-config-uuid",
+        message="identical full GPU UUID",
+    )
 
     running_inspection.write_text(json.dumps(original_running))
     wrong_namespace_components = copy.deepcopy(components)
@@ -951,6 +1049,7 @@ class _FakeTorch:
 
 def test_configure_cuda_determinism_runs_before_cuda_initialization() -> None:
     environment = {
+        "PATH": P23.PINNED_EXECUTABLE_PATH,
         "CUDA_VISIBLE_DEVICES": "GPU-aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
         "NVIDIA_VISIBLE_DEVICES": "GPU-aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
         "CUBLAS_WORKSPACE_CONFIG": ":4096:8",
@@ -997,6 +1096,12 @@ def test_configure_cuda_determinism_runs_before_cuda_initialization() -> None:
             environ={**environment, "PYTHONHASHSEED": "0"},
             python_flags=SimpleNamespace(**P23.FROZEN_PYTHON_FLAGS),
         )
+    with pytest.raises(P23.P23ProvenanceError, match="PATH"):
+        P23.configure_cuda_determinism(
+            torch_module=_FakeTorch,
+            environ={**environment, "PATH": "/workspace/evidence/p23:/usr/bin"},
+            python_flags=SimpleNamespace(**P23.FROZEN_PYTHON_FLAGS),
+        )
     for invalid_uuid in ("GPU-a", "GPU-------------------------------------", "MIG-abc"):
         with pytest.raises(P23.P23ProvenanceError, match="full GPU UUID"):
             P23.configure_cuda_determinism(
@@ -1031,6 +1136,10 @@ def test_configure_cuda_determinism_runs_before_cuda_initialization() -> None:
             torch_module=_FakeTorch,
             environ={**environment, "PYTHONOPTIMIZE": "1"},
             python_flags=SimpleNamespace(**P23.FROZEN_PYTHON_FLAGS),
+        )
+    with pytest.raises(P23.P23ProvenanceError, match=r"requires Python 3\.12"):
+        P23.validate_python_interpreter_flags(
+            SimpleNamespace(**P23.FROZEN_PYTHON_FLAGS), version_info=(3, 11, 13)
         )
 
 
@@ -1175,6 +1284,10 @@ def test_complete_manifest_sanitization_replaces_paths_without_dropping_fields(
     )
     assert retained["execution_identity"]["runtime"]["environment"]["VIRTUAL_ENV"] == (
         "python_environment:."
+    )
+    assert (
+        retained["execution_identity"]["runtime"]["environment"]["PATH"]
+        == P23.PINNED_EXECUTABLE_PATH
     )
     assert sanitized["path_replacement_count"] == 5
     assert "/private/tmp/" not in json.dumps(sanitized)

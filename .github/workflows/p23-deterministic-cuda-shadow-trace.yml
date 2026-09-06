@@ -63,6 +63,7 @@ jobs:
           uv run --locked pytest -q
           tests/test_p23_deterministic_cuda_shadow_trace.py
           tests/test_p23_cuda_acquisition_runner.py
+          tests/test_p23_runtime_recipe.py
           tests/test_p22_real_gradient_shadow_trace.py
           tests/test_p22_real_gradient_observer.py
           tests/test_p22_scalable_shield_shape_extension.py
