@@ -1,0 +1,201 @@
+{
+  "all_exact_checks_passed": true,
+  "checks": {
+    "canonical_shape_certified": true,
+    "extension_checks_pass": true,
+    "p20_artifact_bytes_unchanged": true,
+    "p20_artifact_exact_checks_pass": true,
+    "p20_checkpoint_blob_unchanged": true,
+    "p20_checkpoint_tag_unchanged": true,
+    "p21_artifact_bytes_unchanged": true,
+    "p21_artifact_exact_checks_pass": true,
+    "p21_checkpoint_blob_unchanged": true,
+    "p21_checkpoint_tag_unchanged": true,
+    "supplied_exact_margin_verified": true
+  },
+  "claim_scope": {
+    "classification": "exact P22 extension of the P20 static shield margin",
+    "matrix_domain": "stored finite BF16/FP32 768x2304 shield input",
+    "not_claimed": [
+      "a change to the frozen P20 seven-shape theorem",
+      "GPU, tensor-core, FTZ, FMA, or reassociated execution",
+      "global neural-network convergence or passivity inferred from a sampled trace",
+      "unshielded upstream Muon stability"
+    ],
+    "preservation": "the frozen P20 and P21 artifacts, tables, and checkpoint trees are inputs; this artifact does not replace or rewrite either checkpoint",
+    "transpose_scope": "2304x768 fused-QKV parameter tensors are transposed isometrically to 768x2304, shielded, and transposed back"
+  },
+  "environment": {
+    "platform": "macOS-15.5-arm64-arm-64bit",
+    "python": "3.12.11"
+  },
+  "frozen_provenance": {
+    "p20": {
+      "artifact_commit": "8a0586dcf7f7d6ce933d84f4ad7a2756764f02d0",
+      "artifact_path": "results/summaries/scalable_sector_shield_certificate.json",
+      "artifact_sha256": "6bca86676eb7164a617a48f34228c40355dbc682b86b4e64ddf3cd54b8d15951",
+      "checkpoint_tag": "p20-scalable-mixed-precision-sector-shield-final-checkpoint",
+      "checkpoint_tag_object": "4cfd127117d509ae0dcd0cc26d74e9cd963db50a",
+      "schema_version": "passive-muon-scalable-sector-shield-v1",
+      "source_commit": "d0a9e92403a29638018b13579c2a612965dbc5b4"
+    },
+    "p21": {
+      "artifact_commit": "7aa154374dc852f551926593bb5e2a05227cdc4f",
+      "artifact_path": "results/summaries/certified_outer_loop_composition_certificate.json",
+      "artifact_sha256": "07b911edc82332d0068ad192624c53bd9d74759a9cfe79ddc90f92fb96e75713",
+      "checkpoint_tag": "p21-certified-outer-loop-composition-checkpoint",
+      "checkpoint_tag_object": "893f8111205e1092b2aa37fb903c9130b5bb7bf9",
+      "schema_version": "passive-muon-certified-outer-loop-composition-artifact-v1",
+      "source_commit": "7ffdc0d9431e5fe96a50c53e36fb1ae64f686bdb"
+    }
+  },
+  "git": {
+    "branch": "p22-real-gradient-shadow-trace",
+    "dirty": false,
+    "sha": "50c3ec9a75de3c4e96d49eef7f94d2e8ae06ff1e"
+  },
+  "reconstruction_fields": {
+    "arithmetic_constants": {
+      "bf16_min_subnormal": "1/10889035741470030830827987437816582766592",
+      "fp32_half_min_subnormal": "1/1427247692705959881058285969449495136382746624",
+      "fp32_max_subnormal": "8388607/713623846352979940529142984724747568191373312",
+      "fp32_min_normal": "1/85070591730234615865843651857942052864",
+      "fp32_min_subnormal": "1/713623846352979940529142984724747568191373312",
+      "fp32_unit_roundoff": "1/16777216",
+      "radius_grid_denominator": 1152921504606846976,
+      "reduction_block_entries": 1048576,
+      "sqrt_enclosure_denominator": 1208925819614629174706176
+    },
+    "extension": {
+      "certified_inward_radius": "501772185335019447/1152921504606846976",
+      "certified_inward_radius_hex": "0x1.bda9c938442dfp-2",
+      "inward_margin": "942123070212169/1152921504606846976",
+      "inward_margin_hex": "0x1.ac6d8f77a4248p-11",
+      "p20_table_mutated": false,
+      "parameter_shape": [
+        2304,
+        768
+      ],
+      "parameter_to_shield_map": "transpose",
+      "runtime_schema": "passive-muon-p22-scalable-sector-shield-extension-v1",
+      "shield_shape": [
+        768,
+        2304
+      ]
+    },
+    "extension_checks": {
+      "certified_radius_matches_recurrence": true,
+      "margin_and_radius_partition_p19_radius": true,
+      "margin_uses_locked_radius_grid": true,
+      "p20_checkpoint_table_is_not_rewritten": true,
+      "runtime_margin_hex_matches_exact_value": true,
+      "runtime_radius_hex_matches_exact_value": true,
+      "shape_is_canonical_fused_qkv_orientation": true,
+      "supplied_inward_margin_matches_recurrence": true,
+      "transpose_preserves_frobenius_arithmetic_envelope": true
+    },
+    "operation_graph": {
+      "acceptance": "Nhat(Dhat)<=down64((891/2048)*Nhat(S))",
+      "clip": "alpha32=down32(down64((890/2048)*down64(Nhat(S)/Nhat(Dhat)))); U=fl32(fl32((1143/2048)*S)+fl32(alpha32*Dhat))",
+      "displacement": "Dhat=fl32(C-fl32((1143/2048)*S))",
+      "fallback": "fl32((1/2)*S) under the P20 normal/exact-halving guard",
+      "fma_reassociation_ftz_daz": false,
+      "input_dtypes": [
+        "binary32",
+        "bfloat16 widened exactly to binary32"
+      ],
+      "norm": "fl32 squares; fixed adjacent balanced fl32 sum; fl32 sqrt; exact float64 scale product",
+      "normalization": "a=maxabs(x); z=fl32(x/a)",
+      "output_dtype": "binary32",
+      "rounding": "IEEE-754 roundTiesToEven with gradual underflow"
+    },
+    "sector": {
+      "acceptance_buffer": "1/1024",
+      "acceptance_coefficient": "891/2048",
+      "center": "1143/2048",
+      "clip_coefficient": "445/1024",
+      "lower": "125/1024",
+      "radius": "893/2048",
+      "upper": "509/512"
+    },
+    "shape_audit": {
+      "balanced_norm": {
+        "division_relative_error": "85070591730234615865843651857942054195/1427247692705959881058285969449495136382746624",
+        "lower_factor": "1427246586786850152201990033160940786150277119/1427247692705959881058285969449495136382746624",
+        "pairwise_crumb": "9/3629673820884556620017336326317225803776",
+        "pairwise_gamma": "11/8388597",
+        "pairwise_path_length": 22,
+        "reduction_block_count": 2,
+        "reduction_block_entries": 1048576,
+        "sqrt_lower": "302231238730562183616703/302231454903657293676544",
+        "sqrt_upper": "604463342153292205972097/604462909807314587353088",
+        "squared_norm_lower": "8543924717772614006838739080691384242901236247452872309449871174303596231431738953278237066044989/8543936939985770489906612348226922206830932306350445917138787932516407454025413501739964339060736",
+        "squared_norm_upper": "2037036219168104851490156885604330487182949515953232003193323404852738007698602646891595817/2037033305164759275890973174149256278712971760356532553944298728112317908769944549021712384",
+        "upper_factor": "1427248798624689313417991071789187607478403073/1427247692705959881058285969449495136382746624"
+      },
+      "certified": true,
+      "checks": {
+        "acceptance_coefficient_is_exact_binary32": true,
+        "accepted_candidate_has_strict_inward_margin": true,
+        "accepted_candidate_rounding_is_absorbed": true,
+        "balanced_norm_envelope_certified": true,
+        "bf16_widened_minimum_can_be_halved_in_fp32": true,
+        "blocked_tree_has_global_path_depth": true,
+        "certified_radius_is_inside_original_disk": true,
+        "clip_coefficient_is_exact_binary32": true,
+        "clip_only_margin_is_positive": true,
+        "clipped_candidate_has_strict_inward_margin": true,
+        "clipped_candidate_rounding_is_absorbed": true,
+        "dead_zone_bound_is_finite": true,
+        "inward_margin_is_positive": true,
+        "normal_anchor_converts_crumbs": true,
+        "normal_fallback_rounding_is_absorbed": true,
+        "outward_radius_rounding_is_sound": true,
+        "returned_output_is_in_p19_disk": true,
+        "rounded_half_has_strict_inward_margin": true,
+        "sector_center_reconstructs": true,
+        "sector_radius_reconstructs": true,
+        "shape_is_within_p9_entry_domain": true
+      },
+      "entries": 1769472,
+      "margin": {
+        "acceptance_coefficient": "891/2048",
+        "accepted_candidate_radius": "119358766029660274469655394574548282759466392271475328103708291/274250530700607243810485801215187643553672934286184308025589760",
+        "certified_inward_radius": "501772185335019447/1152921504606846976",
+        "certified_inward_radius_raw": "119358766029660274469655394574548282759466392271475328103708291/274250530700607243810485801215187643553672934286184308025589760",
+        "clip_only_inward_margin": "706770047658377/576460752303423488",
+        "clipped_candidate_radius": "357739905261975780813426752407002802592201417808527150824607491/822751641141641040048634416126919559014588251722312663613571072",
+        "displacement_crumb": "44660950323/23945242826029513411849172299223580994042798784118784",
+        "displacement_crumb_relative": "44660950323/281474976710656",
+        "displacement_signal_slope": "19176359031/576460752303423488",
+        "inward_margin": "942123070212169/1152921504606846976",
+        "normal_anchor": "1/85070591730234615865843651857942052864",
+        "rounded_half_radius": "976179/16777216"
+      },
+      "root_entries_upper": 1331,
+      "shape": [
+        768,
+        2304
+      ],
+      "subnormal_guard": {
+        "all_subnormal_input_radius": "11165235917/713623846352979940529142984724747568191373312",
+        "zero_instead_of_half_output_error": "11165235917/1427247692705959881058285969449495136382746624"
+      }
+    }
+  },
+  "schema_version": "passive-muon-p22-shape-extension-certificate-v1",
+  "source_snapshot": {
+    "pyproject.toml": "7a9988bf528baef5145f779516d4315349d1c2a6bbb7394c9b93fbbee1d4f596",
+    "results/summaries/certified_outer_loop_composition_certificate.json": "07b911edc82332d0068ad192624c53bd9d74759a9cfe79ddc90f92fb96e75713",
+    "results/summaries/scalable_sector_shield_certificate.json": "6bca86676eb7164a617a48f34228c40355dbc682b86b4e64ddf3cd54b8d15951",
+    "scripts/certify_p22_scalable_shield_shape_extension.py": "aae3097c7cbc1839dd160cf29f131e1b169f8a1369935ffd77c929bd6aa7605e",
+    "scripts/reconstruct_p22_scalable_shield_shape_extension.py": "873e2c2be62cc21231c6ff5d031681f186b9688356c6f6c5b3e9da859f18cd4e",
+    "src/passive_muon/p22_scalable_sector_shield_extension.py": "63eb1fac4e77e9e3a1c4ae0b987054f1b6209a06dc6751d29d501f900810ef96",
+    "src/passive_muon/p22_scalable_sector_shield_extension_certificate.py": "bcd98fb5c4d1dad1945840a56b04b7c60fef2b05bfc835507c0d2683aaa3cca1",
+    "src/passive_muon/scalable_sector_shield.py": "21638fc7bff75158ff9a26ce7f47f5ff142b963250ab9caa562b679e4fe81276",
+    "src/passive_muon/scalable_sector_shield_certificate.py": "1bcd40f62dab8860ee552bdfdc44ffd80de123dcbe4eb9ddc0095ede8c9298bb",
+    "tests/test_p22_scalable_shield_shape_extension.py": "edac4fec16ea8fe20a0da6f149ae6ea30f1512a72ea0ef4fb6c6905cb499529f",
+    "tests/test_p22_scalable_shield_shape_extension_reconstruction.py": "3749009a7525f2141ff6e11b70b37174ab56e1c4213f6bc6331a523b2bc3205f",
+    "uv.lock": "f097fd7895b5c1c551a0bd233d025c3f8ae97b7dedce6a8690569f1b1f7c5cf1"
+  }
+}
