@@ -1,0 +1,16 @@
+#!/usr/bin/env python3
+"""Translate the one BSD-stat form used by the frozen P29 test harness."""
+
+from __future__ import annotations
+
+import os
+import stat
+import sys
+
+
+arguments = sys.argv[1:]
+if len(arguments) == 3 and arguments[:2] == ["-f", "%Lp"]:
+    print(f"{stat.S_IMODE(os.stat(arguments[2]).st_mode):o}")
+    raise SystemExit(0)
+
+os.execv("/usr/bin/stat", ["/usr/bin/stat", *arguments])
