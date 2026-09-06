@@ -1621,6 +1621,33 @@ scientific threshold changes. See
 `p25_cuda_diagnostic_outcome.json`, and
 `scripts/reconstruct_p25_cuda_diagnostic_outcome.py`.
 
+## 32. P26 permission-safe bridge pass and initialized-provenance stop
+
+P26 attempt `20260906-02` fixed the P25 permission boundary without changing
+the retained files: both contract reconstructions passed and a logged
+root-container verifier authenticated the `root:root 0600` native diagnostic
+and byte-identical sanitized wrappers. It performed no mutation. The frozen
+P23 sequence then invoked `trace_off_a` exactly once.
+
+The process initialized GPT-2-small on the locked A100, reported 123.55M
+parameters, and stopped before step zero while collecting the initialized
+loaded-file closure. Its native failure is 66,283 bytes with SHA-256
+`b2a92b5062988534bc424d3ecadf3977ecedc0f80aa27628d4a0457858a64c91`
+and records `deleted file-backed mapping is forbidden at /proc/self/maps line
+17`. The raw line is absent and failed PID `137` is gone, so the exact mapping
+is unknown. A separate sanitizer pass failed on the declared venv Python
+symlink; no sanitized failure wrapper was produced.
+
+No step, second baseline, exact repeatability comparison, observer run,
+candidate observation, fidelity aggregate, shielded update, or training result
+exists. The attempt is terminal. The next route is
+`p27-cuda-deleted-mapping-localization`, which must first preserve the P26
+failure via a narrow sanitizer correction and then classify the exact mapping
+in a fresh preregistered no-training diagnostic. See
+`P26_PERMISSION_SAFE_CUDA_ACQUISITION_RESULTS.md`,
+`p26_permission_safe_cuda_acquisition_outcome.json`, and
+`scripts/reconstruct_p26_permission_safe_cuda_acquisition_outcome.py`.
+
 ## Reproduce
 
 ```bash
@@ -1718,6 +1745,8 @@ uv run --locked python scripts/build_p22_repeatability_failure_evidence.py \
 uv run --locked python scripts/reconstruct_p23_cuda_shadow_trace_outcome.py
 uv run --locked python scripts/reconstruct_p24_cuda_executable_origin_outcome.py
 uv run --locked python scripts/reconstruct_p25_cuda_diagnostic_outcome.py
+uv run --locked python \
+  scripts/reconstruct_p26_permission_safe_cuda_acquisition_outcome.py
 uv run --locked python experiments/matrices/run_deficit_audit.py
 uv run --locked python experiments/quadratics/run_lr_sweep.py
 uv run --locked python experiments/quadratics/run_horizon_check.py

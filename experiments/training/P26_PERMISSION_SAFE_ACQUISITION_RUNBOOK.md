@@ -1,5 +1,14 @@
 # P26 permission-safe CUDA acquisition runbook
 
+> **Post-execution status.** The contract below was frozen before scientific
+> acquisition. Attempt `20260906-02` has since executed once and is terminal.
+> The permission-safe bridge passed, then `trace_off_a` failed during the
+> initialized loaded-file snapshot before step zero on an unidentified deleted
+> `/proc/self/maps` entry. The required sanitizer independently failed on the
+> declared venv Python symlink. Do not execute any command below again for this
+> attempt. See
+> `../../results/summaries/P26_PERMISSION_SAFE_CUDA_ACQUISITION_RESULTS.md`.
+
 ## Evidence status and immutable boundary
 
 This is a **post-runtime, pre-diagnostic, pre-acquisition one-shot runbook**.

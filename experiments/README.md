@@ -1171,6 +1171,39 @@ and
 The next attempt must be fresh and preregister a logged privileged bridge
 comparison; P25 itself must not be resumed.
 
+### P26 permission-safe acquisition (terminal initialized-provenance result)
+
+P26 attempt `20260906-02` used a separate, hash-bound root-container verifier
+instead of the unreadable host `cmp`. Both contract reconstructions passed,
+the corrected diagnostic again passed `40/40`, and the permission-safe bridge
+authenticated the retained native artifact and byte-identical wrappers without
+`chmod`, `chown`, or another mutation. The frozen acquisition then invoked
+`trace_off_a` exactly once.
+
+That process stopped during the initialized loaded-file snapshot, before step
+zero, with `deleted file-backed mapping is forbidden at /proc/self/maps line
+17`. Its native failure manifest is retained externally as 66,283 bytes,
+`root:root 0600`, SHA-256
+`b2a92b5062988534bc424d3ecadf3977ecedc0f80aa27628d4a0457858a64c91`.
+The failed PID is gone and the frozen artifact did not retain the raw maps
+pathname, so the mapping must not be inferred from this attempt.
+
+The required offline sanitization then failed independently because the P23
+sanitizer resolved the declared `/opt/p23-venv/bin/python` symlink outside its
+declared venv root. No sanitized failure wrapper exists. No `trace_off_b`,
+repeatability, `trace_on`, noninterference, aggregate, candidate observation,
+or training result ran. Attempt `20260906-02` is terminal and must not be
+resumed. See
+[`../results/summaries/P26_PERMISSION_SAFE_CUDA_ACQUISITION_RESULTS.md`](../results/summaries/P26_PERMISSION_SAFE_CUDA_ACQUISITION_RESULTS.md)
+and
+[`../results/summaries/p26_permission_safe_cuda_acquisition_outcome.json`](../results/summaries/p26_permission_safe_cuda_acquisition_outcome.json).
+
+The next branch is `p27-cuda-deleted-mapping-localization`: narrowly repair
+the exact pinned-executable sanitization case, ingest the retained failure
+through a one-read hash-bound bridge, and use a fresh preregistered no-training
+diagnostic to preserve and classify every deleted mapping before authorizing
+attempt `20260906-03`.
+
 Replay the committed early-stop record's static source/runtime bindings with:
 
 ```bash

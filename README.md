@@ -907,6 +907,8 @@ uv run --locked python scripts/reconstruct_outer_loop_composition.py \
   --require-canonical
 uv run --locked python scripts/reconstruct_p24_cuda_executable_origin_outcome.py
 uv run --locked python scripts/reconstruct_p25_cuda_diagnostic_outcome.py
+uv run --locked python \
+  scripts/reconstruct_p26_permission_safe_cuda_acquisition_outcome.py
 uv run --locked pytest
 ```
 
@@ -949,7 +951,8 @@ not support a universal claim across BF16 backends.
 
 ## Scope
 
-This repository stays focused on twenty-six technical goals:
+This repository stays focused on twenty-six technical goals plus one
+post-scope operational acquisition milestone:
 
 1. a theorem for current-input Frobenius normalization;
 2. exact local and finite-pair controls for the five-step Jordan map;
@@ -1020,6 +1023,15 @@ This repository stays focused on twenty-six technical goals:
     native baseline diagnostic, then stops on an exact Torch-determinism
     mismatch and a separate fail-closed sanitizer key-redaction defect before
     any image build or gradient acquisition.
+27. a corrected one-shot diagnostic and permission-safe acquisition bridge:
+    the diagnostic passes all 40 checks and the root-container bridge
+    authenticates its mode-`0600` evidence without mutation, after which the
+    first real trace-off process fails closed during initialized loaded-file
+    collection before step zero. The retained failure identifies
+    `/proc/self/maps` line 17 but does not retain its raw pathname; a separate
+    venv-symlink sanitization defect prevents publication of the complete
+    sanitized failure manifest. Thus no repeatability or fidelity result
+    exists and the exact mapping requires a fresh preregistered localization.
 
 P7 is the submission cutoff and broadest robustness theorem; P6 is its
 zero-disturbance smooth-PL corollary. P8 and P9 instantiate one P7 disturbance
@@ -1078,8 +1090,15 @@ repeatability or fidelity acquisition. P24 must reproduce and localize the
 implicated initialization path with native, hash-bound provenance. Its first
 retained native diagnostic does reproduce the exact source, but P24 terminates
 before remediation on a live-versus-lock Torch-determinism mismatch and an
-independent sanitizer mapping-key defect. P25 must resolve and freeze both
-pre-acquisition conditions before CUDA acquisition resumes.
+independent sanitizer mapping-key defect. P25 resolves both diagnostic defects,
+but its first attempt stops at an unprivileged permission boundary. P26
+resolves that boundary and reaches `trace_off_a`; attempt `20260906-02` then
+terminates during the initialized process-map closure before step zero on an
+unidentified deleted mapping. Its native failure is retained and hash-bound,
+but the frozen sanitizer separately rejects the pinned venv Python symlink, so
+no sanitized failure wrapper exists. P27 must localize and classify the exact
+mapping and narrowly repair failure-manifest sanitization before any fresh
+acquisition attempt.
 Production-gradient fidelity evidence, native
 accelerator/distributed parity, generic stochastic-gradient guarantees,
 throughput, and formal circuit ports remain open.

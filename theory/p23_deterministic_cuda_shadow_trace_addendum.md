@@ -353,3 +353,17 @@ mechanically barred. The result and exact scope are in
 `../results/summaries/p23_cuda_shadow_trace_outcome.json`. P24 must use a new
 image digest and runtime lock to eliminate or immutably contain the side
 effect without weakening the general rule. P18--P21 remain unchanged.
+
+Subsequent status: P24 and P25 corrected the generated-source and diagnostic
+preconditions, and P26's mutation-free root bridge corrected P25's host
+permission stop. P26 attempt `20260906-02` therefore reached the first real
+`trace_off_a` process. It failed during the initialized loaded-file closure,
+before step zero, on a deleted entry reported only as `/proc/self/maps` line
+17. The frozen failure artifact intentionally omitted the raw pathname and
+the failed PID is gone, so the exact mapping cannot be recovered or classified
+from that attempt. The frozen sanitizer also failed independently by resolving
+the declared `/opt/p23-venv/bin/python` symlink outside the declared venv root.
+Attempt `20260906-02` is terminal. P27 must use a fresh preregistered,
+no-training localization diagnostic and a narrow pinned-executable sanitizer
+correction before another acquisition is permitted. See
+`../results/summaries/P26_PERMISSION_SAFE_CUDA_ACQUISITION_RESULTS.md`.

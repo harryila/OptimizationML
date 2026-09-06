@@ -1,0 +1,364 @@
+{
+  "schema_version": "passive-muon-p26-permission-safe-cuda-acquisition-outcome-v1",
+  "status": "terminal_trace_off_a_deleted_mapping_and_sanitizer_stop",
+  "attempt_id": "20260906-02",
+  "evidence_kind": "repository_authenticated_control_runtime_and_bridge_plus_operator_retained_native_failure",
+  "claim_boundary": "This compact outcome binds repository-authenticated P26 control, runtime, corrected-diagnostic, and permission-bridge facts together with operator-retained hashes and filesystem metadata for the first and only acquisition attempt. The corrected diagnostic and permission-safe bridge passed. trace_off_a then failed during initialized loaded-file collection, before initial state hashing, step 0, any forward/backward pass, optimizer update, or candidate observation, because a deleted file-backed mapping was rejected at /proc/self/maps line 17. The failure sanitizer separately failed closed and produced no sanitized failure artifact. The rejected raw maps line was not retained and cannot be reconstructed. This is not CUDA repeatability, observer-noninterference, real-gradient fidelity, shield-execution, or training evidence.",
+  "control_lineage": {
+    "terminal_p25_outcome": {
+      "commit": "f055405cc879ba0ac5afe26bc34a7336d5d2efbf",
+      "tree": "a5ee62de68b091719938829e579853b226b7f086",
+      "outcome_path": "results/summaries/p25_cuda_diagnostic_outcome.json",
+      "outcome_sha256": "d7a06f6f25bc4839db256720fe5c8ef3c99f6ea45b53b48da2135fcde76a423a",
+      "attempt_id": "20260906-01",
+      "attempt_is_terminal": true
+    },
+    "pre_runtime_source_freeze": {
+      "commit": "bc2c84880a7e6f3e762d7a05dfbd5048772b2c69",
+      "tree": "7332be7fdd15a1dff2374c10ae3c4555b7f60fec",
+      "parent": "f055405cc879ba0ac5afe26bc34a7336d5d2efbf"
+    },
+    "post_runtime_control": {
+      "commit": "ae16c1a4429a5363c7a6168d19ca2089ecddee35",
+      "tree": "a2537867260f322d9db5e1f48013f72846b7aa18",
+      "parent": "bc2c84880a7e6f3e762d7a05dfbd5048772b2c69",
+      "exact_delta": [
+        "M\texperiments/training/P26_PERMISSION_SAFE_ACQUISITION_RUNBOOK.md",
+        "M\texperiments/training/p26_permission_safe_acquisition_contract.json",
+        "M\tscripts/reconstruct_p26_permission_safe_acquisition.py",
+        "M\tscripts/run_p26_permission_safe_acquisition.sh",
+        "M\ttests/test_p26_permission_safe_acquisition_contract.py"
+      ],
+      "contract": {
+        "path": "experiments/training/p26_permission_safe_acquisition_contract.json",
+        "schema_version": "passive-muon-p26-permission-safe-acquisition-contract-v2",
+        "status": "frozen_post_fresh_runtime_pre_diagnostic_and_pre_acquisition",
+        "sha256": "1a3562f90671384c5b90f4e830f3342ba993381c03738cd81685803563c538e1"
+      },
+      "source_hashes": {
+        "host_orchestrator": "66dd6889912e0abfc7782e790356222851cc753d237018c6263942d3a7a4290a",
+        "independent_reconstructor": "27b1b5f65438f58f8c7733115c4d01f7965a583e9e809e28571770886040b246",
+        "root_container_verifier": "2225a9822076e0055d8017f8b8549eb9e937434d4789463adb2fcec26ee3756a"
+      }
+    }
+  },
+  "execution_repository_lineage": {
+    "source_preregistration": {
+      "commit": "e76ab62f92c95e6f0716cf2f1ed38a583cadfe56",
+      "tree": "4fe0f57d50a8fa136bb192ec3fbac95b1e746aa2"
+    },
+    "runtime_review": {
+      "commit": "ba93225f3ef1abf5dbde71950c1eaa2e384a5dc0",
+      "tree": "e7cdf25c86360ecdd42f2dc188ec416744321fe1",
+      "parent": "e76ab62f92c95e6f0716cf2f1ed38a583cadfe56",
+      "exact_delta": [
+        "A\texperiments/training/p25_cuda_runtime_lock.json",
+        "A\texperiments/training/p25_host_attestation.json"
+      ],
+      "runtime_lock": {
+        "path": "experiments/training/p25_cuda_runtime_lock.json",
+        "schema_version": "passive-muon-p23-cuda-runtime-lock-v3",
+        "status": "pinned_for_acquisition",
+        "sha256": "04be2154daf5afbe97f7d2278ee7936da769d230663dfc6dfd50f0370a456755",
+        "byte_count": 6599
+      },
+      "host_attestation": {
+        "path": "experiments/training/p25_host_attestation.json",
+        "schema_version": "passive-muon-p23-host-attestation-v3",
+        "status": "procedurally_host_attested",
+        "sha256": "8caa4d761ca89741517e6292e174acd17948f4d312b8418d0056070d3247e046",
+        "byte_count": 4124
+      }
+    },
+    "diagnostic_bridge": {
+      "commit": "185e444afc0b44ca0a09b1bde49a6b6fa3973355",
+      "tree": "24f4bdac331a57bd7c1b807747d7c7fba253ee5a",
+      "parent": "ba93225f3ef1abf5dbde71950c1eaa2e384a5dc0",
+      "exact_delta": [
+        "A\tresults/summaries/p25_executable_origin_diagnostic.sanitized.json"
+      ],
+      "repository_wrapper": {
+        "path": "results/summaries/p25_executable_origin_diagnostic.sanitized.json",
+        "mode": "0644",
+        "sha256": "ad33cb3e2e1e86f182496b8e3b73987bf4995290c3d90ed4342971e2a44507dd",
+        "byte_count": 5099937
+      }
+    }
+  },
+  "locked_runtime": {
+    "attempt_root": "/secure/p25/attempt-20260906-02",
+    "execution_repository_head": "185e444afc0b44ca0a09b1bde49a6b6fa3973355",
+    "execution_repository_tree": "24f4bdac331a57bd7c1b807747d7c7fba253ee5a",
+    "control_repository_head": "ae16c1a4429a5363c7a6168d19ca2089ecddee35",
+    "control_repository_tree": "a2537867260f322d9db5e1f48013f72846b7aa18",
+    "image": "localhost:5000/p25-runtime@sha256:14dafde07ae578cc4725f452a51d4bc4c920b69f6af23125a72e27162e193ec0",
+    "image_digest": "sha256:14dafde07ae578cc4725f452a51d4bc4c920b69f6af23125a72e27162e193ec0",
+    "build_metadata_sha256": "13e0f05189321f86b4d8a41253eed97768bb1774ac7db64ad7c8b25e2f026091",
+    "container_name": "p25-acquisition-20260906-02",
+    "container_id": "e6682d8f09b9dc4be342354d520a8f6f8766a8e232840d1d7beb5e00e1fced6c",
+    "container_init_pid": 39227,
+    "restart_count": 0,
+    "network_mode": "none",
+    "root_filesystem_read_only": true,
+    "bind_mount_count": 10,
+    "gpu": {
+      "uuid": "GPU-ee4c9bf9-42f5-7cdd-66d2-f638c2db549d",
+      "name": "NVIDIA A100-SXM4-40GB",
+      "compute_capability": [
+        8,
+        0
+      ],
+      "driver_version": "580.105.08",
+      "mig_mode": "disabled"
+    }
+  },
+  "corrected_diagnostic": {
+    "attempts_allowed": 1,
+    "attempts_run": 1,
+    "status": "passed_40_of_40",
+    "checks": {
+      "total": 40,
+      "true": 40,
+      "false": 0
+    },
+    "native_artifact": {
+      "retention": "external_native_bytes_not_committed",
+      "file_name": "p25-remediated-executable-origin.native.json",
+      "owner": "root:root",
+      "mode": "0600",
+      "sha256": "b9cc8dad897e27a36414a320cb9aa2f446b292c45e9a170ddb9dae1ac8ea96a9",
+      "byte_count": 4115671
+    },
+    "retained_sanitized_wrapper": {
+      "retention": "external_copy_byte_identical_to_repository_wrapper",
+      "file_name": "p25-remediated-executable-origin.sanitized.json",
+      "owner": "root:root",
+      "mode": "0600",
+      "sha256": "ad33cb3e2e1e86f182496b8e3b73987bf4995290c3d90ed4342971e2a44507dd",
+      "byte_count": 5099937
+    },
+    "repository_sanitized_wrapper": {
+      "commit": "185e444afc0b44ca0a09b1bde49a6b6fa3973355",
+      "owner": "ubuntu:ubuntu",
+      "mode": "0644",
+      "sha256": "ad33cb3e2e1e86f182496b8e3b73987bf4995290c3d90ed4342971e2a44507dd",
+      "byte_count": 5099937
+    },
+    "redaction": {
+      "key_replacement_count": 2,
+      "value_replacement_count": 37915,
+      "total_replacement_count": 37917
+    }
+  },
+  "pre_acquisition_checks": {
+    "p26_contract_reconstruction": {
+      "status": "passed_19_of_19",
+      "stdout": {
+        "owner": "ubuntu:ubuntu",
+        "mode": "0664",
+        "sha256": "1fd07e033243181cac318381e312bc2b32bdb65536b7e7d6bd3171f6a24774e5",
+        "byte_count": 1443
+      },
+      "stderr": {
+        "owner": "ubuntu:ubuntu",
+        "mode": "0664",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "byte_count": 0
+      }
+    },
+    "p25_contract_reconstruction": {
+      "status": "passed",
+      "stdout": {
+        "owner": "ubuntu:ubuntu",
+        "mode": "0664",
+        "sha256": "7a51056becfdc41729011403092c5dae2095da774d900cc152a550cd8f730279",
+        "byte_count": 1443
+      },
+      "stderr": {
+        "owner": "ubuntu:ubuntu",
+        "mode": "0664",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "byte_count": 0
+      }
+    },
+    "permission_safe_bridge": {
+      "status": "passed",
+      "execution_context": "root_inside_attested_network_none_read_only_root_container",
+      "retained_native_and_wrapper_mode_preserved": true,
+      "repository_and_retained_wrapper_bytes_equal": true,
+      "stdout": {
+        "owner": "ubuntu:ubuntu",
+        "mode": "0664",
+        "sha256": "6c54cb9db6f0bf9dad55899acd14ea9699b29c97381679644aab2061dd437ebd",
+        "byte_count": 915
+      },
+      "stderr": {
+        "owner": "ubuntu:ubuntu",
+        "mode": "0664",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "byte_count": 0
+      }
+    }
+  },
+  "trace_off_a_failure": {
+    "attempts_allowed": 1,
+    "attempts_run": 1,
+    "role": "trace_off_a",
+    "status": "blocked_before_success_artifact",
+    "runner_exit_code": 2,
+    "failure_phase": "p22_initialized",
+    "failure_time_ns": 1788698138406675519,
+    "failure_utc": "2026-09-06T12:35:38Z",
+    "process_pid": 137,
+    "model_and_optimizer_constructed": true,
+    "initial_state_hash_computed": false,
+    "forward_backward_started": false,
+    "optimizer_steps_completed": 0,
+    "candidate_observations": 0,
+    "error_class": "p23_deterministic_cuda_shadow_trace.P23ProvenanceError",
+    "error_message": "deleted file-backed mapping is forbidden at /proc/self/maps line 17",
+    "stdout": {
+      "owner": "ubuntu:ubuntu",
+      "mode": "0664",
+      "text": "number of parameters: 123.55M\n",
+      "sha256": "694e39d99abd6f53579f3b9d24f769e7c01d28c8b0176a33baa2ffc758713c60",
+      "byte_count": 30
+    },
+    "stderr": {
+      "owner": "ubuntu:ubuntu",
+      "mode": "0664",
+      "text": "P23 native failure artifact: /workspace/evidence/p23/trace-off-a-failure.json sha256=b2a92b5062988534bc424d3ecadf3977ecedc0f80aa27628d4a0457858a64c91\nP23 blocked: deleted file-backed mapping is forbidden at /proc/self/maps line 17\n",
+      "sha256": "954ee85a7a152e540ca382d2def2128d02cbcec94912183094ad4162f5ab65e0",
+      "byte_count": 231
+    },
+    "native_failure_artifact": {
+      "retention": "external_native_bytes_not_committed",
+      "path": "/secure/p25/attempt-20260906-02/evidence/trace-off-a-failure.json",
+      "schema_version": "passive-muon-p23-native-failure-manifest-v1",
+      "owner": "root:root",
+      "mode": "0600",
+      "sha256": "b2a92b5062988534bc424d3ecadf3977ecedc0f80aa27628d4a0457858a64c91",
+      "byte_count": 66283,
+      "strict_validation_reached_before_sanitization_transform": true
+    },
+    "native_failure_provenance": {
+      "repository": {
+        "prepared_snapshot": {
+          "collection_status": "prepared_context_validated",
+          "head": "185e444afc0b44ca0a09b1bde49a6b6fa3973355",
+          "tree": "24f4bdac331a57bd7c1b807747d7c7fba253ee5a",
+          "clean": true
+        },
+        "failure_time_snapshot": {
+          "collection_status": "recollected_at_failure",
+          "head": "185e444afc0b44ca0a09b1bde49a6b6fa3973355",
+          "tree": "24f4bdac331a57bd7c1b807747d7c7fba253ee5a",
+          "clean": true
+        },
+        "snapshots_match": true
+      },
+      "prepared_runtime_sha256": "c40abffcc32b2596350ae94e11020ccea49801c32d19d940dbc9b86aafa45e0f",
+      "prepared_static_contract_sha256": "1c7be31c697e443dad70d0c05e9b8f070c85f1d5b3ed2a64b2399c56690d567d"
+    },
+    "rejected_mapping_evidence_limit": {
+      "proc_maps_line_number": 17,
+      "raw_mapping_line_retained": false,
+      "raw_mapping_line": null,
+      "failed_process_still_available": false,
+      "reason": "The native failure manifest retained the line number and error message but not the rejected /proc/self/maps text. PID 137 had exited before inspection, so the exact raw mapping cannot be recovered and must not be guessed."
+    }
+  },
+  "failure_sanitization": {
+    "status": "failed_closed_no_output",
+    "exit_code": 2,
+    "sanitized_failure_artifact_created": false,
+    "stdout": {
+      "owner": "ubuntu:ubuntu",
+      "mode": "0664",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_count": 0
+    },
+    "stderr": {
+      "owner": "ubuntu:ubuntu",
+      "mode": "0664",
+      "text": "P23 blocked: undeclared absolute path cannot be sanitized: /opt/p23-venv/bin/python\n",
+      "sha256": "7818b2041d0fc8b9a0a12c150d68eda089bb0ceebd7fdc47a30e0a43fc0f798f",
+      "byte_count": 84
+    },
+    "classification": "declared_python_executable_path_rejected_by_failure_manifest_sanitizer",
+    "qualification": "This is a second fail-closed condition after the native trace_off_a provenance failure. The sanitized artifact is absent, so the native failure bytes and filesystem metadata remain external evidence."
+  },
+  "acquisition_stop": {
+    "host_orchestrator_exit_code": 1,
+    "terminal_message": {
+      "text": "P26 permission-safe acquisition blocked: P23 sanitizer failed for trace-off-a-failure.json with exit 2\n",
+      "sha256": "5224ef88dcb485cbf6912ecbea747649caa77050a41ff609f484efa8a08fa8e8",
+      "byte_count": 103
+    },
+    "native_present_names": [
+      "trace-off-a-failure.json"
+    ],
+    "native_absent_names": [
+      "trace-off-a.json",
+      "trace-off-b.json",
+      "trace-off-b-failure.json",
+      "repeatability.json",
+      "trace-on.json",
+      "trace-on-failure.json",
+      "raw-trace.json",
+      "noninterference.json",
+      "aggregate.json"
+    ],
+    "sanitized_present_names": [],
+    "process_log_labels_present": [
+      "p26-contract-reconstruction",
+      "p26-p25-contract-reconstruction",
+      "p26-permission-safe-bridge-verification",
+      "p23-trace-off-a",
+      "p23-sanitize-trace-off-a-failure"
+    ],
+    "process_log_labels_absent": [
+      "p23-trace-off-b",
+      "p23-verify-repeatability",
+      "p23-trace-on",
+      "p23-verify-noninterference",
+      "p23-aggregate"
+    ]
+  },
+  "gate_status": {
+    "fresh_runtime": "completed_and_reviewed",
+    "corrected_diagnostic": "passed_40_of_40",
+    "permission_safe_bridge": "passed",
+    "trace_off_a": "blocked_before_initial_state_hash_and_step_zero",
+    "trace_off_a_failure_sanitization": "failed_closed_no_output",
+    "trace_off_b": "not_run",
+    "exact_repeatability": "not_run",
+    "trace_on": "mechanically_barred",
+    "observer_noninterference": "not_run",
+    "candidate_observations": 0,
+    "fidelity_aggregate": "not_run",
+    "shield_execution": "not_run",
+    "training": "not_run"
+  },
+  "terminal_policy": {
+    "attempt_is_terminal": true,
+    "retry_until_favorable_allowed": false,
+    "reuse_attempt_20260906_02_allowed": false,
+    "frozen_p23_thresholds_changed": false,
+    "scientific_protocol_changed": false
+  },
+  "theorem_status": {
+    "p18_through_p21_results_affected": false,
+    "cuda_repeatability_established": false,
+    "observer_noninterference_established": false,
+    "real_gradient_fidelity_established": false,
+    "native_cuda_shield_certified": false
+  },
+  "route": {
+    "next_branch": "p27-cuda-deleted-mapping-localization",
+    "reason": "The permission-safe bridge succeeded, but the first trace stopped during initialized loaded-file collection on an unretained deleted mapping and the failure sanitizer independently rejected the declared Python executable path. P27 must reproduce and retain the exact first deleted-mapping record in a nontraining diagnostic, repair failure sanitization without weakening writable/deleted-origin rejection, freeze a new runtime and attempt, and only then resume the unchanged P23 sequence.",
+    "new_attempt_required": true,
+    "threshold_tuning_allowed": false,
+    "attempt_20260906_02_may_be_rerun": false
+  }
+}

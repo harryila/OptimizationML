@@ -317,10 +317,19 @@ Current outputs:
   source under writable `/tmp`, but the diagnostic failed exact locked Torch
   state and the old sanitizer independently failed on absolute mapping keys;
   no image build or gradient followed;
-- `../experiments/training/p25_cuda_diagnostic_contract.json`, the P25
-  runbook, and the unsigned P25 audit packet: one-shot pre-execution material
-  for correcting those two diagnostic preconditions. They are not a P25 CUDA
-  result;
+- `summaries/P25_CUDA_DIAGNOSTIC_DETERMINISM_AND_REDACTION_RESULTS.md` and
+  `summaries/p25_cuda_diagnostic_outcome.json`: terminal P25 result. Its
+  corrected diagnostic and sanitizer pass, but acquisition stops before
+  `trace_off_a` because an unprivileged host comparison cannot read the
+  root-owned retained wrapper; no CUDA gradient result exists;
+- `summaries/P26_PERMISSION_SAFE_CUDA_ACQUISITION_RESULTS.md` and
+  `summaries/p26_permission_safe_cuda_acquisition_outcome.json`: terminal P26
+  attempt `20260906-02`. The permission-safe bridge passes and `trace_off_a`
+  starts exactly once, then fails during the initialized loaded-file snapshot
+  before step zero on an unidentified deleted `/proc/self/maps` entry. The
+  native failure is externally hash-bound; a separate exact-venv-symlink
+  sanitizer bug means no sanitized failure wrapper exists. No repeatability,
+  candidate, fidelity, shield, or training result is claimed;
 - `summaries/deficit_audit.{json,csv}`: 24-prefix spectral audit;
 - `summaries/quadratic_lr_sweep.json` plus CSV tables: gain-matched quadratic
   sweep and sensitivity classifications;
