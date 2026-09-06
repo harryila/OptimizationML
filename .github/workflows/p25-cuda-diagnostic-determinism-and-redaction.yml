@@ -1,0 +1,83 @@
+name: P25 CUDA diagnostic determinism and redaction replay
+
+on:
+  push:
+    branches:
+      - main
+      - p25-cuda-diagnostic-determinism-and-redaction
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  preregistration-contract:
+    name: CPU contract, correction, and negative controls (Python 3.12)
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+
+    steps:
+      - name: Check out complete frozen history and tags
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          enable-cache: true
+
+      - name: Install the locked environment
+        run: uv sync --locked
+
+      - name: Reconstruct the terminal P24 outcome
+        run: python scripts/reconstruct_p24_cuda_executable_origin_outcome.py
+
+      - name: Independently reconstruct the frozen P25 preregistration
+        run: python scripts/reconstruct_p25_cuda_diagnostic_contract.py
+
+      - name: Verify the host orchestration syntax
+        run: bash -n scripts/run_p25_cuda_attempt.sh
+
+      - name: Run P25 contract, diagnostic, redaction, and ingestion controls
+        run: >-
+          uv run --locked pytest -q
+          tests/test_p25_cuda_diagnostic_contract.py
+          tests/test_p25_executable_origin_diagnostic.py
+          tests/test_p25_executable_origin_sanitizer.py
+          tests/test_p25_historical_p24_ingestion.py
+          tests/test_p24_cuda_executable_origin_outcome.py
+          tests/test_p23_cuda_acquisition_runner.py
+          tests/test_current_research_index.py
+
+      - name: Prove frozen P24 execution bytes did not change
+        run: |
+          git diff --exit-code 9003130ca31085f555ff144216a599442cbdf3ca -- \
+            experiments/training/p24_cuda_executable_origin_contract.json \
+            experiments/training/run_p24_executable_origin_diagnostic.py \
+            scripts/sanitize_p24_executable_origin_diagnostic.py \
+            experiments/training/prepare_p24_immutable_remote_module.py \
+            experiments/training/p24_runtime.Dockerfile \
+            experiments/training/run_p23_deterministic_cuda_shadow_trace.py \
+            src/passive_muon/p21_shadow_trace.py
+
+      - name: Check formatting, lint, and branch whitespace
+        run: |
+          uv run --locked ruff format --check src scripts experiments tests
+          uv run --locked ruff check src scripts experiments tests
+          git diff --check p24-cuda-executable-origin-hardening-diagnostic...HEAD
+
+      - name: State the evidence boundary
+        run: >-
+          echo "This CPU job reconstructs P25's one-shot preregistration,
+          historical P24 failure preservation, deterministic-state correction,
+          key-and-value redaction, and fail-closed fixtures. It does not build
+          the replacement OCI image, authenticate remote A100 execution, run a
+          P25 diagnostic, acquire a CUDA gradient, prove repeatability or
+          observer noninterference, observe a candidate, aggregate fidelity,
+          execute a shield, or train a model."

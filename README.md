@@ -822,6 +822,14 @@ training result was produced. See the scoped
 and compact
 [`outcome record`](results/summaries/p24_cuda_executable_origin_outcome.json).
 The exact next route is `p25-cuda-diagnostic-determinism-and-redaction`.
+P25 now preregisters one corrected diagnostic attempt: it configures the full
+locked Torch determinism state before the minimal CPU optimizer trigger and
+redacts mapping keys as well as values. It also freezes P24 as terminal and
+permits the unchanged P23 CUDA acquisition only after that one diagnostic and
+its independent sanitizer both pass. This is a pre-execution contract; no P25
+diagnostic, replacement runtime, CUDA gradient, repeatability, fidelity,
+shield, or training result exists yet. See the
+[`P25 runbook`](experiments/training/P25_CUDA_DIAGNOSTIC_RUNBOOK.md).
 
 The repair claim is intentionally scoped. A constant `rho` is the exact minimal
 linear shift for a **specified point, pair, sample set, or domain with a finite

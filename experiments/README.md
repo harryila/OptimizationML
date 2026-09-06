@@ -1144,6 +1144,22 @@ a passing remediated artifact bound to the new digest, lock, attestation,
 clean HEAD, and tree permits the failure-output-guarded acquisition sequence
 above.
 
+### P25 corrected diagnostic (pre-execution)
+
+P24 stopped permanently at its retained baseline diagnostic and sanitizer
+failures; the historical P24 commands above must not be resumed. P25 freezes
+one new diagnostic attempt under a replacement immutable image/runtime. It
+configures and exactly verifies the locked Torch state before the minimal CPU
+optimizer trigger, and its corrected offline sanitizer transforms mapping
+keys and values while rejecting redaction collisions. Only a passing native
+diagnostic and sanitized wrapper may unlock the unchanged P23 trace-off A/B,
+exact-repeatability, trace-on, exact-noninterference, and aggregation order.
+
+The complete one-shot commands, fresh-path rules, ten-mount launch, in-place
+host-evidence updates, no-cache build, and no-favorable-rerun boundary are in
+[`training/P25_CUDA_DIAGNOSTIC_RUNBOOK.md`](training/P25_CUDA_DIAGNOSTIC_RUNBOOK.md).
+The contract and runbook currently record no P25 execution result.
+
 Replay the committed early-stop record's static source/runtime bindings with:
 
 ```bash

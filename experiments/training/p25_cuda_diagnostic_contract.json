@@ -1,0 +1,440 @@
+{
+  "schema_version": "passive-muon-p25-cuda-diagnostic-correction-contract-v1",
+  "status": "frozen_pre_remediation_build_and_pre_acquisition",
+  "authority": "This preregistration governs one corrected executable-origin diagnostic attempt, its offline redaction, and only after both pass the unchanged P23 CUDA acquisition. It records no P25 CUDA diagnostic, gradient, repeatability, fidelity, shield, or training result.",
+  "provenance_parent": {
+    "branch": "p24-cuda-executable-origin-hardening",
+    "outcome_commit": "a8a1199b73bb5510b6ac154965baa91fc3743cab",
+    "outcome_tree": "87862256b9298d27daa16b8866523c3a4b420309",
+    "outcome_tag": "p24-cuda-executable-origin-hardening-diagnostic",
+    "annotated_tag_object": "8a4f814c131cf64556f61b89078405b2e970d950",
+    "tag_target_commit": "a8a1199b73bb5510b6ac154965baa91fc3743cab",
+    "outcome": {
+      "path": "results/summaries/p24_cuda_executable_origin_outcome.json",
+      "sha256": "1b1a75d823b45d3c04daa024839dfbbe9461de9fac38117b0602ea7fbbcf941f",
+      "status": "blocked_baseline_diagnostic_determinism_and_redaction"
+    },
+    "result_summary": {
+      "path": "results/summaries/P24_CUDA_EXECUTABLE_ORIGIN_HARDENING_RESULTS.md",
+      "sha256": "c95228622763dfeec4274ed52ace07a0f92b20504b7b8b8cdd7c413df498d584"
+    }
+  },
+  "parent_p24_terminal_facts": {
+    "attempt_disposition": "terminal_first_retained_baseline_diagnostic_failure",
+    "p24_rerun_allowed": false,
+    "old_p23_container_diagnostic_may_be_reexecuted": false,
+    "native_artifact": {
+      "external_file_name": "p24-baseline-executable-origin.native.json",
+      "sha256": "ce44c53c9f274cef3eda7b3adea755ce6b1313773c8dfe00fc9f194b74fb2bd2",
+      "byte_count": 3760729,
+      "schema_version": "passive-muon-p24-executable-origin-diagnostic-v1",
+      "mode": "baseline",
+      "status": "fails",
+      "passes": false,
+      "diagnostic_exit_code": 1
+    },
+    "checks": {
+      "total": 36,
+      "true": 35,
+      "false": 1,
+      "sole_false_check": "torch_determinism_matches_lock"
+    },
+    "torch_determinism_mismatches": {
+      "deterministic_algorithms": {
+        "observed_live": false,
+        "committed_lock": true
+      },
+      "deterministic_debug_mode": {
+        "observed_live": 0,
+        "committed_lock": "error"
+      },
+      "interop_threads": {
+        "observed_live": 30,
+        "committed_lock": 1
+      },
+      "cudnn_deterministic": {
+        "observed_live": false,
+        "committed_lock": true
+      },
+      "fp16_reduced_precision_reduction": {
+        "observed_live": true,
+        "committed_lock": false
+      },
+      "bf16_reduced_precision_reduction": {
+        "observed_live": true,
+        "committed_lock": false
+      }
+    },
+    "generated_module_observation": {
+      "sha256": "8205b16956fb264841ecd8644784a0d157f87df79b17c16825dc1163433ce5d8",
+      "byte_count": 2355,
+      "effective_mount_point": "/tmp",
+      "effective_filesystem_type": "tmpfs",
+      "effective_mount_writable": true
+    },
+    "sanitizer_failure": {
+      "exit_code": 2,
+      "sanitized_artifact_created": false,
+      "classification": "absolute_mapping_keys_not_transformed",
+      "stderr_sha256": "3939a4478d2bd761c810732b01d9f3af9dd31b09c31efe376eece88ac279034f",
+      "stderr_byte_count": 88,
+      "known_native_absolute_key_paths": [
+        "/runtime_lock_binding/content/container/tmpfs_contract/mounts/~1tmp",
+        "/host_attestation_binding/content/container/tmpfs_contract/mounts/~1tmp"
+      ]
+    },
+    "stages_not_run": [
+      "remediation_image_build",
+      "replacement_container",
+      "replacement_runtime_freeze",
+      "remediated_diagnostic",
+      "trace_off_a",
+      "trace_off_b",
+      "exact_repeatability",
+      "trace_on",
+      "observer_noninterference",
+      "fidelity_aggregate",
+      "training"
+    ]
+  },
+  "unchanged_authorities": {
+    "p21_fidelity_gates": {
+      "path": "experiments/training/p21_shadow_trace_protocol.json",
+      "sha256": "ca40ef0aef676971ca4464c3f838c6bd956ecc9806c2023af0d4ea699375315a",
+      "mutation_allowed": false
+    },
+    "p22_protocol": {
+      "path": "experiments/training/p22_real_gradient_shadow_trace_protocol.json",
+      "sha256": "f88eda60b366b561d277e41335b02c3fb9861a2604a947f8dd5c28fb54bedeac",
+      "mutation_allowed": false
+    },
+    "p22_erratum": {
+      "path": "theory/p22_real_gradient_shadow_trace_protocol_erratum.md",
+      "sha256": "42dc57bd8fb03b619c0de75c58570991ca520131ab7d1660b4f9373fd756a2cd",
+      "mutation_allowed": false
+    },
+    "p22_fused_qkv_certificate": {
+      "path": "results/summaries/p22_scalable_shield_shape_extension_certificate.json",
+      "sha256": "9480525384a57bb09869a55c878251f44f170930f3050a1ad50b4d934dcb7450",
+      "mutation_allowed": false
+    },
+    "p23_addendum": {
+      "path": "experiments/training/p23_deterministic_cuda_shadow_trace_addendum.json",
+      "sha256": "ad29a15e3b027250a35b6c3af6ce214cc98d664cad7d9821730e7e0cdaab9e3a",
+      "mutation_allowed": false
+    },
+    "p24_static_contract": {
+      "path": "experiments/training/p24_cuda_executable_origin_contract.json",
+      "sha256": "bdb2d3aad7d70d0ed5c6dddcd03642c9384d8b67d6f5ca507987d28e122dd446",
+      "mutation_allowed": false
+    },
+    "p24_outcome": {
+      "path": "results/summaries/p24_cuda_executable_origin_outcome.json",
+      "sha256": "1b1a75d823b45d3c04daa024839dfbbe9461de9fac38117b0602ea7fbbcf941f",
+      "mutation_allowed": false
+    }
+  },
+  "execution_sources": {
+    "corrected_executable_origin_diagnostic": {
+      "path": "experiments/training/run_p25_executable_origin_diagnostic.py",
+      "sha256": "6305fb9683503eb67e091cdfb0a1105628fcb4bec76fe5ef7fd23dd49ba9d770",
+      "mutation_allowed_after_freeze": false
+    },
+    "corrected_executable_origin_sanitizer": {
+      "path": "scripts/sanitize_p25_executable_origin_diagnostic.py",
+      "sha256": "7d28a04ac99f96315d4a1160b741897660bb829617768af3641eb82f890c745e",
+      "mutation_allowed_after_freeze": false
+    },
+    "historical_p24_native_ingester": {
+      "path": "scripts/ingest_p24_native_outcome_for_p25.py",
+      "sha256": "6f2a987059253158751d5875aff15fb258c05ed7e455fbc979f912f024e0de9c",
+      "mutation_allowed_after_freeze": false
+    },
+    "host_attempt_orchestrator": {
+      "path": "scripts/run_p25_cuda_attempt.sh",
+      "sha256": "fce74a7e65d48cd6391d0986f60ce977cc3b36215908d80349d38f37d95fd441",
+      "mutation_allowed_after_freeze": false
+    },
+    "cuda_acquisition_runner": {
+      "path": "experiments/training/run_p23_deterministic_cuda_shadow_trace.py",
+      "sha256": "a2b4bb5b686b7f681958d09be1d465917b40e34d45e4d3503efef0f35e7ae8cb",
+      "mutation_allowed_after_freeze": false
+    },
+    "stored_computation_and_shadow_semantics": {
+      "path": "src/passive_muon/p21_shadow_trace.py",
+      "sha256": "020debed7a12d6f538ef9093fcdfbcafbf571ea162fb868ccf0a49b5bebb0825",
+      "mutation_allowed_after_freeze": false
+    }
+  },
+  "source_hash_finalization": {
+    "runner": "scripts/finalize_p25_cuda_diagnostic_contract.py",
+    "allowed_records": [
+      "corrected_executable_origin_diagnostic",
+      "corrected_executable_origin_sanitizer",
+      "historical_p24_native_ingester",
+      "host_attempt_orchestrator"
+    ],
+    "finalization_must_precede_static_commit": true,
+    "finalization_must_precede_image_build": true,
+    "placeholder_allowed_at_execution": false,
+    "rehash_at_every_evidence_process": true
+  },
+  "remediation_design": {
+    "strategy": "Use P24's byte-identical immutable generated-module image patch, but execute only the corrected P25 diagnostic after a fresh replacement image, container, lock, attestation, reviewed clean commit, and exact Torch-state configuration.",
+    "build_patch": {
+      "path": "experiments/training/prepare_p24_immutable_remote_module.py",
+      "sha256": "97a4a730aadd11de1aa1b23107cef53f95c3348bde905932571eb6a68d512bef",
+      "mutation_allowed_after_freeze": false
+    },
+    "image_recipe": {
+      "path": "experiments/training/p24_runtime.Dockerfile",
+      "sha256": "c1ccf0783b10f9e79795fa575398a58a7e6d7a9f2abe47a3a0650b213978e2f9",
+      "base_image": "localhost:5000/p23-runtime@sha256:44ef23717780b1cbf112b183e7988b1319ddfed6b1d224efaa33e1e6d96de4c1",
+      "no_cache_required": true,
+      "mutation_allowed_after_freeze": false
+    },
+    "generated_module": {
+      "path": "/opt/p23-venv/lib/python3.12/site-packages/torch/_p24_generated_remote_modules/_remote_module_non_scriptable.py",
+      "sha256": "8205b16956fb264841ecd8644784a0d157f87df79b17c16825dc1163433ce5d8",
+      "byte_count": 2355,
+      "file_mode": "0444",
+      "directory_mode": "0555",
+      "loaded_by_exact_path_spec": true,
+      "sys_path_resolution_allowed": false
+    }
+  },
+  "historical_p24_ingestion": {
+    "purpose": "Recover a sanitized repository-retained wrapper for the already-terminal P24 native bytes; never reinterpret or rerun P24.",
+    "input_must_match_parent_native_sha256_and_byte_count": true,
+    "attempt_count": 1,
+    "offline_container_image": "localhost:5000/p23-runtime@sha256:44ef23717780b1cbf112b183e7988b1319ddfed6b1d224efaa33e1e6d96de4c1",
+    "offline_container_network_mode": "none",
+    "offline_container_root_filesystem_read_only": true,
+    "offline_container_gpu_devices": 0,
+    "fresh_output_root_pattern": "/secure/p25/historical-YYYYMMDD-NN/evidence",
+    "historical_p23_p24_evidence_directory_mounted_writable": false,
+    "retained_p24_native_overlay_mounted_read_only": true,
+    "exact_original_logical_root_destinations_required": true,
+    "strict_duplicate_json_key_rejection": true,
+    "exact_schema_and_all_36_checks_reconstructed": true,
+    "exact_six_determinism_field_mismatches_required": true,
+    "unexpected_mismatch_allowed": false,
+    "exact_two_absolute_tmp_key_locations_required": true,
+    "output_schema_version": "passive-muon-p25-historical-p24-native-outcome-v1",
+    "repository_output_path": "results/summaries/p25_historical_p24_native_outcome.json",
+    "preregistration_parent_must_equal_source_freeze_bootstrap": true,
+    "preregistration_exact_name_status": "A\tresults/summaries/p25_historical_p24_native_outcome.json",
+    "historical_wrapper_must_be_absent_at_bootstrap": true,
+    "output_no_overwrite": true,
+    "output_retains_p24_failed_disposition": true,
+    "output_does_not_authorize_image_build_or_acquisition": true,
+    "historical_ingestion_is_not_a_new_diagnostic_attempt": true
+  },
+  "corrected_diagnostic_contract": {
+    "schema_version": "passive-muon-p25-executable-origin-diagnostic-v1",
+    "mode": "remediated",
+    "attempt_count": 1,
+    "no_prior_p25_diagnostic_artifact": true,
+    "standard_library_preflight_before_torch_import": true,
+    "torch_absent_from_sys_modules_during_preflight": true,
+    "cuda_uninitialized_before_and_after_determinism_configuration": true,
+    "ordered_trigger": [
+      "validate exact contract, source, repository, runtime-lock, attestation, process, mount, and artifact bindings without importing Torch",
+      "import Torch",
+      "assert CUDA remains uninitialized",
+      "configure the complete locked deterministic Torch state",
+      "verify the complete locked deterministic Torch state exactly",
+      "assert CUDA remains uninitialized",
+      "construct one CPU FP32 Parameter",
+      "construct torch.optim.SGD",
+      "observe and hash the generated module and its effective mount",
+      "revalidate every frozen source and runtime binding",
+      "atomically publish one fresh native diagnostic artifact"
+    ],
+    "locked_torch_state": {
+      "deterministic_algorithms": true,
+      "deterministic_debug_mode": "error",
+      "cpu_threads": 1,
+      "interop_threads": 1,
+      "cudnn_deterministic": true,
+      "cudnn_benchmark": false,
+      "float32_matmul_precision": "highest",
+      "cuda_matmul_allow_tf32": false,
+      "cudnn_allow_tf32": false,
+      "fp16_reduced_precision_reduction": false,
+      "bf16_reduced_precision_reduction": false,
+      "math_sdpa_enabled": true,
+      "flash_sdpa_enabled": false,
+      "memory_efficient_sdpa_enabled": false,
+      "cudnn_sdpa_enabled": false
+    },
+    "success_requires": [
+      "every exact Boolean check is true",
+      "the generated module is the exact immutable image-layer path, SHA-256, byte count, and read-only effective mount",
+      "native status is passes and process exit is zero",
+      "offline P25 sanitizer independently validates native bytes and produces a fresh valid sanitized wrapper"
+    ],
+    "diagnostic_is_not_gradient_acquisition": true
+  },
+  "corrected_sanitizer_contract": {
+    "schema_version": "passive-muon-p25-sanitized-executable-origin-diagnostic-v1",
+    "strict_duplicate_json_key_rejection": true,
+    "mapping_keys_and_values_use_one_exact_root_transform": true,
+    "post_redaction_mapping_key_collision_rejection": true,
+    "native_sha256_and_byte_count_required": true,
+    "required_logical_roots": [
+      "data",
+      "muon",
+      "nanogpt",
+      "native",
+      "preprocessor_alias",
+      "python_environment",
+      "python_standard_library",
+      "repository",
+      "temporary"
+    ],
+    "mapping_key_and_value_replacement_counts_required": true,
+    "total_replacement_count_required": true,
+    "complete_post_redaction_absolute_path_scan_required": true,
+    "passing_manifest_top_level_schema_closed": true,
+    "passing_manifest_exact_check_inventory_count": 40,
+    "passing_manifest_requires_every_exact_check_true": true,
+    "independent_contract_source_and_artifact_binding_reconstruction": true,
+    "independent_runtime_lock_host_attestation_and_backlink_reconstruction": true,
+    "independent_locked_python_torch_and_live_cuda_gpu_state_reconstruction": true,
+    "independent_pinned_torch_source_reconstruction": true,
+    "independent_process_event_and_module_snapshot_reconstruction": true,
+    "independent_immutable_generated_module_closure_reconstruction": true,
+    "failed_or_error_manifest_cannot_authorize_acquisition": true,
+    "full_semantic_manifest_retained": true,
+    "output_no_overwrite": true,
+    "applies_to_statuses": [
+      "passes",
+      "fails",
+      "error"
+    ]
+  },
+  "replacement_runtime": {
+    "attempt_root_pattern": "/secure/p25/attempt-YYYYMMDD-NN",
+    "attempt_root_must_be_fresh_and_empty": true,
+    "historical_p23_and_p24_evidence_read_only": true,
+    "new_oci_digest_required": true,
+    "new_running_container_required": true,
+    "new_p25_named_runtime_lock_required": true,
+    "new_p25_named_host_attestation_required": true,
+    "old_p23_image_allowed_for_p25_diagnostic_or_acquisition": false,
+    "old_p23_runtime_lock_allowed_for_p25_diagnostic_or_acquisition": false,
+    "old_p23_host_attestation_allowed_for_p25_diagnostic_or_acquisition": false,
+    "root_filesystem_read_only": true,
+    "network_mode": "none",
+    "gpu_contract": {
+      "uuid": "GPU-ee4c9bf9-42f5-7cdd-66d2-f638c2db549d",
+      "name": "NVIDIA A100-SXM4-40GB",
+      "compute_capability": [
+        8,
+        0
+      ],
+      "mig_enabled": false,
+      "device_count": 1,
+      "bf16_required": true,
+      "cpu_mps_mig_or_ordinal_substitution_allowed": false
+    },
+    "mount_contract": {
+      "bind_mount_count": 10,
+      "tmpfs_count": 1,
+      "tmpfs_destination": "/tmp",
+      "tmpfs_options": "rw,noexec,nosuid,nodev,size=1073741824",
+      "source_data_and_host_evidence_mounts_read_only": true,
+      "native_evidence_mount_writable": true,
+      "destination_paths_unchanged_from_p23": true
+    },
+    "host_inspection_files_precreated_before_container_launch": true,
+    "running_inspection_and_mountinfo_updated_in_place_after_launch": true,
+    "rename_replacement_of_bound_host_inspection_files_forbidden": true,
+    "runtime_lock_and_attestation_reviewed_and_committed_before_diagnostic": true,
+    "diagnostic_parent_must_equal_preregistration_head": true,
+    "diagnostic_exact_name_status": [
+      "A\texperiments/training/p25_cuda_runtime_lock.json",
+      "A\texperiments/training/p25_host_attestation.json"
+    ],
+    "diagnostic_to_acquisition_commit_bridge_required": true,
+    "bridge_parent_must_equal_diagnostic_head": true,
+    "bridge_exact_name_status": "A\tresults/summaries/p25_executable_origin_diagnostic.sanitized.json",
+    "bridge_reconstructs_contract_and_rehashes_all_frozen_sources_before_gradients": true,
+    "bridge_rehashes_retained_native_against_strictly_parsed_wrapper_before_gradients": true,
+    "bridge_delta_scope": "one direct-child commit adding only results/summaries/p25_executable_origin_diagnostic.sanitized.json; no other path may change",
+    "p25_diagnostic_rerun_after_bridge_allowed": false
+  },
+  "frozen_p23_gates": {
+    "thresholds_may_change": false,
+    "numeric_tolerance": null,
+    "allclose_allowed": false,
+    "repeatability_required_mismatches": 0,
+    "noninterference_required_mismatches": 0,
+    "trace_on_observations": 1152,
+    "actual_post_aspect_cuda_candidates": 1152,
+    "shape_inventory": "48/48 Muon parameters and 84934656/84934656 elements",
+    "fidelity_gates": "unchanged frozen P21/P22 activation, correction, cosine, amplitude, P16, P18, and mild-intervention gates",
+    "state_and_rng_schedule": "unchanged from P22"
+  },
+  "ordered_execution": [
+    "finalize every P25 execution-source hash and commit a clean source-freeze bootstrap",
+    "transfer the exact source-freeze bootstrap to the selected host without modifying retained P24 bytes",
+    "launch one fresh read-only-root network-none no-GPU historical-ingestion container from the pinned old P23 image with the exact original logical-root destinations",
+    "verify and sanitize the retained P24 native artifact offline without executing the P24 diagnostic",
+    "review and commit the historical wrapper to form the final clean P25 preregistration",
+    "create one fresh empty P25 attempt root without modifying historical P23 or P24 evidence",
+    "build the byte-identical P24 remediation recipe with --no-cache and retain BuildKit metadata",
+    "select the new immutable repository digest from retained build metadata",
+    "precreate every host inspection and mountinfo file before container launch",
+    "launch one new read-only-root network-none container with exactly ten binds, one locked tmpfs, and the pinned full GPU UUID",
+    "update the precreated running-container inspection and mountinfo files in place without rename",
+    "freeze and validate new P25-named runtime-lock and host-attestation artifacts",
+    "review the new image digest and commit only the P25 lock and attestation that bind it as an exact two-file delta",
+    "run exactly one corrected P25 remediated executable-origin diagnostic",
+    "independently hash and sanitize that retained native diagnostic with the corrected P25 sanitizer",
+    "stop permanently on any diagnostic, sanitizer, source, runtime, provenance, or artifact defect",
+    "review and commit the sanitized diagnostic and explicit binding metadata without changing execution sources or gates",
+    "trace_off_a using the unchanged P23 runner with a fresh required failure-output path",
+    "trace_off_b only if trace_off_a passed",
+    "verify_repeatability using exact equality only",
+    "trace_on only if exact repeatability reports zero mismatches",
+    "verify_noninterference using exact equality only",
+    "aggregate_fidelity only if exact noninterference reports zero mismatches",
+    "sanitize and retain every success or first-failure artifact without overwriting any prior evidence"
+  ],
+  "failure_policy": {
+    "no_favorable_reruns": true,
+    "p24_attempt_is_terminal": true,
+    "p25_corrected_diagnostic_attempts_allowed": 1,
+    "all_native_and_sanitized_outputs_must_be_fresh_external_and_nonaliasing": true,
+    "overwrite_or_truncation_of_existing_evidence": "forbidden",
+    "any_preflight_diagnostic_or_sanitizer_mismatch": "stop before CUDA gradient acquisition and retain the first failure",
+    "image_build_or_runtime_freeze_mismatch": "stop before corrected diagnostic and retain the first failure",
+    "trace_off_a_failure": "stop before trace_off_b and retain the native failure evidence",
+    "trace_off_repeatability_failure": "trace_on remains mechanically barred",
+    "trace_on_failure": "do not verify noninterference or aggregate fidelity",
+    "noninterference_failure": "do not aggregate fidelity",
+    "nonfinite_or_unrooted_executable_origin": "fail closed",
+    "threshold_tuning_after_observation": false
+  },
+  "claim_boundary": {
+    "pre_execution_contract_only": true,
+    "p25_cuda_result_present": false,
+    "p24_disposition_changed": false,
+    "theorem_effect": "P18-P21 exact and finite-precision theorems are unchanged",
+    "not_claimed": [
+      "that P24 passed or may be rerun",
+      "that historical P24 ingestion is a new diagnostic",
+      "that P25's corrected diagnostic has run or passed",
+      "that the replacement image, container, lock, or attestation exists",
+      "CUDA repeatability",
+      "observer noninterference",
+      "real-gradient fidelity",
+      "native CUDA sector-shield correctness",
+      "training-quality or throughput parity",
+      "global PL for the neural loss",
+      "global stability of unrepaired upstream Muon"
+    ]
+  }
+}

@@ -311,6 +311,16 @@ Current outputs:
   `scripts/reconstruct_p23_cuda_shadow_trace_outcome.py`;
 - `../theory/audits/P23_DETERMINISTIC_CUDA_SHADOW_TRACE_AUDIT.md`: unsigned
   external-review checklist updated for the early provenance stop;
+- `summaries/P24_CUDA_EXECUTABLE_ORIGIN_HARDENING_RESULTS.md` and
+  `summaries/p24_cuda_executable_origin_outcome.json`: the terminal first P24
+  A100 diagnostic outcome. The minimal trigger reproduced the exact generated
+  source under writable `/tmp`, but the diagnostic failed exact locked Torch
+  state and the old sanitizer independently failed on absolute mapping keys;
+  no image build or gradient followed;
+- `../experiments/training/p25_cuda_diagnostic_contract.json`, the P25
+  runbook, and the unsigned P25 audit packet: one-shot pre-execution material
+  for correcting those two diagnostic preconditions. They are not a P25 CUDA
+  result;
 - `summaries/deficit_audit.{json,csv}`: 24-prefix spectral audit;
 - `summaries/quadratic_lr_sweep.json` plus CSV tables: gain-matched quadratic
   sweep and sensitivity classifications;
