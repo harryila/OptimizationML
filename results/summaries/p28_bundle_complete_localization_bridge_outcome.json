@@ -1,0 +1,199 @@
+{
+  "schema_version": "passive-muon-p28-bundle-complete-localization-bridge-outcome-v1",
+  "status": "terminal_source_verifier_control_checkout_parent_permission_stop",
+  "attempt_id": "20260906-01",
+  "evidence_kind": "repository_authenticated_source_freeze_plus_operator_recorded_external_transport_state_and_terminal_stderr",
+  "claim_boundary": "The source commit, tree, parent, contract, and checked-in verifier bytes are repository-authenticated. The external bundle, closure, permissions, and exact captured stderr are operator-recorded facts rather than independently authenticated native evidence because no receipt or retained stream file exists. The single P28 source-bundle verifier invocation reached the control-checkout transition, then stopped when Git could not create /secure/p28/control-source under the root-owned mode-0755 parent. No control checkout, source receipt, P27 reconstruction, attempt root, image inspection, GPU access, container, CUDA initialization, deleted-mapping localization, model or optimizer, gradient, candidate, optimizer update, or training observation was created. This is a host control-parent ownership failure, not a completed source verification, bundle-content failure, deleted-mapping, CUDA, repeatability, observer-noninterference, fidelity, shield, or training result.",
+  "source_freeze": {
+    "branch": "p28-bundle-complete-localization-bridge",
+    "commit": "003b6ee3f0ee2d1c269cac787c0281bf3f976ac4",
+    "tree": "11e471539a8f422d74728548a0ee8ac19ffea1c0",
+    "parent": "ec63550331925ded158e3f389e294e4d1f12db3a",
+    "contract_path": "experiments/training/p28_bundle_complete_localization_bridge_contract.json",
+    "contract_sha256": "6a5005f902d937f0edbec3394e6205e482fe6f6fea45f986ac873fd6ab2e8718",
+    "verifier_path": "scripts/verify_p28_control_bundle.py",
+    "verifier_sha256": "27e2d5e89a5dcd31cc5e4f2c32953ac1232246077863f105078a5a7984c77a00",
+    "source_frozen_before_invocation": true
+  },
+  "source_bundle": {
+    "path": "/secure/p28/transport-20260906-01/p28_source.bundle",
+    "sha256": "54461db0d3a2e07870d9f43cf9877da0cb4f28c13ad1c5f1cc32b44ff3e7945b",
+    "byte_count": 3362894,
+    "owner": "ubuntu:ubuntu",
+    "uid": 1000,
+    "gid": 1000,
+    "mode": "0600",
+    "format": "v2",
+    "prerequisite_count": 0,
+    "advertised_refs": [
+      {
+        "ref": "refs/heads/p28-bundle-complete-localization-bridge",
+        "object": "003b6ee3f0ee2d1c269cac787c0281bf3f976ac4"
+      },
+      {
+        "ref": "refs/heads/p27-cuda-deleted-mapping-localization",
+        "object": "ec63550331925ded158e3f389e294e4d1f12db3a"
+      },
+      {
+        "ref": "refs/tags/p27-cuda-deleted-mapping-localization-diagnostic",
+        "object": "c88b98eae9be2458abde45b05d3dccfe09c0c7ed",
+        "peeled_commit": "ec63550331925ded158e3f389e294e4d1f12db3a"
+      },
+      {
+        "ref": "refs/tags/p26-permission-safe-acquisition-checkpoint",
+        "object": "bacad707d3779bfa10957e18cb4c69b1a7f0cbce",
+        "peeled_commit": "5429da23ff18888daa2312c530a4587780484d8b"
+      },
+      {
+        "ref": "refs/tags/p26-attempt02-acquisition-source",
+        "object": "f35a7dca8f6bc39e9748e79b6712fab4a203396b",
+        "peeled_commit": "185e444afc0b44ca0a09b1bde49a6b6fa3973355"
+      }
+    ],
+    "exact_closed_ref_inventory_verified": true,
+    "private_authenticated_copy_was_mode_0400_before_git_use": true,
+    "private_copy_revalidated_after_git_use": true
+  },
+  "bootstrap_verifier": {
+    "path": "/secure/p28/transport-20260906-01/verify_p28_control_bundle.py",
+    "sha256": "27e2d5e89a5dcd31cc5e4f2c32953ac1232246077863f105078a5a7984c77a00",
+    "byte_count": 51304,
+    "owner": "ubuntu:ubuntu",
+    "uid": 1000,
+    "gid": 1000,
+    "mode": "0600",
+    "stable_nofollow_self_authentication_passed": true
+  },
+  "source_verification": {
+    "phase": "source",
+    "invocations_allowed": 1,
+    "invocations_run": 1,
+    "invocation_utc_independently_retained": false,
+    "invocation_utc": null,
+    "exit_status": 1,
+    "exact_terminal_stderr": "P28 control-bundle verification failed: Git command failed (128): init --initial-branch=p28-verifier-unborn /secure/p28/control-source: fatal: cannot mkdir /secure/p28/control-source: Permission denied",
+    "exact_terminal_stderr_with_one_lf_sha256": "3d85310ab120816ed22e1d78295b2384ff2e0e2147d5700dbb93abe1bb28b355",
+    "exact_terminal_stderr_with_one_lf_byte_count": 202,
+    "operator_capture_only": true,
+    "remote_stdout_file_retained": false,
+    "remote_stderr_file_retained": false,
+    "completed_before_failure": [
+      "bootstrap_verifier_authentication",
+      "stable_source_bundle_hash_and_size_authentication",
+      "closed_v2_header_and_zero_prerequisite_validation",
+      "fresh_empty_bare_source_closure_creation",
+      "explicit_fetch_of_each_of_five_refs",
+      "tag_type_and_peel_validation",
+      "full_strict_git_fsck",
+      "private_bundle_post_use_revalidation"
+    ],
+    "failed_operation": "git init --initial-branch=p28-verifier-unborn /secure/p28/control-source",
+    "source_control_checkout_created": false,
+    "p27_reconstruction_run": false,
+    "source_receipt_created": false
+  },
+  "retained_remote_state": {
+    "parent": {
+      "path": "/secure/p28",
+      "owner": "root:root",
+      "uid": 0,
+      "gid": 0,
+      "mode": "0755"
+    },
+    "transport": {
+      "path": "/secure/p28/transport-20260906-01",
+      "owner": "ubuntu:ubuntu",
+      "uid": 1000,
+      "gid": 1000,
+      "mode": "0700"
+    },
+    "source_closure": {
+      "path": "/secure/p28/transport-20260906-01/p28_source_closure.git",
+      "created": true,
+      "birth_utc": "2026-09-06T15:09:08.942901140Z",
+      "owner": "ubuntu:ubuntu",
+      "uid": 1000,
+      "gid": 1000,
+      "mode": "0775",
+      "exact_five_refs_present": true
+    },
+    "control_checkout_path": "/secure/p28/control-source",
+    "control_checkout_created": false,
+    "source_receipt_path": "/secure/p28/transport-20260906-01/p28_source_bundle_receipt.json",
+    "source_receipt_created": false,
+    "attempt_root": "/secure/p28/attempt-20260906-01",
+    "attempt_root_created": false,
+    "container_name": "p28-localization-20260906-01",
+    "container_created": false,
+    "runtime_lock_created": false,
+    "host_attestation_created": false,
+    "native_localization_artifact_created": false,
+    "sanitized_localization_artifact_created": false
+  },
+  "gate_status": {
+    "source_freeze": "completed",
+    "bootstrap_verifier_authentication": "passed",
+    "source_bundle_completeness": "passed_exact_five_refs",
+    "fresh_source_closure": "created_and_verified",
+    "source_control_checkout": "failed_permission_denied",
+    "p27_contract_reconstruction": "not_run",
+    "source_receipt": "not_created",
+    "attempt_root_creation": "not_run",
+    "image_inspection": "not_run",
+    "gpu_access": "not_run",
+    "container_creation": "not_run",
+    "runtime_freeze": "not_run",
+    "cuda_initialization": "not_run",
+    "deleted_mapping_localization": "not_run",
+    "model_construction": "not_run",
+    "optimizer_construction": "not_run",
+    "forward_backward": "not_run",
+    "optimizer_steps": 0,
+    "candidate_observations": 0,
+    "training": "not_run"
+  },
+  "terminal_policy": {
+    "attempt_is_terminal": true,
+    "transport_and_closure_are_terminal": true,
+    "reuse_attempt_20260906_01_allowed": false,
+    "cleanup_retained_transport_or_closure_allowed": false,
+    "retry_until_favorable_allowed": false,
+    "source_verifier_invocation_consumed": true,
+    "prepare_runtime_invocation_consumed": false,
+    "localization_invocation_consumed": false,
+    "scientific_protocol_changed": false,
+    "frozen_thresholds_changed": false
+  },
+  "theorem_status": {
+    "p18_through_p21_results_affected": false,
+    "p26_terminal_result_affected": false,
+    "p27_terminal_result_affected": false,
+    "deleted_mapping_identity_established": false,
+    "cuda_repeatability_established": false,
+    "observer_noninterference_established": false,
+    "real_gradient_fidelity_established": false,
+    "native_cuda_shield_certified": false
+  },
+  "root_cause": {
+    "classification": "unprivileged_control_checkout_parent_permission",
+    "exact_failure": "The reviewed runbook provisioned only the ubuntu-owned transport beneath an implicitly root-owned /secure/p28 parent, but later required the unprivileged verifier to create the sibling /secure/p28/control-source. After authenticating the full five-ref bundle and fresh source closure, the ubuntu process could not create that sibling because /secure/p28 was mode 0755 and owned by root:root. The required control checkout and receipt therefore do not exist.",
+    "bundle_completeness_defect_observed": false,
+    "verifier_logic_defect_observed": false,
+    "p27_contract_defect_observed": false,
+    "verifier_failed_closed": true,
+    "host_layout_preflight_defect_observed": true,
+    "runbook_host_layout_defect_observed": true,
+    "cuda_or_backend_defect_observed": false,
+    "mapping_classification_observed": false
+  },
+  "route": {
+    "next_action": "freeze_this_terminal_pre_container_outcome_then_preregister_a_new_attempt_with_reviewed_control_parent_ownership",
+    "new_attempt_required": true,
+    "new_attempt_identifier_must_be_preregistered": true,
+    "required_host_correction": "Before any new verifier invocation, freeze and independently review a new transport and host layout in which the absent control child is beneath a preregistered process-owned mode-0700 control parent, without broadening access to retained P28 state.",
+    "new_source_bundle_and_external_receipt_required": true,
+    "attempt_20260906_01_may_be_reused": false,
+    "retained_p28_transport_or_closure_may_be_cleaned_up": false,
+    "scientific_acquisition_authorized": false
+  }
+}
