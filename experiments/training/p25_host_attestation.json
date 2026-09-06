@@ -1,0 +1,128 @@
+{
+  "container": {
+    "attestation_scope": "procedural_host_inspection_not_cryptographic_remote_attestation",
+    "container_id": "ac74d7ecfa928b26a5c3b7cabe666f88a05d94af1629a0d1d2ef6d38c327b6f8",
+    "container_init_pid": 33421,
+    "default_hostname": true,
+    "gpu_selection": {
+      "container_config_cuda_visible_devices": "GPU-ee4c9bf9-42f5-7cdd-66d2-f638c2db549d",
+      "container_config_nvidia_visible_devices": "GPU-ee4c9bf9-42f5-7cdd-66d2-f638c2db549d",
+      "device_request": {
+        "Capabilities": [
+          [
+            "gpu"
+          ]
+        ],
+        "Count": 0,
+        "DeviceIDs": [
+          "GPU-ee4c9bf9-42f5-7cdd-66d2-f638c2db549d"
+        ],
+        "Driver": "",
+        "Options": {}
+      },
+      "mechanism": "docker_device_request_single_full_gpu",
+      "requested_full_gpu_uuid": "GPU-ee4c9bf9-42f5-7cdd-66d2-f638c2db549d"
+    },
+    "hostname": "ac74d7ecfa92",
+    "image": "localhost:5000/p25-runtime@sha256:e1a636b8c113aaa2823bd8e03bc0dee626d91cdc6897154e05a2bda54b178ee6",
+    "image_id": "sha256:e1a636b8c113aaa2823bd8e03bc0dee626d91cdc6897154e05a2bda54b178ee6",
+    "mount_contract": {
+      "mounts": [
+        {
+          "name": "repository",
+          "propagation": "rprivate",
+          "read_only": true,
+          "type": "bind"
+        },
+        {
+          "name": "nanogpt",
+          "propagation": "rprivate",
+          "read_only": true,
+          "type": "bind"
+        },
+        {
+          "name": "muon",
+          "propagation": "rprivate",
+          "read_only": true,
+          "type": "bind"
+        },
+        {
+          "name": "data",
+          "propagation": "rprivate",
+          "read_only": true,
+          "type": "bind"
+        },
+        {
+          "name": "preprocessor_alias",
+          "propagation": "rprivate",
+          "read_only": true,
+          "type": "bind"
+        },
+        {
+          "name": "native_evidence",
+          "propagation": "rprivate",
+          "read_only": false,
+          "type": "bind"
+        },
+        {
+          "name": "image_inspection",
+          "propagation": "rprivate",
+          "read_only": true,
+          "type": "bind"
+        },
+        {
+          "name": "running_container_inspection",
+          "propagation": "rprivate",
+          "read_only": true,
+          "type": "bind"
+        },
+        {
+          "name": "running_mountinfo",
+          "propagation": "rprivate",
+          "read_only": true,
+          "type": "bind"
+        },
+        {
+          "name": "nvidia_smi_query",
+          "propagation": "rprivate",
+          "read_only": true,
+          "type": "bind"
+        }
+      ],
+      "sha256": "92aae607f37ab603df43000a00d6e7aee06f2d79d1df59d6251f9e76b3ebdf5f"
+    },
+    "mountinfo_sha256": "7bab09838fe52ba922b2a6ee354011111adee418421b5fcd92971b37e03d5986",
+    "network_mode": "none",
+    "repository_digest": "sha256:e1a636b8c113aaa2823bd8e03bc0dee626d91cdc6897154e05a2bda54b178ee6",
+    "rootfs_read_only": true,
+    "tmpfs_contract": {
+      "mounts": {
+        "/tmp": "rw,noexec,nosuid,nodev,size=1073741824"
+      },
+      "sha256": "6ab99d5e86ddea4f53006074fcdcbd6679c1f270ef25996160bf8e33251d657d"
+    }
+  },
+  "evidence": {
+    "image_inspection_sha256": "b751be10f24f4fdfe2c7ba90069451092029ee6a1a28f184d9145e9e3a403d4a",
+    "nvidia_smi_query_sha256": "0f09701bb28b1965a4e6bcc331186551125a93dfc94f6298fa7adee17c31f7fa",
+    "running_container_inspection_sha256": "f581128298f3ae8c208bb15504ff1cb12fd78b8df9a8809cbca5477e0c49d26a",
+    "running_mountinfo_sha256": "7bab09838fe52ba922b2a6ee354011111adee418421b5fcd92971b37e03d5986"
+  },
+  "gpu": {
+    "compute_capability": [
+      8,
+      0
+    ],
+    "driver_version": "580.105.08",
+    "mig_mode": "disabled",
+    "multiprocessor_count": 108,
+    "name": "NVIDIA A100-SXM4-40GB",
+    "nvidia_smi_memory_total_mib": 40960,
+    "pci_bus_id": "00000000:06:00.0",
+    "total_memory": 42405855232,
+    "uuid": "GPU-ee4c9bf9-42f5-7cdd-66d2-f638c2db549d",
+    "vbios_version": "92.00.36.00.04"
+  },
+  "schema_version": "passive-muon-p23-host-attestation-v3",
+  "status": "procedurally_host_attested"
+}

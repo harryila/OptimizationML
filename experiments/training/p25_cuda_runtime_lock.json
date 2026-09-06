@@ -1,0 +1,200 @@
+{
+  "container": {
+    "attestation_scope": "procedural_host_inspection_not_cryptographic_remote_attestation",
+    "container_id": "ac74d7ecfa928b26a5c3b7cabe666f88a05d94af1629a0d1d2ef6d38c327b6f8",
+    "container_init_pid": 33421,
+    "default_hostname": true,
+    "gpu_selection": {
+      "container_config_cuda_visible_devices": "GPU-ee4c9bf9-42f5-7cdd-66d2-f638c2db549d",
+      "container_config_nvidia_visible_devices": "GPU-ee4c9bf9-42f5-7cdd-66d2-f638c2db549d",
+      "device_request": {
+        "Capabilities": [
+          [
+            "gpu"
+          ]
+        ],
+        "Count": 0,
+        "DeviceIDs": [
+          "GPU-ee4c9bf9-42f5-7cdd-66d2-f638c2db549d"
+        ],
+        "Driver": "",
+        "Options": {}
+      },
+      "mechanism": "docker_device_request_single_full_gpu",
+      "requested_full_gpu_uuid": "GPU-ee4c9bf9-42f5-7cdd-66d2-f638c2db549d"
+    },
+    "host_attestation_sha256": "2dc43b993028e624a0026fe0446f82e506ff51bf11c9bb38dc9fd17a173ab7b2",
+    "hostname": "ac74d7ecfa92",
+    "image": "localhost:5000/p25-runtime@sha256:e1a636b8c113aaa2823bd8e03bc0dee626d91cdc6897154e05a2bda54b178ee6",
+    "image_id": "sha256:e1a636b8c113aaa2823bd8e03bc0dee626d91cdc6897154e05a2bda54b178ee6",
+    "mount_contract": {
+      "mounts": [
+        {
+          "name": "repository",
+          "propagation": "rprivate",
+          "read_only": true,
+          "type": "bind"
+        },
+        {
+          "name": "nanogpt",
+          "propagation": "rprivate",
+          "read_only": true,
+          "type": "bind"
+        },
+        {
+          "name": "muon",
+          "propagation": "rprivate",
+          "read_only": true,
+          "type": "bind"
+        },
+        {
+          "name": "data",
+          "propagation": "rprivate",
+          "read_only": true,
+          "type": "bind"
+        },
+        {
+          "name": "preprocessor_alias",
+          "propagation": "rprivate",
+          "read_only": true,
+          "type": "bind"
+        },
+        {
+          "name": "native_evidence",
+          "propagation": "rprivate",
+          "read_only": false,
+          "type": "bind"
+        },
+        {
+          "name": "image_inspection",
+          "propagation": "rprivate",
+          "read_only": true,
+          "type": "bind"
+        },
+        {
+          "name": "running_container_inspection",
+          "propagation": "rprivate",
+          "read_only": true,
+          "type": "bind"
+        },
+        {
+          "name": "running_mountinfo",
+          "propagation": "rprivate",
+          "read_only": true,
+          "type": "bind"
+        },
+        {
+          "name": "nvidia_smi_query",
+          "propagation": "rprivate",
+          "read_only": true,
+          "type": "bind"
+        }
+      ],
+      "sha256": "92aae607f37ab603df43000a00d6e7aee06f2d79d1df59d6251f9e76b3ebdf5f"
+    },
+    "mountinfo_sha256": "7bab09838fe52ba922b2a6ee354011111adee418421b5fcd92971b37e03d5986",
+    "network_mode": "none",
+    "repository_digest": "sha256:e1a636b8c113aaa2823bd8e03bc0dee626d91cdc6897154e05a2bda54b178ee6",
+    "rootfs_read_only": true,
+    "tmpfs_contract": {
+      "mounts": {
+        "/tmp": "rw,noexec,nosuid,nodev,size=1073741824"
+      },
+      "sha256": "6ab99d5e86ddea4f53006074fcdcbd6679c1f270ef25996160bf8e33251d657d"
+    }
+  },
+  "determinism": {
+    "bf16_reduced_precision_reduction": false,
+    "cpu_threads": 1,
+    "cublas_workspace_config": ":4096:8",
+    "cuda_visible_devices": "GPU-ee4c9bf9-42f5-7cdd-66d2-f638c2db549d",
+    "cudnn_benchmark": false,
+    "cudnn_deterministic": true,
+    "deterministic_algorithms": true,
+    "deterministic_debug_mode": "error",
+    "float32_matmul_precision": "highest",
+    "fp16_reduced_precision_reduction": false,
+    "interop_threads": 1,
+    "nvidia_tf32_override": "0",
+    "nvidia_visible_devices": "GPU-ee4c9bf9-42f5-7cdd-66d2-f638c2db549d",
+    "pythonhashseed": "1337",
+    "sdpa_backend": "math",
+    "tf32": false
+  },
+  "gpu": {
+    "compute_capability": [
+      8,
+      0
+    ],
+    "driver_version": "580.105.08",
+    "mig_mode": "disabled",
+    "multiprocessor_count": 108,
+    "name": "NVIDIA A100-SXM4-40GB",
+    "nvidia_smi_memory_total_mib": 40960,
+    "pci_bus_id": "00000000:06:00.0",
+    "total_memory": 42405855232,
+    "uuid": "GPU-ee4c9bf9-42f5-7cdd-66d2-f638c2db549d",
+    "vbios_version": "92.00.36.00.04"
+  },
+  "loader_environment": {
+    "LD_AUDIT": null,
+    "LD_LIBRARY_PATH": null,
+    "LD_PRELOAD": null,
+    "PATH": "/opt/p23-venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONOPTIMIZE": null
+  },
+  "p23_addendum_sha256": "ad29a15e3b027250a35b6c3af6ce214cc98d664cad7d9821730e7e0cdaab9e3a",
+  "schema_version": "passive-muon-p23-cuda-runtime-lock-v3",
+  "software": {
+    "cpu_identity": {
+      "cpu_family": "25",
+      "flags_sha256": "c69c9ba4e01003ec562300ae7fc980de938335e1f6faf7fe7670bd34cc0d0c1f",
+      "logical_processor_count": 30,
+      "microcode": "0xa00115d",
+      "model": "1",
+      "model_name": "AMD EPYC 7J13 64-Core Processor",
+      "stepping": "1",
+      "vendor_id": "AuthenticAMD"
+    },
+    "cuda_runtime_version": 12080,
+    "cudnn_version": 90701,
+    "libc": "glibc-2.36",
+    "machine": "x86_64",
+    "numpy_version": "2.2.6",
+    "platform": "Linux-6.8.0-1046-nvidia-x86_64-with-glibc2.36",
+    "proc_version_sha256": "6769a8ff20c5e650b34fe53ac4282538d3424356722c9a90193bacf2d2d9cde4",
+    "processor": "AMD EPYC 7J13 64-Core Processor",
+    "python": "3.12.14 (main, Sep  1 2026, 00:10:15) [GCC 12.2.0]",
+    "python_executable": "/opt/p23-venv/bin/python",
+    "python_executable_sha256": "4dbf3143240288fb2170257ffaa7bd030cdda5d2703d1f5f30b627042267e2e3",
+    "python_flags": {
+      "bytes_warning": 0,
+      "debug": 0,
+      "dev_mode": false,
+      "dont_write_bytecode": 1,
+      "hash_randomization": 1,
+      "ignore_environment": 0,
+      "inspect": 0,
+      "int_max_str_digits": 4300,
+      "interactive": 0,
+      "isolated": 0,
+      "no_site": 0,
+      "no_user_site": 1,
+      "optimize": 0,
+      "quiet": 0,
+      "safe_path": false,
+      "utf8_mode": 0,
+      "verbose": 0,
+      "warn_default_encoding": 0
+    },
+    "release": "6.8.0-1046-nvidia",
+    "system": "Linux",
+    "torch_config_sha256": "3714914ae29951ad405341edac8d90d47cd29704988bc65f0ea9f4513583535d",
+    "torch_cuda_compiled_version": "12.8",
+    "torch_git_version": "134179474539648ba7dee1317959529fbd0e7f89",
+    "torch_version": "2.7.0+cu128",
+    "version": "#49~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Wed Jan 28 22:29:18 UTC 2"
+  },
+  "status": "pinned_for_acquisition"
+}
