@@ -1,0 +1,155 @@
+{
+  "schema_version": "passive-muon-p27-cuda-deleted-mapping-localization-outcome-v1",
+  "status": "terminal_pre_container_missing_required_p26_checkpoint_tag",
+  "attempt_id": "20260906-01",
+  "evidence_kind": "repository_authenticated_source_freeze_plus_operator_retained_pre_container_logs",
+  "claim_boundary": "The first and only P27 prepare-runtime invocation stopped at the independent contract reconstruction before image inspection, GPU access, container creation, CUDA initialization, localization, model or optimizer construction, training, or candidate observation. The remote control checkout had the exact P27 source-freeze commit, tree, and contract bytes, but the operator transfer bundle omitted the required annotated p26-permission-safe-acquisition-checkpoint ref and tag object. This is a transfer-provenance failure, not a deleted-mapping localization result, CUDA result, repeatability result, observer-noninterference result, real-gradient fidelity result, shield-execution result, or training result.",
+  "source_freeze": {
+    "branch": "p27-cuda-deleted-mapping-localization",
+    "commit": "1071afa1b20b3e12be3dafdebf9dae63f39b0ed9",
+    "tree": "e32a8d89a4470c7e4ee2631c8abb16c2f0a4d923",
+    "parent": "5429da23ff18888daa2312c530a4587780484d8b",
+    "contract_path": "experiments/training/p27_cuda_deleted_mapping_localization_contract.json",
+    "contract_sha256": "02000debea28f499ddeb3b8c6c8b0615786cd2e7858cc8a1605b04d638da4b7a",
+    "source_frozen_before_invocation": true
+  },
+  "operator_transfer": {
+    "bundle_file_name": "p27-source-1071afa-focused.bundle",
+    "sha256": "1fb136fb027b739f94c08a0f20cfeb7d5d417742cb3bd5578bbb278b86c641cc",
+    "byte_count": 3307486,
+    "advertised_refs": [
+      {
+        "object": "1071afa1b20b3e12be3dafdebf9dae63f39b0ed9",
+        "ref": "refs/heads/p27-cuda-deleted-mapping-localization"
+      },
+      {
+        "object": "f35a7dca8f6bc39e9748e79b6712fab4a203396b",
+        "ref": "refs/tags/p26-attempt02-acquisition-source"
+      }
+    ],
+    "required_checkpoint": {
+      "ref": "refs/tags/p26-permission-safe-acquisition-checkpoint",
+      "annotated_tag_object": "bacad707d3779bfa10957e18cb4c69b1a7f0cbce",
+      "peeled_commit": "5429da23ff18888daa2312c530a4587780484d8b"
+    },
+    "required_checkpoint_ref_advertised": false,
+    "required_annotated_tag_object_transferred": false,
+    "bundle_was_insufficient_for_frozen_reconstruction": true
+  },
+  "remote_prepare_runtime": {
+    "invoked_utc": "2026-09-06T14:11:41Z",
+    "invocations_allowed": 1,
+    "invocations_run": 1,
+    "remote_control_checkout": {
+      "head": "1071afa1b20b3e12be3dafdebf9dae63f39b0ed9",
+      "tree": "e32a8d89a4470c7e4ee2631c8abb16c2f0a4d923",
+      "required_checkpoint_ref_present": false,
+      "required_annotated_tag_object_present": false
+    },
+    "contract_reconstruction": {
+      "schema_version": "passive-muon-p27-cuda-deleted-mapping-localization-reconstruction-v1",
+      "status": "failed_closed_22_of_23",
+      "checks": {
+        "total": 23,
+        "true": 22,
+        "false": 1
+      },
+      "only_failed_check": "terminal_p26_commit_tree_tag_and_bytes_exact",
+      "internally_consistent": false,
+      "canonical_contract_sha256": "02000debea28f499ddeb3b8c6c8b0615786cd2e7858cc8a1605b04d638da4b7a",
+      "remote_stdout": {
+        "path": "/secure/p27/attempt-20260906-01/evidence/p27-prepare-contract-reconstruction.stdout.log",
+        "owner": "ubuntu:ubuntu",
+        "uid": 1000,
+        "gid": 1000,
+        "mode": "0600",
+        "sha256": "911cf5e086227c95004ab9bf87438463f4c6d49ff3b77457ea89a98abca845b4",
+        "byte_count": 1718
+      },
+      "committed_path_free_stdout": {
+        "path": "results/summaries/p27_prepare_contract_reconstruction.remote.json",
+        "mode": "0644",
+        "sha256": "911cf5e086227c95004ab9bf87438463f4c6d49ff3b77457ea89a98abca845b4",
+        "byte_count": 1718
+      },
+      "remote_stderr": {
+        "path": "/secure/p27/attempt-20260906-01/evidence/p27-prepare-contract-reconstruction.stderr.log",
+        "owner": "ubuntu:ubuntu",
+        "uid": 1000,
+        "gid": 1000,
+        "mode": "0600",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "byte_count": 0
+      }
+    }
+  },
+  "retained_attempt_state": {
+    "attempt_root": "/secure/p27/attempt-20260906-01",
+    "directories": [
+      "/secure/p27/attempt-20260906-01/evidence"
+    ],
+    "regular_files": [
+      "evidence/p27-prepare-contract-reconstruction.stderr.log",
+      "evidence/p27-prepare-contract-reconstruction.stdout.log"
+    ],
+    "other_regular_files": [],
+    "container_name": "p27-localization-20260906-01",
+    "container_created": false,
+    "runtime_lock_created": false,
+    "host_attestation_created": false,
+    "native_localization_artifact_created": false,
+    "sanitized_localization_artifact_created": false
+  },
+  "gate_status": {
+    "source_freeze": "completed",
+    "operator_transfer_completeness": "failed_missing_required_checkpoint_tag_ref_and_object",
+    "remote_source_head_and_tree": "exact",
+    "contract_reconstruction": "failed_closed_before_container",
+    "image_inspection": "not_run",
+    "gpu_access": "not_run",
+    "container_creation": "not_run",
+    "runtime_freeze": "not_run",
+    "cuda_initialization": "not_run",
+    "deleted_mapping_localization": "not_run",
+    "model_construction": "not_run",
+    "optimizer_construction": "not_run",
+    "forward_backward": "not_run",
+    "optimizer_steps": 0,
+    "candidate_observations": 0,
+    "training": "not_run"
+  },
+  "terminal_policy": {
+    "attempt_is_terminal": true,
+    "reuse_attempt_20260906_01_allowed": false,
+    "cleanup_attempt_20260906_01_allowed": false,
+    "retry_until_favorable_allowed": false,
+    "localization_invocation_consumed": false,
+    "scientific_protocol_changed": false,
+    "frozen_thresholds_changed": false
+  },
+  "theorem_status": {
+    "p18_through_p21_results_affected": false,
+    "p26_terminal_result_affected": false,
+    "deleted_mapping_identity_established": false,
+    "cuda_repeatability_established": false,
+    "observer_noninterference_established": false,
+    "real_gradient_fidelity_established": false,
+    "native_cuda_shield_certified": false
+  },
+  "root_cause": {
+    "classification": "operator_transfer_bundle_omission",
+    "exact_failure": "The focused Git bundle advertised the P27 branch and p26-attempt02-acquisition-source tag but omitted refs/tags/p26-permission-safe-acquisition-checkpoint and its annotated tag object bacad707d3779bfa10957e18cb4c69b1a7f0cbce. The independent P27 reconstruction therefore failed its terminal-parent tag check before any container or CUDA action.",
+    "contract_or_localizer_defect_observed": false,
+    "cuda_or_backend_defect_observed": false,
+    "mapping_classification_observed": false
+  },
+  "route": {
+    "next_action": "freeze_this_terminal_pre_container_outcome_then_preregister_a_new_attempt_with_a_complete_hash_bound_bundle",
+    "new_attempt_required": true,
+    "new_attempt_identifier_must_be_preregistered": true,
+    "required_transfer_correction": "The next reviewed transfer must advertise and carry refs/tags/p26-permission-safe-acquisition-checkpoint, annotated object bacad707d3779bfa10957e18cb4c69b1a7f0cbce, and peeled commit 5429da23ff18888daa2312c530a4587780484d8b, and must verify them before creating the attempt root.",
+    "attempt_20260906_01_may_be_reused": false,
+    "attempt_20260906_01_may_be_cleaned_up": false,
+    "p28_created_by_this_outcome": false
+  }
+}

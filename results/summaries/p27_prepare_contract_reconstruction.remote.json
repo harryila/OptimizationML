@@ -1,0 +1,31 @@
+{
+  "canonical_sha256": "02000debea28f499ddeb3b8c6c8b0615786cd2e7858cc8a1605b04d638da4b7a",
+  "checks": {
+    "classification_routing_exact": true,
+    "forbidden_changes_exact": true,
+    "four_no_training_diagnostic_stages_exact": true,
+    "fresh_attempt_and_future_acquisition_bar_exact": true,
+    "fresh_container_and_locked_base_runtime_exact": true,
+    "host_orchestration_finalized_and_exact": true,
+    "identity_purpose_and_preexecution_boundary_exact": true,
+    "localization_source_finalized_and_exact": true,
+    "map_files_and_fd_probe_contract_exact": true,
+    "no_observed_result_or_training_fields_present": true,
+    "no_training_boundary_exact": true,
+    "one_shot_execution_order_exact": true,
+    "p27_specific_sanitizer_finalized_and_exact": true,
+    "sanitizer_only_correction_record_exact": true,
+    "sanitizer_terminal_and_corrected_bytes_exact": true,
+    "strict_canonical_json_and_closed_top_level": true,
+    "structured_mapping_schema_exact": true,
+    "terminal_p26_commit_tree_tag_and_bytes_exact": false,
+    "terminal_p26_failure_ingestion_finalized_and_exact": true,
+    "terminal_p26_semantics_and_zero_observations_reconstruct": true,
+    "terminal_parent_record_exact": true,
+    "two_phase_source_then_runtime_freeze_exact": true,
+    "unchanged_scientific_authorities_exact": true
+  },
+  "claim_boundary": "Independent static reconstruction of P27's pre-localization, no-training contract; not evidence that a P27 container was created, a mapping was observed, CUDA repeatability or fidelity was measured, a shield ran, or training occurred.",
+  "internally_consistent": false,
+  "schema_version": "passive-muon-p27-cuda-deleted-mapping-localization-reconstruction-v1"
+}
