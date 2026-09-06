@@ -77,13 +77,13 @@ def test_p26_contract_reconstructs_independently() -> None:
     result = _module().reconstruct(CONTRACT)
 
     assert result["internally_consistent"] is True
-    assert len(result["checks"]) == 16
+    assert len(result["checks"]) == 19
     assert all(result["checks"].values())
     assert result["canonical_sha256"] == hashlib.sha256(CONTRACT.read_bytes()).hexdigest()
     assert result["claim_boundary"] == (
-        "Independent static reconstruction of the frozen P26 permission-safe acquisition "
-        "contract; not evidence that a P26 runtime, bridge, CUDA trace, fidelity result, "
-        "shield execution, or training run occurred."
+        "Independent static reconstruction of the post-runtime, pre-diagnostic P26 "
+        "permission-safe acquisition contract; not evidence that the diagnostic, bridge, "
+        "CUDA trace, fidelity evaluation, shield execution, or training run occurred."
     )
 
 
@@ -105,6 +105,34 @@ def test_p25_parent_is_terminal_and_repository_authenticated() -> None:
     assert parent["trace_off_a_started"] is False
     assert parent["candidate_observations"] == 0
     assert outcome["terminal_policy"]["retry_until_favorable_allowed"] is False
+
+
+def test_control_history_and_prepared_runtime_git_facts_reconstruct() -> None:
+    module = _module()
+    result = module.reconstruct(CONTRACT)
+
+    assert result["checks"]["control_history_and_pre_runtime_source_freeze_exact"] is True
+    assert result["checks"]["prepared_runtime_record_exact_and_pre_scientific"] is True
+    assert result["checks"]["prepared_runtime_commit_tree_delta_and_blobs_exact"] is True
+    assert module.EXPECTED_CONTROL_HISTORY == {
+        "pre_runtime_source_freeze_commit": "bc2c84880a7e6f3e762d7a05dfbd5048772b2c69",
+        "pre_runtime_source_freeze_tree": "7332be7fdd15a1dff2374c10ae3c4555b7f60fec",
+        "terminal_parent": "f055405cc879ba0ac5afe26bc34a7336d5d2efbf",
+        "order_discrepancy_discovered_after_runtime": True,
+        "corrected_before_diagnostic": True,
+        "scientific_gates_changed": False,
+    }
+    assert module.EXPECTED_PREPARED_RUNTIME["runtime_review_commit"] == (
+        "ba93225f3ef1abf5dbde71950c1eaa2e384a5dc0"
+    )
+    assert module.EXPECTED_PREPARED_RUNTIME["runtime_review_parent"] == (
+        "e76ab62f92c95e6f0716cf2f1ed38a583cadfe56"
+    )
+    assert module.EXPECTED_PREPARED_RUNTIME["prepare_runtime_may_repeat"] is False
+    assert module.EXPECTED_PREPARED_RUNTIME["diagnostic_started"] is False
+    assert module.EXPECTED_PREPARED_RUNTIME["permission_bridge_started"] is False
+    assert module.EXPECTED_PREPARED_RUNTIME["trace_off_a_started"] is False
+    assert module.EXPECTED_PREPARED_RUNTIME["candidate_observations"] == 0
 
 
 def test_every_recorded_source_hash_matches_its_bytes() -> None:
@@ -133,6 +161,23 @@ def test_fresh_attempt_order_routing_and_forbidden_changes_are_exact() -> None:
     contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
 
     assert contract["fresh_attempt"] == module.EXPECTED_FRESH_ATTEMPT
+    assert contract["control_history"] == module.EXPECTED_CONTROL_HISTORY
+    assert contract["prepared_runtime"] == module.EXPECTED_PREPARED_RUNTIME
+    assert (
+        contract["frozen_p25_control"]["host_orchestrator"]
+        == (module.EXPECTED_FROZEN_P25_CONTROL["host_orchestrator"])
+    )
+    assert contract["frozen_p25_control"]["host_orchestrator"]["historically_allowed_phases"] == [
+        "prepare-runtime",
+        "run-diagnostic",
+    ]
+    assert contract["frozen_p25_control"]["host_orchestrator"]["currently_allowed_phases"] == [
+        "run-diagnostic"
+    ]
+    assert (
+        contract["frozen_p25_control"]["host_orchestrator"]["prepare_runtime_already_executed"]
+        is True
+    )
     assert contract["acquisition_order"] == module.EXPECTED_ACQUISITION_ORDER
     assert contract["terminal_routing"] == module.EXPECTED_TERMINAL_ROUTING
     assert contract["forbidden_changes"] == module.EXPECTED_FORBIDDEN_CHANGES
@@ -148,15 +193,25 @@ def test_fresh_attempt_order_routing_and_forbidden_changes_are_exact() -> None:
         "replace exact equality with allclose or another tolerance" in contract["forbidden_changes"]
     )
     assert "rerun until favorable" in contract["forbidden_changes"]
+    assert (
+        "run diagnostic or acquisition from the superseded pre-runtime P26 source-freeze commit"
+        in contract["forbidden_changes"]
+    )
 
 
-def test_contract_is_preexecution_only_and_has_no_forbidden_result_fields() -> None:
+def test_contract_is_pre_diagnostic_and_has_no_scientific_result_fields() -> None:
     result = _module().reconstruct(CONTRACT)
     contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
 
-    assert result["checks"]["no_execution_result_fields_present"] is True
-    assert contract["status"] == "frozen_pre_fresh_runtime_and_pre_acquisition"
-    assert "records no P26 runtime" in contract["claim_boundary"]
+    assert result["checks"]["no_scientific_result_fields_present"] is True
+    assert contract["status"] == "frozen_post_fresh_runtime_pre_diagnostic_and_pre_acquisition"
+    assert "records only one prepared and reviewed P26 runtime" in contract["claim_boundary"]
+    assert contract["prepared_runtime"]["prepared"] is True
+    assert contract["prepared_runtime"]["reviewed"] is True
+    assert contract["prepared_runtime"]["diagnostic_started"] is False
+    assert contract["prepared_runtime"]["permission_bridge_started"] is False
+    assert contract["prepared_runtime"]["trace_off_a_started"] is False
+    assert contract["prepared_runtime"]["candidate_observations"] == 0
     assert contract["permission_safe_bridge"]["before_trace_off_a"] is True
     assert contract["permission_safe_bridge"]["host_cmp_used"] is False
     assert contract["permission_safe_bridge"]["mutations_allowed"] == []

@@ -1,9 +1,17 @@
 {
-  "schema_version": "passive-muon-p26-permission-safe-acquisition-contract-v1",
-  "status": "frozen_pre_fresh_runtime_and_pre_acquisition",
+  "schema_version": "passive-muon-p26-permission-safe-acquisition-contract-v2",
+  "status": "frozen_post_fresh_runtime_pre_diagnostic_and_pre_acquisition",
   "branch": "p26-permission-safe-acquisition-bridge",
   "purpose": "Repair only P25's host read-permission boundary by authenticating both sanitized wrapper byte strings inside the logged root container verifier before the unchanged P23 acquisition.",
-  "claim_boundary": "This is a pre-execution control contract. It records no P26 runtime, bridge pass, CUDA gradient, exact repeatability, observer noninterference, candidate fidelity, shield execution, or training result.",
+  "claim_boundary": "This post-runtime control contract records only one prepared and reviewed P26 runtime. It records no corrected diagnostic, permission-safe bridge pass, CUDA gradient, exact repeatability, observer noninterference, candidate fidelity, shield execution, or training result.",
+  "control_history": {
+    "pre_runtime_source_freeze_commit": "bc2c84880a7e6f3e762d7a05dfbd5048772b2c69",
+    "pre_runtime_source_freeze_tree": "7332be7fdd15a1dff2374c10ae3c4555b7f60fec",
+    "terminal_parent": "f055405cc879ba0ac5afe26bc34a7336d5d2efbf",
+    "order_discrepancy_discovered_after_runtime": true,
+    "corrected_before_diagnostic": true,
+    "scientific_gates_changed": false
+  },
   "terminal_parent": {
     "branch": "p25-cuda-diagnostic-determinism-and-redaction",
     "outcome_path": "results/summaries/p25_cuda_diagnostic_outcome.json",
@@ -33,6 +41,25 @@
     "new_sanitized_bridge_required": true,
     "no_favorable_rerun": true
   },
+  "prepared_runtime": {
+    "attempt_id": "20260906-02",
+    "prepared": true,
+    "reviewed": true,
+    "prepare_runtime_may_repeat": false,
+    "runtime_review_commit": "ba93225f3ef1abf5dbde71950c1eaa2e384a5dc0",
+    "runtime_review_tree": "e7cdf25c86360ecdd42f2dc188ec416744321fe1",
+    "runtime_review_parent": "e76ab62f92c95e6f0716cf2f1ed38a583cadfe56",
+    "image_digest": "sha256:14dafde07ae578cc4725f452a51d4bc4c920b69f6af23125a72e27162e193ec0",
+    "container_id": "e6682d8f09b9dc4be342354d520a8f6f8766a8e232840d1d7beb5e00e1fced6c",
+    "container_init_pid": 39227,
+    "build_metadata_sha256": "13e0f05189321f86b4d8a41253eed97768bb1774ac7db64ad7c8b25e2f026091",
+    "runtime_lock_sha256": "04be2154daf5afbe97f7d2278ee7936da769d230663dfc6dfd50f0370a456755",
+    "host_attestation_sha256": "8caa4d761ca89741517e6292e174acd17948f4d312b8418d0056070d3247e046",
+    "diagnostic_started": false,
+    "permission_bridge_started": false,
+    "trace_off_a_started": false,
+    "candidate_observations": 0
+  },
   "frozen_p25_control": {
     "source_preregistration_commit": "e76ab62f92c95e6f0716cf2f1ed38a583cadfe56",
     "source_preregistration_tree": "4fe0f57d50a8fa136bb192ec3fbac95b1e746aa2",
@@ -43,10 +70,14 @@
     "host_orchestrator": {
       "path": "scripts/run_p25_cuda_attempt.sh",
       "sha256": "fce74a7e65d48cd6391d0986f60ce977cc3b36215908d80349d38f37d95fd441",
-      "allowed_phases": [
+      "historically_allowed_phases": [
         "prepare-runtime",
         "run-diagnostic"
       ],
+      "currently_allowed_phases": [
+        "run-diagnostic"
+      ],
+      "prepare_runtime_already_executed": true,
       "run_acquisition_allowed": false
     },
     "diagnostic": {
@@ -61,11 +92,11 @@
   "p26_control_sources": {
     "host_orchestrator": {
       "path": "scripts/run_p26_permission_safe_acquisition.sh",
-      "sha256": "4ecc2766ac429171a630266db014407e414ede3079179f1aa0868404a3285c3c"
+      "sha256": "66dd6889912e0abfc7782e790356222851cc753d237018c6263942d3a7a4290a"
     },
     "independent_reconstructor": {
       "path": "scripts/reconstruct_p26_permission_safe_acquisition.py",
-      "sha256": "b83d4d2e50a9dda0090c1389b09a7218bb24fd3dbb8ca6983fbeb44ef848fee4"
+      "sha256": "27b1b5f65438f58f8c7733115c4d01f7965a583e9e809e28571770886040b246"
     },
     "root_container_verifier": {
       "path": "scripts/verify_p26_permission_safe_bridge.py",
@@ -135,9 +166,11 @@
     "digest_must_differ_from_prior_attempt": false
   },
   "acquisition_order": [
-    "validate P26 control commit, tree, clean state, contract hash, orchestrator hash, verifier hash and independent reconstruction",
+    "validate post-runtime P26 control commit and tree, pre-runtime source-freeze ancestry, clean state, contract hash, orchestrator hash, reconstructor hash, verifier hash and independent reconstruction",
     "validate fresh P25 runtime and diagnostic bridge history",
-    "validate retained BuildKit image against the live fresh container",
+    "independently reconstruct the frozen P25 contract",
+    "validate reviewed BuildKit metadata, image digest, runtime lock and host attestation",
+    "validate the live reviewed container ID, PID, restart count and image",
     "reject any preexisting P23 acquisition artifact or process log",
     "run the logged root-container permission-safe bridge verifier",
     "trace_off_a",
@@ -164,6 +197,7 @@
     "change seed, data, capture schedule, model or optimizer",
     "chmod or chown retained native or sanitized evidence",
     "run trace_on before exact off-A/off-B repeatability",
-    "rerun until favorable"
+    "rerun until favorable",
+    "run diagnostic or acquisition from the superseded pre-runtime P26 source-freeze commit"
   ]
 }

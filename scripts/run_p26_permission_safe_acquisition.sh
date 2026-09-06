@@ -13,8 +13,18 @@ readonly P26_REQUIRED_ATTEMPT_ID=20260906-02
 readonly P26_P25_PREREG_COMMIT=e76ab62f92c95e6f0716cf2f1ed38a583cadfe56
 readonly P26_P25_PREREG_TREE=4fe0f57d50a8fa136bb192ec3fbac95b1e746aa2
 readonly P26_P25_CONTRACT_SHA256=51e1fc22f685cc904fcdfff2775cff4293fdaa67a6e048072ee4dc49777f34e2
+readonly P26_PRE_RUNTIME_SOURCE_FREEZE_COMMIT=bc2c84880a7e6f3e762d7a05dfbd5048772b2c69
+readonly P26_PRE_RUNTIME_SOURCE_FREEZE_TREE=7332be7fdd15a1dff2374c10ae3c4555b7f60fec
 readonly P26_TERMINAL_PARENT_COMMIT=f055405cc879ba0ac5afe26bc34a7336d5d2efbf
 readonly P26_REQUIRED_GPU_UUID=GPU-ee4c9bf9-42f5-7cdd-66d2-f638c2db549d
+readonly P26_REVIEWED_IMAGE_DIGEST=sha256:14dafde07ae578cc4725f452a51d4bc4c920b69f6af23125a72e27162e193ec0
+readonly P26_REVIEWED_CONTAINER_ID=e6682d8f09b9dc4be342354d520a8f6f8766a8e232840d1d7beb5e00e1fced6c
+readonly P26_REVIEWED_CONTAINER_INIT_PID=39227
+readonly P26_REVIEWED_BUILD_METADATA_SHA256=13e0f05189321f86b4d8a41253eed97768bb1774ac7db64ad7c8b25e2f026091
+readonly P26_REVIEWED_RUNTIME_LOCK_SHA256=04be2154daf5afbe97f7d2278ee7936da769d230663dfc6dfd50f0370a456755
+readonly P26_REVIEWED_HOST_ATTESTATION_SHA256=8caa4d761ca89741517e6292e174acd17948f4d312b8418d0056070d3247e046
+readonly P26_REVIEWED_RUNTIME_COMMIT=ba93225f3ef1abf5dbde71950c1eaa2e384a5dc0
+readonly P26_REVIEWED_RUNTIME_TREE=e7cdf25c86360ecdd42f2dc188ec416744321fe1
 
 die() {
   echo "P26 permission-safe acquisition blocked: $*" >&2
@@ -113,8 +123,16 @@ validate_control_checkout() {
   [[ "$(git -C "$P26_CONTROL_REPO" rev-parse HEAD^{tree})" == "$P26_CONTROL_TREE" ]] ||
     die "P26 control checkout tree differs"
   [[ "$(git -C "$P26_CONTROL_REPO" rev-list --parents -n 1 "$P26_CONTROL_HEAD")" == \
-      "$P26_CONTROL_HEAD $P26_TERMINAL_PARENT_COMMIT" ]] ||
-    die "P26 control commit must be one direct child of the terminal P25 outcome"
+      "$P26_CONTROL_HEAD $P26_PRE_RUNTIME_SOURCE_FREEZE_COMMIT" ]] ||
+    die "P26 post-runtime control commit must be one direct child of its pre-runtime freeze"
+  [[ "$(git -C "$P26_CONTROL_REPO" rev-parse \
+      "$P26_PRE_RUNTIME_SOURCE_FREEZE_COMMIT^{tree}")" == \
+      "$P26_PRE_RUNTIME_SOURCE_FREEZE_TREE" ]] ||
+    die "P26 pre-runtime source-freeze commit/tree binding differs"
+  [[ "$(git -C "$P26_CONTROL_REPO" rev-list --parents -n 1 \
+      "$P26_PRE_RUNTIME_SOURCE_FREEZE_COMMIT")" == \
+      "$P26_PRE_RUNTIME_SOURCE_FREEZE_COMMIT $P26_TERMINAL_PARENT_COMMIT" ]] ||
+    die "P26 pre-runtime source freeze must directly descend from the terminal P25 outcome"
   [[ -z "$(git -C "$P26_CONTROL_REPO" status --porcelain=v1 --untracked-files=all)" ]] ||
     die "P26 control checkout is dirty"
 
@@ -154,6 +172,10 @@ validate_control_checkout() {
 
 validate_fresh_attempt_history() {
   [[ -d "$P26_HOST_REPO/.git" ]] || die "fresh attempt checkout is absent"
+  [[ "$P26_DIAGNOSTIC_HEAD" == "$P26_REVIEWED_RUNTIME_COMMIT" ]] ||
+    die "fresh diagnostic commit differs from the reviewed runtime commit"
+  [[ "$P26_DIAGNOSTIC_TREE" == "$P26_REVIEWED_RUNTIME_TREE" ]] ||
+    die "fresh diagnostic tree differs from the reviewed runtime tree"
   [[ "$(git -C "$P26_HOST_REPO" rev-parse "$P26_P25_PREREG_COMMIT^{tree}")" == \
       "$P26_P25_PREREG_TREE" ]] ||
     die "frozen P25 preregistration commit/tree binding differs"
@@ -193,13 +215,38 @@ validate_fresh_attempt_history() {
 load_attempt_image() {
   local metadata="$P26_ATTEMPT_ROOT/p25-build-metadata.json"
   [[ -f "$metadata" ]] || die "fresh retained BuildKit metadata is absent"
+  [[ "$(sha256_file "$metadata")" == "$P26_REVIEWED_BUILD_METADATA_SHA256" ]] ||
+    die "fresh retained BuildKit metadata differs from the reviewed bytes"
   P26_IMAGE_DIGEST="$(python3 -c \
     'import json,pathlib,sys; value=json.loads(pathlib.Path(sys.argv[1]).read_text())["containerimage.digest"]; assert isinstance(value,str); print(value)' \
     "$metadata")"
   [[ "$P26_IMAGE_DIGEST" =~ ^sha256:[0-9a-f]{64}$ ]] ||
     die "invalid fresh retained BuildKit digest"
+  [[ "$P26_IMAGE_DIGEST" == "$P26_REVIEWED_IMAGE_DIGEST" ]] ||
+    die "fresh image digest differs from the post-runtime review"
   P26_IMAGE="${P26_IMAGE_TAG%:*}@$P26_IMAGE_DIGEST"
   export P26_IMAGE P26_IMAGE_DIGEST
+}
+
+validate_reviewed_runtime() {
+  local lock="$P26_HOST_REPO/experiments/training/p25_cuda_runtime_lock.json"
+  local attestation="$P26_HOST_REPO/experiments/training/p25_host_attestation.json"
+  [[ "$(sha256_file "$lock")" == "$P26_REVIEWED_RUNTIME_LOCK_SHA256" ]] ||
+    die "fresh runtime lock differs from the post-runtime review"
+  [[ "$(sha256_file "$attestation")" == "$P26_REVIEWED_HOST_ATTESTATION_SHA256" ]] ||
+    die "fresh host attestation differs from the post-runtime review"
+  [[ "$(sudo docker inspect --format '{{.State.Running}}' "$P26_CONTAINER")" == true ]] ||
+    die "fresh attested container is not running"
+  [[ "$(sudo docker inspect --format '{{.Id}}' "$P26_CONTAINER")" == \
+      "$P26_REVIEWED_CONTAINER_ID" ]] ||
+    die "fresh container ID differs from the post-runtime review"
+  [[ "$(sudo docker inspect --format '{{.State.Pid}}' "$P26_CONTAINER")" == \
+      "$P26_REVIEWED_CONTAINER_INIT_PID" ]] ||
+    die "fresh container init PID differs from the post-runtime review"
+  [[ "$(sudo docker inspect --format '{{.RestartCount}}' "$P26_CONTAINER")" == 0 ]] ||
+    die "fresh container has restarted"
+  [[ "$(sudo docker inspect --format '{{.Config.Image}}' "$P26_CONTAINER")" == \
+      "$P26_IMAGE" ]] || die "fresh container image differs from retained BuildKit digest"
 }
 
 assert_no_p23_acquisition_state() {
@@ -234,8 +281,6 @@ run_acquisition() {
   [[ -d "$P26_HOST_EVIDENCE" ]] || die "fresh attempt evidence directory is absent"
   validate_control_checkout
   validate_fresh_attempt_history
-  load_attempt_image
-  assert_no_p23_acquisition_state
 
   local p25_reconstruction_status=0
   run_logged p26-p25-contract-reconstruction python3 \
@@ -245,10 +290,9 @@ run_acquisition() {
   (( p25_reconstruction_status == 0 )) ||
     die "frozen P25 contract reconstruction failed with exit $p25_reconstruction_status"
 
-  [[ "$(sudo docker inspect --format '{{.State.Running}}' "$P26_CONTAINER")" == true ]] ||
-    die "fresh attested container is not running"
-  [[ "$(sudo docker inspect --format '{{.Config.Image}}' "$P26_CONTAINER")" == \
-      "$P26_IMAGE" ]] || die "fresh container image differs from retained BuildKit digest"
+  load_attempt_image
+  validate_reviewed_runtime
+  assert_no_p23_acquisition_state
 
   local verifier="$P26_CONTROL_REPO/scripts/verify_p26_permission_safe_bridge.py"
   local repository_wrapper=/workspace/OptimizationML/results/summaries/p25_executable_origin_diagnostic.sanitized.json

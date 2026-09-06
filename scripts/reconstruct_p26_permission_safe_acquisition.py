@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Independently reconstruct the frozen pre-execution P26 contract."""
+"""Independently reconstruct the post-runtime, pre-diagnostic P26 contract."""
 
 from __future__ import annotations
 
@@ -14,8 +14,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CANONICAL = ROOT / "experiments/training/p26_permission_safe_acquisition_contract.json"
-EXPECTED_SCHEMA = "passive-muon-p26-permission-safe-acquisition-contract-v1"
-EXPECTED_STATUS = "frozen_pre_fresh_runtime_and_pre_acquisition"
+EXPECTED_SCHEMA = "passive-muon-p26-permission-safe-acquisition-contract-v2"
+EXPECTED_STATUS = "frozen_post_fresh_runtime_pre_diagnostic_and_pre_acquisition"
 EXPECTED_BRANCH = "p26-permission-safe-acquisition-bridge"
 P25_OUTCOME_PATH = "results/summaries/p25_cuda_diagnostic_outcome.json"
 P25_OUTCOME_SHA256 = "d7a06f6f25bc4839db256720fe5c8ef3c99f6ea45b53b48da2135fcde76a423a"
@@ -31,8 +31,10 @@ EXPECTED_TOP_LEVEL_ORDER = [
     "branch",
     "purpose",
     "claim_boundary",
+    "control_history",
     "terminal_parent",
     "fresh_attempt",
+    "prepared_runtime",
     "frozen_p25_control",
     "p26_control_sources",
     "permission_safe_bridge",
@@ -48,10 +50,19 @@ EXPECTED_PURPOSE = (
     "P23 acquisition."
 )
 EXPECTED_CLAIM_BOUNDARY = (
-    "This is a pre-execution control contract. It records no P26 runtime, bridge pass, "
-    "CUDA gradient, exact repeatability, observer noninterference, candidate fidelity, "
-    "shield execution, or training result."
+    "This post-runtime control contract records only one prepared and reviewed P26 runtime. "
+    "It records no corrected diagnostic, permission-safe bridge pass, CUDA gradient, exact "
+    "repeatability, observer noninterference, candidate fidelity, shield execution, or "
+    "training result."
 )
+EXPECTED_CONTROL_HISTORY = {
+    "pre_runtime_source_freeze_commit": "bc2c84880a7e6f3e762d7a05dfbd5048772b2c69",
+    "pre_runtime_source_freeze_tree": "7332be7fdd15a1dff2374c10ae3c4555b7f60fec",
+    "terminal_parent": P25_OUTCOME_COMMIT,
+    "order_discrepancy_discovered_after_runtime": True,
+    "corrected_before_diagnostic": True,
+    "scientific_gates_changed": False,
+}
 EXPECTED_TERMINAL_PARENT = {
     "branch": "p25-cuda-diagnostic-determinism-and-redaction",
     "outcome_path": P25_OUTCOME_PATH,
@@ -81,6 +92,25 @@ EXPECTED_FRESH_ATTEMPT = {
     "new_sanitized_bridge_required": True,
     "no_favorable_rerun": True,
 }
+EXPECTED_PREPARED_RUNTIME = {
+    "attempt_id": "20260906-02",
+    "prepared": True,
+    "reviewed": True,
+    "prepare_runtime_may_repeat": False,
+    "runtime_review_commit": "ba93225f3ef1abf5dbde71950c1eaa2e384a5dc0",
+    "runtime_review_tree": "e7cdf25c86360ecdd42f2dc188ec416744321fe1",
+    "runtime_review_parent": P25_PREREG_COMMIT,
+    "image_digest": ("sha256:14dafde07ae578cc4725f452a51d4bc4c920b69f6af23125a72e27162e193ec0"),
+    "container_id": "e6682d8f09b9dc4be342354d520a8f6f8766a8e232840d1d7beb5e00e1fced6c",
+    "container_init_pid": 39227,
+    "build_metadata_sha256": ("13e0f05189321f86b4d8a41253eed97768bb1774ac7db64ad7c8b25e2f026091"),
+    "runtime_lock_sha256": ("04be2154daf5afbe97f7d2278ee7936da769d230663dfc6dfd50f0370a456755"),
+    "host_attestation_sha256": ("8caa4d761ca89741517e6292e174acd17948f4d312b8418d0056070d3247e046"),
+    "diagnostic_started": False,
+    "permission_bridge_started": False,
+    "trace_off_a_started": False,
+    "candidate_observations": 0,
+}
 EXPECTED_FROZEN_P25_CONTROL = {
     "source_preregistration_commit": P25_PREREG_COMMIT,
     "source_preregistration_tree": P25_PREREG_TREE,
@@ -91,7 +121,9 @@ EXPECTED_FROZEN_P25_CONTROL = {
     "host_orchestrator": {
         "path": "scripts/run_p25_cuda_attempt.sh",
         "sha256": "fce74a7e65d48cd6391d0986f60ce977cc3b36215908d80349d38f37d95fd441",
-        "allowed_phases": ["prepare-runtime", "run-diagnostic"],
+        "historically_allowed_phases": ["prepare-runtime", "run-diagnostic"],
+        "currently_allowed_phases": ["run-diagnostic"],
+        "prepare_runtime_already_executed": True,
         "run_acquisition_allowed": False,
     },
     "diagnostic": {
@@ -173,11 +205,14 @@ EXPECTED_RUNTIME = {
 }
 EXPECTED_ACQUISITION_ORDER = [
     (
-        "validate P26 control commit, tree, clean state, contract hash, orchestrator hash, "
-        "verifier hash and independent reconstruction"
+        "validate post-runtime P26 control commit and tree, pre-runtime source-freeze ancestry, "
+        "clean state, contract hash, orchestrator hash, reconstructor hash, verifier hash and "
+        "independent reconstruction"
     ),
     "validate fresh P25 runtime and diagnostic bridge history",
-    "validate retained BuildKit image against the live fresh container",
+    "independently reconstruct the frozen P25 contract",
+    "validate reviewed BuildKit metadata, image digest, runtime lock and host attestation",
+    "validate the live reviewed container ID, PID, restart count and image",
     "reject any preexisting P23 acquisition artifact or process log",
     "run the logged root-container permission-safe bridge verifier",
     "trace_off_a",
@@ -207,13 +242,12 @@ EXPECTED_FORBIDDEN_CHANGES = [
     "chmod or chown retained native or sanitized evidence",
     "run trace_on before exact off-A/off-B repeatability",
     "rerun until favorable",
+    "run diagnostic or acquisition from the superseded pre-runtime P26 source-freeze commit",
 ]
 FORBIDDEN_RESULT_KEYS = {
     "result",
     "results",
     "outcome",
-    "runtime_lock",
-    "host_attestation",
     "bridge_transcript",
     "trace_off_a",
     "trace_off_b",
@@ -358,7 +392,7 @@ def _all_mapping_keys(value: object) -> set[str]:
 
 
 def reconstruct(canonical: Path = DEFAULT_CANONICAL) -> dict[str, object]:
-    """Reconstruct P26's exact pre-execution claims from independent constants."""
+    """Reconstruct P26's post-runtime, pre-diagnostic claims from independent constants."""
 
     try:
         canonical_bytes = canonical.read_bytes()
@@ -367,8 +401,10 @@ def reconstruct(canonical: Path = DEFAULT_CANONICAL) -> dict[str, object]:
         canonical_bytes = b""
         raw = None
     contract = _mapping(raw)
+    control_history = _mapping(contract.get("control_history"))
     terminal_parent = _mapping(contract.get("terminal_parent"))
     fresh_attempt = _mapping(contract.get("fresh_attempt"))
+    prepared_runtime = _mapping(contract.get("prepared_runtime"))
     frozen_p25 = _mapping(contract.get("frozen_p25_control"))
     p26_sources = _mapping(contract.get("p26_control_sources"))
     bridge = _mapping(contract.get("permission_safe_bridge"))
@@ -441,6 +477,21 @@ def reconstruct(canonical: Path = DEFAULT_CANONICAL) -> dict[str, object]:
     p25_current = _file_bytes(P25_OUTCOME_PATH)
     p25_tree = _git_text("rev-parse", f"{P25_OUTCOME_COMMIT}^{{tree}}")
     p25_prereg_tree = _git_text("rev-parse", f"{P25_PREREG_COMMIT}^{{tree}}")
+    source_freeze_commit = str(EXPECTED_CONTROL_HISTORY["pre_runtime_source_freeze_commit"])
+    source_freeze_tree = _git_text("rev-parse", f"{source_freeze_commit}^{{tree}}")
+    source_freeze_parents = _git_text("show", "-s", "--format=%P", source_freeze_commit)
+    runtime_review_commit = str(EXPECTED_PREPARED_RUNTIME["runtime_review_commit"])
+    runtime_review_tree = _git_text("rev-parse", f"{runtime_review_commit}^{{tree}}")
+    runtime_review_parents = _git_text("show", "-s", "--format=%P", runtime_review_commit)
+    runtime_review_delta = _git_text(
+        "diff", "--name-status", P25_PREREG_COMMIT, runtime_review_commit
+    )
+    runtime_lock_blob = _git_blob(
+        runtime_review_commit, "experiments/training/p25_cuda_runtime_lock.json"
+    )
+    host_attestation_blob = _git_blob(
+        runtime_review_commit, "experiments/training/p25_host_attestation.json"
+    )
 
     checks = {
         "strict_canonical_json_and_closed_top_level": (
@@ -457,6 +508,11 @@ def reconstruct(canonical: Path = DEFAULT_CANONICAL) -> dict[str, object]:
             and contract.get("claim_boundary") == EXPECTED_CLAIM_BOUNDARY
         ),
         "p25_terminal_parent_record_exact": _exact(dict(terminal_parent), EXPECTED_TERMINAL_PARENT),
+        "control_history_and_pre_runtime_source_freeze_exact": (
+            _exact(dict(control_history), EXPECTED_CONTROL_HISTORY)
+            and source_freeze_tree == EXPECTED_CONTROL_HISTORY["pre_runtime_source_freeze_tree"]
+            and source_freeze_parents == P25_OUTCOME_COMMIT
+        ),
         "p25_outcome_commit_tree_and_bytes_exact": (
             p25_tree == P25_OUTCOME_TREE
             and p25_outcome_blob is not None
@@ -477,6 +533,21 @@ def reconstruct(canonical: Path = DEFAULT_CANONICAL) -> dict[str, object]:
         ),
         "fresh_attempt_and_no_favorable_rerun_exact": _exact(
             dict(fresh_attempt), EXPECTED_FRESH_ATTEMPT
+        ),
+        "prepared_runtime_record_exact_and_pre_scientific": _exact(
+            dict(prepared_runtime), EXPECTED_PREPARED_RUNTIME
+        ),
+        "prepared_runtime_commit_tree_delta_and_blobs_exact": (
+            runtime_review_tree == EXPECTED_PREPARED_RUNTIME["runtime_review_tree"]
+            and runtime_review_parents == P25_PREREG_COMMIT
+            and runtime_review_delta
+            == "A\texperiments/training/p25_cuda_runtime_lock.json\n"
+            "A\texperiments/training/p25_host_attestation.json"
+            and runtime_lock_blob is not None
+            and _sha256(runtime_lock_blob) == EXPECTED_PREPARED_RUNTIME["runtime_lock_sha256"]
+            and host_attestation_blob is not None
+            and _sha256(host_attestation_blob)
+            == EXPECTED_PREPARED_RUNTIME["host_attestation_sha256"]
         ),
         "frozen_p25_preregistration_exact": (
             frozen_p25.get("source_preregistration_commit") == P25_PREREG_COMMIT
@@ -502,7 +573,7 @@ def reconstruct(canonical: Path = DEFAULT_CANONICAL) -> dict[str, object]:
         "forbidden_changes_exact": _exact(
             contract.get("forbidden_changes"), EXPECTED_FORBIDDEN_CHANGES
         ),
-        "no_execution_result_fields_present": (
+        "no_scientific_result_fields_present": (
             FORBIDDEN_RESULT_KEYS.isdisjoint(_all_mapping_keys(raw))
         ),
     }
@@ -512,9 +583,9 @@ def reconstruct(canonical: Path = DEFAULT_CANONICAL) -> dict[str, object]:
         "checks": checks,
         "internally_consistent": all(checks.values()),
         "claim_boundary": (
-            "Independent static reconstruction of the frozen P26 permission-safe acquisition "
-            "contract; not evidence that a P26 runtime, bridge, CUDA trace, fidelity result, "
-            "shield execution, or training run occurred."
+            "Independent static reconstruction of the post-runtime, pre-diagnostic P26 "
+            "permission-safe acquisition contract; not evidence that the diagnostic, bridge, "
+            "CUDA trace, fidelity evaluation, shield execution, or training run occurred."
         ),
     }
 
