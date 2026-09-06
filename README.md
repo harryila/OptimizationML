@@ -809,6 +809,20 @@ P24 must immutably contain or eliminate that generated source, then build and
 refreeze a new image before another acquisition; allowlisting writable `/tmp`
 is not the selected remedy.
 
+P24's first retained A100 baseline diagnostic now reproduces the exact
+`2,355`-byte generated module on writable `/tmp`, closing P23's causal
+localization gap for the minimal optimizer-construction trigger. It does not
+advance to the remediation build: the diagnostic fails one of 36 checks
+because its live Torch determinism state differs from the committed lock. Its
+offline sanitizer separately fails closed because absolute `/tmp` mapping
+keys are copied rather than transformed, so no sanitized full manifest exists.
+No CUDA gradient, repeatability, observer, candidate, fidelity, shield, or
+training result was produced. See the scoped
+[`P24 result`](results/summaries/P24_CUDA_EXECUTABLE_ORIGIN_HARDENING_RESULTS.md)
+and compact
+[`outcome record`](results/summaries/p24_cuda_executable_origin_outcome.json).
+The exact next route is `p25-cuda-diagnostic-determinism-and-redaction`.
+
 The repair claim is intentionally scoped. A constant `rho` is the exact minimal
 linear shift for a **specified point, pair, sample set, or domain with a finite
 certified deficit**. For exact scale-invariant normalization on every nonzero
@@ -876,6 +890,7 @@ uv run --locked python scripts/certify_outer_loop_composition.py \
 uv run --locked python scripts/reconstruct_outer_loop_composition.py \
   --canonical results/summaries/certified_outer_loop_composition_certificate.json \
   --require-canonical
+uv run --locked python scripts/reconstruct_p24_cuda_executable_origin_outcome.py
 uv run --locked pytest
 ```
 
@@ -985,7 +1000,10 @@ This repository stays focused on twenty-six technical goals:
     mechanically gated 1,152-observation trace-on acquisition; its first
     pinned-A100 attempt is operator-recorded as stopping before step zero
     on a PyTorch-generated executable source under writable `/tmp`, so no CUDA
-    fidelity result exists.
+    fidelity result exists; P24 subsequently reproduces that exact source in a
+    native baseline diagnostic, then stops on an exact Torch-determinism
+    mismatch and a separate fail-closed sanitizer key-redaction defect before
+    any image build or gradient acquisition.
 
 P7 is the submission cutoff and broadest robustness theorem; P6 is its
 zero-disturbance smooth-PL corollary. P8 and P9 instantiate one P7 disturbance
@@ -1041,7 +1059,11 @@ operator-recorded as failing the initialized executable-origin check before
 step zero after reporting a generated-module filename under writable `/tmp`.
 Thus P23 has a qualified operator-recorded CUDA provenance stop, not a
 repeatability or fidelity acquisition. P24 must reproduce and localize the
-implicated initialization path with native, hash-bound provenance.
+implicated initialization path with native, hash-bound provenance. Its first
+retained native diagnostic does reproduce the exact source, but P24 terminates
+before remediation on a live-versus-lock Torch-determinism mismatch and an
+independent sanitizer mapping-key defect. P25 must resolve and freeze both
+pre-acquisition conditions before CUDA acquisition resumes.
 Production-gradient fidelity evidence, native
 accelerator/distributed parity, generic stochastic-gradient guarantees,
 throughput, and formal circuit ports remain open.

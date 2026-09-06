@@ -347,4 +347,6 @@ def test_p24_reconstruction_cli_and_dedicated_workflow() -> None:
     assert "scripts/reconstruct_p24_cuda_executable_origin.py" in workflow
     assert "tests/test_p24_cuda_executable_origin_hardening.py" in workflow
     assert "tests/test_p24_runtime_recipe.py" in workflow
-    assert "supplies no native diagnostic result" in workflow
+    assert "does not authenticate the external native bytes" in workflow
+    assert "sanitized full diagnostic" in workflow
+    assert "CUDA gradient acquisition" in workflow

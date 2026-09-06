@@ -1555,6 +1555,45 @@ streams were transcribed rather than hash-bound at execution time.
 Independently validate the retained commit/runtime bindings with
 `scripts/reconstruct_p23_cuda_shadow_trace_outcome.py`.
 
+## 30. P24 native origin localization and pre-acquisition stop
+
+P24's first retained A100 baseline diagnostic is a native, hash-bound result.
+It ran from clean commit `9003130`, tree
+`58379372d752b2c17b6db7e1f690f899c2051545`, under the frozen contract with
+SHA-256
+`bdb2d3aad7d70d0ed5c6dddcd03642c9384d8b67d6f5ca507987d28e122dd446`.
+The external native artifact has SHA-256
+`ce44c53c9f274cef3eda7b3adea755ce6b1313773c8dfe00fc9f194b74fb2bd2`
+and byte count `3,760,729`.
+
+The diagnostic reproduced the exact `2,355`-byte generated module with
+SHA-256
+`8205b16956fb264841ecd8644784a0d157f87df79b17c16825dc1163433ce5d8`
+on writable `/tmp`. This closes the causal-localization gap for the minimal
+optimizer-construction trigger, but it is not a CUDA gradient result. The
+diagnostic failed one of 36 exact checks because live Torch determinism state
+did not equal the committed runtime lock: deterministic algorithms, debug
+mode, interop threads, cuDNN determinism, and FP16/BF16 reduced-precision
+reduction all differed. It exited `1`.
+
+The offline sanitizer then exited `2` and wrote no sanitized artifact. Its
+frozen recursion sanitized mapping values but copied keys unchanged; `/tmp`
+therefore remained as a tmpfs-contract mapping key and tripped the final
+declared-root scan. No remediation image, replacement runtime, trace-off run,
+repeatability comparison, observer run, candidate observation, fidelity
+aggregate, or training followed.
+
+The terminal route is `p25-cuda-diagnostic-determinism-and-redaction`. It must
+freeze both corrections before another diagnostic attempt, without weakening
+the P23 fidelity gates or rerunning P24 until favorable. The P18--P21 theorem
+chain is unaffected.
+
+See `P24_CUDA_EXECUTABLE_ORIGIN_HARDENING_RESULTS.md` and the compact
+`p24_cuda_executable_origin_outcome.json`. The latter binds the external
+native bytes but is not the absent sanitized full manifest. Independently
+reconstruct its static relations and the sanitizer source defect with
+`scripts/reconstruct_p24_cuda_executable_origin_outcome.py`.
+
 ## Reproduce
 
 ```bash
@@ -1650,6 +1689,7 @@ uv run --locked python scripts/build_p22_repeatability_failure_evidence.py \
   --native-root /path/to/p22-native-evidence \
   --output-root results/summaries
 uv run --locked python scripts/reconstruct_p23_cuda_shadow_trace_outcome.py
+uv run --locked python scripts/reconstruct_p24_cuda_executable_origin_outcome.py
 uv run --locked python experiments/matrices/run_deficit_audit.py
 uv run --locked python experiments/quadratics/run_lr_sweep.py
 uv run --locked python experiments/quadratics/run_horizon_check.py

@@ -979,6 +979,19 @@ not be reused after changing the executable-origin behavior.
 
 ### P24 executable-origin image and diagnostic order
 
+**Outcome status (mutable; the frozen runbook below is unchanged):** the first
+retained A100 baseline diagnostic reproduced the exact generated module on
+writable `/tmp`, but failed the exact live-Torch-versus-runtime-lock
+determinism check. The offline sanitizer then failed closed because it
+transformed mapping values but not the absolute `/tmp` keys in retained tmpfs
+contract maps. Consequently no sanitized full manifest, remediation image,
+replacement runtime, gradient acquisition, or fidelity result exists. The
+compact terminal record is
+`../results/summaries/p24_cuda_executable_origin_outcome.json`; the next route
+is `p25-cuda-diagnostic-determinism-and-redaction`. The commands below remain
+the historical preregistered order and must not be resumed after the retained
+failure as though P24 had passed.
+
 P24 freezes this order: baseline diagnostic, image build, replacement launch
 and lock, then remediated diagnostic. Run the baseline in the still-locked P23
 container from the clean, reviewed P24 contract commit. The five expected

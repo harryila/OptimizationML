@@ -1,0 +1,126 @@
+{
+  "schema_version": "passive-muon-p24-cuda-executable-origin-outcome-v1",
+  "status": "blocked_baseline_diagnostic_determinism_and_redaction",
+  "evidence_kind": "operator_recorded_compact_outcome_bound_to_external_native_bytes",
+  "claim_boundary": "This compact record binds the first retained A100 baseline diagnostic by SHA-256 and byte count, but the 3,760,729 native bytes remain external and no sanitized full manifest exists. The native artifact is therefore not independently reconstructible from this repository. No image build, replacement runtime, CUDA gradient acquisition, repeatability comparison, observer comparison, candidate observation, fidelity statistic, shielded training, or training-quality result was produced.",
+  "static_contract": {
+    "repository_head": "9003130ca31085f555ff144216a599442cbdf3ca",
+    "repository_tree": "58379372d752b2c17b6db7e1f690f899c2051545",
+    "contract_path": "experiments/training/p24_cuda_executable_origin_contract.json",
+    "contract_schema_version": "passive-muon-p24-cuda-executable-origin-contract-v1",
+    "contract_status": "frozen_pre_remediation_build_and_pre_acquisition",
+    "contract_sha256": "bdb2d3aad7d70d0ed5c6dddcd03642c9384d8b67d6f5ca507987d28e122dd446",
+    "contract_or_execution_source_modified_by_outcome": false
+  },
+  "baseline_diagnostic": {
+    "mode": "baseline",
+    "schema_version": "passive-muon-p24-executable-origin-diagnostic-v1",
+    "status": "fails",
+    "passes": false,
+    "exit_code": 1,
+    "native_artifact": {
+      "retention": "external_native_bytes_not_committed",
+      "file_name": "p24-baseline-executable-origin.native.json",
+      "sha256": "ce44c53c9f274cef3eda7b3adea755ce6b1313773c8dfe00fc9f194b74fb2bd2",
+      "byte_count": 3760729
+    },
+    "checks": {
+      "total": 36,
+      "true": 35,
+      "false": 1,
+      "sole_false_check": "torch_determinism_matches_lock"
+    },
+    "torch_determinism_mismatches": {
+      "deterministic_algorithms": {
+        "observed_live": false,
+        "committed_lock": true
+      },
+      "deterministic_debug_mode": {
+        "observed_live": 0,
+        "committed_lock": "error"
+      },
+      "interop_threads": {
+        "observed_live": 30,
+        "committed_lock": 1
+      },
+      "cudnn_deterministic": {
+        "observed_live": false,
+        "committed_lock": true
+      },
+      "fp16_reduced_precision_reduction": {
+        "observed_live": true,
+        "committed_lock": false
+      },
+      "bf16_reduced_precision_reduction": {
+        "observed_live": true,
+        "committed_lock": false
+      }
+    },
+    "executable_origin_observation": {
+      "p23_hypothesis_reproduced": true,
+      "generated_module_sha256": "8205b16956fb264841ecd8644784a0d157f87df79b17c16825dc1163433ce5d8",
+      "generated_module_byte_count": 2355,
+      "effective_mount_point": "/tmp",
+      "effective_filesystem_type": "tmpfs",
+      "effective_mount_writable": true,
+      "qualification": "This localizes the generated executable source observed by the minimal optimizer-construction diagnostic; it does not exercise a model, data, CUDA forward/backward pass, Muon candidate, optimizer step, or fidelity gate."
+    },
+    "client_streams": {
+      "stdout": {
+        "sha256": "b48a4747da0280e8ff2d6010b481a4b92045548eeb0a4e4408221231ff8478da",
+        "byte_count": 191
+      },
+      "stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "byte_count": 0
+      }
+    }
+  },
+  "sanitization": {
+    "status": "blocked_no_output",
+    "exit_code": 2,
+    "sanitized_artifact_created": false,
+    "stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byte_count": 0
+    },
+    "stderr": {
+      "text": "P24 diagnostic sanitization blocked: redacted diagnostic retains a declared native path\n",
+      "sha256": "3939a4478d2bd761c810732b01d9f3af9dd31b09c31efe376eece88ac279034f",
+      "byte_count": 88
+    },
+    "source_level_root_cause": {
+      "classification": "absolute_mapping_keys_not_transformed",
+      "detail": "The frozen sanitizer recursively transforms mapping values but copies mapping keys with str(key). The retained runtime and attestation content use /tmp as a tmpfs-contract mapping key, so the final declared-root scan fails closed.",
+      "native_payload_required_to_reconstruct_source_bug": false
+    }
+  },
+  "gate_status": {
+    "baseline_diagnostic": "failed_exact_torch_determinism_match",
+    "baseline_sanitization": "failed_closed_no_sanitized_output",
+    "remediation_image_build": "not_run",
+    "replacement_container": "not_run",
+    "replacement_runtime_freeze": "not_run",
+    "remediated_diagnostic": "not_run",
+    "trace_off_a": "not_run",
+    "trace_off_b": "not_run",
+    "exact_repeatability": "not_run",
+    "trace_on": "not_run",
+    "observer_noninterference": "not_run",
+    "candidate_observations": 0,
+    "fidelity_aggregate": "not_run",
+    "training": "not_run"
+  },
+  "theorem_status": {
+    "p18_through_p21_results_affected": false,
+    "cuda_repeatability_established": false,
+    "real_gradient_fidelity_established": false,
+    "native_cuda_shield_certified": false
+  },
+  "route": {
+    "next_branch": "p25-cuda-diagnostic-determinism-and-redaction",
+    "reason": "The first retained P24 baseline diagnostic reproduced the writable-/tmp generated module but failed the exact locked Torch determinism check; its sanitizer then failed closed because absolute path mapping keys were not transformed. Both diagnostic preconditions must be repaired and frozen before any image build or CUDA gradient acquisition.",
+    "frozen_p23_fidelity_thresholds_may_change": false,
+    "p24_may_be_rerun_until_favorable": false
+  }
+}

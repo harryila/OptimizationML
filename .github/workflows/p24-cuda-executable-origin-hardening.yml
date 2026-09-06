@@ -45,10 +45,16 @@ jobs:
           python
           scripts/reconstruct_p24_cuda_executable_origin.py
 
+      - name: Reconstruct the P24 terminal outcome boundary
+        run: >-
+          python
+          scripts/reconstruct_p24_cuda_executable_origin_outcome.py
+
       - name: Run P24 contract, image-design, diagnostic, and sanitizer fixtures
         run: >-
           uv run --locked pytest -q
           tests/test_p24_cuda_executable_origin_hardening.py
+          tests/test_p24_cuda_executable_origin_outcome.py
           tests/test_p24_executable_origin_diagnostic.py
           tests/test_p24_runtime_recipe.py
           tests/test_p23_runtime_recipe.py
@@ -63,9 +69,10 @@ jobs:
 
       - name: State the evidence boundary
         run: >-
-          echo "This CPU job validates only the frozen P24 image-remediation
-          design, inherited P23 gates, native-diagnostic and offline-sanitizer
-          schemas, and negative controls.
-          It supplies no native diagnostic result, CUDA acquisition,
-          real-gradient fidelity evidence, or
-          training evidence."
+          echo "This CPU job validates the frozen P24 image-remediation
+          design, inherited P23 gates, schemas, negative controls, and the
+          static/internal consistency of the compact operator-recorded stop.
+          It does not authenticate the external native bytes and supplies no
+          sanitized full diagnostic, CUDA gradient acquisition,
+          repeatability, real-gradient fidelity, observer, or training
+          evidence."
