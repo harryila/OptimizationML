@@ -85,12 +85,15 @@ Reviewer notes:
       `nvidia-smi` identity; do not treat the long-lived shell PID 1 as an
       evidence process.
 - [ ] Re-obtain the running-container init PID from the retained Docker
-      `State.Pid`, rehash the retained host
-      `/proc/<State.Pid>/mountinfo` bytes, and confirm every freeze,
-      acquisition, verifier, and aggregation process reports that exact digest
-      for its live `/proc/self/mountinfo`. Confirm the live root and declared
-      source/data/evidence paths have their required read-only or read-write
-      modes independently of Docker's host inspection metadata.
+      `State.Pid`; independently repeat the host-side `/usr/bin/nsenter` into
+      that PID's mount, PID, and cgroup namespaces; rehash the resulting
+      `/proc/self/mountinfo` bytes; and confirm every freeze, acquisition,
+      verifier, and aggregation process reports that exact digest for its live
+      `/proc/self/mountinfo`. Do not substitute a direct host read of
+      `/proc/<State.Pid>/mountinfo`, whose private-cgroup root presentation may
+      differ. Confirm the live root and declared source/data/evidence paths
+      have their required read-only or read-write modes independently of
+      Docker's host inspection metadata.
 - [ ] Confirm the math SDPA backend alone is enabled and no flash,
       memory-efficient, or cuDNN SDPA path is admissible.
 - [ ] Confirm every frozen deterministic environment and Torch setting was

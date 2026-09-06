@@ -453,8 +453,8 @@
       inspection of one exact full-GPU `DeviceRequests` entry and matching
       UUID-valued `Config.Env` visibility entries to the live one-device CUDA
       and `nvidia-smi` identities; ordinals, MIG, `all`, and multiple requests
-      fail closed. Bind a retained host
-      `/proc/<State.Pid>/mountinfo` snapshot to
+      fail closed. Bind a retained host-side `nsenter` snapshot of the
+      selected container's mount, PID, and cgroup namespaces to
       `/proc/self/mountinfo` in every live evidence process. No repository
       `.venv` or runtime dependency sync is allowed.
       Also populate the separate sanitized host-attestation artifact;

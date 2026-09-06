@@ -753,9 +753,10 @@ identified non-MIG BF16 NVIDIA GPU, math-only SDPA, the complete deterministic
 runtime settings, a clean contemporaneous repository snapshot, exact
 file-backed loaded-module and regular `/proc/self/maps` closures at
 initialization and completion, and field-by-field reconstruction of run
-identity. A retained host `/proc/<State.Pid>/mountinfo` snapshot must also
-match `/proc/self/mountinfo` in every live evidence process, independently
-binding the process-visible mount modes. The
+identity. A retained host-side `nsenter` snapshot of the selected container's
+mount, PID, and cgroup namespaces must also match `/proc/self/mountinfo` in
+every live evidence process byte for byte, independently binding the
+process-visible mount modes without relying on `docker exec`. The
 host inspection must also contain one exact singleton full-GPU Docker
 `DeviceRequests` record and matching UUID-valued visibility configuration;
 every fresh evidence role cross-checks that request against one live CUDA

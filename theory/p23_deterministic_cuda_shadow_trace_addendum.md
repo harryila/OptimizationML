@@ -149,16 +149,20 @@ The supported `freeze-runtime` command in
 they are not hand-authored. It consumes one structured host `docker image
 inspect` object whose `RepoDigests` contains the exact requested image, one
 `docker inspect` object for the actual running container, an exact host-side
-`/proc/<State.Pid>/mountinfo` snapshot for the init PID named by that object,
-and a single-row CSV from the frozen seven-field `nvidia-smi` query (including
-`mig.mode.current`).
+`nsenter` snapshot obtained by entering the mount, PID, and cgroup namespaces
+of the init PID named by that object and reading `/proc/self/mountinfo`, and a
+single-row CSV from the frozen seven-field `nvidia-smi` query (including
+`mig.mode.current`). A direct host read of `/proc/<State.Pid>/mountinfo` is not
+substitutable because Linux may render the same private cgroup mount root
+differently across the host and container cgroup namespace views.
 It requires the running record's image ID to equal the inspected image ID, its
 launch reference to equal the pinned digest reference, its default hostname to
 match the live process, its network mode to equal `none`, and its mount
 destinations/types/read-only modes to
-equal the frozen ten-entry allowlist. The host-captured mountinfo digest must
-also match `/proc/self/mountinfo` in every evidence process, so Docker's host
-metadata is not the sole evidence for the read-only/read-write view. It also
+equal the frozen ten-entry allowlist. The host-side namespace-entered mountinfo
+digest must also match `/proc/self/mountinfo` in every evidence process byte
+for byte, so Docker's host metadata is not the sole evidence for the
+read-only/read-write view. It also
 requires `ReadonlyRootfs=true`
 and the exact `/tmp` tmpfs map. It also requires the exact singleton full-GPU
 Docker `DeviceRequests`/`Config.Env` binding described above, records that

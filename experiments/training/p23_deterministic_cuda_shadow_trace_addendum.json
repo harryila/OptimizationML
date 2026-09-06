@@ -41,7 +41,7 @@
     "container_attestation_scope": "procedural_host_inspection_not_cryptographic_remote_attestation",
     "default_container_hostname": "the live process hostname must equal the first 12 hexadecimal characters of the inspected 64-hex container ID",
     "network_mode": "none",
-    "mount_contract": "the inspected container must use network mode none, a read-only root filesystem, the exact one-entry /tmp tmpfs map, exactly the ten predeclared bind destinations and read-only/read-write modes, and a host-captured /proc/<State.Pid>/mountinfo snapshot that matches /proc/self/mountinfo in every live evidence process",
+    "mount_contract": "the inspected container must use network mode none, a read-only root filesystem, the exact one-entry /tmp tmpfs map, exactly the ten predeclared bind destinations and read-only/read-write modes, and a host-side nsenter snapshot of the selected container mount, PID, and cgroup namespaces that matches /proc/self/mountinfo in every live evidence process byte for byte",
     "runtime_lock": "a sanitized host-generated lock must be committed before acquisition and must match every run exactly",
     "python_executable": "/opt/p23-venv/bin/python",
     "python_executable_sha256": "required in the populated runtime lock",

@@ -627,16 +627,22 @@ if ! [[ "$P23_CONTAINER_INIT_PID" =~ ^[1-9][0-9]*$ ]]; then
   echo "invalid running-container State.Pid: $P23_CONTAINER_INIT_PID" >&2
   exit 1
 fi
-cat "/proc/$P23_CONTAINER_INIT_PID/mountinfo" \
+/usr/bin/nsenter --target "$P23_CONTAINER_INIT_PID" \
+  --mount --pid --cgroup -- \
+  /usr/bin/cat /proc/self/mountinfo \
   > /secure/p23-running-mountinfo.txt
 ```
 
 The `docker inspect` command targets the actual running container, not the
-image or an unrelated container.  The host obtains the same container's init
-PID from Docker's `State.Pid` and retains that process's mount table directly
-from host `/proc`; it does not obtain this evidence through `docker exec`.
-The pre-mounted read-only file reflects the host-side byte update without
-granting the container write access.
+image or an unrelated container. The host obtains the same container's init
+PID from Docker's `State.Pid`, then uses image-external `/usr/bin/nsenter` to
+enter exactly that process's mount, PID, and cgroup namespaces before reading
+`/proc/self/mountinfo`; it does not obtain this evidence through `docker exec`.
+Entering the cgroup namespace is necessary because a direct host read of
+`/proc/<State.Pid>/mountinfo` can render the same private cgroup mount with a
+host-relative root while an in-container read renders `/`. The pre-mounted
+read-only file reflects the host-side byte update without granting the
+container write access.
 
 The inspected record must be running, use network mode `none`, use the default hostname (the first 12
 characters of its full 64-hex ID), link by immutable image ID to the separately
@@ -649,10 +655,10 @@ inspection-file hash. An ordinal, `all`, MIG UUID, missing request, or second
 request fails closed. On Docker 29's native-CDI path, the long-lived shell PID
 1 may internally report `NVIDIA_VISIBLE_DEVICES=void`; PID 1 is not an evidence
 role. Every fresh `docker exec` command below must instead receive the two
-inspected UUID values and expose exactly one matching CUDA device. The retained host
-`/proc/<State.Pid>/mountinfo` bytes must equal `/proc/self/mountinfo` in every
-evidence process; this independently checks the live read-only/read-write view
-rather than trusting Docker's host metadata alone. Freeze,
+inspected UUID values and expose exactly one matching CUDA device. The retained
+host-side namespace-entered mountinfo bytes must equal `/proc/self/mountinfo`
+in every evidence process; this independently checks the live
+read-only/read-write view rather than trusting Docker's host metadata alone. Freeze,
 acquisition, verification, and aggregation execute in this same inspected
 container; process isolation comes from separate direct Python invocations,
 not from changing container IDs. Sanitization may run later as an offline
