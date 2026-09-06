@@ -709,14 +709,42 @@ P21 also converts P20's unrepresentable all-subnormal case into a rigorously
 bounded absolute update port by returning zero relative to the conceptual
 sector point `S/2`. The main smooth-PL result sets weight decay to zero;
 nonzero decay is a separately bounded conditional port, with a centered
-strong-convexity corollary. A frozen shadow-mode protocol predeclares the real-
-gradient intervention gates, but no real trace was run: this checkout lacks a
-pinned trainer, data/tokenizer/checkpoint, accelerator, and a P20 certificate
-for vanilla GPT-2's fused `768 x 2304` QKV shape. See
+strong-convexity corollary. See
 [`theory/certified_outer_loop_composition.md`](theory/certified_outer_loop_composition.md),
 [`theory/p21_shadow_trace_protocol.md`](theory/p21_shadow_trace_protocol.md),
 and
 [`results/summaries/P21_CERTIFIED_OUTER_LOOP_COMPOSITION_RESULTS.md`](results/summaries/P21_CERTIFIED_OUTER_LOOP_COMPOSITION_RESULTS.md).
+
+P22 freezes and implements the first real-gradient shadow acquisition around
+the unshielded baseline. It separately extends P20's locked CPU proof
+reference to the fused-QKV shield orientation `768 x 2304`; that analytic
+extension is not a native accelerator theorem. The frozen baseline uses
+additive normalization `X/(||X||_F+1e-7)`, five Jordan stages with
+coefficients `6889/2000`, `-191/40`, and `4063/2000`, `beta=19/20`,
+`eta=1/120`, zero weight decay, and pinned Keller--Jordan/Muon revision
+`f98f1cacc0263b04290753e32be8d498c1efc806`.
+
+The first Apple-MPS diagnostic is blocked at the predeclared repeatability
+gate. Two 256-step trace-off runs had equal initial hashes and exact matching
+data/RNG schedules, but the first post-update model and optimizer hashes
+differed at step 0 and at all 24 scheduled checkpoints. Losses first differed
+at step 2; 253/256 loss hashes differed, and both final state hashes brought
+the exact verifier total to 303 mismatches. No trace-on run was performed.
+Consequently P22 has no shield activation, candidate fidelity,
+noninterference, or training-quality result. This is a pinned
+Apple-MPS/PyTorch `2.13.0` result, not a backend-wide claim. The next
+acquisition gate is an unchanged off-A/off-B/trace-on replay on one
+BF16-capable CUDA device, with trace-on permitted only after exact baseline
+repeatability. See
+[`theory/p22_real_gradient_shadow_trace_protocol.md`](theory/p22_real_gradient_shadow_trace_protocol.md)
+and its
+[`arithmetic erratum`](theory/p22_real_gradient_shadow_trace_protocol_erratum.md),
+and
+[`results/summaries/P22_REAL_GRADIENT_SHADOW_TRACE_RESULTS.md`](results/summaries/P22_REAL_GRADIENT_SHADOW_TRACE_RESULTS.md).
+The compact canonical failure evidence is
+[`results/summaries/p22_repeatability_failure_evidence.json`](results/summaries/p22_repeatability_failure_evidence.json);
+the native manifests remain external and are bound by the SHA-256 values in
+that record.
 
 The repair claim is intentionally scoped. A constant `rho` is the exact minimal
 linear shift for a **specified point, pair, sample set, or domain with a finite
@@ -809,6 +837,9 @@ uv run --locked python \
   experiments/mixed_precision/run_p20_scalable_sector_shield_study.py
 uv run --locked python experiments/training/run_p21_synthetic_shadow_trace.py \
   --output results/summaries/p21_synthetic_shadow_trace.json
+uv run --locked python scripts/build_p22_repeatability_failure_evidence.py \
+  --native-root /path/to/p22-native-evidence \
+  --output-root results/summaries
 uv run --locked python scripts/make_figures.py
 ```
 
@@ -824,8 +855,7 @@ not support a universal claim across BF16 backends.
 
 ## Scope
 
-This repository stays focused on twenty-four technical goals (P20 completed
-the preceding twenty-three-goal ledger):
+This repository stays focused on twenty-five technical goals:
 
 1. a theorem for current-input Frobenius normalization;
 2. exact local and finite-pair controls for the five-step Jordan map;
@@ -881,7 +911,10 @@ the preceding twenty-three-goal ledger):
     three-word parameters, all-subnormal and represented-model ports, and
     seven-shape invariant-domain roundoff bounds;
 24. qualified matrix, quadratic, nonlinear, precision, and predeclared
-    shadow-mode diagnostics.
+    shadow-mode diagnostics;
+25. a frozen, fail-closed real-gradient shadow acquisition with exact
+    off-A/off-B repeatability before observer noninterference, including the
+    first blocked Apple-MPS baseline diagnostic and a predeclared CUDA replay.
 
 P7 is the submission cutoff and broadest robustness theorem; P6 is its
 zero-disturbance smooth-PL corollary. P8 and P9 instantiate one P7 disturbance
@@ -929,11 +962,11 @@ P21 removes that port-identification qualification by writing its LMI directly
 at the actual stored signal and composing the proof-reference FP32
 EMA/Nesterov and compensated master. Its pathwise affine source budget and
 nonzero-decay bounds remain explicit premises; they are not derived from an
-arbitrary training run. The predeclared shadow observer exists, but the real
-gradient trace is externally blocked. Production-gradient evidence, native
-accelerator/distributed parity, a complete supported training shape inventory,
-generic stochastic-gradient guarantees, throughput, and formal circuit ports
-remain open.
+arbitrary training run. P22 closes the static GPT-2 matrix-shape inventory but
+its first MPS acquisition fails exact baseline repeatability before the
+observer is enabled. Production-gradient fidelity evidence, native
+accelerator/distributed parity, generic stochastic-gradient guarantees,
+throughput, and formal circuit ports remain open.
 
 ## Layout
 

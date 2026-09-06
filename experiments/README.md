@@ -54,7 +54,9 @@ Experiment order is gated:
 24. the P21 stored-signal `7 x 7` port certificate, exact seven-shape FP32
     EMA/Nesterov/master roundoff absorption, all-subnormal wrapper, conditional
     decay treatment, and frozen synthetic shadow-observer diagnostic;
-25. only after a fully supported model shape inventory, real-gradient shadow
+25. the frozen P22 real-gradient protocol, exact `768 x 2304` shape extension,
+    and blocked Apple-MPS off-A/off-B baseline-repeatability diagnostic;
+26. only after a fully supported model shape inventory, real-gradient shadow
     gates, model-forward use of the logical master, aspect scaling, weight
     decay, and implementation-parity gates, a small matched neural-training
     sweep.
@@ -348,14 +350,14 @@ uv run --locked python experiments/training/run_p21_synthetic_shadow_trace.py \
   --output results/summaries/p21_synthetic_shadow_trace.json
 ```
 
-That command is an infrastructure diagnostic only. No real-gradient trace is
-present: a pinned trainer/instrumentation patch, dataset, tokenizer,
-checkpoint, accelerator, and complete P20-covered matrix inventory are
-missing. In particular, vanilla GPT-2's fused `768 x 2304` QKV shape is not
-in P20's table. The synthetic output cannot satisfy or predict the real-
-gradient empirical gate. The frozen fixture's 144 observations, 126
-pass-throughs, and 18 activations all pass its synthetic checks; those counts
-only validate acquisition and aggregation logic.
+That command is an infrastructure diagnostic only. Its synthetic output
+cannot satisfy or predict the real-gradient empirical gate. The frozen
+fixture's 144 observations, 126 pass-throughs, and 18 activations all pass its
+synthetic checks; those counts only validate acquisition and aggregation
+logic. P22 subsequently added the isolated trainer/data path, native MPS
+preflight, and separate fused-QKV `768 x 2304` CPU shield certificate. Its
+real-gradient trace-on acquisition nevertheless remains absent because the
+two native trace-off baselines failed exact repeatability.
 
 P22 freezes the first real-gradient acquisition separately. Its protocol pins
 NanoGPT commit `3adf61e154c3fe3fca428ad6bc3818b27a3b8291`, the audited Muon
@@ -364,7 +366,10 @@ commit, GPT-2 small, FineWeb `sample-10BT` revision
 seed, 256 optimizer steps, and P21's existing 24 capture steps. The feasible
 pilot uses sequence length 128, batch one, no accumulation, weight decay zero,
 and constant Muon `eta=1/120`. The model's architectural block size remains
-1024.
+1024. Read `theory/p22_real_gradient_shadow_trace_protocol_erratum.md`
+alongside the frozen protocol: the candidate casts to BF16 before its norm and
+additive-epsilon normalization, and trace-on must not run before the exact
+off-A/off-B verifier passes.
 
 Run the prerequisite checker with an explicitly selected backend:
 
@@ -402,8 +407,19 @@ uv run --locked python \
   --output /path/to/trace-off-a-manifest.json
 ```
 
-Repeat that command in a fresh process for `trace-off-b-manifest.json`. Then
-run trace-on, adding the required raw-capture output:
+Repeat that command in a fresh process for `trace-off-b-manifest.json`, then
+enforce the exact baseline gate immediately:
+
+```bash
+uv run --locked python experiments/training/p22_nanogpt_shadow_trace.py \
+  verify-repeatability \
+  --trace-off-a /path/to/trace-off-a-manifest.json \
+  --trace-off-b /path/to/trace-off-b-manifest.json \
+  --output /path/to/p22-repeatability.json
+```
+
+Only if that command passes may a third fresh process run trace-on with the
+required raw-capture output:
 
 ```bash
 uv run --locked python \
@@ -418,15 +434,10 @@ uv run --locked python \
 ```
 
 Use `--accelerator cuda` throughout instead only for the frozen one-CUDA-device
-profile. Never mix backends across the three runs. Once two trace-off repeats
-and one trace-on manifest exist, enforce the two exact gates in order:
+profile. Never mix backends across the three runs. After the permitted
+trace-on run, enforce noninterference:
 
 ```bash
-uv run --locked python experiments/training/p22_nanogpt_shadow_trace.py \
-  verify-repeatability \
-  --trace-off-a /path/to/trace-off-a-manifest.json \
-  --trace-off-b /path/to/trace-off-b-manifest.json \
-  --output /path/to/p22-repeatability.json
 uv run --locked python experiments/training/p22_nanogpt_shadow_trace.py \
   verify-noninterference \
   --trace-off /path/to/trace-off-a-manifest.json \
@@ -438,9 +449,32 @@ That comparison first checks baseline repeatability (off-A against off-B) and
 then observer noninterference (off-A against trace-on). It compares all 256
 batches, stored losses, and host/selected-accelerator RNG states, plus exact
 model/optimizer states initially, at all 24 capture-schedule updates, and
-finally. No tolerance is used. No P22 real trace or training-quality result is
-committed by the protocol/scaffold alone. See
-`theory/p22_real_gradient_shadow_trace_protocol.md`.
+finally. No tolerance is used.
+
+The first Apple-MPS acquisition stopped at the first gate. Off-A and off-B
+started from the same exact state and retained identical data-window and RNG
+schedules, but their first post-update model and optimizer hashes differed at
+step 0; both hashes differed at all 24 scheduled checkpoints and finally. Of
+256 loss hashes, 253 differed (only steps 0, 1, and 22 matched), giving 303
+total verifier mismatches. The required trace-on run was therefore not
+executed. This is a blocked diagnostic for the pinned Apple-MPS/PyTorch
+`2.13.0` baseline, not real-gradient shield/fidelity evidence. The next
+acquisition gate is the unchanged three-run protocol on one BF16-capable CUDA
+device, with exact off-A/off-B equality required before trace-on. See
+`theory/p22_real_gradient_shadow_trace_protocol.md` and
+`results/summaries/P22_REAL_GRADIENT_SHADOW_TRACE_RESULTS.md`. The compact
+path-sanitized record is
+`results/summaries/p22_repeatability_failure_evidence.json`; its native
+off-A/off-B manifests remain external and hash-locked.
+
+With those native files available, reconstruct the committed sanitized
+evidence with:
+
+```bash
+uv run --locked python scripts/build_p22_repeatability_failure_evidence.py \
+  --native-root /path/to/p22-native-evidence \
+  --output-root results/summaries
+```
 
 The P9 separate CPU diagnostic is a native-matmul
 falsification probe against a float64, non-exact target:

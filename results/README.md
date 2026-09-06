@@ -261,6 +261,41 @@ Current outputs:
 - `../experiments/training/p21_shadow_trace_protocol.json`: predeclared P21
   real-gradient shadow schedule, metrics, zero handling, intervention gates,
   and provenance requirements; no real-gradient result is present;
+- `summaries/p22_scalable_shield_shape_extension_certificate.json`: exact P22
+  extension of the frozen P20 shape recurrence to canonical fused-QKV
+  orientation `768 x 2304`; this is a CPU proof-reference containment
+  artifact, not Apple-MPS or CUDA parity evidence;
+- `summaries/P22_REAL_GRADIENT_SHADOW_TRACE_RESULTS.md`: scoped P22 blocked
+  Apple-MPS baseline-repeatability readout. Two 256-step trace-off runs match
+  initially and retain identical data/RNG schedules, but their first
+  post-update model/optimizer hashes differ at step 0 and all 24 scheduled
+  checkpoints, 253/256 loss hashes differ beginning at step 2, and both final
+  state hashes differ, for exactly 303 verifier mismatches. Per the frozen
+  gate, no trace-on run or fidelity result exists;
+- `summaries/p22_repeatability_failure_evidence.json`: path-sanitized canonical
+  P22 failure artifact retaining every unequal witness, hashes of the complete
+  comparison projections, anchor records, external raw-manifest hashes, and
+  the absence of trace-on/noninterference/aggregate filenames from the frozen
+  native run directory after the failed gate; rebuild it from hash-locked
+  external native files with
+  `scripts/build_p22_repeatability_failure_evidence.py`;
+- `summaries/p22_real_gradient_preflight_evidence.json`: sanitized ready
+  Apple-MPS/PyTorch `2.13.0` prerequisite record with the pinned source and
+  complete 48-matrix shape inventory;
+- `summaries/p22_fineweb_materialization_evidence.json`: sanitized pinned
+  FineWeb row/tokenizer/boundary and external-binary hash record; dataset text,
+  tokenizer assets, and token binaries are not committed;
+- `../experiments/training/p22_real_gradient_shadow_trace_protocol.json` and
+  `../theory/p22_real_gradient_shadow_trace_protocol.md`: frozen three-run
+  P22 acquisition contract and claim boundary; the next acquisition gate is
+  exact CUDA off-A/off-B repeatability before trace-on;
+- `../theory/p22_real_gradient_shadow_trace_protocol_erratum.md`: correction
+  to the frozen JSON's too-narrow BF16 wording. The pinned candidate casts to
+  BF16 before norm and additive-epsilon normalization as well as the five
+  stages; the acquisition bytes and hash are unchanged;
+- `../theory/audits/P22_REAL_GRADIENT_SHADOW_TRACE_AUDIT.md`: completed
+  internal acquisition audit and unsigned external-review checklist for the
+  P22 stop decision; independent human review remains pending;
 - `summaries/deficit_audit.{json,csv}`: 24-prefix spectral audit;
 - `summaries/quadratic_lr_sweep.json` plus CSV tables: gain-matched quadratic
   sweep and sensitivity classifications;

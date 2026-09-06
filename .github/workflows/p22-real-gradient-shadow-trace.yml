@@ -1,0 +1,79 @@
+name: P22 real-gradient shadow trace replay
+
+on:
+  push:
+    branches:
+      - main
+      - p22-real-gradient-shadow-trace
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  real-gradient-shadow-trace:
+    name: Exact shape certificate and fail-closed evidence replay (Python 3.12)
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    steps:
+      - name: Check out repository with certificate history
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          enable-cache: true
+
+      - name: Install the locked environment
+        run: uv sync --locked
+
+      - name: Generate the exact fused-QKV shape certificate
+        run: >-
+          uv run --locked python
+          scripts/certify_p22_scalable_shield_shape_extension.py
+          --output
+          "$RUNNER_TEMP/p22_scalable_shield_shape_extension_certificate.json"
+
+      - name: Independently reconstruct the fresh certificate
+        run: >-
+          uv run --locked python
+          scripts/reconstruct_p22_scalable_shield_shape_extension.py
+          --canonical
+          "$RUNNER_TEMP/p22_scalable_shield_shape_extension_certificate.json"
+          --require-canonical
+
+      - name: Compare the committed canonical certificate
+        run: >-
+          uv run --locked python
+          scripts/reconstruct_p22_scalable_shield_shape_extension.py
+          --require-canonical
+
+      - name: Run focused P22 protocol, materializer, observer, and evidence tests
+        run: >-
+          uv run --locked pytest -q
+          tests/test_p22_scalable_shield_shape_extension.py
+          tests/test_p22_scalable_shield_shape_extension_reconstruction.py
+          tests/test_p22_real_gradient_shadow_trace.py
+          tests/test_p22_fineweb_materializer.py
+          tests/test_p22_real_gradient_observer.py
+          tests/test_p22_real_gradient_shadow_trace_evidence.py
+
+      - name: Check formatting, lint, and branch whitespace
+        run: |
+          uv run --locked ruff format --check src scripts experiments tests
+          uv run --locked ruff check src scripts experiments tests
+          git diff --check p21-certified-outer-loop-composition-checkpoint...HEAD
+
+      - name: State acquisition boundary
+        run: >-
+          echo "This job validates committed-evidence integrity and reconstructs
+          the exact mismatch witnesses; it does not rerun NanoGPT or create
+          accelerator evidence."

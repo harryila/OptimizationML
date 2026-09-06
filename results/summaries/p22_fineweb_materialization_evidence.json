@@ -1,0 +1,116 @@
+{
+  "claim_boundary": "Hashes and selection metadata are retained; source responses, tokenizer assets, and uint16 token binaries remain external and are not embedded here.",
+  "dataset": {
+    "config": "sample-10BT",
+    "repository": "HuggingFaceFW/fineweb",
+    "revision": "9bb295ddab0e05d785b879661af7260fed5140fc",
+    "selection": {
+      "canonical_consumed_rows_sha256": "c5f2c9074a03949d180f668dc2c66cfffed8d4a340797d8e491cad9e63b5f31f",
+      "canonical_framing": "sha256(domain || repeated le64(row_id) || le64(utf8_bytes) || utf8(text))",
+      "first_row_id": 0,
+      "last_row_id_inclusive": 245,
+      "ordering": "Increasing row index at the pinned revision; complete untruncated text only",
+      "row_count": 246,
+      "train_boundary": {
+        "row_id": 196,
+        "token_offset_exclusive": 114
+      },
+      "validation_boundary": {
+        "row_id": 245,
+        "token_offset_exclusive": 851
+      }
+    },
+    "source_responses": [
+      {
+        "artifact_id": "fineweb-response-000000-000099",
+        "byte_count": 334240,
+        "request_url": "https://datasets-server.huggingface.co/rows?dataset=HuggingFaceFW%2Ffineweb&config=sample-10BT&split=train&offset=0&length=100&revision=9bb295ddab0e05d785b879661af7260fed5140fc",
+        "response_index": 0,
+        "row_count": 100,
+        "row_end_inclusive": 99,
+        "row_start": 0,
+        "sha256": "dd8e3594cfc2af77a1dac37950b025668fc7052affb16209d1a42ba284392cf4",
+        "source_kind": "captured datasets-server response",
+        "truncated_cells": []
+      },
+      {
+        "artifact_id": "fineweb-response-000100-000199",
+        "byte_count": 351494,
+        "request_url": "https://datasets-server.huggingface.co/rows?dataset=HuggingFaceFW%2Ffineweb&config=sample-10BT&split=train&offset=100&length=100&revision=9bb295ddab0e05d785b879661af7260fed5140fc",
+        "response_index": 1,
+        "row_count": 100,
+        "row_end_inclusive": 199,
+        "row_start": 100,
+        "sha256": "f3c98f25e86159333006c6649ae65e7910c1cc3f099d61dab467219d2d86d072",
+        "source_kind": "captured datasets-server response",
+        "truncated_cells": []
+      },
+      {
+        "artifact_id": "fineweb-response-000200-000299",
+        "byte_count": 445240,
+        "request_url": "https://datasets-server.huggingface.co/rows?dataset=HuggingFaceFW%2Ffineweb&config=sample-10BT&split=train&offset=200&length=100&revision=9bb295ddab0e05d785b879661af7260fed5140fc",
+        "response_index": 2,
+        "row_count": 100,
+        "row_end_inclusive": 299,
+        "row_start": 200,
+        "sha256": "134dd2cf2af41a8276d668113beb8fcf629698121d6f6d01c87c40b5efecd7c7",
+        "source_kind": "captured datasets-server response",
+        "truncated_cells": []
+      }
+    ],
+    "split": "train"
+  },
+  "native_artifact": {
+    "byte_count": 4210,
+    "filename": "p22_fineweb_manifest.json",
+    "sha256": "1dfbe2087fb61004c6c4ee938d1be53d769f2fa66303c2533e14acb9c1d5a96d",
+    "storage": "external native evidence; not committed"
+  },
+  "outputs": {
+    "train.bin": {
+      "artifact_id": "external-train.bin",
+      "byte_count": 262144,
+      "committed": false,
+      "dtype": "little-endian uint16",
+      "sha256": "726a7684a785c134d2db92568ee5d5849354b0a5e7f27ad9ae8d1e283ea89cba",
+      "token_count": 131072
+    },
+    "val.bin": {
+      "artifact_id": "external-val.bin",
+      "byte_count": 65536,
+      "committed": false,
+      "dtype": "little-endian uint16",
+      "sha256": "498fb38e7457fd3131fbebba3d7dcff70575dfc5f932e4e108ec0fe10405c89f",
+      "token_count": 32768
+    }
+  },
+  "preprocessor": {
+    "byte_count": 20189,
+    "document_field": "text",
+    "normalization": "none",
+    "repository_path": "experiments/training/materialize_p22_fineweb.py",
+    "sha256": "e352c3536baa74bc560af4a589b3bc1b216f4bda8e4cd554e16821b02977525e"
+  },
+  "schema_version": "passive-muon-p22-fineweb-materialization-evidence-v1",
+  "status": "materialized",
+  "tokenizer": {
+    "append_end_of_text_after_each_document": true,
+    "encoding": "gpt2",
+    "end_of_text_token_id": 50256,
+    "files": {
+      "encoder.json": {
+        "artifact_id": "gpt2-encoder.json",
+        "byte_count": 1042301,
+        "sha256": "196139668be63f3b5d6574427317ae82f612a97c5d1cdaf36ed2256dbf636783"
+      },
+      "vocab.bpe": {
+        "artifact_id": "gpt2-vocab.bpe",
+        "byte_count": 456318,
+        "sha256": "1ce1664773c50f3e0cc8842619a93edc4624525b728b188a9e0be33b7726adc5"
+      }
+    },
+    "package": "tiktoken",
+    "version": "0.14.0",
+    "vocab_size": 50257
+  }
+}

@@ -2064,11 +2064,68 @@ is zero; the exact scalar nonzero-minimizer control moves away from its
 unregularized optimum.
 
 The shadow-mode protocol was frozen before any real-gradient observation. Its
-synthetic runner tests observer and gate logic only. No real-gradient evidence
-exists: this checkout lacks a pinned NanoGPT trainer/instrumentation patch,
-data, tokenizer, checkpoint, accelerator, and a P20 certificate for vanilla
-GPT-2's fused `768 x 2304` QKV matrix. C27 does not establish global PL for a
-neural loss, generic bounded-variance stochastic convergence, global
-candidate fidelity, unmodified-upstream stability, native GPU/FTZ/distributed
-semantics, throughput, or training quality. See
-`certified_outer_loop_composition.md`; independent human review is pending.
+synthetic runner tests observer and gate logic only. P22 subsequently supplies
+an isolated pinned trainer/data path and a separate certificate for vanilla
+GPT-2's fused-QKV shield orientation `768 x 2304`, but its first Apple-MPS
+acquisition fails exact baseline repeatability before the observer is enabled.
+C27 does not establish global PL for a neural loss, generic bounded-variance
+stochastic convergence, global candidate fidelity, unmodified-upstream
+stability, native GPU/FTZ/distributed semantics, throughput, or training
+quality. See `certified_outer_loop_composition.md`; independent human review
+is pending.
+
+## C28. P22 real-gradient shadow trace — blocked by exact MPS baseline-repeatability failure
+
+P22 freezes one 256-step GPT-2-small acquisition before inspecting any shadow
+metric. The matrix candidate is Keller--Jordan/Muon revision
+`f98f1cacc0263b04290753e32be8d498c1efc806`: additive normalization
+`X/(||X||_F+1e-7)`, exactly five Jordan stages with coefficients
+`6889/2000`, `-191/40`, and `4063/2000`, upstream aspect scaling,
+`beta=19/20`, `eta=1/120`, Nesterov enabled, and zero weight decay. The model
+and loss path use pinned nanoGPT revision
+`3adf61e154c3fe3fca428ad6bc3818b27a3b8291`, FP32 parameters/forward/backward
+without autocast, one seed, batch one, sequence length 128, and 32,768
+sequential FineWeb training tokens.
+
+The candidate path casts the FP32 Nesterov signal to BF16 before orientation,
+the norm, epsilon addition, normalization division, and all five stages. The
+frozen protocol JSON's claim that "only" the stages use BF16 is a description
+error corrected in `p22_real_gradient_shadow_trace_protocol_erratum.md`; its
+acquisition bytes and hash are retained unchanged.
+
+The intervention rule requires three fresh executions. Off-A must first equal
+off-B exactly; only then may trace-on run and off-A be compared with it. The
+first Apple-MPS attempt stops at the first gate:
+
+- both trace-off executions contain 256 steps and have the same exact initial
+  hash;
+- all 256 data-window/batch and recorded host/selected-accelerator RNG
+  schedules match;
+- the model and optimizer state hashes first disagree at step 0, after the
+  first update, and both disagree at all 24 scheduled checkpoints;
+- 253/256 stored-loss hashes disagree, first at step 2 (only steps 0, 1, and 22
+  agree);
+- both final model/optimizer hashes disagree; and
+- these fields sum to exactly 303 verifier mismatches.
+
+Therefore no trace-on run was performed. This is a blocked backend diagnostic,
+not real-gradient candidate-fidelity evidence, observer-noninterference
+evidence, a neural-loss stability result, or a counterexample to C27. Equal
+initial/source/runtime/data identities and recorded data/RNG schedules
+localize neither the responsible operation nor the generality of the failure;
+they only exclude differences in those recorded fields. The result is scoped
+to the pinned Apple-MPS/PyTorch `2.13.0` execution, not MPS as a whole. The
+next acquisition gate is the unchanged three-run protocol on one
+BF16-capable CUDA device, retaining exact equality rather than substituting a
+tolerance. Native manifests omit a contemporaneous OptimizationML Git-SHA and
+dirty-state field. Every recorded repository-owned source hash retrospectively
+matches commit `79f33ec`, but four imported project dependencies were absent
+from that native snapshot, so it neither proves the complete executed graph
+nor replaces repository rule 7. See
+`p22_real_gradient_shadow_trace_protocol.md` and
+`../results/summaries/P22_REAL_GRADIENT_SHADOW_TRACE_RESULTS.md`.
+
+The native comparator also trusted its opaque run-identity digest rather than
+separately binding every runtime/source map. The canonical failure builder
+independently requires exact equality of those maps for this pair; hardening
+the native verifier is a prerequisite for a future acceptance run.

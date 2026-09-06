@@ -414,19 +414,36 @@
       post-aspect candidates,
       plus pre-aspect values where the pinned call boundary exposes them;
       never substitute a CPU recomputation or P21 synthetic data.
-- [ ] Materialize and hash the frozen FineWeb slice: 131,072 training-pool
+- [x] Materialize and hash the frozen FineWeb slice: 131,072 training-pool
       tokens plus 32,768 validation tokens, complete untruncated source rows,
       `tiktoken==0.14.0` GPT-2 assets, preprocessing source, and both binary
-      files.
-- [ ] Finish and review the isolated NanoGPT instrumentation patch. It must
+      files for the frozen local acquisition; keep the large token binaries
+      outside Git while retaining their manifest hashes.
+- [x] Finish and review the isolated NanoGPT instrumentation patch. It must
       capture the actual stored signal and mandatory post-aspect accelerator
       candidate without changing the candidate returned to the baseline;
       capture pre-aspect values only where the exact call boundary exposes
       them.
-- [ ] Run two fresh P22 trace-off repeats and one trace-on acquisition on the
-      pinned accelerator. Interpret shadow activation/fidelity metrics only
-      after baseline repeatability and the exact parameter, optimizer, loss,
-      batch, and RNG noninterference comparison pass.
+- [x] Preserve the frozen protocol hash and record its post-acquisition BF16
+      wording erratum: the pinned candidate casts before its norm,
+      additive-epsilon normalization, division, and five stages; BF16 is not
+      limited to the five stage computations.
+- [x] Run two fresh P22 trace-off repeats on Apple MPS and preserve the exact
+      blocked result: identical initial state and all data/RNG schedules, but
+      first model/optimizer mismatch after step 0, first loss mismatch at step
+      2, 253/256 loss mismatches, both state hashes at all 24 checkpoints, both
+      final state hashes, and 303 total verifier mismatches. Per protocol, do
+      not run trace-on and do not report these baseline runs as real-gradient
+      fidelity evidence.
+- [ ] Replay the unchanged three-run gate on one BF16-capable CUDA device.
+      First add contemporaneous repository SHA/dirty state, complete imported
+      source hashing, exact GPU/driver/runtime identity, and explicit
+      source/runtime-map equality to the native verifier. Require exact CUDA
+      off-A/off-B repeatability before running trace-on; only then interpret
+      shield activation or fidelity metrics.
+- [ ] Obtain independent human review of the P22 acquisition stop, source/data
+      provenance, exact comparator, and claim boundary using
+      `theory/audits/P22_REAL_GRADIENT_SHADOW_TRACE_AUDIT.md`.
 - [ ] Obtain an independent human proof audit of C27, especially stored-signal
       placement, port normalization/signs, seven-shape roundoff absorption,
       all-subnormal completion, and weight-decay scope; the unsigned packet is

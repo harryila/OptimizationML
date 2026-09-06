@@ -186,12 +186,13 @@ checks pass. The correction p95 is about `0.18444`, cosine p05 about
 validate the frozen metric and aggregation machinery, not expected behavior
 on training gradients.
 
-The real-gradient study is **blocked and has not been run**. This checkout has
-no NanoGPT trainer/instrumentation patch, data, tokenizer, checkpoint, or
-real-gradient trace, and the current host has no CUDA or MPS accelerator.
-Vanilla GPT-2's fused `768 x 2304` QKV matrix is also outside P20's certified
-shape table. No synthetic observation is reported as neural-training
-evidence.
+P22 subsequently supplies the pinned isolated trainer/data path and a separate
+exact CPU proof-reference extension for GPT-2's fused-QKV shield orientation
+`768 x 2304`. Its first two Apple-MPS trace-off baseline runs fail exact
+repeatability after the first update, so the frozen protocol bars trace-on.
+No synthetic or trace-off observation is reported as candidate-fidelity or
+neural-training evidence. See
+`P22_REAL_GRADIENT_SHADOW_TRACE_RESULTS.md` for that later blocked diagnostic.
 
 ## Evidence classification
 
@@ -227,6 +228,7 @@ outside the storage/range invariant, an arbitrary pre-cast model-gradient
 error, generic stochastic-gradient variance, arbitrary weight decay,
 unmodified upstream Muon, global fidelity, native GPU/tensor-core execution,
 FTZ/DAZ, distributed reductions, production shape inventory, throughput, or
-training loss. The precise next empirical prerequisite is a pinned trainer
-and a fully P20-covered model shape inventory for the already frozen shadow
-protocol.
+training loss. P22 supplies a pinned isolated trainer/data path and completes
+the GPT-2-small shield-shape inventory, but its MPS baseline-repeatability
+failure makes the next empirical gate an unchanged exact replay on one
+BF16-capable CUDA device before enabling trace-on.

@@ -1458,14 +1458,61 @@ The frozen shadow protocol predeclares 24 early/middle/late capture steps and
 all intervention gates. Its supplied synthetic CPU runner is infrastructure
 only. The 144-observation fixture has 126 pass-throughs, 18 shield
 activations, 144 successful P20 calls, and no nonfinite or dead-zone events;
-all synthetic protocol checks pass. The real-gradient trace has not run
-because there is no pinned trainer,
-dataset, tokenizer, checkpoint, accelerator, or fully P20-covered vanilla
-GPT-2 shape inventory; fused `768 x 2304` QKV is currently unsupported. See
+all synthetic protocol checks pass. P22 later supplies the pinned isolated
+trainer/data path and the fused-QKV `768 x 2304` shape extension, but its first
+MPS acquisition fails the exact baseline-repeatability gate before trace-on.
+See
 `P21_CERTIFIED_OUTER_LOOP_COMPOSITION_RESULTS.md`,
 `certified_outer_loop_composition_certificate.json`,
 `../../theory/certified_outer_loop_composition.md`, and
 `../../theory/p21_shadow_trace_protocol.md`.
+
+## 28. P22 blocked Apple-MPS baseline-repeatability diagnostic
+
+P22 freezes a one-seed, 256-step GPT-2-small real-gradient shadow protocol
+around the unshielded pinned baseline. The matrix operator uses additive
+normalization `X/(||X||_F+1e-7)`, five BF16 Jordan stages with coefficients
+`6889/2000`, `-191/40`, and `4063/2000`, upstream aspect scaling,
+`beta=19/20`, `eta=1/120`, Nesterov momentum, and zero weight decay at
+Keller--Jordan/Muon revision
+`f98f1cacc0263b04290753e32be8d498c1efc806`. Parameters, forward, backward,
+gradients, EMA, and Nesterov state remain FP32 without autocast. The candidate
+is cast to BF16 before orientation, norm, epsilon addition, division, and the
+five Jordan stages. The frozen protocol's narrower "only the stages" wording
+is corrected by `../../theory/p22_real_gradient_shadow_trace_protocol_erratum.md`
+without changing its acquisition hash. The model is
+pinned nanoGPT GPT-2 small at revision
+`3adf61e154c3fe3fca428ad6bc3818b27a3b8291`; the deterministic schedule uses
+batch one, sequence length 128, and 32,768 sequential FineWeb tokens.
+
+The first Apple-MPS off-A/off-B baseline comparison fails exactly:
+
+| field | result |
+| --- | --- |
+| initial combined state | equal |
+| steps per run | 256 |
+| data and recorded RNG schedules | exact match |
+| first post-update model mismatch | step 0 |
+| first post-update optimizer mismatch | step 0 |
+| first loss mismatch | step 2 |
+| loss mismatches | 253/256; only steps 0, 1, and 22 match |
+| scheduled state mismatches | model and optimizer at all 24 checkpoints |
+| final state mismatches | model and optimizer |
+| exact verifier mismatch count | 303 |
+| trace-on run | not run |
+
+The protocol correctly stops at this point. These trace-off executions are a
+repeatability diagnostic for the pinned Apple-MPS/PyTorch `2.13.0` execution;
+without a trace-on run they provide no P20 activation, candidate-fidelity,
+observer-noninterference, training-quality, or neural-loss stability evidence.
+The 303 mismatches consist of 253 loss hashes, 48 scheduled state hashes, and
+two final state hashes. The next gate is an unchanged three-run replay on one
+BF16-capable CUDA device, with exact off-A/off-B repeatability required before
+trace-on. See `P22_REAL_GRADIENT_SHADOW_TRACE_RESULTS.md` and
+`p22_repeatability_failure_evidence.json`; supporting sanitized preflight and
+data records are `p22_real_gradient_preflight_evidence.json` and
+`p22_fineweb_materialization_evidence.json`. The frozen protocol is
+`../../theory/p22_real_gradient_shadow_trace_protocol.md`.
 
 ## Reproduce
 
@@ -1558,6 +1605,9 @@ uv run --locked python scripts/reconstruct_outer_loop_composition.py \
   --require-canonical
 uv run --locked python experiments/training/run_p21_synthetic_shadow_trace.py \
   --output results/summaries/p21_synthetic_shadow_trace.json
+uv run --locked python scripts/build_p22_repeatability_failure_evidence.py \
+  --native-root /path/to/p22-native-evidence \
+  --output-root results/summaries
 uv run --locked python experiments/matrices/run_deficit_audit.py
 uv run --locked python experiments/quadratics/run_lr_sweep.py
 uv run --locked python experiments/quadratics/run_horizon_check.py

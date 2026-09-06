@@ -1,0 +1,111 @@
+{
+  "blockers": [],
+  "checks": {
+    "accelerator": {
+      "blockers": [],
+      "details": {
+        "bf16_probe_sha256": "b70778aec736ec2560f972aeffdb9cedbb21bd5aad78bc94451fb779d48027df",
+        "bf16_supported": true,
+        "cuda_available": false,
+        "evidence_scope": "Apple-MPS-specific shadow trace; explicitly not CUDA, tensor-core, or native-kernel parity",
+        "mps_available": true,
+        "mps_built": true,
+        "pytorch_enable_mps_fallback": "0",
+        "selected_backend": "mps",
+        "torch_cuda_version": null,
+        "torch_version": "2.13.0",
+        "visible_device_count": 1
+      },
+      "ready": true
+    },
+    "fineweb": {
+      "artifact_hashes": [
+        {
+          "byte_count": 334240,
+          "sha256": "dd8e3594cfc2af77a1dac37950b025668fc7052affb16209d1a42ba284392cf4"
+        },
+        {
+          "byte_count": 351494,
+          "sha256": "f3c98f25e86159333006c6649ae65e7910c1cc3f099d61dab467219d2d86d072"
+        },
+        {
+          "byte_count": 445240,
+          "sha256": "134dd2cf2af41a8276d668113beb8fcf629698121d6f6d01c87c40b5efecd7c7"
+        },
+        {
+          "byte_count": 456318,
+          "sha256": "1ce1664773c50f3e0cc8842619a93edc4624525b728b188a9e0be33b7726adc5"
+        },
+        {
+          "byte_count": 1042301,
+          "sha256": "196139668be63f3b5d6574427317ae82f612a97c5d1cdaf36ed2256dbf636783"
+        },
+        {
+          "byte_count": 20189,
+          "sha256": "e352c3536baa74bc560af4a589b3bc1b216f4bda8e4cd554e16821b02977525e"
+        },
+        {
+          "byte_count": 262144,
+          "sha256": "726a7684a785c134d2db92568ee5d5849354b0a5e7f27ad9ae8d1e283ea89cba"
+        },
+        {
+          "byte_count": 65536,
+          "sha256": "498fb38e7457fd3131fbebba3d7dcff70575dfc5f932e4e108ec0fe10405c89f"
+        }
+      ],
+      "blockers": [],
+      "native_manifest_sha256": "1dfbe2087fb61004c6c4ee938d1be53d769f2fa66303c2533e14acb9c1d5a96d",
+      "ready": true
+    },
+    "instrumentation": {
+      "blockers": [],
+      "byte_count": 4626,
+      "ready": true,
+      "repository_path": "experiments/training/p22_observed_muon.py",
+      "sha256": "5355b553e871406491599945ed790288f59d636a7f9e1d931b9d8234ba42818f"
+    },
+    "muon": {
+      "blockers": [],
+      "external_path_removed": true,
+      "ready": true,
+      "revision": "f98f1cacc0263b04290753e32be8d498c1efc806",
+      "sha256": "2479665a90124f62e4df557816665851ca317e42fcfda2af1da02c1f44ab5f3d"
+    },
+    "nanogpt": {
+      "blockers": [],
+      "details": {
+        "dirty": "",
+        "model_py_blob": "c698f8b60129d793494de058b0dd4e318c0dcb5e",
+        "origin": "https://github.com/karpathy/nanoGPT.git",
+        "revision": "3adf61e154c3fe3fca428ad6bc3818b27a3b8291",
+        "train_py_blob": "de5785051050d64bbda37a4964c2c079f0739b2b",
+        "tree": "ca93bcd9b9c9ff32d3016e1e2556644e68bef86a"
+      },
+      "ready": true
+    }
+  },
+  "claim_boundary": "This is a prerequisite report, not a gradient trace, training result, or theorem.",
+  "native_artifact": {
+    "byte_count": 4422,
+    "filename": "p22_preflight_after_shape_commit.json",
+    "sha256": "81ea8900f66cef389217dee04146120774d7cfc5326229d202b606b3133e7aef",
+    "storage": "external native evidence; not committed"
+  },
+  "protocol": {
+    "repository_path": "experiments/training/p22_real_gradient_shadow_trace_protocol.json",
+    "sha256": "f88eda60b366b561d277e41335b02c3fb9861a2604a947f8dd5c28fb54bedeac"
+  },
+  "real_run_executed": false,
+  "schema_version": "passive-muon-p22-preflight-evidence-v1",
+  "shape_inventory": {
+    "complete": true,
+    "covered_numel": 84934656,
+    "covered_parameter_count": 48,
+    "intended_numel": 84934656,
+    "intended_parameter_count": 48,
+    "numel_fraction": "84934656/84934656",
+    "parameter_count_fraction": "48/48",
+    "unsupported": []
+  },
+  "status": "ready"
+}

@@ -595,7 +595,68 @@ def test_current_indexes_record_scoped_p21_outer_loop_composition() -> None:
     assert "## 27. P21 certified stored-signal outer-loop composition" in results
     assert "## C27. Stored-signal finite-precision outer-loop composition" in claims
     assert "human proof audit of C27" in tasks
-    assert "twenty-four technical goals" in readme
+    assert "twenty-five technical goals" in readme
+
+
+def test_current_indexes_record_p22_blocked_mps_repeatability_diagnostic() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    tasks = (ROOT / "TASKS.md").read_text(encoding="utf-8")
+    results_index = (ROOT / "results/README.md").read_text(encoding="utf-8")
+    experiments = (ROOT / "experiments/README.md").read_text(encoding="utf-8")
+    results = (ROOT / "results/summaries/RESULTS.md").read_text(encoding="utf-8")
+    claims = (ROOT / "theory/claims.md").read_text(encoding="utf-8")
+    summary = (ROOT / "results/summaries/P22_REAL_GRADIENT_SHADOW_TRACE_RESULTS.md").read_text(
+        encoding="utf-8"
+    )
+    protocol = (ROOT / "theory/p22_real_gradient_shadow_trace_protocol.md").read_text(
+        encoding="utf-8"
+    )
+    erratum = (ROOT / "theory/p22_real_gradient_shadow_trace_protocol_erratum.md").read_text(
+        encoding="utf-8"
+    )
+
+    combined = " ".join(
+        (readme, tasks, results_index, experiments, results, claims, summary, protocol, erratum)
+    )
+    for text in (readme, results, claims, summary):
+        assert "303" in text
+        assert "step 0" in text
+        assert "step 2" in text
+        assert "trace-on" in text.lower()
+        assert "CUDA" in text
+    for operator_detail in (
+        "1e-7",
+        "6889/2000",
+        "-191/40",
+        "4063/2000",
+        "f98f1cacc0263b04290753e32be8d498c1efc806",
+    ):
+        assert operator_detail in combined
+    assert "## 28. P22 blocked Apple-MPS baseline-repeatability diagnostic" in results
+    assert "## C28. P22 real-gradient shadow trace" in claims
+    for artifact in (
+        "P22_REAL_GRADIENT_SHADOW_TRACE_RESULTS.md",
+        "p22_repeatability_failure_evidence.json",
+        "p22_real_gradient_preflight_evidence.json",
+        "p22_fineweb_materialization_evidence.json",
+        "p22_scalable_shield_shape_extension_certificate.json",
+        "P22_REAL_GRADIENT_SHADOW_TRACE_AUDIT.md",
+        "p22_real_gradient_shadow_trace_protocol_erratum.md",
+    ):
+        assert artifact in results_index
+    for text in (readme, results, results_index, summary):
+        assert "p22_repeatability_failure_evidence.json" in text
+    for text in (readme, experiments, results, results_index):
+        assert "build_p22_repeatability_failure_evidence.py" in text
+    assert "no trace-on run" in combined.lower()
+    assert "not real-gradient fidelity evidence" in combined.lower()
+    assert "twenty-five technical goals" in readme
+    assert "79f33ec" in " ".join((claims, summary))
+    assert "provenance caveat" in " ".join((claims, summary)).lower()
+    assert "casts" in erratum
+    assert "before" in erratum
+    assert "normalization" in erratum
+    assert "acquisition hash" in erratum
 
 
 def test_double_blind_material_is_guarded_from_the_public_repository() -> None:
