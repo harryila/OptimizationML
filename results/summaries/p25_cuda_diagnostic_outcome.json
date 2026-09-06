@@ -1,0 +1,208 @@
+{
+  "schema_version": "passive-muon-p25-cuda-diagnostic-outcome-v1",
+  "status": "terminal_pre_trace_host_wrapper_permission_stop",
+  "attempt_id": "20260906-01",
+  "evidence_kind": "repository_authenticated_diagnostic_plus_operator_recorded_pre_trace_stop",
+  "claim_boundary": "This outcome authenticates the committed sanitized P25 diagnostic and its exact repository provenance. The native diagnostic, retained evidence-file ownership and mode, acquisition client stderr, and absence of remote trace artifacts are operator-recorded external facts bound here; they are not independently recoverable from repository bytes. The corrected diagnostic passed, but the acquisition wrapper stopped before trace_off_a. No CUDA gradient, repeatability comparison, observer comparison, candidate observation, fidelity aggregate, shield execution, or training result was produced.",
+  "frozen_source_chain": {
+    "source_freeze_bootstrap": {
+      "commit": "5814621979ffedf370f04f3d99d925d8584b640f",
+      "tree": "31cafc8bae9a7311b18940c267a4da52ed6e8068"
+    },
+    "preregistration": {
+      "commit": "e76ab62f92c95e6f0716cf2f1ed38a583cadfe56",
+      "tree": "4fe0f57d50a8fa136bb192ec3fbac95b1e746aa2",
+      "parent": "5814621979ffedf370f04f3d99d925d8584b640f",
+      "exact_delta": [
+        "A\tresults/summaries/p25_historical_p24_native_outcome.json"
+      ]
+    },
+    "contract": {
+      "path": "experiments/training/p25_cuda_diagnostic_contract.json",
+      "schema_version": "passive-muon-p25-cuda-diagnostic-correction-contract-v1",
+      "status": "frozen_pre_remediation_build_and_pre_acquisition",
+      "sha256": "51e1fc22f685cc904fcdfff2775cff4293fdaa67a6e048072ee4dc49777f34e2"
+    }
+  },
+  "replacement_runtime": {
+    "commit": "a967f30dae3c8926f9ce5c4783a0923e42bcdb0d",
+    "tree": "8dca3402f27dfe1d0770cc2849fcca24778d76d8",
+    "parent": "e76ab62f92c95e6f0716cf2f1ed38a583cadfe56",
+    "exact_delta": [
+      "A\texperiments/training/p25_cuda_runtime_lock.json",
+      "A\texperiments/training/p25_host_attestation.json"
+    ],
+    "runtime_lock": {
+      "path": "experiments/training/p25_cuda_runtime_lock.json",
+      "schema_version": "passive-muon-p23-cuda-runtime-lock-v3",
+      "status": "pinned_for_acquisition",
+      "sha256": "95f06d7fcf6731c331811fc35cb48fa89606f22d53c968e5c5d625ca10e117f3",
+      "byte_count": 6599
+    },
+    "host_attestation": {
+      "path": "experiments/training/p25_host_attestation.json",
+      "schema_version": "passive-muon-p23-host-attestation-v3",
+      "status": "procedurally_host_attested",
+      "sha256": "2dc43b993028e624a0026fe0446f82e506ff51bf11c9bb38dc9fd17a173ab7b2",
+      "byte_count": 4124
+    },
+    "image": "localhost:5000/p25-runtime@sha256:e1a636b8c113aaa2823bd8e03bc0dee626d91cdc6897154e05a2bda54b178ee6",
+    "gpu": {
+      "uuid": "GPU-ee4c9bf9-42f5-7cdd-66d2-f638c2db549d",
+      "name": "NVIDIA A100-SXM4-40GB",
+      "compute_capability": [
+        8,
+        0
+      ],
+      "mig_mode": "disabled"
+    }
+  },
+  "corrected_diagnostic": {
+    "attempts_allowed": 1,
+    "attempts_run": 1,
+    "first_and_only_attempt": true,
+    "repository_commit": "a967f30dae3c8926f9ce5c4783a0923e42bcdb0d",
+    "repository_tree": "8dca3402f27dfe1d0770cc2849fcca24778d76d8",
+    "mode": "remediated",
+    "native_schema_version": "passive-muon-p25-executable-origin-diagnostic-v1",
+    "status": "passes",
+    "passes": true,
+    "exit_code": 0,
+    "checks": {
+      "total": 40,
+      "true": 40,
+      "false": 0
+    },
+    "native_artifact": {
+      "retention": "external_native_bytes_not_committed",
+      "file_name": "p25-remediated-executable-origin.native.json",
+      "sha256": "e6479d1a02556cee451cbcf1da3f8b10df498bca7835e9db3730a08f886d9184",
+      "byte_count": 4113445
+    },
+    "sanitized_artifact": {
+      "retention": "committed_full_sanitized_manifest",
+      "path": "results/summaries/p25_executable_origin_diagnostic.sanitized.json",
+      "schema_version": "passive-muon-p25-sanitized-executable-origin-diagnostic-v1",
+      "sha256": "56983629e935e3e18ac89b894ee84bc56e47f862abfcc36a6a5a15dbb8e5a354",
+      "byte_count": 5097711,
+      "redaction": {
+        "key_replacement_count": 2,
+        "value_replacement_count": 37915,
+        "total_replacement_count": 37917
+      }
+    },
+    "generated_module": {
+      "sha256": "8205b16956fb264841ecd8644784a0d157f87df79b17c16825dc1163433ce5d8",
+      "byte_count": 2355,
+      "effective_mount_writable": false
+    },
+    "scope": "Minimal CPU optimizer-construction executable-origin diagnostic only; no model, data, CUDA forward/backward pass, Muon candidate, optimizer step, or fidelity observation."
+  },
+  "diagnostic_bridge": {
+    "commit": "a037b04d0ae1e9c5b6b371ae78293e5e5640d91c",
+    "tree": "ea5941ee873f518f147f51fd15555989c331caef",
+    "parent": "a967f30dae3c8926f9ce5c4783a0923e42bcdb0d",
+    "exact_delta": [
+      "A\tresults/summaries/p25_executable_origin_diagnostic.sanitized.json"
+    ]
+  },
+  "acquisition_stop": {
+    "attempts_run": 1,
+    "status": "blocked_before_trace_off_a",
+    "host_orchestrator_exit_code": 1,
+    "failed_preflight": "reviewed_and_retained_diagnostic_wrapper_byte_comparison",
+    "comparison_exit_codes": {
+      "unprivileged_cmp": 2,
+      "privileged_cmp": 0
+    },
+    "client_stderr": {
+      "text": "P25 host orchestration blocked: reviewed and retained diagnostic wrappers differ\n",
+      "sha256": "3672bba450cc04d67c90d393864596a80e1c9216c91db14b8e7fcf858e586feb",
+      "byte_count": 81
+    },
+    "root_cause": {
+      "classification": "host_unprivileged_cmp_cannot_read_root_owned_retained_wrapper",
+      "retained_evidence_wrapper": {
+        "owner": "root:root",
+        "mode": "0600",
+        "sha256": "56983629e935e3e18ac89b894ee84bc56e47f862abfcc36a6a5a15dbb8e5a354",
+        "byte_count": 5097711
+      },
+      "repository_wrapper": {
+        "sha256": "56983629e935e3e18ac89b894ee84bc56e47f862abfcc36a6a5a15dbb8e5a354",
+        "byte_count": 5097711
+      },
+      "content_mismatch_observed": false,
+      "detail": "The wrappers had identical SHA-256 and byte count. The host-side cmp -s ran without privilege and could not read the retained root-owned mode-0600 file; the wrapper converted that failed comparison into the exact terminal error above."
+    },
+    "absent_pre_trace_logs": [
+      "p25-bridge-contract-reconstruction.stdout.log",
+      "p25-bridge-contract-reconstruction.stderr.log",
+      "p25-diagnostic-bridge-verification.stdout.log",
+      "p25-diagnostic-bridge-verification.stderr.log"
+    ],
+    "zero_acquisition_artifact_inventory": {
+      "native_expected_names": [
+        "trace-off-a.json",
+        "trace-off-a-failure.json",
+        "trace-off-b.json",
+        "trace-off-b-failure.json",
+        "repeatability.json",
+        "trace-on.json",
+        "trace-on-failure.json",
+        "raw-trace.json",
+        "noninterference.json",
+        "aggregate.json"
+      ],
+      "native_present_names": [],
+      "sanitized_present_names": [],
+      "acquisition_process_stream_labels_expected": [
+        "p23-trace-off-a",
+        "p23-trace-off-b",
+        "p23-verify-repeatability",
+        "p23-trace-on",
+        "p23-verify-noninterference",
+        "p23-aggregate"
+      ],
+      "acquisition_process_stream_labels_present": [],
+      "p23_sanitizer_processes_run": 0
+    }
+  },
+  "gate_status": {
+    "replacement_image_and_runtime": "completed",
+    "corrected_diagnostic": "passed_40_of_40",
+    "corrected_sanitization": "passed_committed_full_manifest",
+    "acquisition_host_preflight": "failed_closed_on_unreadable_retained_wrapper",
+    "trace_off_a": "not_started",
+    "trace_off_b": "not_run",
+    "exact_repeatability": "not_run",
+    "trace_on": "not_run",
+    "observer_noninterference": "not_run",
+    "candidate_observations": 0,
+    "fidelity_aggregate": "not_run",
+    "training": "not_run",
+    "trace_repeatability_noninterference_aggregate_artifact_count": 0,
+    "acquisition_process_stream_artifact_count": 0,
+    "bridge_reconstruction_or_verification_log_count": 0
+  },
+  "terminal_policy": {
+    "attempt_is_terminal": true,
+    "retry_until_favorable_allowed": false,
+    "reuse_attempt_20260906_01_allowed": false,
+    "p24_disposition_changed": false,
+    "frozen_p23_thresholds_changed": false
+  },
+  "theorem_status": {
+    "p18_through_p21_results_affected": false,
+    "cuda_repeatability_established": false,
+    "observer_noninterference_established": false,
+    "real_gradient_fidelity_established": false,
+    "native_cuda_shield_certified": false
+  },
+  "route": {
+    "next_branch": null,
+    "required_action": "Preregister a new attempt that makes the retained diagnostic wrapper readable to its exact host-side authentication step or performs that authentication with explicitly reviewed privilege, without rerunning attempt 20260906-01 or weakening any P23 gate.",
+    "new_attempt_required": true,
+    "threshold_tuning_allowed": false
+  }
+}

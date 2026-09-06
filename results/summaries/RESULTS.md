@@ -1594,6 +1594,33 @@ native bytes but is not the absent sanitized full manifest. Independently
 reconstruct its static relations and the sanitizer source defect with
 `scripts/reconstruct_p24_cuda_executable_origin_outcome.py`.
 
+## 31. P25 corrected-origin pass and terminal permission stop
+
+P25 created a fresh immutable A100 runtime and ran its corrected diagnostic
+exactly once. All `40/40` checks passed: the locked Torch state was configured
+before the CPU optimizer trigger, the generated module loaded from the
+read-only image path, and the corrected sanitizer independently reconstructed
+the complete pass while redacting mapping keys and values. The committed
+sanitized wrapper has SHA-256
+`56983629e935e3e18ac89b894ee84bc56e47f862abfcc36a6a5a15dbb8e5a354`.
+
+The subsequent acquisition command exited `1` before `trace_off_a`. The
+retained sanitized copy was `root:root` mode `0600`; unprivileged `cmp -s`
+therefore exited `2`, while privileged comparison exited `0`. Both copies
+were exactly `5,097,711` bytes and had the same SHA-256, so this is a host
+read-permission defect rather than a content mismatch. No bridge-verification
+log, trace artifact, repeatability report, candidate observation, fidelity
+aggregate, or training result exists. Attempt `20260906-01` is terminal and
+must not be rerun.
+
+The next route is `p26-permission-safe-acquisition-bridge`: in a fresh
+preregistered attempt, compare both wrapper byte strings inside the logged
+privileged container verifier before the unchanged P23 acquisition. No P23
+scientific threshold changes. See
+`P25_CUDA_DIAGNOSTIC_DETERMINISM_AND_REDACTION_RESULTS.md`,
+`p25_cuda_diagnostic_outcome.json`, and
+`scripts/reconstruct_p25_cuda_diagnostic_outcome.py`.
+
 ## Reproduce
 
 ```bash
@@ -1690,6 +1717,7 @@ uv run --locked python scripts/build_p22_repeatability_failure_evidence.py \
   --output-root results/summaries
 uv run --locked python scripts/reconstruct_p23_cuda_shadow_trace_outcome.py
 uv run --locked python scripts/reconstruct_p24_cuda_executable_origin_outcome.py
+uv run --locked python scripts/reconstruct_p25_cuda_diagnostic_outcome.py
 uv run --locked python experiments/matrices/run_deficit_audit.py
 uv run --locked python experiments/quadratics/run_lr_sweep.py
 uv run --locked python experiments/quadratics/run_horizon_check.py

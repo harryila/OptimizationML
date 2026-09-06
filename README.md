@@ -821,15 +821,22 @@ training result was produced. See the scoped
 [`P24 result`](results/summaries/P24_CUDA_EXECUTABLE_ORIGIN_HARDENING_RESULTS.md)
 and compact
 [`outcome record`](results/summaries/p24_cuda_executable_origin_outcome.json).
-The exact next route is `p25-cuda-diagnostic-determinism-and-redaction`.
-P25 now preregisters one corrected diagnostic attempt: it configures the full
-locked Torch determinism state before the minimal CPU optimizer trigger and
-redacts mapping keys as well as values. It also freezes P24 as terminal and
-permits the unchanged P23 CUDA acquisition only after that one diagnostic and
-its independent sanitizer both pass. This is a pre-execution contract; no P25
-diagnostic, replacement runtime, CUDA gradient, repeatability, fidelity,
-shield, or training result exists yet. See the
-[`P25 runbook`](experiments/training/P25_CUDA_DIAGNOSTIC_RUNBOOK.md).
+The preregistered `p25-cuda-diagnostic-determinism-and-redaction` route has now
+executed. P25's first and only corrected diagnostic passed all `40/40` exact checks in a
+fresh locked A100 runtime, and its corrected sanitizer committed the complete
+wrapper. The acquisition invocation then stopped before `trace_off_a`: the
+retained sanitized wrapper was `root:root` mode `0600`, so an unprivileged
+host `cmp` exited `2` even though privileged comparison and both SHA-256
+values proved the copies identical. No CUDA gradient, repeatability,
+observer, candidate, fidelity, shield, or training result was produced. The
+attempt is terminal. See the scoped
+[`P25 result`](results/summaries/P25_CUDA_DIAGNOSTIC_DETERMINISM_AND_REDACTION_RESULTS.md),
+compact
+[`outcome record`](results/summaries/p25_cuda_diagnostic_outcome.json), and
+[`P25 runbook`](experiments/training/P25_CUDA_DIAGNOSTIC_RUNBOOK.md). The exact
+next route is `p26-permission-safe-acquisition-bridge`: authenticate both
+wrapper copies inside the logged privileged container verifier in a fresh
+preregistered attempt, without changing any P23 scientific gate.
 
 The repair claim is intentionally scoped. A constant `rho` is the exact minimal
 linear shift for a **specified point, pair, sample set, or domain with a finite
@@ -899,6 +906,7 @@ uv run --locked python scripts/reconstruct_outer_loop_composition.py \
   --canonical results/summaries/certified_outer_loop_composition_certificate.json \
   --require-canonical
 uv run --locked python scripts/reconstruct_p24_cuda_executable_origin_outcome.py
+uv run --locked python scripts/reconstruct_p25_cuda_diagnostic_outcome.py
 uv run --locked pytest
 ```
 

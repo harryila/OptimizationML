@@ -1144,7 +1144,7 @@ a passing remediated artifact bound to the new digest, lock, attestation,
 clean HEAD, and tree permits the failure-output-guarded acquisition sequence
 above.
 
-### P25 corrected diagnostic (pre-execution)
+### P25 corrected diagnostic (terminal pre-trace result)
 
 P24 stopped permanently at its retained baseline diagnostic and sanitizer
 failures; the historical P24 commands above must not be resumed. P25 freezes
@@ -1154,11 +1154,22 @@ optimizer trigger, and its corrected offline sanitizer transforms mapping
 keys and values while rejecting redaction collisions. Only a passing native
 diagnostic and sanitized wrapper may unlock the unchanged P23 trace-off A/B,
 exact-repeatability, trace-on, exact-noninterference, and aggregation order.
+This was the `p25-cuda-diagnostic-determinism-and-redaction` route.
 
 The complete one-shot commands, fresh-path rules, ten-mount launch, in-place
 host-evidence updates, no-cache build, and no-favorable-rerun boundary are in
 [`training/P25_CUDA_DIAGNOSTIC_RUNBOOK.md`](training/P25_CUDA_DIAGNOSTIC_RUNBOOK.md).
-The contract and runbook currently record no P25 execution result.
+Attempt `20260906-01` has now executed and is terminal. Its corrected
+diagnostic and sanitizer passed, but acquisition stopped before `trace_off_a`
+because the root-owned mode-`0600` retained sanitized wrapper was unreadable
+to the unprivileged host `cmp`. The two copies have identical bytes under a
+privileged comparison and identical SHA-256; this is a permission error, not
+a content mismatch. No P23 acquisition artifact exists. See
+[`../results/summaries/P25_CUDA_DIAGNOSTIC_DETERMINISM_AND_REDACTION_RESULTS.md`](../results/summaries/P25_CUDA_DIAGNOSTIC_DETERMINISM_AND_REDACTION_RESULTS.md)
+and
+[`../results/summaries/p25_cuda_diagnostic_outcome.json`](../results/summaries/p25_cuda_diagnostic_outcome.json).
+The next attempt must be fresh and preregister a logged privileged bridge
+comparison; P25 itself must not be resumed.
 
 Replay the committed early-stop record's static source/runtime bindings with:
 
