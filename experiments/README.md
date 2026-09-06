@@ -56,10 +56,10 @@ Experiment order is gated:
     decay treatment, and frozen synthetic shadow-observer diagnostic;
 25. the frozen P22 real-gradient protocol, exact `768 x 2304` shape extension,
     and blocked Apple-MPS off-A/off-B baseline-repeatability diagnostic;
-26. the P23 CUDA-only addendum, null-invalid runtime-lock and host-attestation
-    templates, hardened model/optimizer and source/runtime binding, exact
-    fresh-process sequencing, and a preregistered 1,152-observation acceptance
-    gate with no CUDA result yet;
+26. the P23 CUDA-only addendum, null-invalid templates, populated A100 runtime
+    lock and host attestation, hardened model/optimizer and source/runtime
+    binding, and an operator-recorded pre-step stop on a writable-`/tmp`
+    executable origin;
 27. only after a fully supported model shape inventory, real-gradient shadow
     gates, model-forward use of the logical master, aspect scaling, weight
     decay, and implementation-parity gates, a small matched neural-training
@@ -888,10 +888,14 @@ do
 done
 ```
 
-Any nonzero command stops the sequence.  A failed repeatability gate routes to
-P24 localization; it never authorizes trace-on.  These commands create no P23
-result in the current checkout because its runtime lock is still the invalid
-null template and it has no CUDA device.
+Any nonzero command stops the sequence. A failed repeatability gate routes to
+P24 localization; it never authorizes trace-on. The operator record for the
+first locked-A100 `trace_off_a` invocation reports an even earlier stop: the
+initialized loaded-file check found `_remote_module_non_scriptable.py` under
+the writable `/tmp` tmpfs. No native failure or trace-off manifest was written
+and no later command was run. P23 makes no causal-localization claim. The exact
+status and route are recorded in
+`../results/summaries/P23_DETERMINISTIC_CUDA_SHADOW_TRACE_RESULTS.md`.
 
 The CUDA runner must construct and move the model before creating optimizer
 groups, then prove exact parameter-object, device, dtype, alias, name, shape,
@@ -913,12 +917,18 @@ their declared file, spec origin, existing cached bytecode, and recoverable
 source file. No tolerance or
 `allclose` is permitted.
 
-The current machine has no CUDA device and the runtime lock remains a null
-template. Therefore repository CI can replay only schema, provenance,
-fail-closed comparison, sanitization, and CPU fixture checks. Such a replay is
-not a CUDA acquisition, candidate-fidelity observation, or training result.
-An actual P23 result requires access to one preferably exclusive non-MIG,
-BF16-capable NVIDIA GPU and permission to run the digest-pinned OCI image.
+The committed runtime lock and host attestation bind the exact A100, container,
+mount namespace, and image used by that attempt. Repository CI can replay the
+schema, provenance, fail-closed comparison, sanitization, CPU fixtures, and
+committed outcome fields, but it cannot reproduce the remote CUDA process.
+P24 requires a newly digest-pinned and refrozen image; the existing lock must
+not be reused after changing the executable-origin behavior.
+
+Replay the committed early-stop record's static source/runtime bindings with:
+
+```bash
+uv run --locked python scripts/reconstruct_p23_cuda_shadow_trace_outcome.py
+```
 
 The P9 separate CPU diagnostic is a native-matmul
 falsification probe against a float64, non-exact target:

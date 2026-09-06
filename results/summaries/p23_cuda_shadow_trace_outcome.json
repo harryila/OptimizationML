@@ -1,0 +1,72 @@
+{
+  "schema_version": "passive-muon-p23-cuda-shadow-trace-outcome-v1",
+  "status": "blocked_trace_off_a_provenance",
+  "evidence_kind": "operator_recorded_cuda_shadow_trace_pretraining_blocker",
+  "claim_boundary": "The acquisition fields are an operator-retained record corroborated only in part by Docker event metadata; the failed runner emitted no native failure manifest. This record contains no optimizer step, gradient, candidate observation, repeatability result, observer-noninterference result, fidelity statistic, or training-quality evidence.",
+  "attempt": {
+    "role": "trace_off_a",
+    "started_from_clean_repository": true,
+    "repository_head": "f89ea1fef3fc2700fed0d05dcebf51254c8a0db9",
+    "repository_tree": "778661ea834294a4056ec5f36d0f1e2d5fcf9840",
+    "repository_porcelain_v1_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docker_exec_id": "e4dbbf141b6fa9c63a0334f0c6b72a932a8cf8a893e766077b841cb71a8a7728",
+    "docker_exec_exit_code": 2,
+    "docker_exec_died_unix_seconds": 1788683175,
+    "docker_exec_died_utc": "2026-09-06T08:26:15Z",
+    "stdout": "number of parameters: 123.55M\n",
+    "stderr": "P23 blocked: executable origin lies on a writable mount: tmpfs:tmp1s2eyibl/_remote_module_non_scriptable.py\n",
+    "transcript_retention": "The operator client retained these exact streams and Docker retained the exec ID, exit code, and death time. The failed runner did not emit a native failure manifest, so the transcript was not hash-bound at execution time.",
+    "evidence_status": "operator_recorded_with_docker_event_metadata_not_native_failure_manifest",
+    "failure_phase": "initialized_loaded_file_closure_before_initial_state_hash_and_step_zero",
+    "model_allocated": true,
+    "optimizer_constructed": true,
+    "forward_backward_started": false,
+    "optimizer_steps_completed": 0,
+    "candidate_observations": 0,
+    "native_trace_off_a_manifest_created": false
+  },
+  "locked_runtime": {
+    "runtime_lock_sha256": "54de9d5d2e8d497e06c45e7672988ffa2948239c78a3e5164dc7d266ddae6a2d",
+    "host_attestation_sha256": "3f67ce327ab13b1a177be5ae6a767cc49a624e7c7b432d5e63fbb933e8d1b3a1",
+    "p23_addendum_sha256": "ad29a15e3b027250a35b6c3af6ce214cc98d664cad7d9821730e7e0cdaab9e3a",
+    "runner_sha256": "06e0fee7c725e2e861601bdc38bd51d64d23101926a5c7a6ad02fe5ab62118b5",
+    "runtime_recipe_sha256": "8f786786605ce34d9512ef85f92af7490b1ca04a872df1c4dd60e5956077f5c4",
+    "container_id": "9932b8b28bb3686c184b1e54dfb859bad716772168a710a870024bda384e4954",
+    "container_init_pid": 16283,
+    "image": "localhost:5000/p23-runtime@sha256:44ef23717780b1cbf112b183e7988b1319ddfed6b1d224efaa33e1e6d96de4c1",
+    "image_id": "sha256:44ef23717780b1cbf112b183e7988b1319ddfed6b1d224efaa33e1e6d96de4c1",
+    "gpu_uuid": "GPU-ee4c9bf9-42f5-7cdd-66d2-f638c2db549d",
+    "gpu_name": "NVIDIA A100-SXM4-40GB",
+    "mountinfo_sha256": "b1f509d303abb8ac4552d68c9357f9b9be8caffbe4204f3ac04f6c6c95e27381",
+    "live_identity_rechecked_before_attempt": true
+  },
+  "native_evidence_inventory_after_failure": {
+    "present": [
+      "p23_cuda_runtime_lock.json",
+      "p23_host_attestation.json"
+    ],
+    "absent": [
+      "trace-off-a.json",
+      "trace-off-b.json",
+      "repeatability.json",
+      "trace-on.json",
+      "raw-trace.json",
+      "noninterference.json",
+      "aggregate.json"
+    ]
+  },
+  "gate_status": {
+    "trace_off_a": "blocked_before_step_zero",
+    "trace_off_b": "not_run",
+    "repeatability": "not_run",
+    "trace_on": "mechanically_barred",
+    "noninterference": "not_run",
+    "aggregate_fidelity": "not_run"
+  },
+  "route": {
+    "next_branch": "p24-cuda-executable-origin-hardening",
+    "reason": "The failure precedes every outcome in the preregistered four-way post-run table. P24 must reproduce and localize the implicated initialization path with native, hash-bound provenance, apply an image-resident remedy without weakening P23's writable-origin rejection, then freeze a new image and runtime before any new acquisition.",
+    "thresholds_may_change": false,
+    "p23_may_be_rerun_under_existing_lock": false
+  }
+}

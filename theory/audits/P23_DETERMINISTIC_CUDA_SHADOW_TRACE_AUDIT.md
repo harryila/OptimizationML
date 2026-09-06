@@ -2,11 +2,16 @@
 
 ## Status
 
-**Unsigned pre-acquisition review packet.** P23 is protocol-ready and its
-host-generated CUDA runtime lock and host attestation are committed. Only
-setup-level CUDA/BF16 smoke checks and runtime freezing have run: no trace-off,
-trace-on, training, or fidelity acquisition exists. Unchecked acquisition
-items must not be cited as completed review or empirical evidence.
+**Unsigned outcome-review packet.** P23's host-generated CUDA runtime lock and
+host attestation were committed before acquisition. The operator record says
+the first locked-A100 `trace_off_a` process failed closed during initialized
+loaded-file collection, before step zero, on a PyTorch-generated executable
+source under writable `/tmp`. The runner emitted no native failure or
+trace-off manifest; the exact acquisition stream is therefore not
+execution-hash-bound, and P23 retains no rule-7-complete causal-localization
+experiment. No trace-on, training step,
+candidate observation, or fidelity result exists. Unchecked acquisition items
+must not be cited as completed review or empirical evidence.
 
 ## Materials under review
 
@@ -22,7 +27,9 @@ items must not be cited as completed review or empirical evidence.
   source snapshot;
 - the unchanged P22 protocol and arithmetic erratum; and
 - after acquisition, the complete sanitized run manifests, comparison
-  reports, trace record, aggregate, and scoped P23 results summary.
+  reports, trace record, aggregate, and scoped P23 results summary; or, for the
+  observed early stop, the compact outcome record and scoped P23 results
+  summary documenting why those stage-illegal artifacts are absent.
 
 The P22 Apple-MPS diagnostic is historical input, not P23 CUDA evidence.  P23
 does not modify any P18--P21 theorem or certify the unshielded baseline.

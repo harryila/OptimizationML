@@ -2129,3 +2129,32 @@ The native comparator also trusted its opaque run-identity digest rather than
 separately binding every runtime/source map. The canonical failure builder
 independently requires exact equality of those maps for this pair; hardening
 the native verifier is a prerequisite for a future acceptance run.
+
+## C29. P23 deterministic-CUDA acquisition — blocked by writable executable origin before step zero
+
+P23 does not establish CUDA repeatability or real-gradient candidate fidelity.
+Its operator record says the first and only frozen `trace_off_a` process on
+the pinned A100 runtime reached model and optimizer construction, then the
+initialized loaded-file provenance check rejected
+`tmpfs:tmp1s2eyibl/_remote_module_non_scriptable.py`. It exited with code `2`
+before the initial state hash, first forward/backward pass, optimizer step, or
+candidate observation. The runner wrote no native failure or trace-off
+manifest, so the exact stream, clean-tree/live-lock checks, and post-failure
+directory inventory remain operator-recorded rather than execution-hash-bound.
+Every later gate was unrun or mechanically barred.
+
+P23 retains no rule-7-complete causal-localization experiment for that early
+stop. The nanoGPT forward/backward path, Muon candidate, observer, shield, and
+CUDA determinism were not reached or tested, so no conclusion about them
+follows. P24 must reproduce the implicated initialization path with native,
+hash-bound provenance before treating a proposed image change as a remedy.
+
+The result supports retaining the fail-closed writable-origin rule. It does
+not support allowlisting arbitrary temporary executables, weakening source
+closure, claiming a neural-loss theorem, or rerunning under the existing
+runtime lock after altering image behavior. P24 requires a new immutable image
+digest and runtime lock. See
+`../results/summaries/P23_DETERMINISTIC_CUDA_SHADOW_TRACE_RESULTS.md` and
+`../results/summaries/p23_cuda_shadow_trace_outcome.json`. The compact record
+qualifies its operator streams as transcribed because the failed runner had no
+native failure-manifest path.

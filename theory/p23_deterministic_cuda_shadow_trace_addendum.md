@@ -2,12 +2,20 @@
 
 ## Status and authority
 
-P23 is **protocol-ready and acquisition-blocked**.  No P23 CUDA run, shadow
-observation, fidelity statistic, or training-quality result is present.  The
+P23 has an **operator-recorded fail-closed pretraining CUDA provenance stop**.
+The record says the first locked-A100 `trace_off_a` process stopped during the
+initialized loaded-file check, before step zero, after reporting a generated
+Python module under writable `/tmp`. No native failure manifest, trace-off
+manifest, shadow observation, fidelity statistic, or training-quality result
+is present. The
 machine-readable authority is
 `experiments/training/p23_deterministic_cuda_shadow_trace_addendum.json`.
 Its exact bytes must be hashed by each preflight and run; documentation must
-not substitute a manually copied digest.
+not substitute a manually copied digest. Its unchanged
+`frozen_pre_acquisition_cuda_runtime_lock_pending` status records the instant
+the protocol was preregistered; the later populated lock, attempted execution,
+and early-stop result are deliberately recorded in separate mutable artifacts
+rather than rewriting those acquisition-governing bytes.
 
 This addendum narrows, but does not rewrite, the frozen P22 acquisition.  It
 inherits the P22 protocol with SHA-256
@@ -329,9 +337,19 @@ Muon fidelity.
   is not weakened.
 - Passing every gate routes P24 to a native CUDA sector shield and then a
   matched shielded-training study.
+- A failure before trace-off A can produce its native manifest routes P24 to
+  the violated pre-run contract; it does not authorize skipping that contract
+  or interpreting any later gate.
 
-The current checkout has no CUDA device and the runtime-lock template is not
-populated.  Consequently P23 can presently validate only the contract,
-fail-closed verifier, provenance logic, and CPU fixtures.  No diagnostic or
-checkpoint tag is warranted until an actual pinned CUDA acquisition reaches
-an outcome.  P18--P21 remain unchanged.
+The operator record says the committed A100 runtime lock and host attestation
+were live and matched immediately before the first acquisition. It says that
+the `trace_off_a` process exited with code `2` before step zero after finding
+`tmpfs:tmp1s2eyibl/_remote_module_non_scriptable.py`. P23 correctly rejects the
+writable executable origin. The failed runner emitted no native failure
+manifest, and P23 retains no rule-7-complete causal-localization experiment.
+No trace-off-A artifact was recorded; every later gate remains unrun or
+mechanically barred. The result and exact scope are in
+`../results/summaries/P23_DETERMINISTIC_CUDA_SHADOW_TRACE_RESULTS.md` and
+`../results/summaries/p23_cuda_shadow_trace_outcome.json`. P24 must use a new
+image digest and runtime lock to eliminate or immutably contain the side
+effect without weakening the general rule. P18--P21 remain unchanged.

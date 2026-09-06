@@ -1514,6 +1514,47 @@ data records are `p22_real_gradient_preflight_evidence.json` and
 `p22_fineweb_materialization_evidence.json`. The frozen protocol is
 `../../theory/p22_real_gradient_shadow_trace_protocol.md`.
 
+## 29. P23 locked-A100 executable-origin diagnostic
+
+P23 committed a populated runtime lock and host attestation before any CUDA
+gradient acquisition. The lock binds the exact A100-SXM4-40GB, full GPU UUID,
+Docker container and init PID, immutable image digest, namespace-entered mount
+table, Python 3.12 executable, PyTorch `2.7.0+cu128`, CUDA 12.8 runtime, and
+deterministic settings. Operator checks immediately before acquisition
+recorded that the live container, image, GPU, mountinfo hash, and clean
+OptimizationML head `f89ea1f` all still matched that lock.
+
+The operator-client record says the first frozen `trace_off_a` process failed
+closed during its initialized loaded-file closure, before the initial state
+hash or step zero:
+
+```text
+P23 blocked: executable origin lies on a writable mount: tmpfs:tmp1s2eyibl/_remote_module_non_scriptable.py
+```
+
+The Docker event records exit code `2`; the failed runner wrote no native
+failure or trace-off-A manifest. The exact stream and post-failure directory
+inventory are therefore operator-recorded rather than execution-hash-bound.
+Trace-off B, repeatability, trace-on, noninterference, and the 1,152-observation
+aggregate were not run. This is a qualified pretraining provenance diagnostic,
+not CUDA repeatability, real-gradient fidelity, observer noninterference, or
+training evidence.
+
+P23 retains no rule-7-complete causal-localization artifact. The operator
+record is sufficient to show that the run stopped on the writable-origin
+guard, but not to attribute the generated filename to a particular import
+chain. P24 must reproduce and localize the implicated initialization path
+under native, hash-bound provenance, retain the general writable-origin
+rejection, and freeze a new image/runtime before another acquisition.
+
+See `P23_DETERMINISTIC_CUDA_SHADOW_TRACE_RESULTS.md` and the compact
+`p23_cuda_shadow_trace_outcome.json`. The latter honestly records that the
+failed process emitted no native failure manifest, so its exact operator
+streams were transcribed rather than hash-bound at execution time.
+
+Independently validate the retained commit/runtime bindings with
+`scripts/reconstruct_p23_cuda_shadow_trace_outcome.py`.
+
 ## Reproduce
 
 ```bash
@@ -1608,6 +1649,7 @@ uv run --locked python experiments/training/run_p21_synthetic_shadow_trace.py \
 uv run --locked python scripts/build_p22_repeatability_failure_evidence.py \
   --native-root /path/to/p22-native-evidence \
   --output-root results/summaries
+uv run --locked python scripts/reconstruct_p23_cuda_shadow_trace_outcome.py
 uv run --locked python experiments/matrices/run_deficit_audit.py
 uv run --locked python experiments/quadratics/run_lr_sweep.py
 uv run --locked python experiments/quadratics/run_horizon_check.py

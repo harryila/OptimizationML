@@ -473,10 +473,19 @@
       exactly zero captures. Mechanically require a hash-bound, zero-mismatch
       off-A/off-B report before starting trace-on; trace-on must record exactly
       `48 x 24 = 1152` actual stored BF16 CUDA post-aspect candidates.
-- [ ] Run fresh-process P23 CUDA trace-off A and B and require zero exact
-      mismatches; do not replace this with `allclose`. Only after that passes,
-      run trace-on and require zero off-A/trace-on state, loss, data, and RNG
-      mismatches.
+- [x] Attempt the frozen fresh-process P23 CUDA acquisition exactly once. The
+      operator record reports that the locked A100 `trace_off_a` process
+      failed closed before step zero on
+      `_remote_module_non_scriptable.py` under writable `/tmp`; it wrote no
+      native failure or trace-off manifest. Per protocol, do not run trace-off
+      B, repeatability, or trace-on under this lock and do not replace the
+      provenance check with an allowlist for arbitrary writable origins.
+- [ ] On `p24-cuda-executable-origin-hardening`, reproduce and localize the
+      implicated initialization path with native, hash-bound provenance, then
+      place any required generated module on an immutable image origin or
+      remove its import side effect. Preserve the general writable-origin
+      rejection, build a new digest, refreeze the runtime, and only then
+      restart the three-process CUDA acquisition.
 - [ ] Retain path-sanitized complete manifests and exact raw-artifact hashes,
       aggregate all 1,152 records, and report the unchanged frozen activation,
       correction, cosine, amplitude, effective-update, P16/P18, and mild-

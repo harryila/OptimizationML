@@ -673,7 +673,7 @@ def test_double_blind_material_is_guarded_from_the_public_repository() -> None:
         assert pattern in ignore.splitlines()
 
 
-def test_p23_is_runtime_locked_without_claiming_trace_evidence() -> None:
+def test_p23_records_locked_cuda_pretraining_provenance_stop() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     tasks = (ROOT / "TASKS.md").read_text(encoding="utf-8")
     experiments = (ROOT / "experiments/README.md").read_text(encoding="utf-8")
@@ -701,6 +701,11 @@ def test_p23_is_runtime_locked_without_claiming_trace_evidence() -> None:
     runtime_lock = json.loads(runtime_lock_path.read_text(encoding="utf-8"))
     attestation_path = ROOT / "experiments/training/p23_host_attestation.json"
     attestation = json.loads(attestation_path.read_text(encoding="utf-8"))
+    outcome_path = ROOT / "results/summaries/p23_cuda_shadow_trace_outcome.json"
+    outcome = json.loads(outcome_path.read_text(encoding="utf-8"))
+    outcome_summary = (
+        ROOT / "results/summaries/P23_DETERMINISTIC_CUDA_SHADOW_TRACE_RESULTS.md"
+    ).read_text(encoding="utf-8")
 
     assert addendum["schema_version"] == (
         "passive-muon-p23-deterministic-cuda-shadow-trace-addendum-v1"
@@ -772,9 +777,9 @@ def test_p23_is_runtime_locked_without_claiming_trace_evidence() -> None:
         assert hashlib.sha256(inherited_bytes).hexdigest() == entry["sha256"]
         assert entry["mutation_allowed"] is False
 
-    combined = " ".join((readme, tasks, experiments, prose, audit)).lower()
+    combined = " ".join((readme, tasks, experiments, prose, audit, outcome_summary)).lower()
     for required in (
-        "protocol-ready",
+        "pretraining",
         "runtime lock",
         "file-backed loaded-module",
         "not_observed",
@@ -783,8 +788,59 @@ def test_p23_is_runtime_locked_without_claiming_trace_evidence() -> None:
         "exact",
     ):
         assert required in combined
-    readme_flat = " ".join(readme.lower().split())
-    assert "there is no trace-off, trace-on, training, or p23 fidelity result" in readme_flat
+    assert outcome["schema_version"] == "passive-muon-p23-cuda-shadow-trace-outcome-v1"
+    assert outcome["status"] == "blocked_trace_off_a_provenance"
+    assert outcome["attempt"]["repository_head"] == ("f89ea1fef3fc2700fed0d05dcebf51254c8a0db9")
+    assert outcome["attempt"]["repository_tree"] == ("778661ea834294a4056ec5f36d0f1e2d5fcf9840")
+    assert outcome["attempt"]["docker_exec_exit_code"] == 2
+    assert outcome["attempt"]["optimizer_steps_completed"] == 0
+    assert outcome["attempt"]["candidate_observations"] == 0
+    assert outcome["attempt"]["native_trace_off_a_manifest_created"] is False
+    assert (
+        outcome["locked_runtime"]["runtime_lock_sha256"]
+        == hashlib.sha256(runtime_lock_path.read_bytes()).hexdigest()
+    )
+    assert (
+        outcome["locked_runtime"]["host_attestation_sha256"]
+        == hashlib.sha256(attestation_path.read_bytes()).hexdigest()
+    )
+    assert (
+        outcome["locked_runtime"]["p23_addendum_sha256"]
+        == hashlib.sha256(addendum_path.read_bytes()).hexdigest()
+    )
+    assert outcome["locked_runtime"]["container_id"] == runtime_lock["container"]["container_id"]
+    assert (
+        outcome["locked_runtime"]["container_init_pid"]
+        == runtime_lock["container"]["container_init_pid"]
+    )
+    assert outcome["locked_runtime"]["image"] == runtime_lock["container"]["image"]
+    assert outcome["locked_runtime"]["gpu_uuid"] == runtime_lock["gpu"]["uuid"]
+    assert (
+        outcome["locked_runtime"]["mountinfo_sha256"]
+        == runtime_lock["container"]["mountinfo_sha256"]
+    )
+    assert outcome["native_evidence_inventory_after_failure"]["absent"] == [
+        "trace-off-a.json",
+        "trace-off-b.json",
+        "repeatability.json",
+        "trace-on.json",
+        "raw-trace.json",
+        "noninterference.json",
+        "aggregate.json",
+    ]
+    assert outcome["gate_status"] == {
+        "trace_off_a": "blocked_before_step_zero",
+        "trace_off_b": "not_run",
+        "repeatability": "not_run",
+        "trace_on": "mechanically_barred",
+        "noninterference": "not_run",
+        "aggregate_fidelity": "not_run",
+    }
+    assert outcome["route"]["next_branch"] == "p24-cuda-executable-origin-hardening"
+    assert outcome["route"]["thresholds_may_change"] is False
+    assert outcome["route"]["p23_may_be_rerun_under_existing_lock"] is False
+    assert "tmpfs:tmp1s2eyibl/_remote_module_non_scriptable.py" in outcome["attempt"]["stderr"]
+    assert "not hash-bound at execution time" in outcome["attempt"]["transcript_retention"]
     assert "mutually hash-bound" not in combined
     assert "- [x] populate and commit the p23 runtime lock" in tasks.lower()
     assert "- [x] finish the p23 runner and verifier hardening" in tasks.lower()
@@ -802,7 +858,7 @@ def test_p23_is_runtime_locked_without_claiming_trace_evidence() -> None:
         assert command in experiments
     p23_runbook = experiments[
         experiments.index("P23 does not rerun or amend") : experiments.index(
-            "The P9 separate CPU diagnostic"
+            "Replay the committed early-stop record"
         )
     ]
     assert "uv run" not in p23_runbook
@@ -855,5 +911,7 @@ def test_p23_is_runtime_locked_without_claiming_trace_evidence() -> None:
         assert "torch" in boundary_flat
         assert "not individually" in boundary_flat
     assert "twenty-six technical goals" in readme
-    assert "## 29. P23" not in results
-    assert "## C29." not in claims
+    assert "## 29. P23 locked-A100 executable-origin diagnostic" in results
+    assert "## C29. P23 deterministic-CUDA acquisition" in claims
+    assert "no native failure or trace-off manifest" in combined
+    assert "p24-cuda-executable-origin-hardening" in combined

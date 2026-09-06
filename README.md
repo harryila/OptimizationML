@@ -784,22 +784,30 @@ observed: trace-off records
 `not_observed` and zero captures, while trace-on must contain exactly
 `48 x 24 = 1,152` actual post-aspect candidate observations.
 
-P23 is currently **protocol-ready and CUDA-runtime-locked**. The populated
+P23 now has an **operator-recorded fail-closed CUDA provenance diagnostic**.
+The populated
 host attestation and runtime lock were generated on the selected A100 and
 committed at `ad52f7e`; they bind image digest
 `sha256:44ef23717780b1cbf112b183e7988b1319ddfed6b1d224efaa33e1e6d96de4c1`.
 The acquisition contract requires Docker network mode `none` and freezes the
 complete Python 3.12 interpreter-flag map and safe executable search path in
-addition to the executable bytes. CUDA/BF16 setup smoke checks passed. There
-is no trace-off, trace-on, training, or P23 fidelity result. Trace-on
-remains mechanically barred until fresh-process CUDA off-A/off-B manifests
-match with zero exact differences; `allclose` is not an alternative.  See
+addition to the executable bytes. CUDA/BF16 setup smoke checks passed. The
+first frozen `trace_off_a` invocation was reported to stop before step zero
+after the initialized loaded-file check reported
+`_remote_module_non_scriptable.py` under writable `/tmp`. It wrote no trace-off
+manifest; trace-off B, repeatability, trace-on, training, and fidelity
+aggregation were not run. The failed runner emitted no native failure
+manifest, so the acquisition transcript is explicitly treated as
+operator-recorded; P23 makes no causal-localization claim. See the scoped
+[`P23 result`](results/summaries/P23_DETERMINISTIC_CUDA_SHADOW_TRACE_RESULTS.md),
+the compact
+[`outcome record`](results/summaries/p23_cuda_shadow_trace_outcome.json),
 [`theory/p23_deterministic_cuda_shadow_trace_addendum.md`](theory/p23_deterministic_cuda_shadow_trace_addendum.md)
 and the unsigned
 [`P23 audit packet`](theory/audits/P23_DETERMINISTIC_CUDA_SHADOW_TRACE_AUDIT.md).
-Acquisition additionally requires a tracked, sanitized host-attestation
-artifact binding the OCI repository digest and physical GPU evidence; a digest
-asserted only from inside the container is insufficient.
+P24 must immutably contain or eliminate that generated source, then build and
+refreeze a new image before another acquisition; allowlisting writable `/tmp`
+is not the selected remedy.
 
 The repair claim is intentionally scoped. A constant `rho` is the exact minimal
 linear shift for a **specified point, pair, sample set, or domain with a finite
@@ -974,8 +982,10 @@ This repository stays focused on twenty-six technical goals:
     complete tracked-repository provenance and file-backed loaded-module
     closures at initialization and completion, exact model-to-optimizer
     binding, truthful zero-capture trace-off manifests, and a
-    mechanically gated 1,152-observation trace-on acquisition; the runtime
-    lock and CUDA result remain pending.
+    mechanically gated 1,152-observation trace-on acquisition; its first
+    pinned-A100 attempt is operator-recorded as stopping before step zero
+    on a PyTorch-generated executable source under writable `/tmp`, so no CUDA
+    fidelity result exists.
 
 P7 is the submission cutoff and broadest robustness theorem; P6 is its
 zero-disturbance smooth-PL corollary. P8 and P9 instantiate one P7 disturbance
@@ -1026,7 +1036,12 @@ nonzero-decay bounds remain explicit premises; they are not derived from an
 arbitrary training run. P22 closes the static GPT-2 matrix-shape inventory but
 its first MPS acquisition fails exact baseline repeatability before the
 observer is enabled. P23 freezes the stricter deterministic-CUDA replay and
-provenance contract but has no populated host runtime lock or acquisition.
+populated A100 runtime lock, but its first trace-off-A invocation is
+operator-recorded as failing the initialized executable-origin check before
+step zero after reporting a generated-module filename under writable `/tmp`.
+Thus P23 has a qualified operator-recorded CUDA provenance stop, not a
+repeatability or fidelity acquisition. P24 must reproduce and localize the
+implicated initialization path with native, hash-bound provenance.
 Production-gradient fidelity evidence, native
 accelerator/distributed parity, generic stochastic-gradient guarantees,
 throughput, and formal circuit ports remain open.

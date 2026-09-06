@@ -296,6 +296,21 @@ Current outputs:
 - `../theory/audits/P22_REAL_GRADIENT_SHADOW_TRACE_AUDIT.md`: completed
   internal acquisition audit and unsigned external-review checklist for the
   P22 stop decision; independent human review remains pending;
+- `summaries/P23_DETERMINISTIC_CUDA_SHADOW_TRACE_RESULTS.md`: scoped P23
+  locked-A100 operator record. It says the first `trace_off_a` process stopped
+  during initialized loaded-file collection, before step zero, after reporting
+  a generated Python module under the writable `/tmp` tmpfs. No native
+  trace-off manifest, causal localization, or fidelity result exists;
+- `summaries/p23_cuda_shadow_trace_outcome.json`: compact operator-recorded P23
+  outcome recording the attempted clean repository tree, committed runtime
+  artifacts, reported live container/GPU identity, Docker exec exit metadata,
+  exact reported blocker, and stage-legal artifact absences. The operator
+  streams are explicitly marked
+  as transcribed rather than hash-bound at execution time; independently
+  validate its static source/runtime bindings with
+  `scripts/reconstruct_p23_cuda_shadow_trace_outcome.py`;
+- `../theory/audits/P23_DETERMINISTIC_CUDA_SHADOW_TRACE_AUDIT.md`: unsigned
+  external-review checklist updated for the early provenance stop;
 - `summaries/deficit_audit.{json,csv}`: 24-prefix spectral audit;
 - `summaries/quadratic_lr_sweep.json` plus CSV tables: gain-matched quadratic
   sweep and sensitivity classifications;

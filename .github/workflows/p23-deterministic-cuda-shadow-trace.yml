@@ -58,12 +58,18 @@ jobs:
           "$RUNNER_TEMP/p22_scalable_shield_shape_extension_certificate.json"
           --require-canonical
 
+      - name: Check retained P23 outcome static and internal consistency
+        run: >-
+          uv run --locked python
+          scripts/reconstruct_p23_cuda_shadow_trace_outcome.py
+
       - name: Run P23 CPU contract and hardened P22/P23 boundary tests
         run: >-
           uv run --locked pytest -q
           tests/test_p23_deterministic_cuda_shadow_trace.py
           tests/test_p23_cuda_acquisition_runner.py
           tests/test_p23_runtime_recipe.py
+          tests/test_p23_cuda_shadow_trace_outcome.py
           tests/test_p22_real_gradient_shadow_trace.py
           tests/test_p22_real_gradient_observer.py
           tests/test_p22_scalable_shield_shape_extension.py
@@ -79,5 +85,6 @@ jobs:
       - name: State the acquisition boundary
         run: >-
           echo "This CPU job validates the frozen P23 contract, inherited exact
-          shape certificate, provenance logic, and fail-closed fixtures. It
-          neither runs CUDA nor supplies real-gradient fidelity evidence."
+          shape certificate, retained pretraining CUDA provenance stop, and
+          fail-closed fixtures. It does not reproduce the remote CUDA process
+          and supplies no real-gradient fidelity evidence."
