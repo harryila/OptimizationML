@@ -1,0 +1,53 @@
+name: P30 UID-1000 to root engineering rehearsal
+
+on:
+  push:
+    branches:
+      - p30-engineering-rehearsal
+  workflow_dispatch:
+    inputs:
+      source_commit:
+        description: Reviewed P30 source commit to rehearse (must directly follow terminal P29)
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  disposable-linux-handoff:
+    name: Disposable Linux checkout, receipt, and root-seal handoff
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+
+    steps:
+      - name: Check out complete history without persisted credentials
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Run the CPU-only engineering rehearsal
+        env:
+          P30_REHEARSAL_SOURCE_COMMIT: ${{ inputs.source_commit || github.sha }}
+          P30_REHEARSAL_LOG_ROOT: ${{ runner.temp }}/p30-engineering-rehearsal-logs
+          # runner.temp has a UID-1001-only ancestor on hosted runners.  Keep the
+          # cross-UID staging tree under the sticky, traversable /tmp instead.
+          P30_REHEARSAL_STAGE_ROOT: /tmp/p30-engineering-rehearsal-${{ github.run_id }}-${{ github.run_attempt }}
+        run: bash scripts/rehearse_p30_uid1000_root_handoff.sh
+
+      - name: Retain every client-side stream and status
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: p30-uid1000-root-engineering-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/p30-engineering-rehearsal-logs
+          if-no-files-found: warn
+          retention-days: 90
+
+      - name: State the evidence boundary
+        if: ${{ always() }}
+        run: >-
+          echo "This disposable CPU workflow is an engineering rehearsal. It does
+          not initialize CUDA, inspect a GPU mapping, authorize P30 localization,
+          collect a candidate, run a shield, update a parameter, or train a model."

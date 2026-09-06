@@ -18,6 +18,28 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
+          persist-credentials: false
+
+      - name: Materialize exact frozen phase branch refs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse refs/remotes/origin/p29-permission-safe-bundle-localization-bridge)" = \
+            8a263722c7f8ce1d99b8796a3ccc0425dd1cefcf
+          test "$(git rev-parse refs/remotes/origin/p28-bundle-complete-localization-bridge)" = \
+            7274367f2b05fb3c9ed9f876a59be647703bbdc2
+          test "$(git rev-parse refs/remotes/origin/p27-cuda-deleted-mapping-localization)" = \
+            ec63550331925ded158e3f389e294e4d1f12db3a
+          test -z "$(git config --local --name-only --list | grep -Ei '^include(if)?\.' || true)"
+          git update-ref refs/heads/p29-permission-safe-bundle-localization-bridge \
+            8a263722c7f8ce1d99b8796a3ccc0425dd1cefcf \
+            0000000000000000000000000000000000000000
+          git update-ref refs/heads/p28-bundle-complete-localization-bridge \
+            7274367f2b05fb3c9ed9f876a59be647703bbdc2 \
+            0000000000000000000000000000000000000000
+          git update-ref refs/heads/p27-cuda-deleted-mapping-localization \
+            ec63550331925ded158e3f389e294e4d1f12db3a \
+            0000000000000000000000000000000000000000
 
       - name: Set up Python
         uses: actions/setup-python@v7
@@ -39,7 +61,12 @@ jobs:
         run: uv run --locked ruff check .
 
       - name: Run tests
-        run: uv run --locked pytest -q
+        # P29 froze one BSD `stat` spelling in a test-only shell harness.
+        # The compatibility wrapper translates only that exact spelling and
+        # delegates every other invocation to the platform `stat` binary.
+        run: >-
+          PATH="$GITHUB_WORKSPACE/.github/compat/p29:$PATH"
+          uv run --locked pytest -q --basetemp="$RUNNER_TEMP/pytest-p30"
 
       - name: Execute the exact canonical witness
         run: uv run --locked python scripts/find_counterexample.py --output "$RUNNER_TEMP/canonical_witness.json"
