@@ -1,0 +1,1240 @@
+{
+  "schema_version": "passive-muon-p29-permission-safe-bundle-localization-bridge-contract-v1",
+  "status": "frozen_pre_transfer_pre_container_no_training",
+  "branch": "p29-permission-safe-bundle-localization-bridge",
+  "purpose": "Correct P28's control-parent permission defect with one preregistered process-owned transport capability, remove mutable staged-source races with a separately manifested root-owned immutable execution snapshot, and run the unchanged P27 no-training deleted-mapping localizer once in one fresh runtime.",
+  "claim_boundary": "This is a pre-execution permission-safe transfer and localization bridge contract. It records no P29 namespace, bundle receipt, control or authority checkout, immutable execution snapshot, attempt root, runtime, mapping observation, CUDA repeatability result, observer-noninterference result, real-gradient candidate, fidelity aggregate, shield execution, optimizer update, or training result. Fresh scientific acquisition remains unauthorized.",
+  "terminal_parent": {
+    "branch": "p28-bundle-complete-localization-bridge",
+    "outcome_path": "results/summaries/p28_bundle_complete_localization_bridge_outcome.json",
+    "outcome_sha256": "298324d163aa12c1cb64bfdb912ae846152d0980ae3c981a54ead75a019305c9",
+    "outcome_schema": "passive-muon-p28-bundle-complete-localization-bridge-outcome-v1",
+    "outcome_status": "terminal_source_verifier_control_checkout_parent_permission_stop",
+    "outcome_commit": "7274367f2b05fb3c9ed9f876a59be647703bbdc2",
+    "outcome_tree": "8d971e176e664ea47d8f769ae54f8cf349ceb3d5",
+    "diagnostic_tag": "p28-control-parent-permission-diagnostic",
+    "diagnostic_tag_object": "f3c81a2f14f853f369015a4f81b6695b52eec74e",
+    "diagnostic_peeled_commit": "7274367f2b05fb3c9ed9f876a59be647703bbdc2",
+    "source_freeze_commit": "003b6ee3f0ee2d1c269cac787c0281bf3f976ac4",
+    "source_freeze_tree": "11e471539a8f422d74728548a0ee8ac19ffea1c0",
+    "attempt_id": "20260906-01",
+    "attempt_is_terminal": true,
+    "attempt_reuse_allowed": false,
+    "source_verifier_invocations_run": 1,
+    "source_receipt_created": false,
+    "control_checkout_created": false,
+    "attempt_root_created": false,
+    "container_created": false,
+    "cuda_initialized": false,
+    "localization_invocation_consumed": false,
+    "candidate_observations": 0,
+    "failed_operation": "git init --initial-branch=p28-verifier-unborn /secure/p28/control-source",
+    "exact_terminal_stderr": "P28 control-bundle verification failed: Git command failed (128): init --initial-branch=p28-verifier-unborn /secure/p28/control-source: fatal: cannot mkdir /secure/p28/control-source: Permission denied",
+    "exact_terminal_stderr_sha256": "3d85310ab120816ed22e1d78295b2384ff2e0e2147d5700dbb93abe1bb28b355",
+    "retained_source_closure_created": true,
+    "retained_transport_or_closure_reuse_allowed": false,
+    "external_transport_facts_are_operator_recorded_not_native_authenticated": true,
+    "root_cause": "unprivileged_control_checkout_parent_permission"
+  },
+  "unchanged_p28_authorities": {
+    "p28_contract": {
+      "path": "experiments/training/p28_bundle_complete_localization_bridge_contract.json",
+      "sha256": "6a5005f902d937f0edbec3394e6205e482fe6f6fea45f986ac873fd6ab2e8718"
+    },
+    "p28_contract_reconstructor": {
+      "path": "scripts/reconstruct_p28_bundle_complete_localization_bridge.py",
+      "sha256": "c8b5c853a5635f277f7d1d4c0185a199c6658c575a35c088c7cca51d36563b62"
+    },
+    "p28_bundle_verifier": {
+      "path": "scripts/verify_p28_control_bundle.py",
+      "sha256": "27e2d5e89a5dcd31cc5e4f2c32953ac1232246077863f105078a5a7984c77a00"
+    },
+    "p28_host_orchestrator": {
+      "path": "scripts/run_p28_bundle_complete_localization_bridge.sh",
+      "sha256": "2bef42ea94bfde5d9cd2c09347edad4fd15258d86df990d7137cb8b9eabefca7"
+    },
+    "p28_outcome_reconstructor": {
+      "path": "scripts/reconstruct_p28_bundle_complete_localization_bridge_outcome.py",
+      "sha256": "d736909181eaa75298851b7fc65f9c0352fb32c3d07e40eb4118eb10c1898631"
+    },
+    "p28_outcome_test": {
+      "path": "tests/test_p28_bundle_complete_localization_bridge_outcome.py",
+      "sha256": "3800afb02c9a2250848520afaf037c4d6e45d54afbcf51503ac82e878d742258"
+    }
+  },
+  "unchanged_p27_authorities": {
+    "p27_contract": {
+      "path": "experiments/training/p27_cuda_deleted_mapping_localization_contract.json",
+      "sha256": "02000debea28f499ddeb3b8c6c8b0615786cd2e7858cc8a1605b04d638da4b7a"
+    },
+    "p27_contract_reconstructor": {
+      "path": "scripts/reconstruct_p27_cuda_deleted_mapping_localization.py",
+      "sha256": "0eedffa5442ce7fc3950ae74d169fa652c70794935c541028eba3d0bda20e033"
+    },
+    "p27_localizer": {
+      "path": "experiments/training/run_p27_cuda_deleted_mapping_localization.py",
+      "sha256": "86ba200d69a029c64b2218581d6b92245930d5f1e60d0176aca22ad4d6ddf65a"
+    },
+    "p27_localizer_test": {
+      "path": "tests/test_p27_cuda_deleted_mapping_localization.py",
+      "sha256": "f0cae4d3428c66687298fd5e87dd94f805e1d5dcf780ca98d982372388eb741f"
+    },
+    "p27_host_orchestrator": {
+      "path": "scripts/run_p27_cuda_deleted_mapping_localization.sh",
+      "sha256": "c80fc17b10cce7713a203ec3dc4a43bcc8357966d76b5e81d5c2644d3ea5ff0c"
+    },
+    "p27_failure_ingester": {
+      "path": "scripts/ingest_p26_trace_off_a_failure.py",
+      "sha256": "3e7769d668a8756aea7359bef4d9b8ccfc8db66da102edfbc6c5de385654cdeb"
+    },
+    "p27_p23_core": {
+      "path": "experiments/training/p23_deterministic_cuda_shadow_trace.py",
+      "sha256": "ec1037839a3de378ee7391ae815ffc29c184865c5216d30027edc460ba112fab"
+    },
+    "p27_native_sanitizer": {
+      "path": "scripts/sanitize_p27_cuda_deleted_mapping_localization.py",
+      "sha256": "3ec64cdc3681d41d70c624c6ffd26dde1a7e498bda13ddafaaced271a43dd6c4"
+    },
+    "p26_checkpoint": {
+      "ref": "refs/tags/p26-permission-safe-acquisition-checkpoint",
+      "annotated_tag_object": "bacad707d3779bfa10957e18cb4c69b1a7f0cbce",
+      "peeled_commit": "5429da23ff18888daa2312c530a4587780484d8b"
+    },
+    "p26_acquisition_source": {
+      "ref": "refs/tags/p26-attempt02-acquisition-source",
+      "annotated_tag_object": "f35a7dca8f6bc39e9748e79b6712fab4a203396b",
+      "peeled_commit": "185e444afc0b44ca0a09b1bde49a6b6fa3973355"
+    }
+  },
+  "required_bundle_refs": [
+    {
+      "ref": "refs/heads/p29-permission-safe-bundle-localization-bridge",
+      "object_rule": "equals the phase-specific reviewed P29 commit supplied to the verifier"
+    },
+    {
+      "ref": "refs/heads/p28-bundle-complete-localization-bridge",
+      "object": "7274367f2b05fb3c9ed9f876a59be647703bbdc2",
+      "object_type": "commit"
+    },
+    {
+      "ref": "refs/tags/p28-control-parent-permission-diagnostic",
+      "object": "f3c81a2f14f853f369015a4f81b6695b52eec74e",
+      "object_type": "tag",
+      "peeled_commit": "7274367f2b05fb3c9ed9f876a59be647703bbdc2"
+    },
+    {
+      "ref": "refs/heads/p27-cuda-deleted-mapping-localization",
+      "object": "ec63550331925ded158e3f389e294e4d1f12db3a",
+      "object_type": "commit"
+    },
+    {
+      "ref": "refs/tags/p27-cuda-deleted-mapping-localization-diagnostic",
+      "object": "c88b98eae9be2458abde45b05d3dccfe09c0c7ed",
+      "object_type": "tag",
+      "peeled_commit": "ec63550331925ded158e3f389e294e4d1f12db3a"
+    },
+    {
+      "ref": "refs/tags/p26-permission-safe-acquisition-checkpoint",
+      "object": "bacad707d3779bfa10957e18cb4c69b1a7f0cbce",
+      "object_type": "tag",
+      "peeled_commit": "5429da23ff18888daa2312c530a4587780484d8b"
+    },
+    {
+      "ref": "refs/tags/p26-attempt02-acquisition-source",
+      "object": "f35a7dca8f6bc39e9748e79b6712fab4a203396b",
+      "object_type": "tag",
+      "peeled_commit": "185e444afc0b44ca0a09b1bde49a6b6fa3973355"
+    }
+  ],
+  "permission_safe_layout": {
+    "secure_parent": "/secure",
+    "secure_parent_owner": "root:root",
+    "secure_parent_uid": 0,
+    "secure_parent_gid": 0,
+    "secure_parent_mode": "0755",
+    "secure_parent_process_writable": false,
+    "secure_root": "/secure/p29",
+    "secure_root_must_be_absent_before_one_shot_provisioning": true,
+    "secure_root_owner": "root:root",
+    "secure_root_uid": 0,
+    "secure_root_gid": 0,
+    "secure_root_mode": "0755",
+    "secure_root_process_writable": false,
+    "transport_root": "/secure/p29/transport-20260906-02",
+    "transport_root_must_be_absent_before_one_shot_provisioning": true,
+    "transport_owner": "ubuntu:ubuntu",
+    "transport_uid": 1000,
+    "transport_gid": 1000,
+    "transport_mode": "0700",
+    "transport_is_only_precreated_process_writable_directory": true,
+    "localization_ledger_root": "/var/lib/optimizationml-p29-20260906-02",
+    "localization_ledger_root_owner": "root:root",
+    "localization_ledger_root_uid": 0,
+    "localization_ledger_root_gid": 0,
+    "localization_ledger_root_mode": "0700",
+    "localization_ledger_root_is_provisioned_with_only_deferred_journal_before_source_phase": true,
+    "localization_ledger_root_is_not_a_checkout_mount_or_transfer_capability": true,
+    "localization_ledger_root_is_componentwise_nofollow_with_mode_only_access_acl_and_no_default_named_or_frozen_xattr_acl": true,
+    "deferred_journal_root": "/var/lib/optimizationml-p29-20260906-02/deferred",
+    "deferred_journal_root_owner": "root:root",
+    "deferred_journal_root_mode": "0700",
+    "deferred_journal_is_not_accessible_to_the_uid1000_bundle_verifier": true,
+    "deferred_journal_files_are_root_owned_o_excl_nofollow_and_preregistered": true,
+    "deferred_journal_file_mode": "0400",
+    "deferred_publication_best_effort_attempts_to_retain_stdout_stderr_and_exit_status": true,
+    "deferred_publication_complete_triplet_is_guaranteed_only_when_artifact_finalization_succeeds": true,
+    "deferred_publication_success_stdout_stderr_exact_bytes_utf8": "",
+    "deferred_publication_success_exit_status_exact_bytes_utf8": "0\n",
+    "deferred_publication_failure_sentinel_suffix": ".publication-failure.exit-status.txt",
+    "deferred_publication_failure_sentinel_exists_only_on_failure": true,
+    "deferred_journal_exact_before_prepare_admission": [],
+    "deferred_journal_exact_after_successful_prepare_pre_attempt_admission": [
+      ".deferred-p29-prepare-pre-attempt-admission.exit-status.txt",
+      ".deferred-p29-prepare-pre-attempt-admission.stderr.log",
+      ".deferred-p29-prepare-pre-attempt-admission.stdout.log"
+    ],
+    "after_admission_journal_validation_accepts_only_the_exact_producer_status_argument": true,
+    "failed_prepare_admission_retains_and_returns_its_original_status_when_finalization_succeeds": true,
+    "after_prepare_and_after_runtime_journal_stages_require_prepare_admission_status_zero": true,
+    "deferred_journal_exact_after_successful_prepare_layout_publication": [
+      ".deferred-p29-prepare-attempt-layout.exit-status.txt",
+      ".deferred-p29-prepare-attempt-layout.publication.exit-status.txt",
+      ".deferred-p29-prepare-attempt-layout.publication.stderr.log",
+      ".deferred-p29-prepare-attempt-layout.publication.stdout.log",
+      ".deferred-p29-prepare-attempt-layout.stderr.log",
+      ".deferred-p29-prepare-attempt-layout.stdout.log",
+      ".deferred-p29-prepare-pre-attempt-admission.exit-status.txt",
+      ".deferred-p29-prepare-pre-attempt-admission.stderr.log",
+      ".deferred-p29-prepare-pre-attempt-admission.stdout.log"
+    ],
+    "deferred_journal_exact_after_successful_runtime_receipt_replay_publication": [
+      ".deferred-p29-pre-marker-runtime-receipt-replay.exit-status.txt",
+      ".deferred-p29-pre-marker-runtime-receipt-replay.publication.exit-status.txt",
+      ".deferred-p29-pre-marker-runtime-receipt-replay.publication.stderr.log",
+      ".deferred-p29-pre-marker-runtime-receipt-replay.publication.stdout.log",
+      ".deferred-p29-pre-marker-runtime-receipt-replay.stderr.log",
+      ".deferred-p29-pre-marker-runtime-receipt-replay.stdout.log",
+      ".deferred-p29-prepare-attempt-layout.exit-status.txt",
+      ".deferred-p29-prepare-attempt-layout.publication.exit-status.txt",
+      ".deferred-p29-prepare-attempt-layout.publication.stderr.log",
+      ".deferred-p29-prepare-attempt-layout.publication.stdout.log",
+      ".deferred-p29-prepare-attempt-layout.stderr.log",
+      ".deferred-p29-prepare-attempt-layout.stdout.log",
+      ".deferred-p29-prepare-pre-attempt-admission.exit-status.txt",
+      ".deferred-p29-prepare-pre-attempt-admission.stderr.log",
+      ".deferred-p29-prepare-pre-attempt-admission.stdout.log"
+    ],
+    "sealed_orchestrator": "/var/lib/optimizationml-p29-20260906-02/run_p29_permission_safe_bundle_localization_bridge.sh",
+    "sealed_orchestrator_owner": "root:root",
+    "sealed_orchestrator_mode": "0555",
+    "sealed_orchestrator_is_o_excl_nofollow_stable_copy_of_reviewed_control_bytes": true,
+    "sealed_orchestrator_is_created_only_after_source_receipt_and_control_checkout_review": true,
+    "prepare_and_localization_invoke_only_sealed_orchestrator_with_bin_bash_p": true,
+    "localization_ledger_root_exact_before_prepare_inventory": [
+      "deferred",
+      "run_p29_permission_safe_bundle_localization_bridge.sh"
+    ],
+    "prepare_runtime_invocation_token": "/var/lib/optimizationml-p29-20260906-02/prepare-runtime.invoked",
+    "prepare_runtime_invocation_token_owner": "root:root",
+    "prepare_runtime_invocation_token_mode": "0400",
+    "prepare_runtime_invocation_token_exact_bytes_utf8": "prepare-runtime\n",
+    "prepare_runtime_invocation_token_is_o_excl_nofollow": true,
+    "prepare_runtime_invocation_token_transaction_uses_supplied_expected_orchestrator_digest_before_general_environment_validation_or_source_receipt_replay": true,
+    "prepare_pre_attempt_admission_is_one_root_journal_triplet_covering_source_receipt_replay_and_every_pre_attempt_validator_after_a_successful_prepare_token_transaction": true,
+    "partial_internal_prepare_token_transaction_leaves_explicit_incomplete_nonrunnable_state": true,
+    "localization_ledger_root_exact_after_prepare_dispatch_before_localization_inventory": [
+      "deferred",
+      "prepare-runtime.invoked",
+      "run_p29_permission_safe_bundle_localization_bridge.sh"
+    ],
+    "localization_ledger_root_exact_during_source_replay_and_runtime_receipt_creation_inventory": [
+      "deferred",
+      "prepare-runtime.invoked",
+      "run_p29_permission_safe_bundle_localization_bridge.sh"
+    ],
+    "localization_invocation_token": "/var/lib/optimizationml-p29-20260906-02/run-localization.invoked",
+    "localization_invocation_token_owner": "root:root",
+    "localization_invocation_token_mode": "0400",
+    "localization_invocation_token_exact_bytes_utf8": "run-localization\n",
+    "localization_authorization_token": "/var/lib/optimizationml-p29-20260906-02/localization.authorized",
+    "localization_authorization_token_owner": "root:root",
+    "localization_authorization_token_mode": "0400",
+    "localization_authorization_token_exact_bytes_utf8": "localization-authorized\n",
+    "localization_terminal_status": "/var/lib/optimizationml-p29-20260906-02/run-localization.exit-status.txt",
+    "localization_terminal_status_owner": "root:root",
+    "localization_terminal_status_mode": "0400",
+    "localization_terminal_status_exact_bytes_rule": "one canonical ASCII decimal integer from 0 through 255 followed by newline",
+    "localization_terminal_status_is_o_excl_nofollow": true,
+    "localization_ledger_root_exact_after_dispatch_before_authorization_inventory": [
+      "deferred",
+      "prepare-runtime.invoked",
+      "run-localization.invoked",
+      "run_p29_permission_safe_bundle_localization_bridge.sh"
+    ],
+    "localization_ledger_root_exact_authorized_inventory": [
+      "deferred",
+      "localization.authorized",
+      "prepare-runtime.invoked",
+      "run-localization.invoked",
+      "run_p29_permission_safe_bundle_localization_bridge.sh"
+    ],
+    "localization_ledger_root_exact_after_successful_terminal_status_preauthorization_failure_inventory": [
+      "deferred",
+      "prepare-runtime.invoked",
+      "run-localization.exit-status.txt",
+      "run-localization.invoked",
+      "run_p29_permission_safe_bundle_localization_bridge.sh"
+    ],
+    "localization_ledger_root_exact_after_successful_terminal_status_authorized_inventory": [
+      "deferred",
+      "localization.authorized",
+      "prepare-runtime.invoked",
+      "run-localization.exit-status.txt",
+      "run-localization.invoked",
+      "run_p29_permission_safe_bundle_localization_bridge.sh"
+    ],
+    "source_receipt_creation_operator_precondition_is_only_empty_deferred_journal_in_root_ledger": true,
+    "source_receipt_creation_uid1000_verifier_mechanically_inspects_root_ledger": false,
+    "source_receipt_replay_requires_prepare_invocation_present_and_localization_files_absent": true,
+    "runtime_receipt_creation_operator_precondition_is_prepare_invocation_present_and_localization_files_absent": true,
+    "runtime_receipt_creation_uid1000_verifier_mechanically_inspects_root_ledger": false,
+    "runtime_receipt_replay_requires_prepare_and_localization_invocations_present_and_authorization_and_status_absent": true,
+    "authorization_is_created_once_only_after_reviewed_runtime_receipt_and_all_pre_marker_checks": true,
+    "host_post_authorization_boundary_validates_prepare_invocation_localization_invocation_and_authorization_present_and_exact_before_dispatch": true,
+    "containerized_p27_localizer_reads_root_ledger": false,
+    "each_localization_token_creation_atomically_revalidates_deferred_root_and_sealed_orchestrator_before_o_excl": true,
+    "terminal_status_creation_atomically_revalidates_deferred_root_and_sealed_orchestrator_before_o_excl": true,
+    "token_creation_requires_deferred_root_root_root_0700_no_acl_and_stable_identity": true,
+    "token_creation_requires_sealed_orchestrator_root_root_0555_no_acl_stable_identity_and_reviewed_digest": true,
+    "after_successful_invocation_token_transaction_dispatcher_attempts_one_terminal_status_transaction_even_if_evidence_logging_or_early_predicates_fail": true,
+    "complete_validated_terminal_status_is_guaranteed_only_when_terminal_status_transaction_succeeds": true,
+    "failed_terminal_status_transaction_is_terminal_nonrunnable_and_may_leave_status_absent_or_created_but_unvalidated": true,
+    "second_authorization_creation_or_localization_rerun_allowed": false,
+    "source_phase_exact_secure_root_child_inventory": [
+      "transport-20260906-02"
+    ],
+    "runtime_phase_exact_secure_root_child_inventory": [
+      "attempt-20260906-02",
+      "execution-20260906-02",
+      "transport-20260906-02"
+    ],
+    "extra_capability_or_namespace_sibling_allowed": false,
+    "control_checkout": "/secure/p29/transport-20260906-02/control-source",
+    "authority_checkout": "/secure/p29/transport-20260906-02/authority-185e444",
+    "control_and_authority_must_be_absent_before_source_receipt_creation": true,
+    "source_receipt_creation_requires_authority_absent_for_entire_creation": true,
+    "source_receipt_replay_authority_states_allowed": [
+      "absent",
+      "exact_canonical_locked_authority"
+    ],
+    "source_receipt_replay_requires_exact_existing_control_checkout": true,
+    "source_receipt_replay_existing_authority_requires_layout_commit_tree_and_indirection_validation": true,
+    "source_receipt_replay_may_not_create_mutate_or_relocate_authority": true,
+    "attempt_and_execution_roots_must_be_absent_during_source_receipt_creation_and_replay": true,
+    "precreate_empty_control_or_authority_directory_allowed": false,
+    "bind_copy_symlink_or_privileged_relocation_allowed": false,
+    "control_is_constructed_directly_at_canonical_transport_child": true,
+    "authority_is_constructed_directly_at_canonical_transport_child": true,
+    "control_and_authority_post_creation_owner": "ubuntu:ubuntu",
+    "control_and_authority_post_creation_uid": 1000,
+    "control_and_authority_post_creation_gid": 1000,
+    "control_and_authority_post_creation_mode": "0700",
+    "control_and_authority_are_nonsymlink_directories_on_transport_device_and_mount_id": true,
+    "control_and_authority_have_no_extended_or_named_access_no_default_and_no_frozen_xattr_acl": true,
+    "componentwise_o_directory_o_nofollow_required": true,
+    "ancestor_nofollow_components_with_stable_device_and_inode_only": [
+      "/"
+    ],
+    "full_owner_mode_acl_mount_authority_boundary_begins_at": "/secure",
+    "ancestor_owner_mode_acl_or_mount_authority_claimed": false,
+    "lexical_and_resolved_paths_must_match": true,
+    "secure_parent_namespace_transport_execution_attempt_and_evidence_must_match_expected_identity_authority_acl_device_and_mount_at_each_explicit_validator": true,
+    "secure_parent_namespace_transport_execution_attempt_and_evidence_must_not_be_mountpoints": true,
+    "access_acl_must_equal_mode_bits_without_named_entries": true,
+    "default_acl_entries_allowed": false,
+    "forbidden_acl_xattrs": [
+      "system.posix_acl_access",
+      "system.posix_acl_default",
+      "system.nfs4_acl",
+      "system.richacl"
+    ],
+    "secure_parent_namespace_transport_execution_attempt_and_evidence_must_share_device_and_mount_id": true,
+    "layout_identity_revalidated_before_and_after_each_bundle_phase_transition": true,
+    "failed_layout_or_permission_transition_consumes_attempt": true,
+    "cleanup_repair_or_retry_under_same_identifier_allowed": false
+  },
+  "bundle_closure": {
+    "transport_root": "/secure/p29/transport-20260906-02",
+    "source_bundle": "/secure/p29/transport-20260906-02/p29_source.bundle",
+    "source_closure_repository": "/secure/p29/transport-20260906-02/p29_source_closure.git",
+    "source_receipt": "/secure/p29/transport-20260906-02/p29_source_bundle_receipt.json",
+    "runtime_review_bundle": "/secure/p29/transport-20260906-02/p29_runtime_review.bundle",
+    "runtime_review_closure_repository": "/secure/p29/transport-20260906-02/p29_runtime_review_closure.git",
+    "runtime_review_receipt": "/secure/p29/transport-20260906-02/p29_runtime_review_bundle_receipt.json",
+    "runtime_review_receipt_creation_transport_only_transcripts": [
+      "p29-runtime-review-receipt-creation.stdout.log",
+      "p29-runtime-review-receipt-creation.stderr.log",
+      "p29-runtime-review-receipt-creation.exit-status.txt"
+    ],
+    "runtime_review_receipt_creation_transcripts_are_o_excl_nofollow_and_retain_verifier_success_or_failure_when_wrapper_setup_and_finalization_succeed": true,
+    "runtime_review_receipt_creation_wrapper_failure_may_leave_partial_transport_transcripts_and_is_terminal": true,
+    "runtime_review_receipt_creation_transcripts_may_be_published_under_evidence": false,
+    "runtime_review_receipt_creation_preserves_exact_27_file_evidence_for_later_replay": true,
+    "control_checkout": "/secure/p29/transport-20260906-02/control-source",
+    "authority_checkout": "/secure/p29/transport-20260906-02/authority-185e444",
+    "receipt_schema": "passive-muon-p29-control-bundle-receipt-v1",
+    "receipt_creation_cli": "--receipt-output",
+    "receipt_replay_cli": "--verify-existing-receipt plus --expected-receipt-sha256",
+    "receipt_files_are_external_and_not_committed": true,
+    "receipt_outputs_are_o_excl_no_overwrite": true,
+    "bundle_sha256_and_byte_count_are_operator_reviewed_inputs": true,
+    "bundle_is_read_once_with_o_nofollow": true,
+    "bundle_private_authenticated_read_only_copy_required": true,
+    "private_copy_required_mode": "0400",
+    "private_copy_post_use_hash_and_stat_revalidation_required": true,
+    "fresh_empty_bare_repository_required_for_each_phase": true,
+    "exact_advertised_ref_count": 7,
+    "bundle_prerequisite_count": 0,
+    "git_bundle_verify_required": true,
+    "explicit_same_named_ref_fetch_required": true,
+    "git_fsck_full_strict_required": true,
+    "all_ref_types_objects_and_peels_must_match": true,
+    "shallow_alternates_grafts_replace_promisor_and_partial_clone_forbidden": true,
+    "source_receipt_required_before_authority_attempt_or_execution_root_creation": true,
+    "runtime_review_receipt_required_before_localization_marker": true,
+    "p28_contract_reconstruction_required_check_count": 12,
+    "p28_contract_reconstruction_required_true_count": 12,
+    "p28_contract_reconstruction_required_false_count": 0,
+    "p28_outcome_reconstruction_required_check_count": 10,
+    "p28_outcome_reconstruction_required_true_count": 10,
+    "p28_outcome_reconstruction_required_false_count": 0,
+    "p27_reconstruction_required_check_count": 23,
+    "p27_reconstruction_required_true_count": 23,
+    "p27_reconstruction_required_false_count": 0
+  },
+  "bundle_verifier": {
+    "source_path": "scripts/verify_p29_control_bundle.py",
+    "required_process_uid": 1000,
+    "required_process_gid": 1000,
+    "uid1000_ownership_is_required_for_transport_closure_control_and_receipt_mutations": true,
+    "bootstrap_execution_path": "/secure/p29/transport-20260906-02/verify_p29_control_bundle.py",
+    "checked_in_control_verifier_path": "/secure/p29/transport-20260906-02/control-source/scripts/verify_p29_control_bundle.py",
+    "source_sha256": "4e1c8d23a0b770282b90ad200d5323d3d281c57bc302a6a21cd84fef636f17b9",
+    "test_path": "tests/test_p29_control_bundle_verifier.py",
+    "test_sha256": "8668a137721fb6f2ce6aa1a19d9a3e1f2d6e613bc7c11958552602138b1e7776",
+    "placeholders_must_be_replaced_before_source_freeze": false,
+    "bootstrap_and_checked_in_verifier_sha256_must_match": true,
+    "bootstrap_copy_is_o_excl_no_overwrite": true,
+    "bootstrap_must_be_regular_nonsymlink": true,
+    "bootstrap_required_mode": "0600",
+    "bootstrap_self_authentication_cli": "--bootstrap-verifier plus --expected-verifier-sha256",
+    "trusted_python_executable": "/usr/bin/python3",
+    "trusted_python_flags": [
+      "-I",
+      "-S"
+    ],
+    "bootstrap_and_all_reconstructors_use_trusted_python_with_both_flags": true,
+    "reconstructors_execute_only_from_the_verifiers_authenticated_private_bundle_bytes": true,
+    "verifier_is_the_sole_host_reconstruction_authority_in_source_and_runtime_receipts": true,
+    "nested_python3_shim_executes_the_same_trusted_python_with_both_flags": true,
+    "nested_reconstruction_environment_scrubs_python_and_git_control_inputs": true,
+    "absolute_git_executable": "/usr/bin/git",
+    "git_system_attributes_disabled_with_git_attr_nosystem": true,
+    "git_system_global_includes_hooks_replacements_and_ambient_control_are_disabled": true,
+    "control_and_authority_cleanliness_includes_tracked_untracked_and_ignored_files": true,
+    "receipt_binds_canonical_verifier_source_path_and_sha256": true,
+    "receipt_binds_permission_layout_identity_and_acl": true,
+    "source_phase_exact_namespace_child_inventory": [
+      "transport-20260906-02"
+    ],
+    "runtime_review_phase_exact_namespace_child_inventory": [
+      "attempt-20260906-02",
+      "execution-20260906-02",
+      "transport-20260906-02"
+    ],
+    "phase_specific_namespace_inventory_revalidated_before_and_after_transitions": true,
+    "allowed_phases": [
+      "source",
+      "runtime-review"
+    ],
+    "phase_receipt_statuses": {
+      "source": "source_bundle_and_permission_layout_verified_before_attempt_root_creation",
+      "runtime-review": "runtime_review_bundle_and_permission_layout_verified_before_localization"
+    },
+    "source_phase_constructs_absent_control_checkout": true,
+    "source_phase_reconstructs_p28_contract_12_of_12": true,
+    "source_phase_reconstructs_terminal_p28_10_of_10": true,
+    "source_phase_reconstructs_p27_23_of_23": true,
+    "source_receipt_creation_requires_authority_absent": true,
+    "source_receipt_replay_allows_authority_absent_or_exact_canonical_locked_authority": true,
+    "source_receipt_replay_existing_authority_must_match_locked_commit_tree_layout_acl_and_indirection_guards": true,
+    "source_receipt_replay_never_creates_mutates_or_relocates_authority": true,
+    "runtime_review_phase_requires_exact_direct_child": true,
+    "runtime_review_phase_requires_exact_prepare_inventory": true,
+    "runtime_review_phase_requires_exact_immutable_execution_snapshot": true,
+    "runtime_review_attempt_root_owner_mode": "root:root 0555",
+    "runtime_review_evidence_root_owner_mode": "root:root 0555",
+    "runtime_review_evidence_children_owner_mode": "root:root 0444",
+    "runtime_review_evidence_children_are_o_excl_and_sealed_after_producer_close": true,
+    "runtime_review_evidence_is_world_readable_by_design_and_contains_no_credentials": true,
+    "runtime_review_execution_root_owner_mode": "root:root 0555",
+    "runtime_review_execution_manifest_owner_mode": "root:root 0444",
+    "runtime_review_exact_attempt_root_inventory": [
+      "evidence",
+      "p29-image-inspect.json",
+      "p29-nvidia-smi.csv",
+      "p29-running-container-inspect.json",
+      "p29-running-mountinfo.txt",
+      "p29-container-id.txt"
+    ],
+    "runtime_review_required_prepare_layout_transcripts": [
+      "p29-prepare-attempt-layout.stdout.log",
+      "p29-prepare-attempt-layout.stderr.log",
+      "p29-post-freeze-attempt-layout.stdout.log",
+      "p29-post-freeze-attempt-layout.stderr.log"
+    ],
+    "runtime_review_exact_prelocalization_evidence_inventory": [
+      "p29-prepare-attempt-layout.stdout.log",
+      "p29-prepare-attempt-layout.stderr.log",
+      "p29-prepare-attempt-layout.exit-status.txt",
+      "p29-prepare-execution-snapshot-verification.stdout.log",
+      "p29-prepare-execution-snapshot-verification.stderr.log",
+      "p29-prepare-execution-snapshot-verification.exit-status.txt",
+      "p29-image-inspection.stderr.log",
+      "p29-image-inspection.exit-status.txt",
+      "p29-nvidia-smi.stderr.log",
+      "p29-nvidia-smi.exit-status.txt",
+      "p29-container-launch.stderr.log",
+      "p29-container-launch.exit-status.txt",
+      "p29-fresh-container-id-validation.stdout.log",
+      "p29-fresh-container-id-validation.stderr.log",
+      "p29-fresh-container-id-validation.exit-status.txt",
+      "p29-running-container-inspection.stderr.log",
+      "p29-running-container-inspection.exit-status.txt",
+      "p29-running-mountinfo.stderr.log",
+      "p29-running-mountinfo.exit-status.txt",
+      "p29-freeze-runtime.stdout.log",
+      "p29-freeze-runtime.stderr.log",
+      "p29-freeze-runtime.exit-status.txt",
+      "p29-post-freeze-attempt-layout.stdout.log",
+      "p29-post-freeze-attempt-layout.stderr.log",
+      "p29-post-freeze-attempt-layout.exit-status.txt",
+      "p29_cuda_runtime_lock.json",
+      "p29_host_attestation.json"
+    ],
+    "runtime_review_required_zero_exit_status_files": [
+      "p29-prepare-attempt-layout.exit-status.txt",
+      "p29-prepare-execution-snapshot-verification.exit-status.txt",
+      "p29-image-inspection.exit-status.txt",
+      "p29-nvidia-smi.exit-status.txt",
+      "p29-container-launch.exit-status.txt",
+      "p29-fresh-container-id-validation.exit-status.txt",
+      "p29-running-container-inspection.exit-status.txt",
+      "p29-running-mountinfo.exit-status.txt",
+      "p29-freeze-runtime.exit-status.txt",
+      "p29-post-freeze-attempt-layout.exit-status.txt"
+    ],
+    "runtime_review_success_exit_status_exact_bytes_utf8": "0\n",
+    "runtime_review_phase_requires_lock_and_attestation_byte_equality": true,
+    "runtime_review_phase_requires_no_localization_evidence": true,
+    "runtime_review_attempt_and_evidence_are_fd_anchored_nofollow": true,
+    "runtime_review_attempt_and_evidence_identity_authority_acl_device_and_mount_are_stable": true,
+    "runtime_review_execution_snapshot_is_fd_anchored_nofollow_and_manifest_revalidated_before_and_after_receipt": true,
+    "uid1000_bundle_verifier_does_not_claim_access_to_root_only_ledger_or_deferred_journal": true,
+    "runtime_review_phase_exact_delta": [
+      "A\texperiments/training/p29_cuda_runtime_lock.json",
+      "A\texperiments/training/p29_host_attestation.json"
+    ],
+    "attempt_and_execution_roots_must_remain_absent_during_source_receipt_creation_and_replay": true,
+    "source_receipt_creation_invocations_allowed": 1,
+    "source_receipt_replay_invocations_allowed": 1,
+    "runtime_review_receipt_creation_invocations_allowed": 1,
+    "runtime_review_receipt_replay_invocations_allowed": 1,
+    "future_acquisition_authority_created": false
+  },
+  "host_orchestration": {
+    "source_path": "scripts/run_p29_permission_safe_bundle_localization_bridge.sh",
+    "source_sha256": "1653a12c2a86d307ddbff11cc5e48701e4817ee99e4674eaf6b426a8b2302cc5",
+    "test_path": "tests/test_p29_permission_safe_bundle_localization_bridge_orchestration.py",
+    "test_sha256": "bdc462a3935cb350e5d969a53e76e954a4f099c445be2ca9dfbb7d88e6d682ee",
+    "placeholders_must_be_replaced_before_source_freeze": false,
+    "allowed_phases": [
+      "prepare-runtime",
+      "run-localization"
+    ],
+    "required_environment": [
+      "P29_ATTEMPT_ID",
+      "P29_GPU_UUID",
+      "P29_AUTHORITY_REPO",
+      "P29_NANOGPT_HOST",
+      "P29_MUON_HOST",
+      "P29_DATA_HOST",
+      "P29_SOURCE_FREEZE_COMMIT",
+      "P29_SOURCE_FREEZE_TREE",
+      "P29_EXPECTED_SOURCE_BUNDLE_SHA256",
+      "P29_EXPECTED_SOURCE_BUNDLE_BYTE_COUNT",
+      "P29_EXPECTED_SOURCE_RECEIPT_SHA256",
+      "P29_EXPECTED_CONTRACT_SHA256",
+      "P29_EXPECTED_ORCHESTRATOR_SHA256",
+      "P29_EXPECTED_RECONSTRUCTOR_SHA256",
+      "P29_EXPECTED_BUNDLE_VERIFIER_SHA256",
+      "P29_EXPECTED_P28_CONTRACT_SHA256",
+      "P29_EXPECTED_P28_RECONSTRUCTOR_SHA256",
+      "P29_EXPECTED_P28_OUTCOME_SHA256",
+      "P29_EXPECTED_P28_OUTCOME_RECONSTRUCTOR_SHA256",
+      "P29_EXPECTED_P27_CONTRACT_SHA256",
+      "P29_EXPECTED_P27_RECONSTRUCTOR_SHA256",
+      "P29_EXPECTED_P27_LOCALIZER_SHA256",
+      "P29_EXPECTED_INGESTER_SHA256",
+      "P29_EXPECTED_P23_CORE_SHA256",
+      "P29_EXPECTED_P27_SANITIZER_SHA256",
+      "P29_RUNTIME_REVIEW_COMMIT",
+      "P29_RUNTIME_REVIEW_TREE",
+      "P29_EXPECTED_RUNTIME_REVIEW_BUNDLE_SHA256",
+      "P29_EXPECTED_RUNTIME_REVIEW_BUNDLE_BYTE_COUNT",
+      "P29_EXPECTED_RUNTIME_REVIEW_RECEIPT_SHA256",
+      "P29_EXPECTED_RUNTIME_LOCK_SHA256",
+      "P29_EXPECTED_HOST_ATTESTATION_SHA256",
+      "P29_EXPECTED_CONTAINER_ID"
+    ],
+    "runtime_only_required_environment": [
+      "P29_RUNTIME_REVIEW_COMMIT",
+      "P29_RUNTIME_REVIEW_TREE",
+      "P29_EXPECTED_RUNTIME_REVIEW_BUNDLE_SHA256",
+      "P29_EXPECTED_RUNTIME_REVIEW_BUNDLE_BYTE_COUNT",
+      "P29_EXPECTED_RUNTIME_REVIEW_RECEIPT_SHA256",
+      "P29_EXPECTED_RUNTIME_LOCK_SHA256",
+      "P29_EXPECTED_HOST_ATTESTATION_SHA256",
+      "P29_EXPECTED_CONTAINER_ID"
+    ],
+    "source_required_environment": [
+      "P29_ATTEMPT_ID",
+      "P29_GPU_UUID",
+      "P29_AUTHORITY_REPO",
+      "P29_NANOGPT_HOST",
+      "P29_MUON_HOST",
+      "P29_DATA_HOST",
+      "P29_SOURCE_FREEZE_COMMIT",
+      "P29_SOURCE_FREEZE_TREE",
+      "P29_EXPECTED_SOURCE_BUNDLE_SHA256",
+      "P29_EXPECTED_SOURCE_BUNDLE_BYTE_COUNT",
+      "P29_EXPECTED_SOURCE_RECEIPT_SHA256",
+      "P29_EXPECTED_CONTRACT_SHA256",
+      "P29_EXPECTED_ORCHESTRATOR_SHA256",
+      "P29_EXPECTED_RECONSTRUCTOR_SHA256",
+      "P29_EXPECTED_BUNDLE_VERIFIER_SHA256",
+      "P29_EXPECTED_P28_CONTRACT_SHA256",
+      "P29_EXPECTED_P28_RECONSTRUCTOR_SHA256",
+      "P29_EXPECTED_P28_OUTCOME_SHA256",
+      "P29_EXPECTED_P28_OUTCOME_RECONSTRUCTOR_SHA256",
+      "P29_EXPECTED_P27_CONTRACT_SHA256",
+      "P29_EXPECTED_P27_RECONSTRUCTOR_SHA256",
+      "P29_EXPECTED_P27_LOCALIZER_SHA256",
+      "P29_EXPECTED_INGESTER_SHA256",
+      "P29_EXPECTED_P23_CORE_SHA256",
+      "P29_EXPECTED_P27_SANITIZER_SHA256"
+    ],
+    "root_environment_handoff_executable": "/usr/bin/env",
+    "root_environment_handoff_clear_environment_flag": "-i",
+    "root_environment_handoff_exact_path": "/usr/sbin:/usr/bin:/sbin:/bin",
+    "prepare_root_environment_handoff_exact_names_equal_source_required_environment": true,
+    "localization_root_environment_handoff_exact_names_equal_required_environment": true,
+    "ambient_sudo_environment_inheritance_or_preserve_env_is_allowed": false,
+    "root_environment_handoff_assignments_precede_bin_bash_p_and_the_sealed_orchestrator": true,
+    "root_environment_handoff_read_only_preflight_compares_exact_nonempty_name_value_map_count_and_root_identity_before_each_one_shot_dispatch": true,
+    "root_environment_handoff_read_only_preflight_creates_no_p29_state": true,
+    "sealed_orchestrator_revalidates_every_handed_off_value_inside_the_first_retained_producer_before_substantive_phase_work": true,
+    "state_changing_prepare_runtime_invocations_allowed": 1,
+    "sealed_orchestrator": "/var/lib/optimizationml-p29-20260906-02/run_p29_permission_safe_bundle_localization_bridge.sh",
+    "sealed_orchestrator_owner": "root:root",
+    "sealed_orchestrator_mode": "0555",
+    "sealed_orchestrator_is_created_o_excl_from_stably_read_reviewed_control_bytes_after_source_receipt": true,
+    "sealed_orchestrator_is_the_required_operator_prepare_and_localization_entrypoint": true,
+    "executing_orchestrator_path_and_digest_are_revalidated_after_token_admission_before_stateful_phase_work": true,
+    "wrong_root_dispatched_script_path_may_consume_the_one_shot_token_then_must_fail_closed": true,
+    "sealed_orchestrator_is_invoked_with_bin_bash_privileged_mode": true,
+    "prepare_runtime_root_owned_invocation_ledger": "/var/lib/optimizationml-p29-20260906-02/prepare-runtime.invoked",
+    "prepare_runtime_root_owned_invocation_ledger_owner": "root:root",
+    "prepare_runtime_root_owned_invocation_ledger_mode": "0400",
+    "prepare_runtime_root_owned_invocation_ledger_exact_bytes_utf8": "prepare-runtime\n",
+    "prepare_runtime_root_owned_invocation_ledger_is_o_excl_nofollow": true,
+    "prepare_runtime_root_owned_invocation_transaction_uses_supplied_expected_orchestrator_digest_before_general_environment_validation_or_source_receipt_replay": true,
+    "source_receipt_replay_is_read_only_but_occurs_after_irreversible_prepare_admission_and_before_attempt_execution_or_container_mutation": true,
+    "localization_invocations_allowed": 1,
+    "run_localization_root_owned_invocation_ledger": "/var/lib/optimizationml-p29-20260906-02/run-localization.invoked",
+    "run_localization_root_owned_invocation_ledger_owner": "root:root",
+    "run_localization_root_owned_invocation_ledger_mode": "0400",
+    "run_localization_root_owned_invocation_ledger_exact_bytes_utf8": "run-localization\n",
+    "run_localization_root_owned_invocation_ledger_is_o_excl_nofollow": true,
+    "run_localization_root_owned_authorization": "/var/lib/optimizationml-p29-20260906-02/localization.authorized",
+    "run_localization_root_owned_authorization_owner": "root:root",
+    "run_localization_root_owned_authorization_mode": "0400",
+    "run_localization_root_owned_authorization_exact_bytes_utf8": "localization-authorized\n",
+    "run_localization_root_owned_authorization_is_o_excl_nofollow": true,
+    "run_localization_authorization_is_created_only_after_reviewed_runtime_receipt_and_all_pre_marker_validators": true,
+    "run_localization_host_post_authorization_boundary_validates_prepare_invocation_localization_invocation_and_authorization_tokens_before_dispatch": true,
+    "run_localization_containerized_p27_localizer_reads_root_ledger": false,
+    "run_localization_root_owned_terminal_status": "/var/lib/optimizationml-p29-20260906-02/run-localization.exit-status.txt",
+    "run_localization_root_owned_terminal_status_owner": "root:root",
+    "run_localization_root_owned_terminal_status_mode": "0400",
+    "run_localization_root_owned_terminal_status_exact_bytes_rule": "one canonical ASCII decimal integer from 0 through 255 followed by newline",
+    "run_localization_root_owned_terminal_status_is_o_excl_nofollow": true,
+    "localization_invocation_token_transaction_includes_all_pre_and_post_validation_and_returns_success_only_to_creator": true,
+    "run_localization_dispatcher_runs_body_in_subshell_then_attempts_one_o_excl_terminal_status_transaction_only_after_successful_invocation_token_transaction": true,
+    "run_localization_complete_validated_terminal_status_is_guaranteed_only_when_terminal_status_transaction_succeeds": true,
+    "run_localization_failed_terminal_status_transaction_is_terminal_nonrunnable_and_may_leave_status_absent_or_created_but_unvalidated": true,
+    "existing_localization_invocation_token_replay_may_create_or_replace_terminal_status": false,
+    "partial_internal_invocation_token_transaction_leaves_explicit_incomplete_nonrunnable_state": true,
+    "partial_internal_prepare_token_transaction_leaves_explicit_incomplete_nonrunnable_state": true,
+    "prepare_runtime_dispatch_requires_exact_ledger_direct_child_inventory_plus_deferred_authority_and_sealed_orchestrator_identity_before_burning_prepare_invocation": true,
+    "premature_localization_after_successful_prepare_token_exists_consumes_p29": true,
+    "pre_prepare_localization_dispatch_creates_no_new_ledger_state_and_is_retryable": true,
+    "run_localization_root_owned_invocation_transaction_uses_supplied_expected_orchestrator_digest_before_general_environment_validation_evidence_or_marker_predicates": true,
+    "missing_or_malformed_supplied_expected_orchestrator_digest_may_fail_before_invocation_token_creation": true,
+    "run_localization_root_owned_invocation_ledger_once_created_remains_after_every_subsequent_success_or_failure": true,
+    "late_evidence_marker_is_not_the_one_shot_admission_authority": true,
+    "cleanup_resume_or_retry_phase_exists": false,
+    "phase_specific_namespace_child_inventory_is_exact_and_extra_siblings_are_rejected": true,
+    "trusted_python_executable": "/usr/bin/python3",
+    "trusted_python_flags": [
+      "-I",
+      "-S"
+    ],
+    "bootstrap_and_reconstructor_invocations_use_trusted_python_with_both_flags": true,
+    "nested_python_and_git_environment_is_scrubbed": true,
+    "independent_p29_reconstructor_creates_private_python3_and_git_shims_per_child": true,
+    "independent_p29_python3_shim_executes_the_same_resolved_interpreter_with_isolated_no_site_flags": true,
+    "independent_p29_git_shim_executes_absolute_git_with_frozen_trust_controls": true,
+    "host_direct_reconstructor_invocations_allowed": false,
+    "bundle_verifier_private_payload_must_report_p29_plus_nested_p28_contract_12_p28_outcome_10_and_p27_23": true,
+    "absolute_git_executable": "/usr/bin/git",
+    "git_system_attributes_disabled_with_git_attr_nosystem": true,
+    "clean_checkouts_include_tracked_untracked_and_ignored_files": true,
+    "every_substantive_post_state_and_post_marker_command_or_validator_is_invoked_only_after_successful_no_overwrite_logger_admission": true,
+    "complete_validator_transcript_triplet_is_guaranteed_only_when_artifact_finalization_succeeds": true,
+    "logger_admission_or_finalization_fault_is_terminal_and_may_lack_a_complete_transcript_triplet": true,
+    "source_bundle_and_layout_verification_precede_authority_attempt_and_execution_root_creation": true,
+    "runtime_review_bundle_verification_precedes_localization_marker": true,
+    "runtime_receipt_replay_observes_untouched_exact_27_file_evidence_inventory": true,
+    "runtime_receipt_replay_is_first_localization_body_operation": true,
+    "runtime_environment_is_validated_inside_the_deferred_replay_producer_before_transport_validation_or_verifier_dispatch": true,
+    "initial_localization_boundary_order": [
+      "p29-pre-marker-runtime-receipt-replay",
+      "p29-localization-entry-preflight",
+      "p29-pre-marker-receipt-namespace-binding"
+    ],
+    "localization_entry_preflight_runs_only_after_runtime_replay_transcript_publication": true,
+    "localization_entry_preflight_requires_after_runtime_deferred_journal_stage": true,
+    "runtime_receipt_replay_root_journal_stdout_and_stderr_are_created_o_excl_before_verifier": true,
+    "runtime_receipt_replay_root_journal_exit_status_is_created_o_excl_after_verifier_before_publication": true,
+    "runtime_receipt_replay_deferred_journal_transcripts": [
+      ".deferred-p29-pre-marker-runtime-receipt-replay.stdout.log",
+      ".deferred-p29-pre-marker-runtime-receipt-replay.stderr.log",
+      ".deferred-p29-pre-marker-runtime-receipt-replay.exit-status.txt"
+    ],
+    "runtime_receipt_replay_published_evidence_transcripts": [
+      "p29-pre-marker-runtime-receipt-replay.stdout.log",
+      "p29-pre-marker-runtime-receipt-replay.stderr.log",
+      "p29-pre-marker-runtime-receipt-replay.exit-status.txt"
+    ],
+    "runtime_receipt_replay_publication_journal_transcripts": [
+      ".deferred-p29-pre-marker-runtime-receipt-replay.publication.stdout.log",
+      ".deferred-p29-pre-marker-runtime-receipt-replay.publication.stderr.log",
+      ".deferred-p29-pre-marker-runtime-receipt-replay.publication.exit-status.txt"
+    ],
+    "runtime_receipt_replay_publication_success_requires_empty_stdout_stderr_and_zero_status": true,
+    "runtime_receipt_replay_evidence_publication_requires_stable_reviewed_identity_reauthentication": true,
+    "runtime_receipt_replay_transcripts_are_published_to_evidence_after_verifier_exit_for_success_or_failure_only_when_identity_reauthentication_succeeds_by_stable_nofollow_o_excl_copy": true,
+    "when_evidence_publication_succeeds_journal_and_evidence_transcript_bytes_must_match": true,
+    "successful_replay_exit_status_exact_bytes_utf8": "0\n",
+    "runtime_receipt_replay_failure_transcripts_remain_under_root_journal": true,
+    "runtime_receipt_replay_failure_transcripts_are_published_under_evidence_only_when_identity_reauthentication_succeeds": true,
+    "runtime_receipt_replay_publication_failure_journal_status": ".deferred-p29-pre-marker-runtime-receipt-replay.publication-failure.exit-status.txt",
+    "runtime_receipt_replay_publication_failure_status_is_o_excl_best_effort_when_evidence_cannot_be_reauthenticated_or_published_and_root_journal_is_intact": true,
+    "runtime_receipt_replay_publication_finalization_failure_returns_terminal_125": true,
+    "runtime_receipt_replay_may_publish_into_identity_compromised_evidence": false,
+    "runtime_receipt_replay_failure_creates_localization_marker": false,
+    "runtime_receipt_replay_inventory_weakening_or_premature_evidence_logging_allowed": false,
+    "runtime_receipt_verifier_holds_fd_anchors_during_each_invocation": true,
+    "localization_attempt_evidence_receipt_binding_labels": [
+      "p29-pre-marker-receipt-namespace-binding",
+      "p29-post-ingestion-receipt-namespace-binding",
+      "p29-pre-localization-receipt-namespace-binding",
+      "p29-post-authorization-receipt-namespace-binding",
+      "p29-post-localizer-receipt-namespace-binding",
+      "p29-post-sanitizer-receipt-namespace-binding",
+      "p29-post-localization-receipt-namespace-binding"
+    ],
+    "localization_attempt_evidence_layout_labels": [
+      "p29-localization-entry-preflight",
+      "p29-pre-marker-snapshot-layout"
+    ],
+    "execution_snapshot_full_manifest_verification_boundaries": [
+      "p29-prepare-execution-snapshot-verification",
+      "runtime-review receipt creation",
+      "p29-pre-marker-runtime-receipt-replay"
+    ],
+    "pre_marker_snapshot_layout_checks_top_level_inventory_and_manifest_authority_not_full_manifest_bytes": true,
+    "ordinary_logged_boundaries_do_not_implicitly_revalidate_attempt_evidence_or_full_execution_manifest": true,
+    "localization_host_claims_one_continuous_marker_to_process_descriptor_guard": false,
+    "required_host_uid": 0,
+    "required_host_gid": 0,
+    "container_process_uid": 0,
+    "container_process_gid": 0,
+    "container_run_identity_and_capability_arguments": [
+      "--user",
+      "0:0",
+      "--userns",
+      "host",
+      "--cap-drop",
+      "ALL",
+      "--cap-add",
+      "DAC_OVERRIDE"
+    ],
+    "container_inspect_config_user": "0:0",
+    "container_inspect_userns_mode": "host",
+    "container_user_namespace_remapping_allowed": false,
+    "container_inspect_cap_drop": [
+      "ALL"
+    ],
+    "container_inspect_cap_add": [
+      "DAC_OVERRIDE"
+    ],
+    "trusted_root_container_with_dac_override_is_inside_the_runtime_tcb": true,
+    "sealed_evidence_is_claimed_immutable_against_a_malicious_root_container": false,
+    "scientific_artifact_progression_requires_each_new_artifact_to_be_sealed_and_validated_at_its_declared_producer_or_binding_boundary": true,
+    "historical_evidence_bytes_are_not_implicitly_revalidated_after_every_logged_boundary": true,
+    "localization_ledger_validation_labels_in_exact_order": [
+      "p29-localization-entry-preflight",
+      "p29-post-authorization-ledger-validation",
+      "p29-post-localizer-ledger-validation",
+      "p29-post-sanitizer-ledger-validation"
+    ],
+    "localization_ledger_validation_triplets_after_successful_finalization_are_o_excl_nofollow_root_owned_and_sealed_0444": true,
+    "retained_logger_classes_requiring_best_effort_seal_of_every_already_closed_artifact": [
+      "run_logged",
+      "capture_new",
+      "refresh_bound_file",
+      "deferred_external_and_publication_status_creation"
+    ],
+    "artifact_finalization_failure_terminal_exit_code": 125,
+    "original_producer_exit_status_is_preserved_only_when_all_required_artifact_finalization_succeeds": true,
+    "artifact_finalization_failure_does_not_skip_sealing_other_already_closed_artifacts": true,
+    "evidence_inventory_sealing_collects_all_child_failures_before_returning_terminal_failure": true,
+    "freeze_runtime_logged_call_is_captured_with_errexit_disabled_then_checked_after_errexit_restoration": true,
+    "root_host_best_effort_seals_each_closed_evidence_child_to_root_root_0444_before_review_or_next_boundary": true,
+    "canonical_authority_checkout_is_never_mounted_into_container": true,
+    "execution_repository_snapshot_is_only_repository_mount": true,
+    "exact_bind_mount_count": 10,
+    "localizer_ingester_p23_core_sanitizer_and_authenticated_p26_input_enter_through_read_only_execution_data_tools_adjunct": true
+  },
+  "fresh_localization_attempt": {
+    "attempt_id": "20260906-02",
+    "attempt_root": "/secure/p29/attempt-20260906-02",
+    "container_name": "p29-localization-20260906-02",
+    "transport_root": "/secure/p29/transport-20260906-02",
+    "control_checkout": "/secure/p29/transport-20260906-02/control-source",
+    "authority_checkout": "/secure/p29/transport-20260906-02/authority-185e444",
+    "root_must_not_preexist_before_verified_source_receipt": true,
+    "root_created_once_with_privilege_after_receipt_replay": true,
+    "root_post_creation_owner": "root:root",
+    "root_post_creation_uid": 0,
+    "root_post_creation_gid": 0,
+    "root_post_creation_mode": "0555",
+    "root_is_not_process_writable_after_atomic_preparation": true,
+    "root_must_be_regular_directory_not_symlink_or_mountpoint": true,
+    "evidence_root": "/secure/p29/attempt-20260906-02/evidence",
+    "evidence_owner": "root:root",
+    "evidence_uid": 0,
+    "evidence_gid": 0,
+    "evidence_mode": "0555",
+    "evidence_parent_and_evidence_root_are_root_owned_nonwritable_and_prevent_uid1000_transport_process_path_replacement": true,
+    "root_owned_nonwritable_evidence_prevents_uid1000_transport_process_mutation_but_not_trusted_root_container_dac_override": true,
+    "evidence_children_owner": "root:root",
+    "evidence_children_sealed_mode": "0444",
+    "evidence_children_are_created_o_excl_and_sealed_only_after_their_producer_closes": true,
+    "evidence_world_readability_is_intentional_and_no_evidence_child_may_contain_credentials": true,
+    "attempt_and_evidence_componentwise_o_directory_o_nofollow_required": true,
+    "attempt_and_evidence_access_acl_must_equal_mode_bits_without_named_entries": true,
+    "attempt_and_evidence_default_acl_entries_allowed": false,
+    "attempt_and_evidence_forbidden_acl_xattrs": [
+      "system.posix_acl_access",
+      "system.posix_acl_default",
+      "system.nfs4_acl",
+      "system.richacl"
+    ],
+    "attempt_and_evidence_must_share_namespace_device_and_mount_id": true,
+    "attempt_and_evidence_must_not_be_mountpoints": true,
+    "attempt_and_evidence_must_match_reviewed_identity_authority_acl_device_and_mount_id_at_runtime_receipt_creation_replay_and_explicit_localization_checks": true,
+    "verifier_holds_open_attempt_and_evidence_descriptors_through_each_runtime_receipt_creation_or_replay": true,
+    "host_reopens_attempt_and_evidence_componentwise_nofollow_at_the_explicit_layout_and_receipt_binding_checks": true,
+    "host_descriptors_remain_open_across_entire_marker_to_localizer_process_transition": false,
+    "partial_root_creation_consumes_attempt": true,
+    "new_container_required": true,
+    "terminal_p28_attempt_or_transport_reuse_allowed": false,
+    "new_container_id_required": true,
+    "new_runtime_lock_required": true,
+    "new_host_attestation_required": true,
+    "localization_invocations_allowed": 1,
+    "retry_until_favorable_allowed": false,
+    "future_scientific_acquisition_attempt_id": "20260906-03",
+    "future_scientific_acquisition_is_authorized": false
+  },
+  "immutable_execution_snapshot": {
+    "root": "/secure/p29/execution-20260906-02",
+    "root_must_be_absent_before_the_sole_prepare_runtime_invocation": true,
+    "created_once_during_the_sole_prepare_runtime_invocation": true,
+    "separate_from_canonical_transport_control_and_authority_checkouts": true,
+    "canonical_authority_is_not_relocated_rebound_or_mounted": true,
+    "root_owner": "root:root",
+    "root_uid": 0,
+    "root_gid": 0,
+    "root_mode": "0555",
+    "directory_owner": "root:root",
+    "directory_uid": 0,
+    "directory_gid": 0,
+    "directory_mode": "0555",
+    "regular_file_owner": "root:root",
+    "regular_file_uid": 0,
+    "regular_file_gid": 0,
+    "regular_file_modes_allowed": [
+      "0444",
+      "0555"
+    ],
+    "manifest_path": "/secure/p29/execution-20260906-02/snapshot-manifest.json",
+    "manifest_schema": "passive-muon-p29-immutable-execution-snapshot-v1",
+    "manifest_owner": "root:root",
+    "manifest_uid": 0,
+    "manifest_gid": 0,
+    "manifest_mode": "0444",
+    "manifest_encoding": "UTF-8 canonical JSON with sort_keys true compact separators and one trailing newline",
+    "manifest_exact_top_level_keys": [
+      "entries",
+      "schema_version",
+      "source_authorities"
+    ],
+    "manifest_entries_cover_every_relative_path_except_manifest": true,
+    "manifest_entries_are_strictly_sorted_by_relative_path_without_duplicates": true,
+    "manifest_directory_entry_keys": [
+      "relative_path",
+      "kind",
+      "mode_octal",
+      "uid",
+      "gid"
+    ],
+    "manifest_directory_kind_literal": "directory",
+    "manifest_file_entry_keys": [
+      "relative_path",
+      "kind",
+      "mode_octal",
+      "uid",
+      "gid",
+      "byte_count",
+      "sha256"
+    ],
+    "manifest_file_kind_literal": "file",
+    "manifest_entry_uid": 0,
+    "manifest_entry_gid": 0,
+    "exact_top_level_children": [
+      "data",
+      "muon",
+      "nanogpt",
+      "repository",
+      "snapshot-manifest.json"
+    ],
+    "directory_sources": {
+      "repository": {
+        "canonical_source": "/secure/p29/transport-20260906-02/authority-185e444",
+        "snapshot": "/secure/p29/execution-20260906-02/repository",
+        "commit": "185e444afc0b44ca0a09b1bde49a6b6fa3973355",
+        "tree": "24f4bdac331a57bd7c1b807747d7c7fba253ee5a"
+      },
+      "nanogpt": {
+        "canonical_source": "/secure/p23/nanoGPT",
+        "snapshot": "/secure/p29/execution-20260906-02/nanogpt",
+        "commit": "3adf61e154c3fe3fca428ad6bc3818b27a3b8291",
+        "tree": "ca93bcd9b9c9ff32d3016e1e2556644e68bef86a"
+      },
+      "muon": {
+        "canonical_source": "/secure/p23/Muon",
+        "snapshot": "/secure/p29/execution-20260906-02/muon",
+        "commit": "f98f1cacc0263b04290753e32be8d498c1efc806",
+        "tree": "4ea5cd8ab6ebd56a18536f06453619efcd636da0"
+      },
+      "data": {
+        "canonical_source": "/secure/p23/optimizationml-p22-data",
+        "snapshot": "/secure/p29/execution-20260906-02/data",
+        "original_manifest_relative_path": "materialized/p22_fineweb_manifest.json",
+        "original_manifest_sha256": "1dfbe2087fb61004c6c4ee938d1be53d769f2fa66303c2533e14acb9c1d5a96d",
+        "original_manifest_byte_count": 4210
+      }
+    },
+    "tools_adjunct_root": "/secure/p29/execution-20260906-02/data/.p29-tools",
+    "helpers_canonical_source_checkout": "/secure/p29/transport-20260906-02/control-source",
+    "p26_authenticated_input_original_source": "/secure/p25/attempt-20260906-02/evidence/trace-off-a-failure.json",
+    "tools_adjunct_exact_files": {
+      "run_p27_cuda_deleted_mapping_localization.py": {
+        "sha256": "86ba200d69a029c64b2218581d6b92245930d5f1e60d0176aca22ad4d6ddf65a",
+        "mode": "0555"
+      },
+      "ingest_p26_trace_off_a_failure.py": {
+        "sha256": "3e7769d668a8756aea7359bef4d9b8ccfc8db66da102edfbc6c5de385654cdeb",
+        "mode": "0555"
+      },
+      "p23_deterministic_cuda_shadow_trace.py": {
+        "sha256": "ec1037839a3de378ee7391ae815ffc29c184865c5216d30027edc460ba112fab",
+        "mode": "0444"
+      },
+      "sanitize_p27_cuda_deleted_mapping_localization.py": {
+        "sha256": "3ec64cdc3681d41d70c624c6ffd26dde1a7e498bda13ddafaaced271a43dd6c4",
+        "mode": "0555"
+      },
+      "p26-trace-off-a-failure.authenticated.json": {
+        "sha256": "b2a92b5062988534bc424d3ecadf3977ecedc0f80aa27628d4a0457858a64c91",
+        "byte_count": 66283,
+        "mode": "0444"
+      }
+    },
+    "manifest_source_authorities": {
+      "repository": {
+        "commit": "185e444afc0b44ca0a09b1bde49a6b6fa3973355",
+        "tree": "24f4bdac331a57bd7c1b807747d7c7fba253ee5a"
+      },
+      "nanogpt": {
+        "commit": "3adf61e154c3fe3fca428ad6bc3818b27a3b8291",
+        "tree": "ca93bcd9b9c9ff32d3016e1e2556644e68bef86a"
+      },
+      "muon": {
+        "commit": "f98f1cacc0263b04290753e32be8d498c1efc806",
+        "tree": "4ea5cd8ab6ebd56a18536f06453619efcd636da0"
+      },
+      "data": {
+        "original_manifest_relative_path": "materialized/p22_fineweb_manifest.json",
+        "original_manifest_sha256": "1dfbe2087fb61004c6c4ee938d1be53d769f2fa66303c2533e14acb9c1d5a96d",
+        "original_manifest_byte_count": 4210
+      },
+      "helpers": {
+        "run_p27_cuda_deleted_mapping_localization.py": "86ba200d69a029c64b2218581d6b92245930d5f1e60d0176aca22ad4d6ddf65a",
+        "ingest_p26_trace_off_a_failure.py": "3e7769d668a8756aea7359bef4d9b8ccfc8db66da102edfbc6c5de385654cdeb",
+        "p23_deterministic_cuda_shadow_trace.py": "ec1037839a3de378ee7391ae815ffc29c184865c5216d30027edc460ba112fab",
+        "sanitize_p27_cuda_deleted_mapping_localization.py": "3ec64cdc3681d41d70c624c6ffd26dde1a7e498bda13ddafaaced271a43dd6c4"
+      },
+      "p26_authenticated_input": {
+        "sha256": "b2a92b5062988534bc424d3ecadf3977ecedc0f80aa27628d4a0457858a64c91",
+        "byte_count": 66283
+      }
+    },
+    "manifest_source_authorities_bind_repository_nanogpt_muon_commit_and_tree": true,
+    "manifest_source_authorities_bind_data_original_manifest_hash_and_size": true,
+    "manifest_source_authorities_bind_every_helper_hash_and_p26_hash_and_size": true,
+    "componentwise_nofollow_identity_acl_device_mount_and_manifest_checks_required": true,
+    "recursive_symlinks_hardlinked_files_special_files_nested_mounts_acls_and_xattrs_allowed": false,
+    "regular_file_link_count_required": 1,
+    "manifest_is_verified_before_container_launch_runtime_receipt_creation_replay_and_localization": true,
+    "exact_bind_mounts": [
+      {
+        "source": "/secure/p29/execution-20260906-02/repository",
+        "destination": "/workspace/OptimizationML",
+        "read_only": true
+      },
+      {
+        "source": "/secure/p29/execution-20260906-02/nanogpt",
+        "destination": "/workspace/inputs/nanoGPT",
+        "read_only": true
+      },
+      {
+        "source": "/secure/p29/execution-20260906-02/muon",
+        "destination": "/workspace/inputs/muon",
+        "read_only": true
+      },
+      {
+        "source": "/secure/p29/execution-20260906-02/data",
+        "destination": "/private/tmp/optimizationml-p22-data",
+        "read_only": true
+      },
+      {
+        "source": "/secure/p29/execution-20260906-02/repository/experiments/training/materialize_p22_fineweb.py",
+        "destination": "/Users/harry/Desktop/temp/OptimizationML/experiments/training/materialize_p22_fineweb.py",
+        "read_only": true
+      },
+      {
+        "source": "/secure/p29/attempt-20260906-02/evidence",
+        "destination": "/workspace/evidence/p23",
+        "read_only": false
+      },
+      {
+        "source": "/secure/p29/attempt-20260906-02/p29-image-inspect.json",
+        "destination": "/mounted-host-evidence/image-inspect.json",
+        "read_only": true
+      },
+      {
+        "source": "/secure/p29/attempt-20260906-02/p29-running-container-inspect.json",
+        "destination": "/mounted-host-evidence/running-container-inspect.json",
+        "read_only": true
+      },
+      {
+        "source": "/secure/p29/attempt-20260906-02/p29-running-mountinfo.txt",
+        "destination": "/mounted-host-evidence/running-mountinfo.txt",
+        "read_only": true
+      },
+      {
+        "source": "/secure/p29/attempt-20260906-02/p29-nvidia-smi.csv",
+        "destination": "/mounted-host-evidence/nvidia-smi.csv",
+        "read_only": true
+      }
+    ],
+    "exact_bind_mount_count": 10,
+    "only_evidence_mount_is_writable": true,
+    "frozen_p23_container_destinations_are_unchanged": true
+  },
+  "locked_base_runtime": {
+    "image_digest": "sha256:14dafde07ae578cc4725f452a51d4bc4c920b69f6af23125a72e27162e193ec0",
+    "gpu_uuid": "GPU-ee4c9bf9-42f5-7cdd-66d2-f638c2db549d",
+    "gpu_name": "NVIDIA A100-SXM4-40GB",
+    "network_mode": "none",
+    "container_run_user": "0:0",
+    "container_inspect_config_user": "0:0",
+    "container_userns_mode": "host",
+    "container_user_namespace_remapping_allowed": false,
+    "container_cap_drop": [
+      "ALL"
+    ],
+    "container_cap_add": [
+      "DAC_OVERRIDE"
+    ],
+    "root_filesystem_read_only": true,
+    "exact_bind_mount_count": 10,
+    "extra_mounts_allowed": false,
+    "tmpfs": {
+      "/tmp": "rw,noexec,nosuid,nodev,size=1073741824"
+    },
+    "authority_repository_commit": "185e444afc0b44ca0a09b1bde49a6b6fa3973355",
+    "authority_repository_tree": "24f4bdac331a57bd7c1b807747d7c7fba253ee5a",
+    "mounted_repository_source": "/secure/p29/execution-20260906-02/repository",
+    "mounted_nanogpt_source": "/secure/p29/execution-20260906-02/nanogpt",
+    "mounted_muon_source": "/secure/p29/execution-20260906-02/muon",
+    "mounted_data_source": "/secure/p29/execution-20260906-02/data",
+    "pinned_nanogpt_commit": "3adf61e154c3fe3fca428ad6bc3818b27a3b8291",
+    "pinned_nanogpt_tree": "ca93bcd9b9c9ff32d3016e1e2556644e68bef86a",
+    "pinned_muon_commit": "f98f1cacc0263b04290753e32be8d498c1efc806",
+    "pinned_muon_tree": "4ea5cd8ab6ebd56a18536f06453619efcd636da0",
+    "authority_git_indirection_guards_revalidated_before_every_prepare_or_run": [
+      "no shallow file",
+      "no objects/info/alternates",
+      "no info/grafts",
+      "no refs/replace",
+      "no extensions.partialClone",
+      "no remote.*.promisor"
+    ]
+  },
+  "two_phase_freeze": {
+    "phase_one": "Commit the finalized P29 permission-safe layout, transfer verifier, contract, host orchestrator, independent reconstruction, tests, workflow, and runbook before creating the P29 namespace, source bundle receipt, control checkout, authority checkout, attempt root, or container.",
+    "phase_one_commit_is_selected_after_commit": true,
+    "phase_one_parent_commit": "7274367f2b05fb3c9ed9f876a59be647703bbdc2",
+    "phase_one_must_be_direct_child_of_terminal_p28": true,
+    "phase_two": "After source-bundle closure, permission-layout verification, and source receipt, create and attest the fresh P29 runtime, then commit exactly the P29 runtime lock and host attestation as one direct child of phase one.",
+    "phase_two_exact_delta": [
+      "A\texperiments/training/p29_cuda_runtime_lock.json",
+      "A\texperiments/training/p29_host_attestation.json"
+    ],
+    "phase_two_runtime_review_bundle_must_be_complete": true,
+    "phase_two_runtime_review_receipt_must_be_external": true,
+    "phase_two_localization_started": false,
+    "phase_two_candidate_observations": 0,
+    "diagnostic_requires_reviewed_phase_two_commit": true,
+    "canonical_authority_repository_remains_locked_at_185e444_but_is_not_mounted": true,
+    "root_owned_immutable_execution_repository_is_derived_from_exact_185e444_tree_and_mounted": true
+  },
+  "no_training_boundary": {
+    "unchanged_p27_localizer_only": true,
+    "diagnostic_stages": [
+      "pre_cuda",
+      "post_cuda_init",
+      "post_model_move",
+      "post_optimizer"
+    ],
+    "model_construction_allowed": true,
+    "model_cuda_move_allowed": true,
+    "optimizer_construction_allowed": true,
+    "data_loading_allowed": false,
+    "forward_allowed": false,
+    "backward_allowed": false,
+    "optimizer_step_allowed": false,
+    "candidate_evaluation_allowed": false,
+    "candidate_observation_count_required": 0,
+    "gradient_observation_count_required": 0,
+    "parameter_update_count_required": 0
+  },
+  "execution_order": [
+    "independently reconstruct the P28 contract 12 of 12, terminal P28 outcome 10 of 10, unchanged P27 contract 23 of 23, and this P29 contract",
+    "freeze the complete P29 source package as one direct child of the terminal P28 outcome",
+    "provision the previously absent root-owned P29 directory sole process-owned transport capability root and separate empty root-owned localization ledger root exactly once",
+    "walk slash and secure without following symlinks and stabilize slash device and inode then authenticate owner mode ACL mount identity device and inode from the secure authority boundary downward",
+    "isolate every host Python and Git trust path using the exact absolute executables scrubbed environment isolated flags and ignored-file cleanliness checks",
+    "create a credential-free full source bundle advertising exactly the seven required refs and stage it with the bootstrap verifier using O_EXCL",
+    "one-read and hash-bind the source bundle, close it in a fresh empty bare repository, reject prerequisites, and verify all objects refs tag types and peels",
+    "construct the absent clean control checkout directly beneath the transport root and reconstruct the P28 contract 12 of 12, terminal P28 outcome 10 of 10, and P27 23 of 23",
+    "write and review the external source receipt while the authority checkout and attempt root remain absent",
+    "construct the absent detached clean 185e444 authority checkout directly beneath the transport root and revalidate its commit tree and object-indirection guards",
+    "replay the source receipt and during the sole prepare create the root-owned nonwritable attempt root with its root-owned nonwritable evidence child and the independently manifested root-owned immutable execution snapshot",
+    "verify the immutable execution snapshot recursively then launch the fresh container using the unchanged ten destinations and the four execution-snapshot directory sources",
+    "fd-anchor the attempt and evidence directories and use no-overwrite best-effort-finalized transcripts plus exit status for every validator after state creation",
+    "freeze and review a new P29 runtime lock and host attestation without running localization",
+    "commit exactly the two runtime artifacts as a direct child of the P29 source freeze",
+    "create and independently close a second full seven-ref runtime-review bundle in a second fresh empty bare repository",
+    "at run-localization dispatcher entry use the supplied expected orchestrator digest to authenticate and burn the root-owned invocation token before general environment evidence or marker validation then replay the external runtime-review receipt first while authorization remains absent",
+    "require the runtime receipt verifier authenticated private payload to reconstruct P29 plus nested P28 contract 12 of 12 P28 outcome 10 of 10 and P27 23 of 23 without executing mutable control-checkout paths then run every other retained pre-marker check and create the root-owned localization authorization token exactly once",
+    "run the unchanged P27 localizer ingester P23 core and sanitizer from the immutable read-only data tools adjunct and ingest its authenticated terminal P26 input",
+    "run exactly one unchanged P27 no-training localization invocation and retain no-overwrite native logs",
+    "sanitize the native result with the unchanged P27-specific sanitizer",
+    "route mechanically from the exact mapping classification without authorizing scientific acquisition"
+  ],
+  "terminal_routing": {
+    "selection_precedence": [
+      "layout_bundle_or_reconstruction_failure",
+      "sanitization_or_localization_failure",
+      "deleted_executable_or_writable_mapping",
+      "deleted_unclassifiable_or_identity_unstable_mapping",
+      "deleted_conclusively_identified_read_only_nonexecutable_mapping_set",
+      "no_deleted_mapping_reproduced"
+    ],
+    "routes": {
+      "layout_bundle_or_reconstruction_failure": "stop before the next state-changing boundary; retain every created path and exact failure; never repair clean or reuse the P29 namespace or attempt identifier",
+      "sanitization_or_localization_failure": "stop; retain native evidence externally and record the independent failure",
+      "deleted_executable_or_writable_mapping": "stop; retain every witness; design an image or loader correction",
+      "deleted_unclassifiable_or_identity_unstable_mapping": "stop; retain every failed probe or identity transition; do not relax deleted-mapping rejection",
+      "deleted_conclusively_identified_read_only_nonexecutable_mapping_set": "stop; retain every witness; preregister a narrow provenance or device-mapping policy before scientific acquisition",
+      "no_deleted_mapping_reproduced": "record nonreproduction as the sole attempt result; do not infer safety and never rerun the same attempt to seek a favorable classification"
+    },
+    "multiple_conditions_use_first_matching_route": true,
+    "post_route_action": "freeze the exact P29 outcome and selected route",
+    "future_scientific_acquisition_authorized": false,
+    "future_scientific_acquisition_requires_separately_reviewed_contract": true
+  },
+  "forbidden_changes": [
+    "reuse clean mutate or remove any retained P28 transport closure or terminal attempt evidence",
+    "precreate the P29 control checkout authority checkout or attempt root",
+    "reuse remove chmod chown or rewrite the root-owned P29 localization ledger root invocation token authorization token or terminal status",
+    "make the root-owned P29 directory process-writable or create a second process-writable source-state parent",
+    "create or tolerate any phase-inappropriate child beneath the secure P29 namespace",
+    "place the control or authority checkout outside the exact process-owned P29 transport root",
+    "bind copy symlink or privileged-relocate either checkout",
+    "mount the canonical transport authority checkout or any mutable source directory into the container",
+    "mutate replace regenerate or incompletely manifest the root-owned immutable execution snapshot after it is derived during the sole prepare phase",
+    "follow a symlink or accept an owner mode ACL mount device or inode transition in the permission layout",
+    "create the P29 authority or attempt root before the source receipt authenticates full closure layout and all three reconstructions",
+    "use a bundle with a prerequisite or fewer or more than the seven exact advertised refs",
+    "run bootstrap or reconstruction code without absolute trusted Python isolated and no-site flags or permit ambient Python Git hooks includes replacements or ignored checkout dirt",
+    "treat a peeled commit as a substitute for a required annotated tag object",
+    "change any P27 contract localizer sanitizer ingester scientific authority or classification rule",
+    "run more than one P29 source-receipt creation source-receipt replay runtime-review receipt creation runtime-review receipt replay state-changing prepare invocation or localization invocation",
+    "clean repair resume or retry a partial P29 namespace transfer checkout closure receipt attempt root or container",
+    "invoke a substantive validator after attempt-state or localization-marker creation before successful no-overwrite logger admission or treat an incomplete best-effort transcript finalization as retryable",
+    "write runtime-receipt replay logs into evidence before its exact 27-file inventory has been verified or weaken that inventory to admit observer output",
+    "run a forward pass backward pass optimizer step candidate evaluation candidate capture shield or training update",
+    "replace exact hashes or equality with allclose or another tolerance",
+    "commit a bundle receipt into the history it authenticates",
+    "rerun until a favorable bundle result permission result or deleted-mapping classification appears",
+    "authorize fresh scientific acquisition attempt 20260906-03 from this bridge contract"
+  ]
+}
