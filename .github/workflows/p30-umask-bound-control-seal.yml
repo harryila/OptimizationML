@@ -1,0 +1,127 @@
+name: P30 umask-bound control seal preregistration replay
+
+on:
+  push:
+    branches:
+      - main
+      - p30-umask-bound-control-seal
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  permission-safe-no-training-contract:
+    name: CPU permission layout and bundle bridge controls (Python 3.12)
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Check out complete frozen history and annotated tags
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Materialize exact frozen phase branch refs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse refs/remotes/origin/p29-permission-safe-bundle-localization-bridge)" = \
+            8a263722c7f8ce1d99b8796a3ccc0425dd1cefcf
+          test "$(git rev-parse refs/remotes/origin/p28-bundle-complete-localization-bridge)" = \
+            7274367f2b05fb3c9ed9f876a59be647703bbdc2
+          test "$(git rev-parse refs/remotes/origin/p27-cuda-deleted-mapping-localization)" = \
+            ec63550331925ded158e3f389e294e4d1f12db3a
+          test -z "$(git config --local --name-only --list | grep -Ei '^include(if)?\.' || true)"
+          git update-ref refs/heads/p29-permission-safe-bundle-localization-bridge \
+            8a263722c7f8ce1d99b8796a3ccc0425dd1cefcf \
+            0000000000000000000000000000000000000000
+          git update-ref refs/heads/p28-bundle-complete-localization-bridge \
+            7274367f2b05fb3c9ed9f876a59be647703bbdc2 \
+            0000000000000000000000000000000000000000
+          git update-ref refs/heads/p27-cuda-deleted-mapping-localization \
+            ec63550331925ded158e3f389e294e4d1f12db3a \
+            0000000000000000000000000000000000000000
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          enable-cache: true
+
+      - name: Install the locked environment
+        run: uv sync --locked
+
+      - name: Independently reconstruct P30 and its nested P29/P28/P27 authorities
+        run: >-
+          uv run --locked python -I -S
+          scripts/reconstruct_p30_umask_bound_control_seal.py
+
+      - name: Run P30 verifier, orchestration, contract, and unchanged controls
+        run: >-
+          uv run --locked pytest -q
+          tests/test_p30_umask_bound_control_seal_contract.py
+          tests/test_p30_control_bundle_verifier.py
+          tests/test_p30_umask_bound_control_seal_orchestration.py
+          tests/test_p29_permission_safe_bundle_localization_bridge_contract.py
+          tests/test_p29_permission_safe_bundle_localization_bridge_outcome.py
+          tests/test_p28_bundle_complete_localization_bridge_contract.py
+          tests/test_p28_bundle_complete_localization_bridge_outcome.py
+          tests/test_p27_cuda_deleted_mapping_localization_contract.py
+          tests/test_p27_cuda_deleted_mapping_localization.py
+          tests/test_p27_cuda_deleted_mapping_localization_orchestration.py
+          tests/test_p27_cuda_deleted_mapping_localization_sanitizer.py
+          tests/test_p27_p26_failure_ingestion.py
+
+      - name: Verify host orchestration syntax
+        run: bash -n scripts/run_p30_umask_bound_control_seal.sh
+
+      - name: Prove P29, P28, and P27 authorities remain byte-identical
+        run: |
+          git diff --exit-code p29-orchestrator-source-mode-diagnostic...HEAD -- \
+            experiments/training/p29_permission_safe_bundle_localization_bridge_contract.json \
+            scripts/reconstruct_p29_permission_safe_bundle_localization_bridge.py \
+            scripts/verify_p29_control_bundle.py \
+            scripts/run_p29_permission_safe_bundle_localization_bridge.sh \
+            results/summaries/p29_permission_safe_bundle_localization_bridge_outcome.json \
+            scripts/reconstruct_p29_permission_safe_bundle_localization_bridge_outcome.py \
+            tests/test_p29_permission_safe_bundle_localization_bridge_outcome.py \
+            experiments/training/p28_bundle_complete_localization_bridge_contract.json \
+            scripts/reconstruct_p28_bundle_complete_localization_bridge.py \
+            scripts/verify_p28_control_bundle.py \
+            scripts/run_p28_bundle_complete_localization_bridge.sh \
+            results/summaries/p28_bundle_complete_localization_bridge_outcome.json \
+            scripts/reconstruct_p28_bundle_complete_localization_bridge_outcome.py \
+            tests/test_p28_bundle_complete_localization_bridge_outcome.py \
+            experiments/training/p27_cuda_deleted_mapping_localization_contract.json \
+            experiments/training/run_p27_cuda_deleted_mapping_localization.py \
+            scripts/reconstruct_p27_cuda_deleted_mapping_localization.py \
+            scripts/run_p27_cuda_deleted_mapping_localization.sh \
+            scripts/ingest_p26_trace_off_a_failure.py \
+            experiments/training/p23_deterministic_cuda_shadow_trace.py \
+            scripts/sanitize_p27_cuda_deleted_mapping_localization.py \
+            tests/test_p27_cuda_deleted_mapping_localization.py \
+            tests/test_p27_cuda_deleted_mapping_localization_orchestration.py \
+            tests/test_p27_cuda_deleted_mapping_localization_sanitizer.py \
+            tests/test_p27_p26_failure_ingestion.py
+
+      - name: Check formatting, lint, and branch whitespace
+        run: |
+          uv run --locked ruff format --check src scripts experiments tests
+          uv run --locked ruff check src scripts experiments tests
+          git diff --check p29-orchestrator-source-mode-diagnostic...HEAD
+
+      - name: State the evidence boundary
+        run: >-
+          echo "This CPU job reconstructs terminal P29's source-mode stop, the
+          unchanged P28/P27 no-training authorities, and P30's exact nine-ref,
+          permission-safe bundle contract. It does not authenticate a remote
+          host layout or receipt, create a checkout, immutable execution
+          snapshot, attempt root or container, initialize CUDA, observe a
+          mapping, run localization, capture a candidate, execute a shield,
+          update a parameter, or train a model."
